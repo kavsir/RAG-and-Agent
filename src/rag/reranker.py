@@ -1,48 +1,67 @@
-# reranker.py
-from sentence_transformers import CrossEncoder
-from typing import List, Dict, Any
+"""
+Reranker: Xếp hạng lại danh sách tài liệu ứng viên bằng Cross-Encoder hoặc Fallback an toàn.
+"""
+import logging
+from typing import List, Dict, Any, Optional
+from src.config.settings import settings
 
-class Reranker:
-    def __init__(self, model_name: str = "cross-encoder/ms-marco-MiniLM-L-6-v2"):
-        """
-        Reranker dùng cross-encoder để xếp hạng lại các đoạn văn bản.
-        """
-        self.model = CrossEncoder(model_name)
-    
-    def rerank(self, query: str, retrieved_docs: List[Dict[str, Any]], top_k: int = 5) -> List[Dict[str, Any]]:
-        """
-        Xếp hạng lại các tài liệu đã retrieve.
-        
-        Args:
-            query: câu hỏi gốc
-            retrieved_docs: danh sách các dict chứa 'text' và các trường khác
-            top_k: số lượng kết quả trả về sau rerank
-        
-        Returns:
-            Danh sách các dict đã được sắp xếp lại theo điểm rerank (giảm dần)
-        """
-        if not retrieved_docs:
-            return []
-        
-        # Tạo cặp (query, text) cho cross-encoder
-        pairs = [(query, doc['text']) for doc in retrieved_docs]
-        
-        # Dự đoán điểm
-        scores = self.model.predict(pairs)
-        
-        # Gắn điểm rerank vào mỗi doc
-        for i, doc in enumerate(retrieved_docs):
-            doc['rerank_score'] = float(scores[i])
-        
-        # Sắp xếp theo rerank_score giảm dần
-        reranked = sorted(retrieved_docs, key=lambda x: x['rerank_score'], reverse=True)
-        
-        return reranked[:top_k]
+logger = logging.getLogger(__name__)
 
-_reranker = None
+_cross_encoder_singleton = None
+_reranker_failed = False
 
-def rerank(query: str, docs: List[Dict[str, Any]], top_k: int = 15) -> List[Dict[str, Any]]:
-    global _reranker
-    if _reranker is None:
-        _reranker = Reranker()
-    return _reranker.rerank(query, docs, top_k)
+
+def get_cross_encoder():
+    """Tải Singleton CrossEncoder với cơ chế an toàn nếu thiếu RAM/GPU."""
+    global _cross_encoder_singleton, _reranker_failed
+    if _reranker_failed or not settings.ENABLE_RERANKER:
+        return None
+
+    if _cross_encoder_singleton is None:
+        try:
+            from sentence_transformers import CrossEncoder
+            model_name = settings.RERANKER_MODEL
+            logger.info(f"Dang tai Reranker model: {model_name}")
+            _cross_encoder_singleton = CrossEncoder(model_name)
+            logger.info("Reranker model san sang.")
+        except Exception as e:
+            logger.warning(f"Khong the tai CrossEncoder ({e}). Chuyen sang fallback hybrid score.")
+            _reranker_failed = True
+            return None
+
+    return _cross_encoder_singleton
+
+
+def rerank_documents(
+    query: str,
+    candidates: List[Dict[str, Any]],
+    top_k: Optional[int] = None,
+) -> List[Dict[str, Any]]:
+    """
+    Xếp hạng lại các tài liệu ứng viên.
+    Nếu CrossEncoder khả dụng, dùng model để chấm điểm cặp (query, document).
+    Nếu không khả dụng, giữ nguyên thứ tự sắp xếp theo điểm hybrid fusion hiện có.
+    """
+    k = top_k or settings.RERANK_TOP_K
+    if not candidates:
+        return []
+
+    model = get_cross_encoder()
+    if model is None:
+        # Fallback to current score
+        logger.debug("Dung hybrid fusion score de sap xep candidates.")
+        return candidates[:k]
+
+    try:
+        pairs = [(query, doc["text"]) for doc in candidates]
+        scores = model.predict(pairs)
+
+        for i, doc in enumerate(candidates):
+            doc["rerank_score"] = float(scores[i])
+
+        reranked = sorted(candidates, key=lambda x: x.get("rerank_score", 0.0), reverse=True)
+        logger.debug(f"Da rerank {len(candidates)} candidates, giu lai {len(reranked[:k])}")
+        return reranked[:k]
+    except Exception as e:
+        logger.warning(f"Loi trong qua trinh rerank: {e}. Fallback ve hybrid order.")
+        return candidates[:k]

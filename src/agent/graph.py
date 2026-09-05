@@ -1,180 +1,141 @@
+"""
+LangGraph Workflow: Cấu trúc đồ thị điều hướng hội thoại AI Academic Advisor.
+Đảm bảo 100% các node đều có đường dẫn đến và thoát, không có dead nodes.
+"""
+import logging
 from langgraph.graph import StateGraph, END
-from .state import AgentState
-from .nodes import (
+
+from src.agent.state import AgentState
+from src.agent.nodes import (
     cache_node,
-    rewrite_node,
-    memory_node,
-    intent_node,
+    query_analysis_node,
+    router_node,
     retrieve_node,
+    rerank_node,
     context_node,
-    answer_node,
-    validation_node,   # thêm import
-    save_chat_node,
+    grounded_answer_node,
+    general_answer_node,
+    validation_node,
     parse_reminder_node,
-    reminder_node,
-    parse_email_request_node,
-    send_email_node
+    parse_email_node,
+    save_chat_node,
 )
 
-# Debug flag
-DEBUG = True
+logger = logging.getLogger(__name__)
 
+# Khởi tạo workflow StateGraph
 workflow = StateGraph(AgentState)
 
-# Thêm nodes
+# 1. Khai báo toàn bộ các node
 workflow.add_node("cache", cache_node)
-workflow.add_node("rewrite", rewrite_node)
-workflow.add_node("memory", memory_node)
-workflow.add_node("intent", intent_node)
-workflow.add_node("retrieve", retrieve_node)
-workflow.add_node("context", context_node)
-workflow.add_node("answer", answer_node)
-workflow.add_node("validation", validation_node)   # thêm node validation
-workflow.add_node("save_chat", save_chat_node)
-workflow.add_node("parse_reminder", parse_reminder_node)
-workflow.add_node("reminder", reminder_node)
-workflow.add_node("parse_email_request", parse_email_request_node)
-workflow.add_node("send_email", send_email_node)
+workflow.add_node("analysis", query_analysis_node)
+workflow.add_node("router", router_node)
 
+# Nhánh DOMAIN_DATA (RAG)
+workflow.add_node("retrieve", retrieve_node)
+workflow.add_node("rerank", rerank_node)
+workflow.add_node("context", context_node)
+workflow.add_node("grounded_answer", grounded_answer_node)
+workflow.add_node("validation", validation_node)
+
+# Nhánh GENERAL_LLM (Direct)
+workflow.add_node("general_answer", general_answer_node)
+
+# Nhánh TOOL_ACTION
+workflow.add_node("reminder", parse_reminder_node)
+workflow.add_node("email", parse_email_node)
+
+# Node kết thúc & lưu trữ
+workflow.add_node("save_chat", save_chat_node)
+
+# 2. Entry Point
 workflow.set_entry_point("cache")
 
-def route_from_cache(state):
-    if state.get("skip_pipeline", False):
+
+# 3. Điều hướng sau Cache
+def route_from_cache(state: AgentState) -> str:
+    if state.get("cache_hit", False):
         return "save_chat"
-    else:
-        return "rewrite"
+    return "analysis"
+
 
 workflow.add_conditional_edges(
     "cache",
     route_from_cache,
     {
         "save_chat": "save_chat",
-        "rewrite": "rewrite"
-    }
+        "analysis": "analysis",
+    },
 )
 
-workflow.add_edge("rewrite", "memory")
-workflow.add_edge("memory", "intent")
+# Analysis -> Router
+workflow.add_edge("analysis", "router")
 
-def route_after_intent(state):
-    """
-    Điều hướng dựa trên category:
-    - DOMAIN_DATA: Cần RAG để lấy dữ liệu → retrieve_node
-    - GENERAL_LLM: Không cần RAG → answer_node (bỏ qua retrieve)
-    """
-    category = state.get("category", "GENERAL_LLM")
-    
-    if DEBUG:
-        print(f"🔀 Router: category={category}")
-    
-    if category == "DOMAIN_DATA":
-        # Câu hỏi về dữ liệu nội bộ → Must use RAG
-        return "retrieve"
+
+# 4. Điều hướng chính sau Router
+def route_after_router(state: AgentState) -> str:
+    category = state.get("category", "DOMAIN_DATA")
+    tool_intent = state.get("tool_intent")
+
+    if category == "TOOL_ACTION":
+        if tool_intent == "SEND_EMAIL":
+            return "email"
+        return "reminder"
+    elif category == "GENERAL_LLM":
+        return "general_answer"
     else:
-        # GENERAL_LLM: Kiến thức chung → Bỏ qua retrieve, đi thẳng đến answer
-        return "answer"
+        # Default: DOMAIN_DATA (RAG)
+        return "retrieve"
+
 
 workflow.add_conditional_edges(
-    "intent",
-    route_after_intent,
+    "router",
+    route_after_router,
     {
         "retrieve": "retrieve",
-        "answer": "answer"
-    }
+        "general_answer": "general_answer",
+        "reminder": "reminder",
+        "email": "email",
+    },
 )
 
-workflow.add_edge("retrieve", "context")
-workflow.add_edge("context", "answer")
+# 5. Các cạnh trong nhánh DOMAIN_DATA
+workflow.add_edge("retrieve", "rerank")
+workflow.add_edge("rerank", "context")
+workflow.add_edge("context", "grounded_answer")
+workflow.add_edge("grounded_answer", "validation")
 
-# Sau answer, quyết định có cần validate hay không
-def route_after_answer(state):
-    """
-    - DOMAIN_DATA: Cần validation để kiểm tra đạt yêu cầu không
-    - GENERAL_LLM: Không cần validation, đi thẳng save_chat
-    """
-    category = state.get("category", "GENERAL_LLM")
-    
-    if DEBUG:
-        print(f"🔀 Route after answer: category={category}")
-    
-    if category == "DOMAIN_DATA":
-        # Yêu cầu validation cho câu trả lời dựa trên dữ liệu nội bộ
-        return "validation"
-    else:
-        # GENERAL_LLM không cần validation
-        return "save_chat"
 
-workflow.add_conditional_edges(
-    "answer",
-    route_after_answer,
-    {
-        "validation": "validation",
-        "save_chat": "save_chat"
-    }
-)
-
-# Điều hướng sau validation: nếu không valid và còn lượt regenerate, quay lại retrieve
-def should_continue(state):
-    """
-    Smart routing after validation to prevent infinite loops.
-    Uses retry_count to track attempts and break out gracefully.
-    """
-    max_regenerate = 2  # tối đa 2 lần regenerate
-    validation = state.get("validation_result", {})
-    regenerate_count = state.get("regenerate_count", 0)
+# 6. Điều hướng sau Validation (chống lặp vô tận)
+def route_after_validation(state: AgentState) -> str:
+    val_res = state.get("validation_result", {})
     retry_count = state.get("retry_count", 0)
-    
-    # Safety: max retry attempts to prevent infinite loop
-    MAX_RETRY_ATTEMPTS = 3
-    
-    # If validation is valid, proceed to save
-    if validation.get("valid", False):
+
+    # Nếu câu trả lời hợp lệ hoặc đã retry đủ 2 lần -> lưu chat và hoàn tất
+    if val_res.get("valid", True) or retry_count >= 2:
         return "save_chat"
-    
-    # If max retries exceeded, force save (escape hatch)
-    if retry_count >= MAX_RETRY_ATTEMPTS:
-        if DEBUG: print(f"⚠️ Max retry count ({MAX_RETRY_ATTEMPTS}) reached. Forcing save_chat.")
-        return "save_chat"
-    
-    # If still have regenerate attempts, try retrieve again
-    if regenerate_count < max_regenerate and retry_count < MAX_RETRY_ATTEMPTS:
-        if DEBUG: print(f"↻ Regenerating (attempt {regenerate_count + 1}/{max_regenerate}, retry {retry_count})")
-        return "retrieve"
-    
-    # Default: save and end
-    return "save_chat"
+
+    # Nếu không hợp lệ và còn lượt thử -> quay lại retrieve
+    logger.info(f"Validation khong dat. Thu lai retrieve lan {retry_count + 1}/2...")
+    return "retrieve"
+
 
 workflow.add_conditional_edges(
     "validation",
-    should_continue,
+    route_after_validation,
     {
+        "save_chat": "save_chat",
         "retrieve": "retrieve",
-        "save_chat": "save_chat"
-    }
+    },
 )
 
-# Sau save_chat, xử lý reminder/email
-def route_after_save(state):
-    if state.get("reminder_requests"):
-        return "reminder"
-    elif state.get("email_requests"):
-        return "send_email"
-    else:
-        return END
+# 7. Các cạnh thoát về save_chat
+workflow.add_edge("general_answer", "save_chat")
+workflow.add_edge("reminder", "save_chat")
+workflow.add_edge("email", "save_chat")
 
-workflow.add_conditional_edges(
-    "save_chat",
-    route_after_save,
-    {
-        "reminder": "reminder",
-        "send_email": "send_email",
-        END: END
-    }
-)
+# 8. Kết thúc workflow
+workflow.add_edge("save_chat", END)
 
-workflow.add_edge("parse_reminder", "save_chat")
-workflow.add_edge("reminder", END)
-workflow.add_edge("parse_email_request", "save_chat")
-workflow.add_edge("send_email", END)
-
+# Compile LangGraph
 graph = workflow.compile()

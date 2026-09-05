@@ -1,4 +1,3 @@
-import os
 from pathlib import Path
 from typing import List, Dict, Any, Optional
 from src.rag.hybrid_retriever import HybridRetriever

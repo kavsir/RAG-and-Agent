@@ -1,340 +1,149 @@
+"""
+Pipeline Ingestion hoàn chỉnh:
+Docx/Txt -> Chunking -> Metadata -> Chroma Vector Store + BM25 Index.
+Chạy trực tiếp:
+    python -m src.ingestion.ingest_pipeline [--rebuild]
+"""
 import os
-import re
-from uuid import uuid4
+import argparse
+import pickle
+import logging
+from pathlib import Path
+from typing import Dict, List, Any
+from rank_bm25 import BM25Okapi
 
-import chromadb
-from docx import Document
+from src.config.settings import settings
+from src.ingestion.loaders import load_file
+from src.ingestion.chunkers import chunk_document
+from src.ingestion.metadata_builder import detect_doc_type, build_metadata
+from src.ingestion.vector_store import VectorStoreManager
 
-from llama_index.embeddings.huggingface import HuggingFaceEmbedding
-
-
-# =========================
-# CONFIG
-# =========================
-
-VECTOR_PATH = "vector_store"
-
-CURRICULUM_FOLDER = "data_raw/curriculum"
-COURSE_FOLDER = "data_raw/course_detail"
-REGULATION_FOLDER = "data_raw/regulation"
-
-
-# =========================
-# EMBEDDING MODEL
-# =========================
-
-embed_model = HuggingFaceEmbedding(
-    model_name="BAAI/bge-m3"
+logging.basicConfig(
+    level=getattr(logging, settings.LOG_LEVEL, logging.INFO),
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s"
 )
-
-
-# =========================
-# CHROMA CLIENT
-# =========================
-
-client = chromadb.PersistentClient(path=VECTOR_PATH)
-
-
-# =========================
-# RESET COLLECTION
-# =========================
-
-def reset_collections():
-
-    print("Reset collections...")
-
-    try:
-        client.delete_collection("course_db")
-    except:
-        pass
-
-    try:
-        client.delete_collection("curriculum_db")
-    except:
-        pass
-
-    try:
-        client.delete_collection("regulation_db")
-    except:
-        pass
-
-
-# =========================
-# CREATE COLLECTION
-# =========================
-
-def create_collections():
-
-    global course_collection
-    global curriculum_collection
-    global reg_collection
-
-    course_collection = client.get_or_create_collection("course_db")
-
-    curriculum_collection = client.get_or_create_collection("curriculum_db")
-
-    reg_collection = client.get_or_create_collection("regulation_db")
-
-
-# =========================
-# READ DOCX
-# =========================
-
-def read_docx(path):
-
-    doc = Document(path)
-
-    lines = []
-
-    for p in doc.paragraphs:
-
-        text = p.text.strip()
-
-        if text:
-            lines.append(text)
-
-    return lines
-
-
-# =========================
-# GET ALL DOCX
-# =========================
-
-def get_all_docx(folder):
-
-    files = []
-
-    if not os.path.exists(folder):
-        return files
-
-    for f in os.listdir(folder):
-
-        if f.endswith(".docx"):
-
-            files.append(os.path.join(folder, f))
-
-    return files
-
-
-# =========================
-# CHUNK BY SECTION
-# =========================
-
-def chunk_by_section(lines):
-
-    chunks = []
-
-    current = []
-
-    for line in lines:
-
-        if re.match(r"^[IVX]+\.", line):
-
-            if current:
-
-                chunks.append(" ".join(current))
-
-                current = []
-
-        current.append(line)
-
-    if current:
-
-        chunks.append(" ".join(current))
-
-    return chunks
-
-
-# =========================
-# INGEST CURRICULUM
-# =========================
-
-def ingest_curriculum(file):
-
-    print("Ingest curriculum:", file)
-
-    lines = read_docx(file)
-
-    semester = None
-
-    pattern = r"([A-Z]{3,4}\d{4})\s*-\s*(.*?)\s*-\s*(\d+)\s*tín chỉ"
-
-    texts = []
-    metadatas = []
-    ids = []
-
-    for line in lines:
-
-        if "HỌC KỲ" in line.upper():
-
-            semester = line.split()[-1]
-
-        match = re.search(pattern, line)
-
-        if match:
-
-            code = match.group(1)
-            name = match.group(2)
-            credits = match.group(3)
-
-            texts.append(line)
-
-            metadatas.append({
-                "document_type": "curriculum",
-                "course_code": code,
-                "course_name": name,
-                "credits": credits,
-                "semester": semester
-            })
-
-            ids.append(str(uuid4()))
-
-    if texts:
-
-        embeddings = embed_model.get_text_embedding_batch(texts)
-
-        curriculum_collection.add(
-            documents=texts,
-            embeddings=embeddings,
-            metadatas=metadatas,
-            ids=ids
-        )
-
-
-# =========================
-# INGEST COURSE DETAIL
-# =========================
-
-def ingest_course_detail(file):
-
-    print("Ingest course:", file)
-
-    lines = read_docx(file)
-
-    code = ""
-    name = ""
-
-    for line in lines:
-
-        if "Mã học phần" in line:
-
-            code = line.split(":")[-1].strip()
-
-        if "Tên học phần" in line:
-
-            name = line.split(":")[-1].strip()
-
-    chunks = chunk_by_section(lines)
-
-    texts = []
-    metadatas = []
-    ids = []
-
-    for i, chunk in enumerate(chunks):
-
-        texts.append(chunk)
-
-        metadatas.append({
-            "document_type": "course_detail",
-            "course_code": code,
-            "course_name": name,
-            "section": f"section_{i}"
-        })
-
-        ids.append(f"{code}_{i}")
-
-    if texts:
-
-        embeddings = embed_model.get_text_embedding_batch(texts)
-
-        course_collection.add(
-            documents=texts,
-            embeddings=embeddings,
-            metadatas=metadatas,
-            ids=ids
-        )
-
-
-# =========================
-# INGEST REGULATION
-# =========================
-
-def ingest_regulation(file):
-
-    print("Ingest regulation:", file)
-
-    lines = read_docx(file)
-
-    texts = []
-    metadatas = []
-    ids = []
-
-    for i, line in enumerate(lines):
-
-        if len(line) < 40:
+logger = logging.getLogger("IngestPipeline")
+
+COLLECTIONS = ["course_detail", "curriculum", "regulation"]
+
+
+def build_and_save_bm25(collection_name: str, chunks: List[Dict[str, Any]], output_dir: Path):
+    """Xây dựng và lưu BM25 index ra file .pkl."""
+    if not chunks:
+        logger.warning(f"Khong co chunk nao cho BM25 index: {collection_name}")
+        return
+
+    texts = [c["text"] for c in chunks]
+    doc_ids = [c["id"] for c in chunks]
+    metadatas = [c["metadata"] for c in chunks]
+
+    # Tokenize don gian cho BM25 bang tieng Viet
+    tokenized_corpus = [t.lower().split() for t in texts]
+    bm25_index = BM25Okapi(tokenized_corpus, k1=1.5, b=0.75)
+
+    data = {
+        "index": bm25_index,
+        "corpus": texts,
+        "doc_ids": doc_ids,
+        "metadatas": metadatas,
+    }
+
+    output_path = output_dir / f"bm25_{collection_name}.pkl"
+    with open(output_path, "wb") as f:
+        pickle.dump(data, f)
+    logger.info(f"Da luu BM25 index tai: {output_path}")
+
+
+def run_ingestion(rebuild: bool = True) -> Dict[str, Any]:
+    """Thực thi toàn bộ pipeline ingestion."""
+    logger.info(f"Bat dau pipeline Ingestion (rebuild={rebuild})")
+    settings.ensure_directories()
+    vs_manager = VectorStoreManager()
+
+    if rebuild:
+        logger.info("Dang reset cac collections hien co...")
+        for col in COLLECTIONS:
+            vs_manager.delete_collection(col)
+            bm25_file = settings.CHROMA_PATH / f"bm25_{col}.pkl"
+            if bm25_file.exists():
+                try:
+                    bm25_file.unlink()
+                except Exception:
+                    pass
+
+    # Thu thập toàn bộ file từ data_raw
+    raw_files = []
+    for root, _, files in os.walk(settings.DATA_RAW_DIR):
+        for f in files:
+            if f.endswith((".docx", ".txt")) and not f.startswith("~$"):
+                raw_files.append(Path(root) / f)
+
+    logger.info(f"Tim thay {len(raw_files)} tai lieu trong {settings.DATA_RAW_DIR}")
+
+    collection_chunks: Dict[str, List[Dict[str, Any]]] = {
+        col: [] for col in COLLECTIONS
+    }
+    stats = {"files_processed": 0, "chunks_total": 0, "by_collection": {col: 0 for col in COLLECTIONS}}
+
+    for file_path in raw_files:
+        logger.info(f"Dang xu ly: {file_path.name}")
+        text = load_file(str(file_path))
+        if not text or not text.strip():
+            logger.warning(f"Bo qua file rong: {file_path.name}")
             continue
 
-        texts.append(line)
+        doc_type = detect_doc_type(str(file_path))
+        if doc_type == "syllabus":
+            doc_type = "course_detail"
 
-        metadatas.append({
-            "document_type": "regulation",
-            "type": "academic_policy"
-        })
+        if doc_type not in collection_chunks:
+            doc_type = "course_detail"  # fallback
 
-        ids.append(f"REG_{i}_{uuid4()}")
+        chunked_tuples = chunk_document(text, doc_type)
+        file_chunks = []
+        for i, (chunk_text, extra_meta) in enumerate(chunked_tuples):
+            if not chunk_text.strip():
+                continue
+            chunk_id = f"{file_path.stem}_chunk{i}"
+            meta = build_metadata(str(file_path), chunk_text, chunk_id, doc_type=doc_type, **extra_meta)
+            chunk_dict = {
+                "id": chunk_id,
+                "text": chunk_text,
+                "metadata": meta,
+            }
+            file_chunks.append(chunk_dict)
 
-    if texts:
+        collection_chunks[doc_type].extend(file_chunks)
+        stats["files_processed"] += 1
 
-        embeddings = embed_model.get_text_embedding_batch(texts)
+    # Thêm vào ChromaDB và tạo BM25
+    for col, chunks in collection_chunks.items():
+        if chunks:
+            vs_manager.add_documents(col, chunks)
+            build_and_save_bm25(col, chunks, settings.CHROMA_PATH)
+            count = len(chunks)
+            stats["by_collection"][col] = count
+            stats["chunks_total"] += count
 
-        reg_collection.add(
-            documents=texts,
-            embeddings=embeddings,
-            metadatas=metadatas,
-            ids=ids
-        )
+    print("\n" + "=" * 50)
+    print("INGESTION REPORT")
+    print("=" * 50)
+    print(f"Files processed:   {stats['files_processed']}")
+    print(f"Chunks created:     {stats['chunks_total']}")
+    print(f"  - Course detail:  {stats['by_collection'].get('course_detail', 0)}")
+    print(f"  - Curriculum:     {stats['by_collection'].get('curriculum', 0)}")
+    print(f"  - Regulation:     {stats['by_collection'].get('regulation', 0)}")
+    print("Vector store:       OK")
+    print("BM25 indexes:       OK")
+    print("=" * 50 + "\n")
 
+    return stats
 
-# =========================
-# RUN INGEST
-# =========================
-
-def run_ingest():
-
-    print("\n===== START INGEST =====\n")
-
-    curriculum_files = get_all_docx(CURRICULUM_FOLDER)
-
-    for file in curriculum_files:
-
-        ingest_curriculum(file)
-
-
-    course_files = get_all_docx(COURSE_FOLDER)
-
-    for file in course_files:
-
-        ingest_course_detail(file)
-
-
-    regulation_files = get_all_docx(REGULATION_FOLDER)
-
-    for file in regulation_files:
-
-        ingest_regulation(file)
-
-
-    print("\n===== INGEST DONE =====\n")
-
-
-# =========================
-# MAIN
-# =========================
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Ingest documents into ChromaDB & BM25")
+    parser.add_argument("--rebuild", action="store_true", default=True, help="Rebuild all indexes from scratch")
+    parser.add_argument("--incremental", dest="rebuild", action="store_false", help="Append without dropping existing")
+    args = parser.parse_args()
 
-    reset_collections()
-
-    create_collections()
-
-    run_ingest()
+    run_ingestion(rebuild=args.rebuild)

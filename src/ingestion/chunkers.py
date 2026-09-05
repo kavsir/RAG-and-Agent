@@ -39,7 +39,7 @@ def split_syllabus(text: str) -> List[Tuple[str, dict]]:
     matches = list(heading_pattern.finditer(text))
     if not matches:
         return split_by_paragraphs(text)
-    
+
     chunks = []
     for i, match in enumerate(matches):
         heading_num = match.group(1)
@@ -48,14 +48,14 @@ def split_syllabus(text: str) -> List[Tuple[str, dict]]:
         start = match.start()
         end = matches[i+1].start() if i+1 < len(matches) else len(text)
         chunk_text = text[start:end].strip()
-        
+
         extra = {
             "section": heading,
             "section_num": heading_num,
             "section_title": heading_title,
             "type": "section"
         }
-        
+
         # Xử lý riêng cho từng mục
         if heading_num == 'V':
             clos = extract_clos(chunk_text)
@@ -97,10 +97,10 @@ def split_syllabus(text: str) -> List[Tuple[str, dict]]:
             continue
         elif heading_num == 'IX':
             extra["type"] = "regulation"
-        
+
         # Các mục không xử lý đặc biệt
         chunks.append((chunk_text, extra))
-    
+
     return chunks
 
 def split_by_weeks_in_section(text: str) -> List[Tuple[str, dict]]:
@@ -138,11 +138,11 @@ def split_assessment(text: str, parent_heading: str, parent_num: str) -> List[Tu
     sub_heading_pattern = re.compile(r'^(\d+\.\d+)\s+(.+)', re.MULTILINE)
     # Các tiêu đề cấp 3: a), b), c) ...
     sub_sub_pattern = re.compile(r'^([a-z]\))\s+(.+)', re.MULTILINE)
-    
+
     matches = list(sub_heading_pattern.finditer(text))
     if not matches:
         return []
-    
+
     chunks = []
     for i, match in enumerate(matches):
         sub_num = match.group(1)
@@ -150,7 +150,7 @@ def split_assessment(text: str, parent_heading: str, parent_num: str) -> List[Tu
         start = match.start()
         end = matches[i+1].start() if i+1 < len(matches) else len(text)
         chunk_text = text[start:end].strip()
-        
+
         # Kiểm tra xem trong chunk này có các mục con a), b), c) không
         sub_sub_matches = list(sub_sub_pattern.finditer(chunk_text))
         if sub_sub_matches:
@@ -176,7 +176,7 @@ def split_assessment(text: str, parent_heading: str, parent_num: str) -> List[Tu
                 "type": "assessment"
             }
             chunks.append((chunk_text, extra))
-    
+
     return chunks
 
 # ==================== CURRICULUM ====================
@@ -194,66 +194,58 @@ def split_curriculum(text: str) -> List[Tuple[str, dict]]:
     chunks = []
     lines = text.split('\n')
     current_section = []
-    current_type = None
     current_metadata = {}
-    
+
     header_pattern = re.compile(r'^#+\s*(.+)')
     semester_pattern = re.compile(r'^(HỌC KỲ\s+\d+)', re.IGNORECASE)
     specialization_pattern = re.compile(r'^(CHUYÊN NGÀNH\s+.+)', re.IGNORECASE)
     internship_pattern = re.compile(r'^(THỰC TẬP VÀ TỐT NGHIỆP)', re.IGNORECASE)
     uni_plan_pattern = re.compile(r'^(CÁC HỌC PHẦN THEO KẾ HOẠCH CỦA NHÀ TRƯỜNG)', re.IGNORECASE)
     elective_pattern = re.compile(r'^(DANH SÁCH HỌC PHẦN LỰA CHỌN)', re.IGNORECASE)
-    
+
     for line in lines:
         line = line.strip()
         if not line:
             continue
-        
+
         if semester_pattern.match(line):
             if current_section:
                 chunks.append(('\n'.join(current_section), current_metadata))
             current_section = [line]
-            current_type = 'semester'
             current_metadata = {'type': 'semester', 'semester': line.strip()}
         elif specialization_pattern.match(line):
             if current_section:
                 chunks.append(('\n'.join(current_section), current_metadata))
             current_section = [line]
-            current_type = 'specialization'
             current_metadata = {'type': 'specialization', 'specialization': line.strip()}
         elif internship_pattern.match(line):
             if current_section:
                 chunks.append(('\n'.join(current_section), current_metadata))
             current_section = [line]
-            current_type = 'internship'
             current_metadata = {'type': 'internship'}
         elif uni_plan_pattern.match(line):
             if current_section:
                 chunks.append(('\n'.join(current_section), current_metadata))
             current_section = [line]
-            current_type = 'uni_plan'
             current_metadata = {'type': 'uni_plan'}
         elif elective_pattern.match(line):
             if current_section:
                 chunks.append(('\n'.join(current_section), current_metadata))
             current_section = [line]
-            current_type = 'elective_list'
             current_metadata = {'type': 'elective_list'}
         elif header_pattern.match(line) and not current_section:
             current_section = [line]
-            current_type = 'header'
             current_metadata = {'type': 'header'}
         else:
             if current_section is not None:
                 current_section.append(line)
             else:
                 current_section = [line]
-                current_type = 'header'
                 current_metadata = {'type': 'header'}
-    
+
     if current_section:
         chunks.append(('\n'.join(current_section), current_metadata))
-    
+
     return chunks
 
 # ==================== REGULATION ====================

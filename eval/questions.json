@@ -1,0 +1,305 @@
+[
+  {
+    "id": "CD01",
+    "question": "Môn FIT4201 có bao nhiêu tín chỉ?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_domain": "course_detail",
+    "expected_course_code": "FIT4201",
+    "expected_sources": ["FIT4201- Hệ thống nhúng.docx"],
+    "expected_keywords": ["tín chỉ", "FIT4201"],
+    "is_abstain": false
+  },
+  {
+    "id": "CD02",
+    "question": "Ai là giảng viên phụ trách học phần FIT4113 Công nghệ điện toán đám mây?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_domain": "course_detail",
+    "expected_course_code": "FIT4113",
+    "expected_sources": ["FIT4113 - Công nghệ điện toán đám mây.docx"],
+    "expected_keywords": ["giảng viên", "FIT4113"],
+    "is_abstain": false
+  },
+  {
+    "id": "CD03",
+    "question": "Chuẩn đầu ra CLO của môn FIT4104 gồm những gì?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_domain": "course_detail",
+    "expected_course_code": "FIT4104",
+    "expected_sources": ["FIT4104 - Dự án thiết kế, lập trình Full-Stack.docx"],
+    "expected_keywords": ["CLO", "chuẩn đầu ra"],
+    "is_abstain": false
+  },
+  {
+    "id": "CD04",
+    "question": "Kế hoạch giảng dạy theo tuần môn FIT4117 Quản trị dự án CNTT như thế nào?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_domain": "course_detail",
+    "expected_course_code": "FIT4117",
+    "expected_sources": ["FIT4117_Quản trị dự án CNTT_K19.docx"],
+    "expected_keywords": ["kế hoạch", "tuần"],
+    "is_abstain": false
+  },
+  {
+    "id": "CD05",
+    "question": "Phương pháp đánh giá điểm của học phần FIT4201 Hệ thống nhúng?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_domain": "course_detail",
+    "expected_course_code": "FIT4201",
+    "expected_sources": ["FIT4201- Hệ thống nhúng.docx"],
+    "expected_keywords": ["đánh giá", "điểm", "chuyên cần"],
+    "is_abstain": false
+  },
+  {
+    "id": "CD06",
+    "question": "Mục tiêu học phần FIT4104 Dự án thiết kế lập trình Full-Stack là gì?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_domain": "course_detail",
+    "expected_course_code": "FIT4104",
+    "expected_sources": ["FIT4104 - Dự án thiết kế, lập trình Full-Stack.docx"],
+    "expected_keywords": ["mục tiêu", "Full-Stack"],
+    "is_abstain": false
+  },
+  {
+    "id": "CD07",
+    "question": "Môn FIT4113 yêu cầu môn học tiên quyết nào?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_domain": "course_detail",
+    "expected_course_code": "FIT4113",
+    "expected_sources": ["FIT4113 - Công nghệ điện toán đám mây.docx"],
+    "expected_keywords": ["tiên quyết", "FIT4113"],
+    "is_abstain": false
+  },
+  {
+    "id": "CD08",
+    "question": "Hình thức đánh giá kết thúc học phần của môn FIT4117 là gì?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_domain": "course_detail",
+    "expected_course_code": "FIT4117",
+    "expected_sources": ["FIT4117_Quản trị dự án CNTT_K19.docx"],
+    "expected_keywords": ["đánh giá", "kết thúc"],
+    "is_abstain": false
+  },
+  {
+    "id": "CR01",
+    "question": "Chương trình đào tạo ngành Công nghệ thông tin K19 có những môn nào trong học kỳ 1?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_domain": "curriculum",
+    "expected_course_code": null,
+    "expected_sources": ["CTDT_CNTT_K19.docx"],
+    "expected_keywords": ["học kỳ 1", "CNTT"],
+    "is_abstain": false
+  },
+  {
+    "id": "CR02",
+    "question": "Khung chương trình ngành Khoa học máy tính K19 gồm những môn học nào?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_domain": "curriculum",
+    "expected_course_code": null,
+    "expected_sources": ["CTDTK_NKHMT_K19.docx"],
+    "expected_keywords": ["Khoa học máy tính", "K19"],
+    "is_abstain": false
+  },
+  {
+    "id": "CR03",
+    "question": "Danh sách các học phần chuyên ngành Hệ thống thông tin K19?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_domain": "curriculum",
+    "expected_course_code": null,
+    "expected_sources": ["CTDT_NHTTT_K19.docx"],
+    "expected_keywords": ["Hệ thống thông tin", "K19"],
+    "is_abstain": false
+  },
+  {
+    "id": "CR04",
+    "question": "Chương trình đào tạo ngành CNTT K19 bố trí môn học theo các học kỳ ra sao?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_domain": "curriculum",
+    "expected_course_code": null,
+    "expected_sources": ["CTDT_CNTT_K19.docx"],
+    "expected_keywords": ["học kỳ", "CNTT"],
+    "is_abstain": false
+  },
+  {
+    "id": "CR05",
+    "question": "Tổng số tín chỉ trong chương trình đào tạo Khoa học máy tính K19 là bao nhiêu?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_domain": "curriculum",
+    "expected_course_code": null,
+    "expected_sources": ["CTDTK_NKHMT_K19.docx"],
+    "expected_keywords": ["tín chỉ", "K19"],
+    "is_abstain": false
+  },
+  {
+    "id": "CR06",
+    "question": "Các môn cơ sở ngành của ngành Hệ thống thông tin K19 gồm môn nào?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_domain": "curriculum",
+    "expected_course_code": null,
+    "expected_sources": ["CTDT_NHTTT_K19.docx"],
+    "expected_keywords": ["cơ sở ngành", "Hệ thống thông tin"],
+    "is_abstain": false
+  },
+  {
+    "id": "RG01",
+    "question": "Điều kiện để sinh viên được xét tốt nghiệp đại học theo quy chế là gì?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_domain": "regulation",
+    "expected_course_code": null,
+    "expected_sources": ["QuyetDinhChung.docx"],
+    "expected_keywords": ["tốt nghiệp", "điều kiện"],
+    "is_abstain": false
+  },
+  {
+    "id": "RG02",
+    "question": "Quy định về cảnh báo học tập và buộc thôi học đối với sinh viên?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_domain": "regulation",
+    "expected_course_code": null,
+    "expected_sources": ["QuyetDinhChung.docx"],
+    "expected_keywords": ["cảnh báo", "buộc thôi học"],
+    "is_abstain": false
+  },
+  {
+    "id": "RG03",
+    "question": "Sinh viên bị điểm F thì phải học lại hay thi lại theo quy chế đào tạo?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_domain": "regulation",
+    "expected_course_code": null,
+    "expected_sources": ["QuyetDinhChung.docx"],
+    "expected_keywords": ["điểm F", "học lại"],
+    "is_abstain": false
+  },
+  {
+    "id": "RG04",
+    "question": "Mức điểm trung bình chung tích lũy để được xếp loại học lực theo quy chế?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_domain": "regulation",
+    "expected_course_code": null,
+    "expected_sources": ["QuyetDinhChung.docx"],
+    "expected_keywords": ["tích lũy", "xếp loại"],
+    "is_abstain": false
+  },
+  {
+    "id": "RG05",
+    "question": "Quy định về việc xin hoãn thi kết thúc học phần và làm bài kiểm tra bù?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_domain": "regulation",
+    "expected_course_code": null,
+    "expected_sources": ["QuyetDinhChung.docx"],
+    "expected_keywords": ["hoãn thi", "quy định"],
+    "is_abstain": false
+  },
+  {
+    "id": "GL01",
+    "question": "Xin chào, bạn có thể giúp gì cho tôi hôm nay?",
+    "expected_category": "GENERAL_LLM",
+    "expected_domain": null,
+    "expected_course_code": null,
+    "expected_sources": [],
+    "expected_keywords": [],
+    "is_abstain": false
+  },
+  {
+    "id": "GL02",
+    "question": "Giải thích nguyên lý hoạt động của thuật toán Dijkstra tìm đường đi ngắn nhất.",
+    "expected_category": "GENERAL_LLM",
+    "expected_domain": null,
+    "expected_course_code": null,
+    "expected_sources": [],
+    "expected_keywords": ["Dijkstra"],
+    "is_abstain": false
+  },
+  {
+    "id": "GL03",
+    "question": "Sự khác biệt căn bản giữa SQL và NoSQL trong thiết kế hệ thống là gì?",
+    "expected_category": "GENERAL_LLM",
+    "expected_domain": null,
+    "expected_course_code": null,
+    "expected_sources": [],
+    "expected_keywords": ["SQL"],
+    "is_abstain": false
+  },
+  {
+    "id": "GL04",
+    "question": "Decorator trong Python hoạt động như thế nào và dùng khi nào?",
+    "expected_category": "GENERAL_LLM",
+    "expected_domain": null,
+    "expected_course_code": null,
+    "expected_sources": [],
+    "expected_keywords": ["Python"],
+    "is_abstain": false
+  },
+  {
+    "id": "TL01",
+    "question": "Nhắc tôi nộp bài tập lớn môn Hệ thống nhúng vào lúc 17h ngày 20/12",
+    "expected_category": "TOOL_ACTION",
+    "expected_tool_intent": "SET_REMINDER",
+    "expected_domain": null,
+    "expected_course_code": null,
+    "expected_sources": [],
+    "expected_keywords": ["nhắc", "20/12"],
+    "is_abstain": false
+  },
+  {
+    "id": "TL02",
+    "question": "Đặt lịch nhắc ôn thi cuối kỳ môn Quản trị dự án CNTT sáng mai lúc 8 giờ",
+    "expected_category": "TOOL_ACTION",
+    "expected_tool_intent": "SET_REMINDER",
+    "expected_domain": null,
+    "expected_course_code": null,
+    "expected_sources": [],
+    "expected_keywords": ["nhắc", "ôn thi"],
+    "is_abstain": false
+  },
+  {
+    "id": "TL03",
+    "question": "Gửi email cho thầy giáo môn FIT4113 để xin tài liệu bài giảng",
+    "expected_category": "TOOL_ACTION",
+    "expected_tool_intent": "SEND_EMAIL",
+    "expected_domain": null,
+    "expected_course_code": null,
+    "expected_sources": [],
+    "expected_keywords": ["email"],
+    "is_abstain": false
+  },
+  {
+    "id": "AB01",
+    "question": "Học phần XYZ9999 Công nghệ lượng tử có bao nhiêu tín chỉ?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_domain": "course_detail",
+    "expected_course_code": "XYZ9999",
+    "expected_sources": [],
+    "expected_keywords": [],
+    "is_abstain": true
+  },
+  {
+    "id": "AB02",
+    "question": "Giảng viên nào dạy môn ABC1234 tại Đại học Bách Khoa?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_domain": "course_detail",
+    "expected_course_code": "ABC1234",
+    "expected_sources": [],
+    "expected_keywords": [],
+    "is_abstain": true
+  },
+  {
+    "id": "AB03",
+    "question": "Quy định học bổng du học Harvard của trường Đại học Đại Nam như thế nào?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_domain": "regulation",
+    "expected_course_code": null,
+    "expected_sources": [],
+    "expected_keywords": [],
+    "is_abstain": true
+  },
+  {
+    "id": "AB04",
+    "question": "Kế hoạch tuần học của môn FIT8888 Siêu dữ liệu lớn ra sao?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_domain": "course_detail",
+    "expected_course_code": "FIT8888",
+    "expected_sources": [],
+    "expected_keywords": [],
+    "is_abstain": true
+  }
+]

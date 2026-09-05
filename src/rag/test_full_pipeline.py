@@ -1,46 +1,40 @@
-# test_full_pipeline.py
+"""
+Script thử nghiệm độc lập cho RAG pipeline.
+"""
 import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 
-from pathlib import Path
-from src.rag.hybrid_retriever import HybridRetriever
-from src.rag.reranker import Reranker
-from src.rag.response_generator import generate_response
+from src.rag.query_analyzer import analyze_query
+from src.rag.hybrid_retriever import retrieve_candidates
+from src.rag.reranker import rerank_documents
+from src.rag.context_builder import build_context
+from src.llm.client import invoke_llm
+from src.prompts.answer_prompt import GROUNDED_ANSWER_PROMPT
+
 
 def main():
-    # Chuẩn hóa đường dẫn Windows
-    _VECTOR_STORE = Path(__file__).resolve().parent.parent.parent / "vector_store"
-    VECTOR_STORE_PATH = str(_VECTOR_STORE.as_posix())
-    
-    # Chọn collection cần query
-    collection_name = "course_detail"  # hoặc "curriculum", "regulation"
-    
-    retriever = HybridRetriever(
-        persist_directory=VECTOR_STORE_PATH,
-        collection_name=collection_name,
-        alpha=0.7
+    query = "Môn Hệ thống nhúng có bao nhiêu tín chỉ và ai phụ trách?"
+    print(f"Query: {query}")
+
+    analyzed = analyze_query(query)
+    candidates = retrieve_candidates(analyzed, top_k=10)
+    print(f"Retrieved {len(candidates)} candidates.")
+
+    reranked = rerank_documents(query, candidates, top_k=5)
+    print(f"Reranked {len(reranked)} documents.")
+
+    context, sources = build_context(reranked, targets=analyzed.targets)
+    print(f"Context length: {len(context)} chars, sources: {len(sources)}")
+
+    prompt = GROUNDED_ANSWER_PROMPT.format(
+        student_profile="Chưa có",
+        context=context,
+        question=query
     )
-    reranker = Reranker()
-    
-    # Query mẫu
-    query = "Môn Hệ thống nhúng có bao nhiêu tín chỉ , mã học phần, chi tiết học phần, Thông tin giảng viên, Tóm tắt nội dung học phần, Mục tiêu của học phần, Chuẩn đầu ra học phần?"
-    
-    # Bước 1: Retrieve
-    print(f"🔍 Query: {query}")
-    results = retriever.retrieve(query, top_k=10)
-    print(f"📥 Retrieved {len(results)} documents từ hybrid search.")
-    
-    # Bước 2: Rerank
-    reranked = reranker.rerank(query, results, top_k=5)
-    print(f"🔄 Reranked, giữ lại {len(reranked)} documents.")
-    
-    # Bước 3: Generate response
-    print("🤖 Đang sinh câu trả lời...")
-    answer = generate_response(query, reranked, student_profile=None)
-    
-    print("\n📝 Câu trả lời:")
-    print(answer)
+    answer = invoke_llm(prompt)
+    print(f"\nCâu trả lời:\n{answer}")
+
 
 if __name__ == "__main__":
     main()

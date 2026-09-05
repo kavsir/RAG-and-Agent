@@ -1,24 +1,33 @@
-from typing import TypedDict, List, Dict, Any
+from typing import TypedDict, List, Dict, Any, Optional
+
 
 class AgentState(TypedDict):
+    """Trạng thái làm việc của LangGraph Agent qua từng node."""
+    # Thông tin đầu vào
     question: str
-    rewritten_question: str
-    intent: str
-    category: str  # DOMAIN_DATA hoặc GENERAL_LLM
-    plan: str
-    retrieved_docs: List[Any]
-    context: str
-    answer: str
-    reflection: str
-    student_profile: Dict[str, Any]
+    conversation_id: str
     chat_history: str
-    messages: List[Dict[str, str]]
+    student_profile: Dict[str, Any]
+
+    # Phân tích & Định tuyến
+    rewritten_question: str
+    category: str  # "DOMAIN_DATA" | "GENERAL_LLM" | "TOOL_ACTION"
+    tool_intent: Optional[str]  # "SET_REMINDER" | "SEND_EMAIL" | None
+    analyzed_query: Dict[str, Any]
+
+    # RAG Retrieval & Context
+    retrieved_docs: List[Dict[str, Any]]
+    context: str
+    sources: List[Dict[str, Any]]
+
+    # Sinh câu trả lời & Kiểm định
+    answer: str
     validation_result: Dict[str, Any]
-    regenerate_count: int
-    retry_count: int  # Track retries to prevent infinite loops
-    skip_pipeline: bool
-    reminder_requests: List[Dict[str, Any]]
-    reminder_results: List[Dict[str, Any]]
-    email_requests: List[Dict[str, Any]]
-    email_results: List[Dict[str, Any]]
-    intents_list: List[str]   
+    retry_count: int
+
+    # Tool Action payloads
+    reminder_request: Optional[Dict[str, Any]]
+    email_request: Optional[Dict[str, Any]]
+
+    # Performance
+    cache_hit: bool

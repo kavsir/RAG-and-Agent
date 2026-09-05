@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cố vấn học tập - Khoa CNTT Đại Nam</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <span class="logo-icon">🎓</span>
+          <div>
+            <h2>Cố vấn học tập</h2>
+            <span class="subtext">Khoa CNTT - ĐH Đại Nam</span>
+          </div>
+        </div>
+        <button id="btn-new-chat" class="btn btn-primary btn-block">
+          <span>➕</span> Cuộc trò chuyện mới
+        </button>
+      </div>
+
+      <!-- Profile Section -->
+      <div class="sidebar-section">
+        <div class="section-title">👤 Thông tin sinh viên</div>
+        <form id="profile-form">
+          <div class="form-group">
+            <label for="prof-name">Họ và tên</label>
+            <input type="text" id="prof-name" placeholder="Nguyễn Văn A">
+          </div>
+          <div class="form-group">
+            <label for="prof-major">Ngành học</label>
+            <input type="text" id="prof-major" placeholder="Công nghệ thông tin">
+          </div>
+          <div class="form-group">
+            <label for="prof-cohort">Khóa học</label>
+            <input type="text" id="prof-cohort" placeholder="K19">
+          </div>
+          <div class="form-group">
+            <label for="prof-email">Email</label>
+            <input type="email" id="prof-email" placeholder="student@dainam.edu.vn">
+          </div>
+          <button type="submit" class="btn btn-secondary btn-block">💾 Lưu hồ sơ</button>
+        </form>
+      </div>
+
+      <!-- Quick prompts -->
+      <div class="sidebar-section">
+        <div class="section-title">💡 Câu hỏi gợi ý</div>
+        <div class="quick-questions">
+          <button class="quick-btn" data-query="Môn FIT4201 - Hệ thống nhúng có bao nhiêu tín chỉ?">📌 Tín chỉ môn FIT4201</button>
+          <button class="quick-btn" data-query="Giảng viên dạy môn Hệ thống nhúng là ai?">👨‍🏫 Giảng viên FIT4201</button>
+          <button class="quick-btn" data-query="CLO của môn FIT4113 là gì?">🎯 Chuẩn đầu ra FIT4113</button>
+          <button class="quick-btn" data-query="Điều kiện xét tốt nghiệp của trường là gì?">📜 Điều kiện tốt nghiệp</button>
+          <button class="quick-btn" data-query="Thuật toán Dijkstra hoạt động thế nào?">⚙️ Thuật toán Dijkstra</button>
+        </div>
+      </div>
+
+      <!-- System status -->
+      <div class="sidebar-footer">
+        <div id="system-status" class="status-badge">
+          <span class="status-dot"></span>
+          <span id="status-text">Đang kiểm tra hệ thống...</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Chat Area -->
+    <main class="main-content">
+      <header class="chat-header">
+        <div>
+          <h1>Trợ lý AI Cố vấn Học tập</h1>
+          <p class="header-desc">Hỏi đáp thông tin học vụ, đề cương môn học, chương trình đào tạo & quy chế</p>
+        </div>
+        <button id="btn-clear-chat" class="btn btn-outline" title="Làm mới hội thoại">
+          🗑️ Xóa lịch sử
+        </button>
+      </header>
+
+      <div id="chat-messages" class="chat-messages">
+        <!-- Welcome banner -->
+        <div class="welcome-card">
+          <div class="welcome-icon">👋</div>
+          <h3>Xin chào! Tôi là Trợ lý Cố vấn Học tập</h3>
+          <p>Tôi có thể giúp bạn tra cứu thông tin học phần, chuẩn đầu ra (CLO), kế hoạch học tập, quy chế đào tạo tín chỉ, hoặc giải đáp các thắc mắc về lập trình.</p>
+        </div>
+      </div>
+
+      <!-- Chat input box -->
+      <div class="chat-input-wrapper">
+        <form id="chat-form" class="chat-input-form">
+          <textarea
+            id="chat-input"
+            rows="1"
+            placeholder="Hỏi về môn học, giảng viên, tín chỉ, quy chế đào tạo..."
+            required
+          ></textarea>
+          <button type="submit" id="btn-send" class="btn btn-send" title="Gửi tin nhắn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </button>
+        </form>
+        <div class="input-disclaimer">
+          Dữ liệu được trích xuất trực tiếp từ các văn bản đào tạo chính thức của Trường Đại học Đại Nam.
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>

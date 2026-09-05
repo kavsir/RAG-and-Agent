@@ -1,46 +1,55 @@
-# src/memory/student_memory.py
+"""
+Student Profile Memory: Quản lý thông tin cá nhân của sinh viên trong runtime.
+"""
 import json
-import os
-from src.memory.profile_extractor import extract_profile  # chú ý đường dẫn
+import logging
+from pathlib import Path
+from typing import Dict, Any, Optional
+
+from src.config.settings import settings
+
+logger = logging.getLogger(__name__)
+
+DEFAULT_PROFILE = {
+    "name": "Sinh viên CNTT",
+    "major": "Công nghệ thông tin",
+    "cohort": "K19",
+    "style": "Thực hành",
+    "email": "student@dainam.edu.vn",
+}
+
 
 class StudentMemory:
-    def __init__(self):
-        self.path = "src/memory/student_profile.json"
-        default_profile = {
-            "name": None,
-            "major": None,
-            "cohort": None,
-            "style": None,
-            "email": None  # Thêm trường email
-        }
+    def __init__(self, storage_path: Optional[Path] = None):
+        self.path = storage_path or (settings.RUNTIME_DIR / "student_profile.json")
+        self.profile = DEFAULT_PROFILE.copy()
+        self._load()
 
-        if os.path.exists(self.path):
+    def _load(self):
+        if self.path.exists():
             try:
                 with open(self.path, "r", encoding="utf-8") as f:
-                    self.profile = json.load(f)
-                # Đảm bảo các key mới có mặt (nếu file cũ chưa có)
-                for key in default_profile:
-                    if key not in self.profile:
-                        self.profile[key] = default_profile[key]
-            except:
-                self.profile = default_profile
+                    data = json.load(f)
+                    self.profile.update(data)
+            except Exception as e:
+                logger.error(f"Loi doc file profile: {e}")
                 self.save()
         else:
-            self.profile = default_profile
             self.save()
 
-    def update_profile(self, message):
-        data = extract_profile(message)
-        print(f"Extracted data: {data}")  # thêm dòng debug
+    def get_profile(self) -> Dict[str, Any]:
+        return self.profile
+
+    def update_profile(self, data: Dict[str, Any]):
         for k, v in data.items():
-            if v:  # chỉ cập nhật nếu có giá trị
+            if v is not None:
                 self.profile[k] = v
         self.save()
 
-    def get_profile(self):
-        return self.profile
-
     def save(self):
-        os.makedirs("src/memory", exist_ok=True)
-        with open(self.path, "w", encoding="utf-8") as f:
-            json.dump(self.profile, f, ensure_ascii=False, indent=2)
+        try:
+            self.path.parent.mkdir(parents=True, exist_ok=True)
+            with open(self.path, "w", encoding="utf-8") as f:
+                json.dump(self.profile, f, ensure_ascii=False, indent=2)
+        except Exception as e:
+            logger.error(f"Loi luu file profile: {e}")
