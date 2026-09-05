@@ -8,6 +8,8 @@
 
 **AI Academic Advisor** là hệ thống trợ lý học vụ thông minh ứng dụng kiến trúc **Agentic RAG (Retrieval-Augmented Generation)**, được thiết kế chuyên biệt để đồng hành cùng sinh viên Khoa Công nghệ Thông tin, Trường Đại học Đại Nam. Hệ thống cung cấp câu trả lời chính xác, cập nhật từ kho tài liệu học vụ chính thức (đề cương chi tiết học phần, khung chương trình đào tạo, quy chế đào tạo tín chỉ), trích dẫn minh bạch nguồn tài liệu và hỗ trợ các công cụ học tập hữu ích.
 
+> 📖 **Cẩm nang kỹ thuật thực chiến**: Đọc toàn bộ đúc kết kinh nghiệm thiết kế kiến trúc, bài học thất bại và kỹ thuật tối ưu chi phí tại [**`docs/LESSONS_LEARNED.md`**](docs/LESSONS_LEARNED.md).
+
 ---
 
 ## 🌟 Tính Năng Nổi Bật
@@ -200,13 +202,9 @@ RAG-and-Agent/
 │   ├── course_detail/         # Đề cương chi tiết học phần
 │   ├── curriculum/            # Chương trình đào tạo CNTT K19
 │   └── regulation/            # Quy chế đào tạo và tốt nghiệp
-├── docs/                      # Tài liệu kỹ thuật & Đúc kết kinh nghiệm
+├── docs/                      # Tài liệu kiến trúc & Cẩm nang kinh nghiệm
 │   ├── ARCHITECTURE.md        # Thiết kế kiến trúc tổng thể
-│   ├── FINAL_ACCEPTANCE_REPORT.md # Kinh nghiệm đánh giá đối kháng & Benchmark V2
-│   ├── PERFORMANCE_REPORT.md  # Kinh nghiệm đo lường hiệu năng & tối ưu bottleneck
-│   ├── ROUTER_V2_REPORT.md    # Kinh nghiệm tối ưu định tuyến ý định với chi phí 0 đồng
-│   ├── SESSION_MEMORY_V2_REPORT.md # Kinh nghiệm xử lý hội thoại đa lượt & bộ nhớ phiên SQLite
-│   └── PERSONAL_MEMORY_V1_REPORT.md # Kinh nghiệm thiết kế bộ nhớ cá nhân & phân giải thẩm quyền
+│   └── LESSONS_LEARNED.md     # Cẩm nang kinh nghiệm thực chiến & bài học kiến trúc toàn dự án
 ├── eval/                      # Phân hệ đo lường & kiểm định
 │   ├── questions_v2.json      # Bộ câu hỏi kiểm thử đối kháng
 │   ├── run_v2.py              # Runner kiểm thử nghiệm thu V2
