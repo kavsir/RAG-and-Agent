@@ -57,13 +57,39 @@ def cache_node(state: Dict[str, Any]) -> Dict[str, Any]:
 def query_analysis_node(state: Dict[str, Any]) -> Dict[str, Any]:
     question = state.get("question", "")
     chat_history = state.get("chat_history", "")
+    conv_id = state.get("conversation_id", "")
 
-    analyzed: AnalyzedQuery = analyze_query(question, chat_history=chat_history)
-    logger.info(f"Query Analysis: domain={analyzed.domain}, code={analyzed.course_code}, targets={analyzed.targets}")
+    # Lấy session_context nếu có
+    session_ctx = state.get("session_context")
+    if session_ctx is None and conv_id:
+        memory_mgr = get_memory_manager()
+        s_state = memory_mgr.get_session_state(conv_id)
+        session_ctx = s_state.to_context_dict()
+
+    analyzed: AnalyzedQuery = analyze_query(
+        question,
+        chat_history=chat_history,
+        session_context=session_ctx,
+    )
+    logger.info(
+        f"Query Analysis: domain={analyzed.domain}, code={analyzed.course_code} "
+        f"(explicit={analyzed.explicit_course_code}, resolved={analyzed.resolved_course_code}, "
+        f"source={analyzed.resolution_source}), targets={analyzed.targets}"
+    )
+
+    resolved_entities = {
+        "course_code": analyzed.course_code,
+        "explicit_course_code": analyzed.explicit_course_code,
+        "resolved_course_code": analyzed.resolved_course_code,
+        "resolution_source": analyzed.resolution_source,
+    }
 
     return {
         "rewritten_question": analyzed.rewritten_query,
         "analyzed_query": analyzed.model_dump(),
+        "session_context": session_ctx,
+        "resolved_entities": resolved_entities,
+        "resolution_source": analyzed.resolution_source,
     }
 
 
@@ -397,6 +423,8 @@ def save_chat_node(state: Dict[str, Any]) -> Dict[str, Any]:
     sources = state.get("sources", [])
     tool_intent = state.get("tool_intent")
     cache_hit = state.get("cache_hit", False)
+    conv_id = state.get("conversation_id")
+    analyzed = state.get("analyzed_query")
 
     # Lưu Exact Cache nếu chưa có và không phải câu từ chối
     if not cache_hit and answer and "chưa tìm thấy đủ dữ liệu" not in answer.lower():
@@ -409,7 +437,13 @@ def save_chat_node(state: Dict[str, Any]) -> Dict[str, Any]:
             tool_intent=tool_intent,
         )
 
-    # Lưu vào Memory Manager
+    # Lưu vào Memory Manager theo đúng conversation_id
     memory = get_memory_manager()
-    memory.update(question, answer)
+    memory.update(
+        user_message=question,
+        ai_message=answer,
+        conversation_id=conv_id,
+        analyzed_query=analyzed,
+        sources=sources,
+    )
     return {}

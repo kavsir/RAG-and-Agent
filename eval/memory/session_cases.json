@@ -1,0 +1,839 @@
+[
+  {
+    "id": "scen-a-01",
+    "group": "basic_followup",
+    "description": "FIT4201 follow-up from course to lecturer to email",
+    "turns": [
+      {
+        "session_id": "sess-a-01",
+        "user_message": "FIT4201 là môn học gì?",
+        "ai_response": "Môn FIT4201 là Hệ thống nhúng.",
+        "analyzed_mock": {
+          "course_name": "Hệ thống nhúng",
+          "targets": []
+        },
+        "expected_resolved_code": "FIT4201",
+        "expected_resolution_source": "EXPLICIT",
+        "expected_unresolved": false,
+        "expected_target": null,
+        "expected_router_category": "DOMAIN_DATA"
+      },
+      {
+        "session_id": "sess-a-01",
+        "user_message": "Ai là người dạy môn đó?",
+        "ai_response": "Thầy Nguyễn Văn Nhẫn phụ trách môn này.",
+        "analyzed_mock": {
+          "targets": [
+            "lecturer"
+          ]
+        },
+        "expected_resolved_code": "FIT4201",
+        "expected_resolution_source": "SESSION",
+        "expected_unresolved": false,
+        "expected_target": "lecturer",
+        "expected_router_category": "DOMAIN_DATA"
+      },
+      {
+        "session_id": "sess-a-01",
+        "user_message": "Email của thầy là gì?",
+        "ai_response": "Email của thầy là nhannv@dainam.edu.vn.",
+        "analyzed_mock": {
+          "targets": [
+            "lecturer"
+          ]
+        },
+        "expected_resolved_code": "FIT4201",
+        "expected_resolution_source": "SESSION",
+        "expected_unresolved": false,
+        "expected_target": "lecturer_email",
+        "expected_router_category": "DOMAIN_DATA"
+      }
+    ]
+  },
+  {
+    "id": "scen-a-02",
+    "group": "basic_followup",
+    "description": "FIT4104 follow-up from course to credits to assessment",
+    "turns": [
+      {
+        "session_id": "sess-a-02",
+        "user_message": "Cho tôi thông tin về môn FIT4104",
+        "ai_response": "Môn FIT4104 là Dự án thiết kế, lập trình Full-Stack.",
+        "analyzed_mock": {
+          "course_name": "Thiết kế, lập trình Full-Stack",
+          "targets": []
+        },
+        "expected_resolved_code": "FIT4104",
+        "expected_resolution_source": "EXPLICIT",
+        "expected_unresolved": false,
+        "expected_target": null,
+        "expected_router_category": "DOMAIN_DATA"
+      },
+      {
+        "session_id": "sess-a-02",
+        "user_message": "Môn này có mấy tín chỉ?",
+        "ai_response": "Môn học có 3 tín chỉ (1 lý thuyết, 2 thực hành).",
+        "analyzed_mock": {
+          "targets": [
+            "credits"
+          ]
+        },
+        "expected_resolved_code": "FIT4104",
+        "expected_resolution_source": "SESSION",
+        "expected_unresolved": false,
+        "expected_target": "credits",
+        "expected_router_category": "DOMAIN_DATA"
+      },
+      {
+        "session_id": "sess-a-02",
+        "user_message": "Điểm chuyên cần chiếm bao nhiêu phần trăm?",
+        "ai_response": "Điểm chuyên cần chiếm 10% tổng điểm học phần.",
+        "analyzed_mock": {
+          "targets": [
+            "assessment"
+          ]
+        },
+        "expected_resolved_code": "FIT4104",
+        "expected_resolution_source": "SESSION",
+        "expected_unresolved": false,
+        "expected_target": "assessment",
+        "expected_router_category": "DOMAIN_DATA"
+      }
+    ]
+  },
+  {
+    "id": "scen-a-03",
+    "group": "basic_followup",
+    "description": "FIT4117 follow-up from course to syllabus to prerequisites",
+    "turns": [
+      {
+        "session_id": "sess-a-03",
+        "user_message": "Môn FIT4117 có tên tiếng Việt là gì?",
+        "ai_response": "Môn FIT4117 là Quản trị dự án CNTT.",
+        "analyzed_mock": {
+          "course_name": "Quản trị dự án CNTT",
+          "targets": []
+        },
+        "expected_resolved_code": "FIT4117",
+        "expected_resolution_source": "EXPLICIT",
+        "expected_unresolved": false,
+        "expected_target": null,
+        "expected_router_category": "DOMAIN_DATA"
+      },
+      {
+        "session_id": "sess-a-03",
+        "user_message": "Đề cương chi tiết học phần đó gồm những gì?",
+        "ai_response": "Đề cương gồm các nội dung quản trị phạm vi, tiến độ, chi phí...",
+        "analyzed_mock": {
+          "targets": [
+            "clo"
+          ]
+        },
+        "expected_resolved_code": "FIT4117",
+        "expected_resolution_source": "SESSION",
+        "expected_unresolved": false,
+        "expected_target": "clo",
+        "expected_router_category": "DOMAIN_DATA"
+      },
+      {
+        "session_id": "sess-a-03",
+        "user_message": "Điều kiện học phần tiên quyết là gì?",
+        "ai_response": "Không yêu cầu học phần tiên quyết bắt buộc.",
+        "analyzed_mock": {
+          "targets": [
+            "prerequisites"
+          ]
+        },
+        "expected_resolved_code": "FIT4117",
+        "expected_resolution_source": "SESSION",
+        "expected_unresolved": false,
+        "expected_target": "prerequisites",
+        "expected_router_category": "DOMAIN_DATA"
+      }
+    ]
+  },
+  {
+    "id": "scen-a-04",
+    "group": "basic_followup",
+    "description": "FIT4113 follow-up with pronoun 'học phần này'",
+    "turns": [
+      {
+        "session_id": "sess-a-04",
+        "user_message": "FIT4113 là môn gì vậy?",
+        "ai_response": "Là Công nghệ điện toán đám mây.",
+        "analyzed_mock": {
+          "course_name": "Công nghệ điện toán đám mây",
+          "targets": []
+        },
+        "expected_resolved_code": "FIT4113",
+        "expected_resolution_source": "EXPLICIT",
+        "expected_unresolved": false,
+        "expected_target": null,
+        "expected_router_category": "DOMAIN_DATA"
+      },
+      {
+        "session_id": "sess-a-04",
+        "user_message": "Giảng viên phụ trách học phần này là ai?",
+        "ai_response": "Thầy Trần Quang Nam phụ trách môn này.",
+        "analyzed_mock": {
+          "targets": [
+            "lecturer"
+          ]
+        },
+        "expected_resolved_code": "FIT4113",
+        "expected_resolution_source": "SESSION",
+        "expected_unresolved": false,
+        "expected_target": "lecturer",
+        "expected_router_category": "DOMAIN_DATA"
+      },
+      {
+        "session_id": "sess-a-04",
+        "user_message": "Email liên hệ thì sao?",
+        "ai_response": "Email liên hệ là namtq.dn@dainam.edu.vn.",
+        "analyzed_mock": {
+          "targets": [
+            "lecturer"
+          ]
+        },
+        "expected_resolved_code": "FIT4113",
+        "expected_resolution_source": "SESSION",
+        "expected_unresolved": false,
+        "expected_target": "lecturer_email",
+        "expected_router_category": "DOMAIN_DATA"
+      }
+    ]
+  },
+  {
+    "id": "scen-b-01",
+    "group": "entity_switching",
+    "description": "Switching from FIT4201 to FIT4104, then pronoun refers to FIT4104",
+    "turns": [
+      {
+        "session_id": "sess-b-01",
+        "user_message": "Môn FIT4201 có bao nhiêu tín chỉ?",
+        "ai_response": "Môn FIT4201 có 2 tín chỉ.",
+        "analyzed_mock": {
+          "targets": [
+            "credits"
+          ]
+        },
+        "expected_resolved_code": "FIT4201",
+        "expected_resolution_source": "EXPLICIT",
+        "expected_unresolved": false,
+        "expected_target": "credits",
+        "expected_router_category": "DOMAIN_DATA"
+      },
+      {
+        "session_id": "sess-b-01",
+        "user_message": "Ai dạy môn đó?",
+        "ai_response": "Thầy Nguyễn Văn Nhẫn phụ trách môn FIT4201.",
+        "analyzed_mock": {
+          "targets": [
+            "lecturer"
+          ]
+        },
+        "expected_resolved_code": "FIT4201",
+        "expected_resolution_source": "SESSION",
+        "expected_unresolved": false,
+        "expected_target": "lecturer",
+        "expected_router_category": "DOMAIN_DATA"
+      },
+      {
+        "session_id": "sess-b-01",
+        "user_message": "Còn môn FIT4104 thì sao?",
+        "ai_response": "FIT4104 do thầy Phạm Văn Tiệp phụ trách, có 3 tín chỉ.",
+        "analyzed_mock": {},
+        "expected_resolved_code": "FIT4104",
+        "expected_resolution_source": "EXPLICIT",
+        "expected_unresolved": false,
+        "expected_target": null,
+        "expected_router_category": "DOMAIN_DATA"
+      },
+      {
+        "session_id": "sess-b-01",
+        "user_message": "Môn đó có mấy tín chỉ thực hành?",
+        "ai_response": "Môn FIT4104 có 2 tín chỉ thực hành.",
+        "analyzed_mock": {
+          "targets": [
+            "credits"
+          ]
+        },
+        "expected_resolved_code": "FIT4104",
+        "expected_resolution_source": "SESSION",
+        "expected_unresolved": false,
+        "expected_target": "credits",
+        "expected_router_category": "DOMAIN_DATA"
+      }
+    ]
+  },
+  {
+    "id": "scen-b-02",
+    "group": "entity_switching",
+    "description": "Switching from FIT4117 to FIT4113 to AI9990",
+    "turns": [
+      {
+        "session_id": "sess-b-02",
+        "user_message": "FIT4117 học vào kỳ nào?",
+        "ai_response": "Học vào kỳ 7.",
+        "analyzed_mock": {
+          "targets": [
+            "semester"
+          ]
+        },
+        "expected_resolved_code": "FIT4117",
+        "expected_resolution_source": "EXPLICIT",
+        "expected_unresolved": false,
+        "expected_target": "semester",
+        "expected_router_category": "DOMAIN_DATA"
+      },
+      {
+        "session_id": "sess-b-02",
+        "user_message": "Thế môn FIT4113 thì học kỳ mấy?",
+        "ai_response": "Môn FIT4113 học vào kỳ 6.",
+        "analyzed_mock": {
+          "targets": [
+            "semester"
+          ]
+        },
+        "expected_resolved_code": "FIT4113",
+        "expected_resolution_source": "EXPLICIT",
+        "expected_unresolved": false,
+        "expected_target": "semester",
+        "expected_router_category": "DOMAIN_DATA"
+      },
+      {
+        "session_id": "sess-b-02",
+        "user_message": "Giảng viên môn đó có email là gì?",
+        "ai_response": "Email giảng viên FIT4113 là namtq.dn@dainam.edu.vn.",
+        "analyzed_mock": {
+          "targets": [
+            "lecturer"
+          ]
+        },
+        "expected_resolved_code": "FIT4113",
+        "expected_resolution_source": "SESSION",
+        "expected_unresolved": false,
+        "expected_target": "lecturer",
+        "expected_router_category": "DOMAIN_DATA"
+      }
+    ]
+  },
+  {
+    "id": "scen-b-03",
+    "group": "entity_switching",
+    "description": "Double switch and pronoun resolution",
+    "turns": [
+      {
+        "session_id": "sess-b-03",
+        "user_message": "FIT4104 là môn gì?",
+        "ai_response": "Full-Stack.",
+        "analyzed_mock": {},
+        "expected_resolved_code": "FIT4104",
+        "expected_resolution_source": "EXPLICIT",
+        "expected_unresolved": false,
+        "expected_target": null,
+        "expected_router_category": "DOMAIN_DATA"
+      },
+      {
+        "session_id": "sess-b-03",
+        "user_message": "Đổi sang môn FIT4201 nhé",
+        "ai_response": "Vâng, FIT4201 là Hệ thống nhúng.",
+        "analyzed_mock": {},
+        "expected_resolved_code": "FIT4201",
+        "expected_resolution_source": "EXPLICIT",
+        "expected_unresolved": false,
+        "expected_target": null,
+        "expected_router_category": "DOMAIN_DATA"
+      },
+      {
+        "session_id": "sess-b-03",
+        "user_message": "Học phần đó có điều kiện tiên quyết không?",
+        "ai_response": "Không có tiên quyết.",
+        "analyzed_mock": {
+          "targets": [
+            "prerequisites"
+          ]
+        },
+        "expected_resolved_code": "FIT4201",
+        "expected_resolution_source": "SESSION",
+        "expected_unresolved": false,
+        "expected_target": "prerequisites",
+        "expected_router_category": "DOMAIN_DATA"
+      }
+    ]
+  },
+  {
+    "id": "scen-c-01",
+    "group": "target_switching",
+    "description": "Changing targets on the same course entity",
+    "turns": [
+      {
+        "session_id": "sess-c-01",
+        "user_message": "Môn FIT4201 có bao nhiêu tín chỉ?",
+        "ai_response": "2 tín chỉ.",
+        "analyzed_mock": {
+          "targets": [
+            "credits"
+          ]
+        },
+        "expected_resolved_code": "FIT4201",
+        "expected_resolution_source": "EXPLICIT",
+        "expected_unresolved": false,
+        "expected_target": "credits",
+        "expected_router_category": "DOMAIN_DATA"
+      },
+      {
+        "session_id": "sess-c-01",
+        "user_message": "Ai là giảng viên phụ trách môn này?",
+        "ai_response": "Thầy Nguyễn Văn Nhẫn.",
+        "analyzed_mock": {
+          "targets": [
+            "lecturer"
+          ]
+        },
+        "expected_resolved_code": "FIT4201",
+        "expected_resolution_source": "SESSION",
+        "expected_unresolved": false,
+        "expected_target": "lecturer",
+        "expected_router_category": "DOMAIN_DATA"
+      },
+      {
+        "session_id": "sess-c-01",
+        "user_message": "Chuẩn đầu ra CLO của môn học này gồm những gì?",
+        "ai_response": "Gồm CLO1, CLO2, CLO3...",
+        "analyzed_mock": {
+          "targets": [
+            "clo"
+          ]
+        },
+        "expected_resolved_code": "FIT4201",
+        "expected_resolution_source": "SESSION",
+        "expected_unresolved": false,
+        "expected_target": "clo",
+        "expected_router_category": "DOMAIN_DATA"
+      }
+    ]
+  },
+  {
+    "id": "scen-c-02",
+    "group": "target_switching",
+    "description": "Switching from lecturer to course plan to assessment",
+    "turns": [
+      {
+        "session_id": "sess-c-02",
+        "user_message": "Giảng viên môn FIT4104 là ai?",
+        "ai_response": "Thầy Phạm Văn Tiệp.",
+        "analyzed_mock": {
+          "targets": [
+            "lecturer"
+          ]
+        },
+        "expected_resolved_code": "FIT4104",
+        "expected_resolution_source": "EXPLICIT",
+        "expected_unresolved": false,
+        "expected_target": "lecturer",
+        "expected_router_category": "DOMAIN_DATA"
+      },
+      {
+        "session_id": "sess-c-02",
+        "user_message": "Kế hoạch giảng dạy theo tuần của môn đó ra sao?",
+        "ai_response": "Tuần 1 học giới thiệu, tuần 2 học React...",
+        "analyzed_mock": {
+          "targets": [
+            "course_plan"
+          ]
+        },
+        "expected_resolved_code": "FIT4104",
+        "expected_resolution_source": "SESSION",
+        "expected_unresolved": false,
+        "expected_target": "course_plan",
+        "expected_router_category": "DOMAIN_DATA"
+      },
+      {
+        "session_id": "sess-c-02",
+        "user_message": "Hình thức thi kết thúc học phần môn đó như thế nào?",
+        "ai_response": "Bảo vệ đồ án bài tập lớn kết thúc học phần.",
+        "analyzed_mock": {
+          "targets": [
+            "assessment"
+          ]
+        },
+        "expected_resolved_code": "FIT4104",
+        "expected_resolution_source": "SESSION",
+        "expected_unresolved": false,
+        "expected_target": "assessment",
+        "expected_router_category": "DOMAIN_DATA"
+      }
+    ]
+  },
+  {
+    "id": "scen-d-01",
+    "group": "cross_session_isolation",
+    "description": "Interleaved execution between student session X (FIT4201) and student session Y (FIT4104)",
+    "turns": [
+      {
+        "session_id": "sess-user-X",
+        "user_message": "Môn FIT4201 có bao nhiêu tín chỉ?",
+        "ai_response": "FIT4201 có 2 tín chỉ.",
+        "analyzed_mock": {
+          "targets": [
+            "credits"
+          ]
+        },
+        "expected_resolved_code": "FIT4201",
+        "expected_resolution_source": "EXPLICIT",
+        "expected_unresolved": false,
+        "expected_target": "credits",
+        "expected_router_category": "DOMAIN_DATA"
+      },
+      {
+        "session_id": "sess-user-Y",
+        "user_message": "Môn FIT4104 có bao nhiêu tín chỉ?",
+        "ai_response": "FIT4104 có 3 tín chỉ.",
+        "analyzed_mock": {
+          "targets": [
+            "credits"
+          ]
+        },
+        "expected_resolved_code": "FIT4104",
+        "expected_resolution_source": "EXPLICIT",
+        "expected_unresolved": false,
+        "expected_target": "credits",
+        "expected_router_category": "DOMAIN_DATA"
+      },
+      {
+        "session_id": "sess-user-X",
+        "user_message": "Ai dạy môn đó vậy bạn?",
+        "ai_response": "Thầy Nguyễn Văn Nhẫn dạy môn FIT4201.",
+        "analyzed_mock": {
+          "targets": [
+            "lecturer"
+          ]
+        },
+        "expected_resolved_code": "FIT4201",
+        "expected_resolution_source": "SESSION",
+        "expected_unresolved": false,
+        "expected_target": "lecturer",
+        "expected_router_category": "DOMAIN_DATA"
+      },
+      {
+        "session_id": "sess-user-Y",
+        "user_message": "Ai dạy môn đó vậy bạn?",
+        "ai_response": "Thầy Phạm Văn Tiệp dạy môn FIT4104.",
+        "analyzed_mock": {
+          "targets": [
+            "lecturer"
+          ]
+        },
+        "expected_resolved_code": "FIT4104",
+        "expected_resolution_source": "SESSION",
+        "expected_unresolved": false,
+        "expected_target": "lecturer",
+        "expected_router_category": "DOMAIN_DATA"
+      },
+      {
+        "session_id": "sess-user-X",
+        "user_message": "Email thì sao?",
+        "ai_response": "Email là nhannv@dainam.edu.vn.",
+        "analyzed_mock": {
+          "targets": [
+            "lecturer"
+          ]
+        },
+        "expected_resolved_code": "FIT4201",
+        "expected_resolution_source": "SESSION",
+        "expected_unresolved": false,
+        "expected_target": "lecturer_email",
+        "expected_router_category": "DOMAIN_DATA"
+      },
+      {
+        "session_id": "sess-user-Y",
+        "user_message": "Email thì sao?",
+        "ai_response": "Email là tieppv@dainam.edu.vn.",
+        "analyzed_mock": {
+          "targets": [
+            "lecturer"
+          ]
+        },
+        "expected_resolved_code": "FIT4104",
+        "expected_resolution_source": "SESSION",
+        "expected_unresolved": false,
+        "expected_target": "lecturer_email",
+        "expected_router_category": "DOMAIN_DATA"
+      }
+    ]
+  },
+  {
+    "id": "scen-e-01",
+    "group": "ambiguous_reference",
+    "description": "User immediately starts conversation with pronoun 'môn đó'",
+    "turns": [
+      {
+        "session_id": "sess-e-01",
+        "user_message": "Môn đó có bao nhiêu tín chỉ hả bot?",
+        "ai_response": "Bạn đang hỏi về môn học nào? Vui lòng cung cấp mã môn học cụ thể.",
+        "analyzed_mock": {
+          "targets": [
+            "credits"
+          ]
+        },
+        "expected_resolved_code": null,
+        "expected_resolution_source": "UNRESOLVED",
+        "expected_unresolved": true,
+        "expected_target": "credits",
+        "expected_router_category": "DOMAIN_DATA"
+      }
+    ]
+  },
+  {
+    "id": "scen-e-02",
+    "group": "ambiguous_reference",
+    "description": "User starts conversation with pronoun 'học phần này'",
+    "turns": [
+      {
+        "session_id": "sess-e-02",
+        "user_message": "Ai phụ trách học phần này?",
+        "ai_response": "Bạn vui lòng cho biết mã học phần bạn muốn hỏi.",
+        "analyzed_mock": {
+          "targets": [
+            "lecturer"
+          ]
+        },
+        "expected_resolved_code": null,
+        "expected_resolution_source": "UNRESOLVED",
+        "expected_unresolved": true,
+        "expected_target": "lecturer",
+        "expected_router_category": "DOMAIN_DATA"
+      }
+    ]
+  },
+  {
+    "id": "scen-e-03",
+    "group": "ambiguous_reference",
+    "description": "User starts conversation with pronoun 'học phần đó' and then provides explicit code",
+    "turns": [
+      {
+        "session_id": "sess-e-03",
+        "user_message": "Đề cương chi tiết của học phần đó như thế nào?",
+        "ai_response": "Vui lòng cho biết mã học phần cụ thể.",
+        "analyzed_mock": {
+          "targets": [
+            "clo"
+          ]
+        },
+        "expected_resolved_code": null,
+        "expected_resolution_source": "UNRESOLVED",
+        "expected_unresolved": true,
+        "expected_target": "clo",
+        "expected_router_category": "DOMAIN_DATA"
+      },
+      {
+        "session_id": "sess-e-03",
+        "user_message": "À là môn FIT4117 nhé",
+        "ai_response": "Đề cương môn Quản trị dự án CNTT FIT4117 gồm...",
+        "analyzed_mock": {
+          "targets": []
+        },
+        "expected_resolved_code": "FIT4117",
+        "expected_resolution_source": "EXPLICIT",
+        "expected_unresolved": false,
+        "expected_target": null,
+        "expected_router_category": "DOMAIN_DATA"
+      }
+    ]
+  },
+  {
+    "id": "scen-f-01",
+    "group": "general_after_domain",
+    "description": "Session has FIT4201, follow-up asks conceptual embedded systems question",
+    "turns": [
+      {
+        "session_id": "sess-f-01",
+        "user_message": "Môn FIT4201 có mấy tín chỉ?",
+        "ai_response": "Có 2 tín chỉ.",
+        "analyzed_mock": {
+          "targets": [
+            "credits"
+          ]
+        },
+        "expected_resolved_code": "FIT4201",
+        "expected_resolution_source": "EXPLICIT",
+        "expected_unresolved": false,
+        "expected_target": "credits",
+        "expected_router_category": "DOMAIN_DATA"
+      },
+      {
+        "session_id": "sess-f-01",
+        "user_message": "Vậy hệ thống nhúng trong thực tế thường dùng vi điều khiển nào?",
+        "ai_response": "Trong thực tế thường dùng ARM, STM32, ESP32, Arduino...",
+        "analyzed_mock": {},
+        "expected_resolved_code": null,
+        "expected_resolution_source": "NONE",
+        "expected_unresolved": false,
+        "expected_target": null,
+        "expected_router_category": "GENERAL_LLM"
+      }
+    ]
+  },
+  {
+    "id": "scen-f-02",
+    "group": "general_after_domain",
+    "description": "Session has FIT4113, follow-up asks general cloud computing concept",
+    "turns": [
+      {
+        "session_id": "sess-f-02",
+        "user_message": "Môn FIT4113 học về gì?",
+        "ai_response": "Học về Công nghệ điện toán đám mây.",
+        "analyzed_mock": {},
+        "expected_resolved_code": "FIT4113",
+        "expected_resolution_source": "EXPLICIT",
+        "expected_unresolved": false,
+        "expected_target": null,
+        "expected_router_category": "DOMAIN_DATA"
+      },
+      {
+        "session_id": "sess-f-02",
+        "user_message": "Cloud computing là gì và có các mô hình dịch vụ nào (IaaS, PaaS, SaaS)?",
+        "ai_response": "Cloud computing là mô hình cung cấp tài nguyên qua mạng...",
+        "analyzed_mock": {},
+        "expected_resolved_code": null,
+        "expected_resolution_source": "NONE",
+        "expected_unresolved": false,
+        "expected_target": null,
+        "expected_router_category": "GENERAL_LLM"
+      }
+    ]
+  },
+  {
+    "id": "scen-f-03",
+    "group": "general_after_domain",
+    "description": "Session has FIT4104, follow-up asks general REST API question",
+    "turns": [
+      {
+        "session_id": "sess-f-03",
+        "user_message": "Môn FIT4104 có mấy tín chỉ lý thuyết?",
+        "ai_response": "Có 1 tín chỉ lý thuyết.",
+        "analyzed_mock": {
+          "targets": [
+            "credits"
+          ]
+        },
+        "expected_resolved_code": "FIT4104",
+        "expected_resolution_source": "EXPLICIT",
+        "expected_unresolved": false,
+        "expected_target": "credits",
+        "expected_router_category": "DOMAIN_DATA"
+      },
+      {
+        "session_id": "sess-f-03",
+        "user_message": "REST API là gì và các phương thức HTTP chuẩn hoạt động như thế nào?",
+        "ai_response": "REST API sử dụng các phương thức GET, POST, PUT, DELETE...",
+        "analyzed_mock": {},
+        "expected_resolved_code": null,
+        "expected_resolution_source": "NONE",
+        "expected_unresolved": false,
+        "expected_target": null,
+        "expected_router_category": "GENERAL_LLM"
+      }
+    ]
+  },
+  {
+    "id": "scen-g-01",
+    "group": "restart_persistence",
+    "description": "Write session data, restart service, verify state and follow-up work",
+    "turns": [
+      {
+        "session_id": "sess-g-01",
+        "user_message": "Môn FIT4201 có mấy tín chỉ?",
+        "ai_response": "Có 2 tín chỉ.",
+        "analyzed_mock": {
+          "targets": [
+            "credits"
+          ],
+          "course_name": "Hệ thống nhúng"
+        },
+        "expected_resolved_code": "FIT4201",
+        "expected_resolution_source": "EXPLICIT",
+        "expected_unresolved": false,
+        "expected_target": "credits",
+        "expected_router_category": "DOMAIN_DATA"
+      },
+      {
+        "session_id": "sess-g-01",
+        "simulate_restart": true,
+        "user_message": "Ai dạy môn đó?",
+        "ai_response": "Thầy Nguyễn Văn Nhẫn.",
+        "analyzed_mock": {
+          "targets": [
+            "lecturer"
+          ]
+        },
+        "expected_resolved_code": "FIT4201",
+        "expected_resolution_source": "SESSION",
+        "expected_unresolved": false,
+        "expected_target": "lecturer",
+        "expected_router_category": "DOMAIN_DATA"
+      },
+      {
+        "session_id": "sess-g-01",
+        "user_message": "Email thì sao?",
+        "ai_response": "nhannv@dainam.edu.vn.",
+        "analyzed_mock": {
+          "targets": [
+            "lecturer"
+          ]
+        },
+        "expected_resolved_code": "FIT4201",
+        "expected_resolution_source": "SESSION",
+        "expected_unresolved": false,
+        "expected_target": "lecturer_email",
+        "expected_router_category": "DOMAIN_DATA"
+      }
+    ]
+  },
+  {
+    "id": "scen-g-02",
+    "group": "restart_persistence",
+    "description": "Restart service after entity switching to FIT4104",
+    "turns": [
+      {
+        "session_id": "sess-g-02",
+        "user_message": "Môn FIT4201 là gì?",
+        "ai_response": "Hệ thống nhúng.",
+        "analyzed_mock": {},
+        "expected_resolved_code": "FIT4201",
+        "expected_resolution_source": "EXPLICIT",
+        "expected_unresolved": false,
+        "expected_target": null,
+        "expected_router_category": "DOMAIN_DATA"
+      },
+      {
+        "session_id": "sess-g-02",
+        "user_message": "Còn môn FIT4104?",
+        "ai_response": "Full-Stack.",
+        "analyzed_mock": {},
+        "expected_resolved_code": "FIT4104",
+        "expected_resolution_source": "EXPLICIT",
+        "expected_unresolved": false,
+        "expected_target": null,
+        "expected_router_category": "DOMAIN_DATA"
+      },
+      {
+        "session_id": "sess-g-02",
+        "simulate_restart": true,
+        "user_message": "Môn đó có mấy tín chỉ?",
+        "ai_response": "Có 3 tín chỉ.",
+        "analyzed_mock": {
+          "targets": [
+            "credits"
+          ]
+        },
+        "expected_resolved_code": "FIT4104",
+        "expected_resolution_source": "SESSION",
+        "expected_unresolved": false,
+        "expected_target": "credits",
+        "expected_router_category": "DOMAIN_DATA"
+      }
+    ]
+  }
+]

@@ -62,32 +62,6 @@ def extract_evidence(text: str, lower_text: str, analyzed_query: Optional[Dict[s
         lower_text
     ))
 
-    # Đánh giá Academic Targets chính thức
-    if any(kw in lower_text for kw in ["tín chỉ", "mấy tín", "bao nhiêu tín", "số tín"]):
-        evidence.academic_target = "credits"
-        evidence.target_strength = "STRONG"
-    elif any(kw in lower_text for kw in ["giảng viên", "ai dạy", "thầy nào", "cô nào", "phụ trách môn", "học vị"]):
-        evidence.academic_target = "lecturer"
-        evidence.target_strength = "STRONG"
-    elif any(kw in lower_text for kw in ["chuẩn đầu ra", "clo"]):
-        evidence.academic_target = "clo"
-        evidence.target_strength = "STRONG"
-    elif any(kw in lower_text for kw in ["kế hoạch giảng dạy", "lịch trình", "buổi học theo tuần"]):
-        evidence.academic_target = "course_plan"
-        evidence.target_strength = "STRONG"
-    elif any(kw in lower_text for kw in ["tiên quyết", "học trước", "điều kiện học"]):
-        evidence.academic_target = "prerequisites"
-        evidence.target_strength = "STRONG"
-    elif any(kw in lower_text for kw in ["đánh giá chuyên cần", "hình thức thi", "kiểm tra giữa kỳ"]) or has_academic_diem:
-        evidence.academic_target = "assessment"
-        evidence.target_strength = "STRONG"
-    elif has_academic_objective:
-        evidence.academic_target = "course_objective"
-        evidence.target_strength = "STRONG"
-    elif has_false_diem or has_false_objective:
-        # Nhận diện rõ ràng đây là từ ngữ giao thoa không phải học vụ
-        evidence.target_strength = "NONE"
-
     # 4. Bóc tách Ý định Công cụ (Tool Intent Proximity Matching)
     # A. Email tool
     email_negative = any(nk in lower_text for nk in [
@@ -119,13 +93,46 @@ def extract_evidence(text: str, lower_text: str, analyzed_query: Optional[Dict[s
         evidence.tool_intent = "SET_REMINDER"
         evidence.tool_strength = "STRONG"
 
+    # Đánh giá Academic Targets chính thức
+    has_email_contact_inquiry = (
+        bool(re.search(r"\b(email|mail)\b", lower_text))
+        and not email_action_match
+        and not any(nk in lower_text for nk in ["email là gì", "giao thức email", "khái niệm email", "smtp là gì"])
+    )
+
+    if any(kw in lower_text for kw in ["tín chỉ", "mấy tín", "bao nhiêu tín", "số tín"]):
+        evidence.academic_target = "credits"
+        evidence.target_strength = "STRONG"
+    elif has_email_contact_inquiry or any(kw in lower_text for kw in ["giảng viên", "ai dạy", "ai là người dạy", "thầy nào", "cô nào", "phụ trách môn", "phụ trách", "học vị"]):
+        evidence.academic_target = "lecturer"
+        evidence.target_strength = "STRONG"
+    elif "chuẩn đầu ra" in lower_text or bool(re.search(r"\bclo\b", lower_text)):
+        evidence.academic_target = "clo"
+        evidence.target_strength = "STRONG"
+    elif any(kw in lower_text for kw in ["kế hoạch giảng dạy", "lịch trình", "buổi học theo tuần"]):
+        evidence.academic_target = "course_plan"
+        evidence.target_strength = "STRONG"
+    elif any(kw in lower_text for kw in ["tiên quyết", "học trước", "điều kiện học"]):
+        evidence.academic_target = "prerequisites"
+        evidence.target_strength = "STRONG"
+    elif any(kw in lower_text for kw in ["đánh giá chuyên cần", "hình thức thi", "kiểm tra giữa kỳ"]) or has_academic_diem:
+        evidence.academic_target = "assessment"
+        evidence.target_strength = "STRONG"
+    elif has_academic_objective:
+        evidence.academic_target = "course_objective"
+        evidence.target_strength = "STRONG"
+    elif has_false_diem or has_false_objective:
+        # Nhận diện rõ ràng đây là từ ngữ giao thoa không phải học vụ
+        evidence.target_strength = "NONE"
+
     # 5. Bóc tách Tín hiệu Câu hỏi Khái niệm / Kỹ thuật chung (Conceptual Question Signal)
     conceptual_patterns = [
         r"\blà gì\b", r"\bnhư thế nào\b", r"\bnguyên lý hoạt động\b",
         r"\bkhác biệt giữa\b", r"\bso sánh\b", r"\bkhác nhau như thế nào\b",
         r"\bcách thức hoạt động\b", r"\bgiải thích\b", r"\btìm hiểu về\b",
         r"\bthuật toán\b", r"\bgiao thức\b", r"\bcú pháp\b", r"\bđặc điểm của\b",
-        r"\btính chất\b", r"\bưu điểm và nhược điểm\b", r"\bkhái niệm\b"
+        r"\btính chất\b", r"\bưu điểm và nhược điểm\b", r"\bkhái niệm\b",
+        r"\bthường dùng\b", r"\bphổ biến\b", r"\bứng dụng\b", r"\btrong thực tế\b"
     ]
     if any(re.search(cp, lower_text) for cp in conceptual_patterns):
         evidence.conceptual_question_signal = True

@@ -57,7 +57,8 @@ def chat_endpoint(request: ChatRequest):
     conv_id = request.conversation_id or str(uuid.uuid4())
     memory_mgr = get_memory_manager()
 
-    history_text = memory_mgr.get_conversation_history(k=5)
+    history_text = memory_mgr.get_conversation_history(conversation_id=conv_id, k=5)
+    session_state = memory_mgr.get_session_state(conv_id)
     profile = memory_mgr.profile.get_profile()
 
     initial_state = {
@@ -69,6 +70,9 @@ def chat_endpoint(request: ChatRequest):
         "category": "DOMAIN_DATA",
         "tool_intent": None,
         "analyzed_query": {},
+        "session_context": session_state.to_context_dict(),
+        "resolved_entities": {},
+        "resolution_source": "NONE",
         "retrieved_docs": [],
         "context": "",
         "sources": [],
@@ -124,9 +128,34 @@ def chat_endpoint(request: ChatRequest):
         raise HTTPException(status_code=500, detail=f"Lỗi xử lý yêu cầu: {str(e)}")
 
 
+@router.delete("/api/conversations/{conversation_id}")
+def delete_conversation_session(conversation_id: str):
+    """Xóa riêng một phiên hội thoại cụ thể và giải phóng trạng thái thực thể của phiên đó."""
+    memory_mgr = get_memory_manager()
+    memory_mgr.clear_session(conversation_id)
+    return {
+        "status": "ok",
+        "conversation_id": conversation_id,
+        "message": f"Đã xóa thành công phiên hội thoại {conversation_id}."
+    }
+
+
+@router.get("/api/conversations/{conversation_id}")
+def get_conversation_session(conversation_id: str):
+    """Lấy danh sách tin nhắn và trạng thái thực thể của đúng phiên hội thoại."""
+    memory_mgr = get_memory_manager()
+    messages = memory_mgr.get_recent_messages(conversation_id, k=50)
+    state = memory_mgr.get_session_state(conversation_id)
+    return {
+        "conversation_id": conversation_id,
+        "state": state.model_dump(),
+        "messages": [m.model_dump() for m in messages],
+    }
+
+
 @router.post("/api/conversations/clear")
 def clear_conversation():
-    """Xóa toàn bộ lịch sử trò chuyện và bộ nhớ đệm."""
+    """Xóa toàn bộ lịch sử trò chuyện legacy và bộ nhớ đệm (giữ tương thích frontend)."""
     memory_mgr = get_memory_manager()
     memory_mgr.clear()
 

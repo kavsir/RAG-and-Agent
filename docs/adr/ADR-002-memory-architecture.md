@@ -1,9 +1,9 @@
 # ADR-002: Multi-Layer Memory Architecture & Structured Session State
 
-- **Status**: PROPOSED
+- **Status**: PARTIALLY_ACCEPTED (Session Memory Foundation: ACCEPTED; Personal & Episodic: PROPOSED)
 - **Date**: 2026-09-06
 - **Author**: AI Architecture Team / Agentic RAG
-- **Component**: `src/memory/`, `src/rag/query_analyzer.py`, `src/agent/state.py`
+- **Component**: `src/memory/`, `src/rag/query_analyzer.py`, `src/agent/state.py`, `src/api/routes.py`
 
 ---
 
@@ -160,3 +160,28 @@ CREATE TABLE IF NOT EXISTS messages (
 ## 6. Rollback Strategy
 
 Giữ nguyên interface của `get_memory_manager()`. Nếu SQLite gặp sự cố trên hệ điều hành của client, cho phép fallback tạm thời về bộ nhớ in-memory dictionary.
+
+---
+
+## 7. Implementation & Verification Record (Round B Completed)
+
+- **Date of Acceptance**: 2026-09-06
+- **Implementation Subsystem**:
+  - `src/memory/session_models.py`: Typed Pydantic schemas (`SessionRecord`, `SessionMessage`, `SessionState`).
+  - `src/memory/store.py` & `src/memory/sqlite_store.py`: Thread-safe SQLite store with WAL mode, foreign key cascade, connection reuse, and zero external calls.
+  - `src/memory/session_memory.py`: Deterministic entity extraction, pronoun resolution, target carry-over, and session clearing.
+  - `src/memory/memory_manager.py`: Integrated facade exposing `session` and `profile`.
+- **Benchmark Results (eval/memory/run_session_eval.py - 18 scenarios, 50 turns)**:
+  - Follow-up Entity Resolution: **100.0% (23/23)** [Gate: $\ge 90\%$]
+  - Target Resolution Accuracy: **100.0% (36/36)** [Gate: $\ge 90\%$]
+  - Entity Switching Accuracy: **100.0% (13/13)** [Gate: $\ge 95\%$]
+  - Cross-session Isolation: **100.0% (6/6)** [Gate: $= 100\%$]
+  - Ambiguity Safety: **100.0% (4/4)** [Gate: $\ge 90\%$]
+  - Restart Persistence: **100.0% (6/6)** [Gate: $= 100\%$]
+  - Router V2 Compatibility: **100.0%** [Gate: $\ge 97\%$]
+  - Overall Turns Passed: **100.0% (50/50)**
+  - SQLite Read Latency (P95): **0.31 ms** [Gate: $< 10$ ms]
+  - SQLite Write Latency (P95): **1.54 ms** [Gate: $< 10$ ms]
+  - External API calls consumed: **0**
+- **Live DeepSeek Regression**: 3 multi-turn scenarios verified via `POST /api/chat`, 14 LLM calls consumed under strict cost control.
+

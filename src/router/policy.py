@@ -131,7 +131,8 @@ def evaluate_policy(
         "rest api", "cloud computing", "oop", "lập trình hướng đối tượng",
         "microservice", "docker", "thread", "process", "sql", "nosql",
         "python", "java", "c++", "javascript", "kiến trúc phần mềm",
-        "thiết kế hệ thống", "garbage collection"
+        "thiết kế hệ thống", "garbage collection",
+        "hệ thống nhúng", "vi điều khiển", "arm", "stm32", "esp32", "arduino"
     ]
     greetings = ["xin chào", "hello", "hi", "chào bạn", "bạn là ai", "bạn tên gì", "giới thiệu bản thân"]
     has_greeting = any(re.search(rf"\b{re.escape(gr)}\b", lower_text) for gr in greetings)
@@ -139,7 +140,7 @@ def evaluate_policy(
 
     is_pure_general_signal = (
         evidence.tool_strength == "NONE"
-        and evidence.course_code_strength == "NONE"
+        and evidence.course_code_strength in ["NONE", "WEAK"]
         and not evidence.academic_scope
         and not evidence.curriculum_scope
         and not evidence.regulation_scope
@@ -194,7 +195,7 @@ def evaluate_policy(
     # LAYER 4: LOW-CONFIDENCE FALLBACK POLICY
     # =========================================================================
     logger.info("Router Policy: Layer 4 Triggered -> Low-confidence Fallback Policy")
-    if evidence.course_code_strength != "NONE" or evidence.academic_scope or has_academic_cue:
+    if evidence.course_code_strength == "STRONG" or evidence.academic_scope or has_academic_cue:
         return IntentDecision(
             category="DOMAIN_DATA",
             tool_intent=None,

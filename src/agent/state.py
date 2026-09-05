@@ -14,6 +14,9 @@ class AgentState(TypedDict):
     category: str  # "DOMAIN_DATA" | "GENERAL_LLM" | "TOOL_ACTION"
     tool_intent: Optional[str]  # "SET_REMINDER" | "SEND_EMAIL" | None
     analyzed_query: Dict[str, Any]
+    session_context: Optional[Dict[str, Any]]
+    resolved_entities: Dict[str, Any]
+    resolution_source: str
 
     # RAG Retrieval & Context
     retrieved_docs: List[Dict[str, Any]]
