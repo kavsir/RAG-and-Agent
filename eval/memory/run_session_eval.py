@@ -220,8 +220,8 @@ def run_session_evaluation():
     read_stats = calc_stats(read_latencies)
     write_stats = calc_stats(write_latencies)
 
-    # IN BÁO CÁO NGHIỆM THU
-    print("\n1. CHỈ SỐ NGHIỆM THU BỘ NHỚ PHIÊN (ACCEPTANCE GATES):")
+    # IN KẾT QUẢ ĐO LƯỜNG & THỰC NGHIỆM
+    print("\n1. CHỈ SỐ THỰC NGHIỆM BỘ NHỚ PHIÊN (EVALUATION METRICS):")
     print(f"   - Follow-up Entity Resolution: {followup_corr}/{followup_cnt} ({followup_acc}%) [Gate: >= 90%, Preferred >= 95%]")
     print(f"   - Target Resolution Accuracy : {target_acc}% (Support: {len(target_items)}) [Gate: >= 90%]")
     print(f"   - Entity Switching Accuracy  : {switch_corr}/{switch_cnt} ({switch_acc}%) [Gate: >= 95%]")

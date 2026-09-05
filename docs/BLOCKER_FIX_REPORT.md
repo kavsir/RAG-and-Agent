@@ -1,7 +1,7 @@
-# BÁO CÁO KHẮC PHỤC BLOCKER VÀ NGHIỆM THU THỰC TẾ (BLOCKER FIX & ACCEPTANCE REPORT)
+# KINH NGHIỆM XỬ LÝ SỰ CỐ VÀ KHẮC PHỤC BLOCKER TRONG RAG SYSTEM (ENGINEERING POST-MORTEM & FIXES)
 
 **Dự án**: AI Academic Advisor / Agentic RAG (Khoa CNTT - Đại học Đại Nam)  
-**Ngày thực hiện**: 06/09/2026  
+**Thời gian thực hiện**: 06/09/2026  
 **Trạng thái kiểm định trước**: `CONDITIONALLY_READY_WITH_FIXES`  
 **Kết luận sau khi khắc phục**: **`BLOCKERS_FIXED`**
 

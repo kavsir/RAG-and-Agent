@@ -1,14 +1,14 @@
-# BÁO CÁO NGHIỆM THU ROUTER V2 (LOCAL INTENT CLASSIFICATION AGENT)
+# KINH NGHIỆM TỐI ƯU ĐỊNH TUYẾN Ý ĐỊNH VỚI CHI PHÍ 0 ĐỒNG: ROUTER V2
+## LOCAL INTENT CLASSIFICATION: ARCHITECTURAL LESSONS & LATENCY OPTIMIZATION
 
 - **Phiên bản**: Router V2.1
-- **Ngày hoàn tất**: 2026-09-06
 - **Subsystem**: `src/router/`
 - **Trạng thái**: `PRODUCTION_READY` & `ACCEPTED`
 - **Chính sách chi phí**: **TUYỆT ĐỐI 0 CUỘC GỌI API / EXTERNAL LLM** (0 DeepSeek, 0 OpenAI, 0 Gemini trong khâu định tuyến).
 
 ---
 
-## 1. TỔNG QUAN KẾT QUẢ & CÁC CỔNG NGHIỆM THU
+## 1. TỔNG QUAN HIỆU NĂNG & TIÊU CHUẨN ĐO LƯỜNG
 
 | Tiêu chí / Metric | Ngưỡng cam kết (Gate) | Baseline (Router V1) | **Router V2 Thực tế** | Trạng thái |
 |---|---|---|---|---|
@@ -118,14 +118,13 @@ src/router/
 
 ---
 
-## 6. KẾT LUẬN & BƯỚC TIẾP THEO
+## 6. BÀI HỌC KỸ THUẬT & ĐÚC KẾT KINH NGHIỆM
 
-Router V2 đã chính thức vượt qua toàn bộ các bài kiểm tra đối kháng khắt khe nhất:
-- **100% accuracy** trên Benchmark V2 (62/62).
-- **100% accuracy** trên Holdout unseen dataset (41/41).
-- **47/47 pytest tests** vượt qua hoàn toàn.
-- **0 errors** từ ruff linter.
-- **6/7 ca regression live API** vượt qua xác thực nội dung, 100% đúng router category.
-- Tiết kiệm 100% chi phí token định tuyến và giảm độ trễ phân loại xuống dưới **1 ms** cho 86% lưu lượng.
-
-Chính thức phê duyệt và sáp nhập vào nhánh chính (`main`).
+1. **Fast-Path Quyết Định 86% Lưu Lượng Chỉ Mất 0.23 ms**:
+   - Thay vì vội vàng đẩy mọi câu hỏi vào LLM để phân loại (mất 2000-4000 ms và tốn chi phí API), 86% câu hỏi có thực thể rõ ràng (mã môn học, từ khóa quy chế, hành động soạn email) được xử lý ngay qua biểu thức chính quy tối ưu trong $< 0.5$ ms.
+2. **Word-Boundary Là Chìa Khóa Chống Va Chạm Tiếng Việt**:
+   - Khi tìm từ khóa ngắn như `"AI"`, `"C"`, `"IT"`, việc dùng `in string` đơn thuần sẽ gây lỗi nghiêm trọng (chữ "AI" nằm trong "bài tập", "hái", "phải"). Bắt buộc chuẩn hóa Unicode NFC và áp dụng `\b` regex boundary.
+3. **Tái Sử Dụng Mô Hình Embedding Tiết Kiệm RAM Tuyệt Đối**:
+   - Mô hình phân loại ngữ nghĩa cục bộ (Semantic Classifier) tái sử dụng trực tiếp Singleton `SentenceTransformer(BAAI/bge-m3)` đã có sẵn của khâu RAG, không tiêu tốn thêm bất kỳ megabyte RAM nào của hệ thống.
+4. **Bảo Toàn Ý Định Học Vụ Qua Fallback Có Thiên Lệch (Academic Bias)**:
+   - Khi độ tự tin giữa miền học vụ và khái niệm chung gần bằng nhau, nguyên tắc thiết kế cho trợ lý học tập là **ưu tiên bảo vệ học vụ Đại Nam**, đảm bảo sinh viên không bị bỏ lỡ tài liệu đào tạo chính thức.

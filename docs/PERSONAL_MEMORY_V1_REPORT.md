@@ -1,16 +1,16 @@
-# BÁO CÁO NGHIỆM THU KIẾN TRÚC BỘ NHỚ CÁ NHÂN VÀ PHÂN GIẢI THẨM QUYỀN (ROUND C)
-## PERSONAL MEMORY + MEMORY POLICY + AUTHORITY RESOLVER V1 REPORT
+# KINH NGHIỆM THIẾT KẾ BỘ NHỚ CÁ NHÂN VÀ PHÂN GIẢI THẨM QUYỀN TRONG AGENTIC RAG (ROUND C)
+## PERSONAL MEMORY + MEMORY POLICY + AUTHORITY RESOLVER: ARCHITECTURAL INSIGHTS & PRACTICAL LESSONS
 
 - **Dự án**: AI Academic Advisor / Agentic RAG
 - **Phiên bản**: Personal Memory V1 (Round C)
-- **Ngày nghiệm thu**: 2026-09-06
+- **Thời gian hoàn thiện**: 2026-09-06
 - **Trạng thái**: `ACCEPTED`
 - **Chi phí API Router & Memory Policy**: `0 cuộc gọi LLM bên ngoài (Zero paid API calls)`
-- **Số ca kiểm thử bộ nhớ cá nhân**: `60/60 (100.0% Pass)` trên 11 nhóm nghiệp vụ
+- **Số ca kiểm thử thực nghiệm**: `60/60 (100.0% Pass)` trên 11 nhóm nghiệp vụ
 - **Hồi quy Router V2**: `103/103 (100.0% Pass)`
 - **Hồi quy Session Memory**: `50/50 (100.0% Pass)`
-- **Độ trễ đọc P95**: `0.07 ms` (Cổng nghiệm thu $< 10$ ms)
-- **Độ trễ ghi P95**: `1.59 ms` (Cổng nghiệm thu $< 10$ ms)
+- **Độ trễ đọc P95**: `0.07 ms` (Tiêu chuẩn $< 10$ ms)
+- **Độ trễ ghi P95**: `1.59 ms` (Tiêu chuẩn $< 10$ ms)
 
 ---
 
@@ -155,11 +155,11 @@ $$\text{CURRENT\_EXPLICIT\_QUERY} > \text{SESSION\_STATE} > \text{PERSONAL\_MEMO
 
 ---
 
-## 6. Kết Quả Nghiệm Thu Chi Tiết (Personal Memory Evaluation Suite)
+## 6. Kết Quả Đo Lường Thực Tế & Kinh Nghiệm Kiểm Thử (Personal Memory Evaluation Suite)
 
-Chạy trên toàn bộ 60 ca kiểm thử của file `eval/memory/personal_cases.json`:
+Thực nghiệm trên toàn bộ 60 ca kiểm thử của file `eval/memory/personal_cases.json`:
 
-| STT | Nhóm Kiểm Thử (Benchmark Group) | Số Ca | Kết Quả | Cổng Nghiệm Thu | Trạng Thái |
+| STT | Nhóm Kiểm Thử (Benchmark Group) | Số Ca | Kết Quả | Tiêu Chuẩn Đánh Giá | Trạng Thái |
 | :---: | :--- | :---: | :---: | :---: | :---: |
 | 1 | **Explicit Fact Save** (Ghi sự thật từ chat) | 7 | 7/7 (100.0%) | $\ge 95\%$ | **PASSED** |
 | 2 | **Profile Update via API** (Cập nhật qua API) | 5 | 5/5 (100.0%) | $\ge 95\%$ | **PASSED** |
@@ -172,13 +172,13 @@ Chạy trên toàn bộ 60 ca kiểm thử của file `eval/memory/personal_case
 | 9 | **Academic Claim Rejection** (Chống sửa học vụ) | 8 | 8/8 (100.0%) | $= 100\%$ | **PASSED** |
 | 10 | **Authority Conflict Resolution** (Phân giải quyền lực) | 5 | 5/5 (100.0%) | $= 100\%$ | **PASSED** |
 | 11 | **Principal Service Isolation** (Cô lập User A và B) | 5 | 5/5 (100.0%) | $= 100\%$ | **PASSED** |
-| **Tổng** | **Toàn bộ Suite Nghiệm Thu** | **60** | **60/60 (100.0%)** | **$\ge 95\%$** | **ACCEPTED** |
+| **Tổng** | **Toàn bộ Suite Thực Nghiệm** | **60** | **60/60 (100.0%)** | **$\ge 95\%$** | **ACCEPTED** |
 
 ### Đo Lường Hiệu Năng & Độ Trễ (SQLite Profiling):
-- **Đọc sự thật cá nhân (P95)**: `0.07 ms` (Cổng: $< 10$ ms)
-- **Ghi sự thật cá nhân (P95)**: `1.59 ms` (Cổng: $< 10$ ms)
-- **Xóa sự thật cá nhân (P95)**: `0.24 ms` (Cổng: $< 10$ ms)
-- **Tạo ngữ cảnh tối thiểu (P95)**: `0.08 ms` (Cổng: $< 10$ ms)
+- **Đọc sự thật cá nhân (P95)**: `0.07 ms` (Tiêu chuẩn: $< 10$ ms)
+- **Ghi sự thật cá nhân (P95)**: `1.59 ms` (Tiêu chuẩn: $< 10$ ms)
+- **Xóa sự thật cá nhân (P95)**: `0.24 ms` (Tiêu chuẩn: $< 10$ ms)
+- **Tạo ngữ cảnh tối thiểu (P95)**: `0.08 ms` (Tiêu chuẩn: $< 10$ ms)
 - **Số cuộc gọi API tốn phí tiêu thụ**: **0** (Tuyệt đối 0 LLM calls)
 
 ---
@@ -202,7 +202,13 @@ Chạy trên toàn bộ 60 ca kiểm thử của file `eval/memory/personal_case
 
 ---
 
-## 8. Kết Luận & Quyết Định Nghiệm Thu (Acceptance Verdict)
+## 8. Đúc Kết Kinh Nghiệm & Bài Học Thực Tiễn (Key Architectural Takeaways)
 
-- **Trạng thái Round C**: `ACCEPTED`
-- **Mức độ sẵn sàng**: Kiến trúc Personal Memory và Authority Resolver đáp ứng vượt mức toàn bộ các tiêu chí thiết kế, bảo vệ an toàn chân lý học vụ và duy trì chi phí vận hành tối ưu cho AI Academic Advisor.
+1. **Không Dùng Một Thứ Tự Ưu Tiên Toàn Cục**:
+   - Thẩm quyền dữ liệu phải phụ thuộc vào miền bài toán. Với kiến thức học vụ (số tín chỉ, giảng viên, môn học), tài liệu RAG chính thống bắt buộc là chân lý tối thượng. Nhưng với phong cách trả lời hay xưng hô, chỉ thị trực tiếp trong câu nói người dùng lại có quyền lực cao nhất.
+2. **Loại Bỏ Hoàn Toàn Template Giả Định Trước Khi Lưu Trữ**:
+   - Các giá trị placeholder trên giao diện (như `"Sinh viên CNTT"`, `"student@dainam.edu.vn"`) rất dễ bị nhầm thành dữ liệu thực của sinh viên nếu lưu trực tiếp dạng JSON phẳng. Khi chuyển sang SQLite, cần lọc bỏ dứt điểm mọi giá trị mặc định để không làm bẩn bộ nhớ cá nhân lâu dài.
+3. **Cá Nhân Hóa Bắt Buộc Đi Kèm Fingerprint Để Bảo Vệ Cache**:
+   - Cache phản hồi chính xác (Exact Cache) cần băm kèm hồ sơ người dùng (`profile_fingerprint`). Nếu không, một câu trả lời ngắn gọn phục vụ người dùng thích súc tích sẽ bị trả nhầm cho người dùng cần giải thích chi tiết.
+4. **Giữ Chi Phí Vận Hành Ở Mức 0 Đồng Bằng Phân Tích Cục Bộ**:
+   - Toàn bộ khâu trích xuất ứng viên sự thật (Candidate Extraction) và thực thi chính sách an toàn (Memory Policy) hoàn toàn xử lý bằng Regex và bộ quy tắc tất định cục bộ trong $< 2$ ms, không tốn bất kỳ cuộc gọi API nào tới LLM bên ngoài.

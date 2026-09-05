@@ -200,10 +200,13 @@ RAG-and-Agent/
 │   ├── course_detail/         # Đề cương chi tiết học phần
 │   ├── curriculum/            # Chương trình đào tạo CNTT K19
 │   └── regulation/            # Quy chế đào tạo và tốt nghiệp
-├── docs/                      # Tài liệu kỹ thuật chi tiết
+├── docs/                      # Tài liệu kỹ thuật & Đúc kết kinh nghiệm
 │   ├── ARCHITECTURE.md        # Thiết kế kiến trúc tổng thể
-│   ├── FINAL_ACCEPTANCE_REPORT.md # Báo cáo nghiệm thu đối kháng
-│   └── PERFORMANCE_REPORT.md  # Báo cáo đo lường hiệu năng thực tế
+│   ├── FINAL_ACCEPTANCE_REPORT.md # Kinh nghiệm đánh giá đối kháng & Benchmark V2
+│   ├── PERFORMANCE_REPORT.md  # Kinh nghiệm đo lường hiệu năng & tối ưu bottleneck
+│   ├── ROUTER_V2_REPORT.md    # Kinh nghiệm tối ưu định tuyến ý định với chi phí 0 đồng
+│   ├── SESSION_MEMORY_V2_REPORT.md # Kinh nghiệm xử lý hội thoại đa lượt & bộ nhớ phiên SQLite
+│   └── PERSONAL_MEMORY_V1_REPORT.md # Kinh nghiệm thiết kế bộ nhớ cá nhân & phân giải thẩm quyền
 ├── eval/                      # Phân hệ đo lường & kiểm định
 │   ├── questions_v2.json      # Bộ câu hỏi kiểm thử đối kháng
 │   ├── run_v2.py              # Runner kiểm thử nghiệm thu V2

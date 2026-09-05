@@ -1,8 +1,9 @@
-# Báo Cáo Kỹ Thuật: Hệ Thống Bộ Nhớ Phiên Có Cấu Trúc (Session Memory V2)
+# KINH NGHIỆM XỬ LÝ HỘI THOẠI ĐA LƯỢT VÀ BỘ NHỚ PHIÊN CÓ CẤU TRÚC (SESSION MEMORY V2)
+## STRUCTURED SESSION STATE & MULTI-TURN ENTITY RESOLUTION: ARCHITECTURAL INSIGHTS
 
-- **Trạng thái Nghiệm thu**: `ACCEPTED_WITH_DISTINCTION`
+- **Trạng thái**: `ACCEPTED_WITH_DISTINCTION`
 - **Phiên bản**: `Round B - Session Memory Foundation`
-- **Ngày hoàn thành**: 2026-09-06
+- **Thời gian hoàn thành**: 2026-09-06
 - **Kho lưu trữ**: `https://github.com/kavsir/RAG-and-Agent.git`
 - **Baseline Commit**: `c567d4d4d90ef84de63f0d74b2c8b4b6af880bbb`
 
@@ -14,9 +15,9 @@ Trong Benchmark V2, chỉ số **Follow-up Resolution Rate** chỉ đạt **71.4
 
 Nhiệm vụ **Round B** triển khai bộ nhớ phiên có cấu trúc (`Structured SessionState`), tách biệt lưu trữ theo từng `conversation_id` trên nền tảng **SQLite WAL mode** (`runtime/advisor_memory.db`), cung cấp cơ chế phân giải thực thể tất định, giải quyết đại từ thay thế, chuyển đổi thực thể (*entity switching*), kế thừa mục tiêu (*target carry-over*), và an toàn trước câu hỏi mơ hồ.
 
-### Tóm tắt Kết Quả Nghiệm Thu (Acceptance Summary)
+### Tóm tắt Kết Quả Thực Nghiệm & Đo Lường (Benchmark Summary)
 
-| Tiêu Chí Nghiệm Thu | Ngưỡng Tối Thiểu | Kỳ Vọng | Kết Quả Đạt Được | Trạng Thái |
+| Tiêu Chí Đo Lường | Ngưỡng Tối Thiểu | Kỳ Vọng | Kết Quả Đạt Được | Trạng Thái |
 | :--- | :---: | :---: | :---: | :---: |
 | **Follow-up Entity Resolution** | $\ge 90.0\%$ | $\ge 95.0\%$ | **100.0% (23/23)** | **VƯỢT CHỈ TIÊU** |
 | **Target Resolution Accuracy** | $\ge 90.0\%$ | $\ge 95.0\%$ | **100.0% (36/36)** | **VƯỢT CHỈ TIÊU** |
@@ -139,8 +140,13 @@ Bộ đánh giá `eval/memory/session_cases.json` gồm **18 kịch bản (scena
    - Kết quả: Phân giải thực thể đa lượt, chuyển đổi mã môn và câu hỏi khái niệm tiếp nối đều hoạt động trơn tru trên đồ thị LangGraph.
    - Tổng số cuộc gọi LLM tiêu thụ: **14 cuộc gọi**, được kiểm soát chặt chẽ trong ngân sách.
 
----
+## 6. Bài Học Kỹ Thuật & Đúc Kết Thực Tiễn (Key Architectural Takeaways)
 
-## 6. Kết Luận
-
-Hệ thống Bộ Nhớ Phiên Có Cấu Trúc (Session Memory V2) giải quyết triệt để điểm yếu lớn nhất của Benchmark V2 (Follow-up Resolution), đưa độ chính xác kế thừa ngữ cảnh từ **71.43% lên 100.0%**, bảo toàn độ trễ P95 ở mức cực thấp (**0.31 ms đọc, 1.54 ms ghi**), và không làm tăng bất kỳ chi phí API bên ngoài nào trong quá trình lưu trữ và giải quyết thực thể.
+1. **Theo Dõi Thực Thể Hoạt Động Thay Vì Quét Cửa Sổ Lịch Sử Thô**:
+   - Thay vì tăng kích thước cửa sổ chat thô (khiến prompt phình to và dễ phân tâm), việc duy trì một cấu trúc `SessionState` nhỏ gọn (lưu `active_course_code`, `active_target`) giúp giải quyết đại từ và câu hỏi follow-up chính xác 100% với chi phí phân tích bằng 0.
+2. **SQLite WAL Mode Cung Cấp Tính Bền Vững Với Độ Trễ Siêu Thấp**:
+   - Chuyển từ JSON phẳng sang SQLite Write-Ahead Logging (WAL) giúp xử lý đồng thời an toàn giữa nhiều luồng đọc/ghi, đạt độ trễ P95 đọc **0.31 ms** và ghi **1.54 ms**, loại bỏ hoàn toàn tình trạng race-condition.
+3. **An Toàn Trước Tham Chiếu Mơ Hồ (Ambiguous Reference Safety)**:
+   - Khi người dùng hỏi đại từ mơ hồ (*"Môn đó có mấy tín chỉ?"*) ngay lượt đầu tiên mà phiên chưa có thực thể kích hoạt, hệ thống cần gắn cờ `unresolved_reference = True` để yêu cầu làm rõ, tránh tuyệt đối việc agent tự suy đoán hoặc hallucinate mã môn ngẫu nhiên.
+4. **Không Ép Câu Hỏi Lý Thuyết Chung Vào Ngữ Cảnh Môn Học Cũ**:
+   - Khi người dùng chuyển từ hỏi môn học sang hỏi khái niệm IT chung (*"Cloud computing là gì?"*), hợp đồng định tuyến giữa Session Memory và Router V2 cần nới lỏng (weak contract) để phân loại đúng `GENERAL_LLM`, không bị bó hẹp trong tài liệu môn học trước đó.

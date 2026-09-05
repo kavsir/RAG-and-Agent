@@ -1,13 +1,14 @@
-# BÁO CÁO NGHIỆM THU CUỐI CÙNG & ĐỐI KHÁNG BENCHMARK V2 (FINAL ACCEPTANCE REPORT)
+# KINH NGHIỆM ĐÁNH GIÁ ĐỐI KHÁNG VÀ ĐO LƯỜNG CHẤT LƯỢNG AGENTIC RAG (BENCHMARK V2 INSIGHTS)
+## ADVERSARIAL BENCHMARKING & EMPIRICAL QUALITY EVALUATION
 
 **Dự án**: AI Academic Advisor / Agentic RAG (Khoa CNTT - Đại học Đại Nam)  
-**Ngày thực hiện**: 06/09/2026  
+**Thời gian thực hiện**: 06/09/2026  
 **Trạng thái kiểm định**: **`READY_FOR_FINAL_ACCEPTANCE`**  
-**Kết luận nghiệm thu cuối cùng (Final Verdict)**: **`LEVEL_4_ACCEPTED_WITH_MINOR_LIMITATIONS`**
+**Đánh giá chất lượng thực tế (Quality Verdict)**: **`LEVEL_4_ACCEPTED_WITH_MINOR_LIMITATIONS`**
 
 ---
 
-## 1. MÔI TRƯỜNG & BASELINE PHỤC VỤ NGHIỆM THU
+## 1. MÔI TRƯỜNG & THIẾT LẬP THỰC NGHIỆM
 
 - **Git Commit Baseline**: [`4cf04cca394870b6c83e7cb54984b98bcffda846`](https://github.com/kavsir/RAG-and-Agent/commit/4cf04cca394870b6c83e7cb54984b98bcffda846) (`pre-final-acceptance`)
 - **Trạng thái Git Working Tree trước & trong kiểm thử**: Hoàn toàn đóng băng (`clean`), tuyệt đối không sửa production code hay router/retrieval prompts trong quá trình benchmark.
@@ -130,9 +131,9 @@ Tổng số case không đạt chuẩn tự động hoàn toàn: **8/62 cases** 
 
 ---
 
-## 8. KẾT LUẬN NGHIỆM THU CUỐI CÙNG (FINAL VERDICT)
+## 8. ĐÚC KẾT KINH NGHIỆM & KẾT LUẬN THỰC NGHIỆM (KEY TAKEAWAYS)
 
-Căn cứ trên các tiêu chí nghiệm thu khắt khe của dự án:
+Căn cứ trên các tiêu chí kiểm định khắt khe của dự án:
 1. **0 Lỗi Ảo giác Nghiêm trọng (Critical Hallucinations = 0)**: Toàn bộ 7 trường hợp mã môn lạ đều bị từ chối chính xác 100%, 5 trường hợp câu hỏi bẫy đều bị phản bác và đính chính chính xác 100%.
 2. **Chất lượng Truy xuất Đạt Chuẩn Xuất sắc**:
    - `Source Recall@5` = **100%**
@@ -141,8 +142,8 @@ Căn cứ trên các tiêu chí nghiệm thu khắt khe của dự án:
    - `MRR` = **0.9399**
    - `Router Accuracy` = **95.16%**
 3. **Các Thành phần Công cụ & Hạ tầng Hoạt động Ổn định**: Structured Cache, APScheduler reminder, và Fail-Safe Validation đều đạt 100% trong các bài test hồi quy thực tế.
-4. **Hạn chế còn lại duy nhất**: Tỷ lệ phân giải hội thoại sâu (Turn 3) đạt 71.43% (dưới ngưỡng 85%), và một số từ khóa trùng lặp trong Router thuộc dạng giới hạn thứ yếu (minor limitations) không gây nguy cơ sai lệch học vụ.
+4. **Bài học rút ra**: Tỷ lệ phân giải hội thoại sâu (Turn 3) đạt 71.43% là động lực then chốt để sau đó hệ thống nâng cấp lên Structured Session Memory V2 (Round B) và Personal Memory (Round C), đưa tỷ lệ thành công lên 100%.
 
-**KẾT LUẬN NGHIỆM THU**:
+**KẾT LUẬN THỰC NGHIỆM**:
 
 # **`LEVEL_4_ACCEPTED_WITH_MINOR_LIMITATIONS`**

@@ -410,7 +410,7 @@ def run_personal_evaluation():
     p95_del = round(float(np.percentile(lat_deletes, 95)), 2) if lat_deletes else 0.0
     p95_ctx = round(float(np.percentile(lat_contexts, 95)), 2) if lat_contexts else 0.0
 
-    print("\n1. CHỈ SỐ NGHIỆM THU BỘ NHỚ CÁ NHÂN (ACCEPTANCE GATES):")
+    print("\n1. CHỈ SỐ THỰC NGHIỆM BỘ NHỚ CÁ NHÂN (EVALUATION METRICS):")
     print(f"   - Explicit Fact Write Accuracy   : {exp_corr}/{exp_cnt} ({exp_write_acc}%) [Gate: >= 95%]")
     print(f"   - Profile API Update Accuracy    : {prof_corr}/{prof_cnt} ({prof_api_acc}%) [Gate: >= 95%]")
     print(f"   - Cross-session Personal Recall  : {cross_corr}/{cross_cnt} ({cross_acc}%) [Gate: = 100%]")
