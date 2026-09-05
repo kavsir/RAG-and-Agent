@@ -1,0 +1,39 @@
+case_id,workload,question,category,cache_hit,retry_count,latency_ms,source_count,status
+dom_miss_01,DOMAIN_CACHE_MISS,Môn FIT4201 có bao nhiêu tín chỉ?,DOMAIN_DATA,False,0,5718.37,5,PASS
+dom_miss_02,DOMAIN_CACHE_MISS,Ai là giảng viên phụ trách môn FIT4104?,DOMAIN_DATA,False,0,5873.08,5,PASS
+dom_miss_03,DOMAIN_CACHE_MISS,Học phần FIT4117 có bao nhiêu tín chỉ lý thuyết và thực hành?,DOMAIN_DATA,False,0,34736.49,5,PASS
+dom_miss_04,DOMAIN_CACHE_MISS,Giảng viên môn FIT4113 có địa chỉ email là gì?,DOMAIN_DATA,False,0,10062.39,5,PASS
+dom_miss_05,DOMAIN_CACHE_MISS,Môn Quản trị dự án CNTT mã FIT4117 do ai dạy?,DOMAIN_DATA,False,0,10903.03,5,PASS
+dom_miss_06,DOMAIN_CACHE_MISS,Hình thức đánh giá chuyên cần A1 của môn FIT4113 là gì?,DOMAIN_DATA,False,0,5813.09,5,PASS
+dom_miss_07,DOMAIN_CACHE_MISS,Môn Thiết kế lập trình Full-Stack có bao nhiêu tín chỉ?,DOMAIN_DATA,False,0,13920.15,5,PASS
+dom_miss_08,DOMAIN_CACHE_MISS,Môn Hệ thống nhúng FIT4201 có phân bổ số giờ học ra sao?,DOMAIN_DATA,False,0,10482.89,5,PASS
+gen_miss_01,GENERAL_CACHE_MISS,Thuật toán Dijkstra là gì và ứng dụng thế nào?,GENERAL_LLM,False,0,9396.92,0,PASS
+gen_miss_02,GENERAL_CACHE_MISS,Trình bày 4 tính chất cơ bản của lập trình hướng đối tượng OOP?,GENERAL_LLM,False,0,14958.19,0,PASS
+gen_miss_03,GENERAL_CACHE_MISS,Giải thích khái niệm biến toàn cục và biến cục bộ trong Python?,GENERAL_LLM,False,0,13211.74,0,PASS
+gen_miss_04,GENERAL_CACHE_MISS,Khái niệm RESTful API và các phương thức HTTP chính là gì?,GENERAL_LLM,False,0,18938.01,0,PASS
+gen_miss_05,GENERAL_CACHE_MISS,Mô hình Client Server hoạt động theo cơ chế nào?,GENERAL_LLM,False,0,14605.43,0,PASS
+dom_hit_01,DOMAIN_CACHE_HIT,Môn FIT4201 có bao nhiêu tín chỉ?,DOMAIN_DATA,True,0,373.67,5,PASS
+dom_hit_02,DOMAIN_CACHE_HIT,Môn FIT4201 có bao nhiêu tín chỉ?,DOMAIN_DATA,True,0,117.6,5,PASS
+dom_hit_03,DOMAIN_CACHE_HIT,Môn FIT4201 có bao nhiêu tín chỉ?,DOMAIN_DATA,True,0,123.48,5,PASS
+dom_hit_04,DOMAIN_CACHE_HIT,Môn FIT4201 có bao nhiêu tín chỉ?,DOMAIN_DATA,True,0,119.44,5,PASS
+dom_hit_05,DOMAIN_CACHE_HIT,Môn FIT4201 có bao nhiêu tín chỉ?,DOMAIN_DATA,True,0,102.42,5,PASS
+dom_hit_06,DOMAIN_CACHE_HIT,Môn FIT4201 có bao nhiêu tín chỉ?,DOMAIN_DATA,True,0,159.06,5,PASS
+dom_hit_07,DOMAIN_CACHE_HIT,Môn FIT4201 có bao nhiêu tín chỉ?,DOMAIN_DATA,True,0,114.92,5,PASS
+dom_hit_08,DOMAIN_CACHE_HIT,Môn FIT4201 có bao nhiêu tín chỉ?,DOMAIN_DATA,True,0,104.44,5,PASS
+dom_hit_09,DOMAIN_CACHE_HIT,Môn FIT4201 có bao nhiêu tín chỉ?,DOMAIN_DATA,True,0,103.28,5,PASS
+dom_hit_10,DOMAIN_CACHE_HIT,Môn FIT4201 có bao nhiêu tín chỉ?,DOMAIN_DATA,True,0,101.58,5,PASS
+gen_hit_01,GENERAL_CACHE_HIT,Dijkstra là gì?,GENERAL_LLM,True,0,18.71,0,PASS
+gen_hit_02,GENERAL_CACHE_HIT,Dijkstra là gì?,GENERAL_LLM,True,0,35.17,0,PASS
+gen_hit_03,GENERAL_CACHE_HIT,Dijkstra là gì?,GENERAL_LLM,True,0,23.69,0,PASS
+gen_hit_04,GENERAL_CACHE_HIT,Dijkstra là gì?,GENERAL_LLM,True,0,18.6,0,PASS
+gen_hit_05,GENERAL_CACHE_HIT,Dijkstra là gì?,GENERAL_LLM,True,0,23.12,0,PASS
+gen_hit_06,GENERAL_CACHE_HIT,Dijkstra là gì?,GENERAL_LLM,True,0,35.27,0,PASS
+gen_hit_07,GENERAL_CACHE_HIT,Dijkstra là gì?,GENERAL_LLM,True,0,18.25,0,PASS
+gen_hit_08,GENERAL_CACHE_HIT,Dijkstra là gì?,GENERAL_LLM,True,0,21.25,0,PASS
+gen_hit_09,GENERAL_CACHE_HIT,Dijkstra là gì?,GENERAL_LLM,True,0,21.17,0,PASS
+gen_hit_10,GENERAL_CACHE_HIT,Dijkstra là gì?,GENERAL_LLM,True,0,23.84,0,PASS
+abs_01,ABSTENTION,Môn học FIT8860 có bao nhiêu tín chỉ?,DOMAIN_DATA,False,0,191.66,0,PASS
+abs_02,ABSTENTION,Môn học FIT8318 có bao nhiêu tín chỉ?,DOMAIN_DATA,False,0,182.59,0,PASS
+abs_03,ABSTENTION,Môn học FIT8830 có bao nhiêu tín chỉ?,DOMAIN_DATA,False,0,180.55,0,PASS
+abs_04,ABSTENTION,Môn học FIT8328 có bao nhiêu tín chỉ?,DOMAIN_DATA,False,0,196.5,0,PASS
+abs_05,ABSTENTION,Môn học FIT8707 có bao nhiêu tín chỉ?,DOMAIN_DATA,False,0,220.18,0,PASS

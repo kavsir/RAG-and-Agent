@@ -1,0 +1,215 @@
+{
+  "metadata": {
+    "benchmark_name": "Adversarial Benchmark V2",
+    "product_commit": "4cf04cca394870b6c83e7cb54984b98bcffda846",
+    "short_commit": "4cf04cc",
+    "run_timestamp": "2026-09-06T00:50:00+07:00",
+    "total_cases": 62,
+    "verdict": "LEVEL_4_ACCEPTED_WITH_MINOR_LIMITATIONS"
+  },
+  "cards": {
+    "router_accuracy": 95.16,
+    "recall_at_1": 90.7,
+    "recall_at_3": 97.67,
+    "recall_at_5": 100.0,
+    "recall_at_20": 100.0,
+    "mrr": 0.9399,
+    "abstention_accuracy": 100.0,
+    "wrong_premise_resistance": 100.0,
+    "followup_resolution_rate": 71.43,
+    "critical_hallucinations": 0,
+    "total_passed": 54,
+    "total_failed": 8,
+    "pass_rate": 87.1
+  },
+  "groups": [
+    {
+      "group": "GENERAL_LLM",
+      "total": 5,
+      "passed": 2,
+      "failed": 3,
+      "pass_rate": 40.0,
+      "strength": "WEAK",
+      "primary_failure_cause": "ROUTER",
+      "average_latency_ms": 12900.0
+    },
+    {
+      "group": "DIRECT_DOMAIN",
+      "total": 10,
+      "passed": 8,
+      "failed": 2,
+      "pass_rate": 80.0,
+      "strength": "ACCEPTABLE",
+      "primary_failure_cause": "ANSWER_EXTRACTION",
+      "average_latency_ms": 10660.0
+    },
+    {
+      "group": "TOOL_ACTION",
+      "total": 5,
+      "passed": 4,
+      "failed": 1,
+      "pass_rate": 80.0,
+      "strength": "ACCEPTABLE",
+      "primary_failure_cause": "TOOL_ROUTING",
+      "average_latency_ms": 2596.0
+    },
+    {
+      "group": "MULTI_TURN",
+      "total": 12,
+      "passed": 10,
+      "failed": 2,
+      "pass_rate": 83.33,
+      "strength": "ACCEPTABLE",
+      "primary_failure_cause": "ENTITY_RESOLUTION",
+      "average_latency_ms": 10583.3
+    },
+    {
+      "group": "PARAPHRASE",
+      "total": 8,
+      "passed": 8,
+      "failed": 0,
+      "pass_rate": 100.0,
+      "strength": "STRONG",
+      "primary_failure_cause": "NONE",
+      "average_latency_ms": 10200.0
+    },
+    {
+      "group": "NO_CODE",
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "pass_rate": 100.0,
+      "strength": "STRONG",
+      "primary_failure_cause": "NONE",
+      "average_latency_ms": 10200.0
+    },
+    {
+      "group": "TYPO_NOISY",
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "pass_rate": 100.0,
+      "strength": "STRONG",
+      "primary_failure_cause": "NONE",
+      "average_latency_ms": 10200.0
+    },
+    {
+      "group": "WRONG_PREMISE",
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "pass_rate": 100.0,
+      "strength": "STRONG",
+      "primary_failure_cause": "NONE",
+      "average_latency_ms": 9800.0
+    },
+    {
+      "group": "UNKNOWN_ENTITY",
+      "total": 7,
+      "passed": 7,
+      "failed": 0,
+      "pass_rate": 100.0,
+      "strength": "STRONG",
+      "primary_failure_cause": "NONE",
+      "average_latency_ms": 194.0
+    }
+  ],
+  "failure_analysis": [
+    {
+      "root_cause": "ROUTER",
+      "label": "Router Classification",
+      "count": 3,
+      "percentage": 37.5,
+      "affected_case_ids": [
+        "v2-gen-02",
+        "v2-gen-03",
+        "v2-gen-05"
+      ]
+    },
+    {
+      "root_cause": "ANSWER_EXTRACTION",
+      "label": "Answer Extraction / Formatting",
+      "count": 2,
+      "percentage": 25.0,
+      "affected_case_ids": [
+        "v2-dir-08",
+        "v2-dir-09"
+      ]
+    },
+    {
+      "root_cause": "ENTITY_RESOLUTION",
+      "label": "Entity Resolution (Multi-turn)",
+      "count": 1,
+      "percentage": 12.5,
+      "affected_case_ids": [
+        "v2-multi-01-t3"
+      ]
+    },
+    {
+      "root_cause": "ANSWER_GROUNDING",
+      "label": "Answer Grounding / Formatting",
+      "count": 1,
+      "percentage": 12.5,
+      "affected_case_ids": [
+        "v2-multi-02-t2"
+      ]
+    },
+    {
+      "root_cause": "TOOL_ROUTING",
+      "label": "Tool Paraphrase Routing",
+      "count": 1,
+      "percentage": 12.5,
+      "affected_case_ids": [
+        "v2-tool-04"
+      ]
+    },
+    {
+      "root_cause": "RETRIEVAL",
+      "label": "Retrieval Miss",
+      "count": 0,
+      "percentage": 0.0,
+      "affected_case_ids": []
+    },
+    {
+      "root_cause": "CONTEXT_SELECTION",
+      "label": "Context Selection",
+      "count": 0,
+      "percentage": 0.0,
+      "affected_case_ids": []
+    },
+    {
+      "root_cause": "SAFETY_ABSTENTION",
+      "label": "Safety Abstention",
+      "count": 0,
+      "percentage": 0.0,
+      "affected_case_ids": []
+    }
+  ],
+  "retrieval_distribution": {
+    "rank_1": 39,
+    "rank_2": 2,
+    "rank_3": 1,
+    "rank_4_5": 1,
+    "greater_than_5": 0,
+    "not_found": 0,
+    "total_domain_queries": 43
+  },
+  "system_strengths": [
+    "Khả năng từ chối an toàn (Safe Abstention) đạt 100% đối với 100% thực thể lạ, ngăn chặn 0 ca ảo giác.",
+    "Kháng bẫy dẫn dắt (Wrong-Premise Resistance) đạt 100%, chủ động đính chính các giả định sai.",
+    "Hiệu quả xử lý cao ở các nhóm câu hỏi tự nhiên: PARAPHRASE, NO_CODE, TYPO_NOISY, WRONG_PREMISE, UNKNOWN_ENTITY với tỷ lệ Pass 100%.",
+    "Bộ máy truy xuất Hybrid RRF đạt độ chính xác cao (Recall@5 = 100%, Recall@20 = 100%, MRR = 0.94).",
+    "In-memory Cache V2 bảo toàn 100% metadata và phản hồi tức thì (< 150ms cho DOMAIN, < 25ms cho GENERAL)."
+  ],
+  "system_weaknesses": [
+    "Độ bao phủ của Router với câu hỏi kiến thức chung (GENERAL_LLM) còn xung đột từ khóa và tên môn học.",
+    "Độ nhạy phân loại Tool Action với câu lệnh dài ('Soạn giúp tôi email...') cần biểu thức regex linh hoạt hơn.",
+    "Hội thoại nhiều lượt (Multi-turn follow-up) đạt 71.43%, cần cải thiện cơ chế duy trì chi tiết phụ qua các turns.",
+    "Xác thực chuỗi nguyên bản (Verbatim matching) cần cơ chế chuẩn hóa linh hoạt hơn với ký tự nối ('&' vs 'and')."
+  ],
+  "acceptable_groups": [
+    "DIRECT_DOMAIN",
+    "TOOL_ACTION",
+    "MULTI_TURN"
+  ]
+}

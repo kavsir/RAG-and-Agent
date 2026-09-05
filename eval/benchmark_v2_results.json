@@ -1,0 +1,123 @@
+{
+  "retrieval_and_router": {
+    "router_accuracy": 95.16129032258065,
+    "router_by_type": {
+      "direct": {
+        "total": 10,
+        "correct": 10
+      },
+      "paraphrase": {
+        "total": 8,
+        "correct": 8
+      },
+      "no_code": {
+        "total": 5,
+        "correct": 5
+      },
+      "typo": {
+        "total": 5,
+        "correct": 5
+      },
+      "wrong_premise": {
+        "total": 5,
+        "correct": 5
+      },
+      "unknown": {
+        "total": 7,
+        "correct": 7
+      },
+      "general": {
+        "total": 5,
+        "correct": 3
+      },
+      "tool": {
+        "total": 5,
+        "correct": 4
+      },
+      "multi_turn": {
+        "total": 12,
+        "correct": 12
+      }
+    },
+    "recall_at_1": 90.69767441860465,
+    "recall_at_3": 97.67441860465115,
+    "recall_at_5": 100.0,
+    "recall_at_20": 100.0,
+    "mrr": 0.9399224806201549
+  },
+  "e2e_deepseek": {
+    "total": 62,
+    "passed": 54,
+    "pass_rate": 87.09677419354838,
+    "avg_latency": 12.927098197321738,
+    "abstention_accuracy": 100.0,
+    "wrong_premise_resistance": 100.0,
+    "followup_resolution_rate": 71.42857142857143,
+    "domain_source_presence_rate": 100.0,
+    "critical_hallucinations": 0,
+    "failed_cases": [
+      {
+        "id": "v2-dir-08",
+        "type": "direct",
+        "reasons": [
+          "Expected facts not matched in answer: ['Full-Stack Design and Programming']"
+        ]
+      },
+      {
+        "id": "v2-dir-09",
+        "type": "direct",
+        "reasons": [
+          "Expected facts not matched in answer: ['nhannv@dainam.edu.vn']"
+        ]
+      },
+      {
+        "id": "v2-gen-02",
+        "type": "general",
+        "reasons": [
+          "Category mismatch: got DOMAIN_DATA, expected GENERAL_LLM"
+        ]
+      },
+      {
+        "id": "v2-gen-03",
+        "type": "general",
+        "reasons": [
+          "Category mismatch: got DOMAIN_DATA, expected GENERAL_LLM"
+        ]
+      },
+      {
+        "id": "v2-gen-05",
+        "type": "general",
+        "reasons": [
+          "Category mismatch: got DOMAIN_DATA, expected GENERAL_LLM"
+        ]
+      },
+      {
+        "id": "v2-tool-04",
+        "type": "tool",
+        "reasons": [
+          "Category mismatch: got DOMAIN_DATA, expected TOOL_ACTION"
+        ]
+      },
+      {
+        "id": "v2-multi-01-t3",
+        "type": "multi_turn",
+        "reasons": [
+          "Multi-turn turn 3 failed to resolve facts: ['nhannv@dainam.edu.vn']"
+        ]
+      },
+      {
+        "id": "v2-multi-02-t2",
+        "type": "multi_turn",
+        "reasons": [
+          "Multi-turn turn 2 failed to resolve facts: ['1 tín chỉ lý thuyết', '2 tín chỉ thực hành']"
+        ]
+      }
+    ]
+  },
+  "regressions": {
+    "cache_regression": true,
+    "reminder_regression": true,
+    "validation_regression": true
+  },
+  "verdict": "LEVEL_4_ACCEPTED_WITH_MINOR_LIMITATIONS"
+}

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Academic Advisor — Evaluation Dashboard</title>
+  <link rel="stylesheet" href="/evaluation/dashboard.css">
+</head>
+<body>
+  <!-- HEADER -->
+  <header>
+    <div class="container header-inner">
+      <div class="header-title">
+        <h1>
+          AI Academic Advisor
+          <span class="badge-app">Evaluation Dashboard</span>
+        </h1>
+        <div class="header-meta">
+          <span>Benchmark: <strong>V2 (Adversarial)</strong></span>
+          <span>Commit: <strong id="metaCommit">4cf04cc</strong></span>
+          <span>Date: <strong id="metaTimestamp">2026-09-06</strong></span>
+          <span>Total Cases: <strong id="metaCases">62</strong></span>
+        </div>
+      </div>
+      <div class="header-controls">
+        <span id="verdictBadge" class="status-badge badge-warning-accepted">
+          LEVEL_4_ACCEPTED_WITH_MINOR_LIMITATIONS
+        </span>
+        <select id="runSelect" class="select-custom" aria-label="Select evaluation run">
+          <option value="current">Current Run (4cf04cc)</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- NAVIGATION TABS -->
+    <nav class="nav-tabs" aria-label="Dashboard Sections">
+      <button class="tab-btn active" data-target="tabOverview">Tổng quan & Nhóm câu hỏi</button>
+      <button class="tab-btn" data-target="tabFailures">Phân tích lỗi (Root Causes)</button>
+      <button class="tab-btn" data-target="tabRetrieval">Truy xuất (Retrieval View)</button>
+      <button class="tab-btn" data-target="tabPerformance">Hiệu năng & Bộ nhớ</button>
+      <button class="tab-btn" data-target="tabExplorer">Khám phá Cases (Case Explorer)</button>
+      <button class="tab-btn" data-target="tabHistory">Lịch sử & Xu hướng</button>
+    </nav>
+
+    <!-- TAB 1: OVERVIEW & GROUPS -->
+    <section id="tabOverview" class="tab-content" style="display: block;">
+      <!-- Phase 9: Metric Overview Cards -->
+      <div class="grid-cards">
+        <div class="card-stat">
+          <div class="stat-label">Router Accuracy</div>
+          <div class="stat-value" id="valRouterAcc">--%</div>
+          <div class="stat-sub">Target: &ge; 90% (Offline + E2E)</div>
+        </div>
+        <div class="card-stat">
+          <div class="stat-label">Recall@5</div>
+          <div class="stat-value" id="valRecall5">--%</div>
+          <div class="stat-sub">Tài liệu chuẩn trong Top 5</div>
+        </div>
+        <div class="card-stat">
+          <div class="stat-label">Recall@20 (Coverage)</div>
+          <div class="stat-value" id="valRecall20">--%</div>
+          <div class="stat-sub">Độ phủ ứng viên (Không coi là accuracy)</div>
+        </div>
+        <div class="card-stat">
+          <div class="stat-label">MRR (Mean Reciprocal)</div>
+          <div class="stat-value" id="valMRR">--</div>
+          <div class="stat-sub">Target: &ge; 0.75 (Hạng nghịch đảo)</div>
+        </div>
+        <div class="card-stat">
+          <div class="stat-label">Abstention Accuracy</div>
+          <div class="stat-value" id="valAbstention">--%</div>
+          <div class="stat-sub">Từ chối an toàn mã môn lạ</div>
+        </div>
+        <div class="card-stat">
+          <div class="stat-label">Wrong-Premise Resist</div>
+          <div class="stat-value" id="valWrongPremise">--%</div>
+          <div class="stat-sub">Chống bẫy giả định sai</div>
+        </div>
+        <div class="card-stat">
+          <div class="stat-label">Follow-up Resolution</div>
+          <div class="stat-value" id="valFollowup">--%</div>
+          <div class="stat-sub">Giải quyết hội thoại nhiều lượt</div>
+        </div>
+        <div class="card-stat">
+          <div class="stat-label">Critical Hallucinations</div>
+          <div class="stat-value" id="valHallucination">0</div>
+          <div class="stat-sub">Ảo giác nghiêm trọng vi phạm gate</div>
+        </div>
+      </div>
+
+      <!-- Phase 16: System Strengths vs Weaknesses -->
+      <div class="two-col-grid">
+        <div class="list-box strengths">
+          <h3>SYSTEM STRENGTHS</h3>
+          <ul id="strengthsList" class="custom-list"></ul>
+        </div>
+        <div class="list-box weaknesses">
+          <h3>SYSTEM WEAKNESSES</h3>
+          <ul id="weaknessesList" class="custom-list"></ul>
+        </div>
+      </div>
+
+      <!-- Phase 10: Question Groups Table (Weakest first) -->
+      <div class="section-box">
+        <h2>
+          Phân tích Nhóm Câu hỏi (Question Groups Strength)
+          <span class="sub-info">Sắp xếp mặc định: Yếu nhất lên đầu &bull; Nhấp vào hàng để lọc Cases</span>
+        </h2>
+        <div class="table-responsive">
+          <table class="data-table" id="groupsTable">
+            <thead>
+              <tr>
+                <th>Nhóm kiểm định (Group)</th>
+                <th>Tổng cases</th>
+                <th>Passed</th>
+                <th>Failed</th>
+                <th>Tỷ lệ Pass (%)</th>
+                <th>Đánh giá Strength</th>
+                <th>Lỗi chính (Primary Root Cause)</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: FAILURE ANALYSIS -->
+    <section id="tabFailures" class="tab-content" style="display: none;">
+      <div class="section-box">
+        <h2>
+          Phân tích Nguyên nhân Lỗi (Deterministic Root Cause Analysis)
+          <span class="sub-info">Suy luận qua evidence &bull; Nhấp vào thanh lỗi để lọc Cases</span>
+        </h2>
+        <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 20px;">
+          Hệ thống phân định nguyên nhân lỗi theo luật ưu tiên chứng cớ: Phân loại sai Router &rarr; Giải quyết đại từ Multi-turn &rarr; Trích xuất thông tin (Extraction) &rarr; Chuẩn hóa câu chữ (Formatting). Tuyệt đối không để LLM tự quyết định root cause.
+        </p>
+        <div id="failureAnalysisBars"></div>
+      </div>
+    </section>
+
+    <!-- TAB 3: RETRIEVAL VIEW -->
+    <section id="tabRetrieval" class="tab-content" style="display: none;">
+      <div class="grid-cards">
+        <div class="card-stat">
+          <div class="stat-label">Recall@1 (Top 1)</div>
+          <div class="stat-value">90.70%</div>
+          <div class="stat-sub">39/43 câu học vụ tài liệu ở Rank 1</div>
+        </div>
+        <div class="card-stat">
+          <div class="stat-label">Recall@3 (Top 3)</div>
+          <div class="stat-value">97.67%</div>
+          <div class="stat-sub">42/43 câu học vụ tài liệu trong Top 3</div>
+        </div>
+        <div class="card-stat">
+          <div class="stat-label">Recall@5 (Top 5)</div>
+          <div class="stat-value">100.0%</div>
+          <div class="stat-sub">100% câu học vụ tài liệu trong Top 5</div>
+        </div>
+        <div class="card-stat">
+          <div class="stat-label">Recall@20 (Candidates)</div>
+          <div class="stat-value">100.0%</div>
+          <div class="stat-sub">Độ phủ ứng viên RRF trước Reranker</div>
+        </div>
+        <div class="card-stat">
+          <div class="stat-label">MRR</div>
+          <div class="stat-value">0.9399</div>
+          <div class="stat-sub">Mean Reciprocal Rank tiệm cận 1.0</div>
+        </div>
+      </div>
+
+      <div class="section-box">
+        <h2>Phân bố Thứ hạng Nguồn Đúng (Correct Source Rank Distribution)</h2>
+        <div id="rankDistributionBars" style="margin-top: 16px;"></div>
+      </div>
+    </section>
+
+    <!-- TAB 4: PERFORMANCE VIEW -->
+    <section id="tabPerformance" class="tab-content" style="display: none;">
+      <div class="section-box">
+        <h2>Đo lường Độ trễ End-to-End theo Workloads (Latency Benchmark)</h2>
+        <div class="table-responsive">
+          <table class="data-table" id="perfWorkloadTable">
+            <thead>
+              <tr>
+                <th>Workload Category</th>
+                <th>Samples</th>
+                <th>Mean (ms)</th>
+                <th>P50 (ms)</th>
+                <th>P90 (ms)</th>
+                <th>P95 (ms)</th>
+                <th>Max (ms)</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="section-box">
+        <h2>
+          Local Pipeline Microbenchmarks (CPU Profiling)
+          <span class="sub-info">Thời gian thực thi độc lập của các module nội bộ</span>
+        </h2>
+        <div id="localPipelineBars" style="margin-top: 14px;"></div>
+      </div>
+
+      <div class="section-box">
+        <h2>
+          Hồ sơ Tiêu thụ Bộ nhớ RAM (Memory Profile)
+          <span class="sub-info">No memory leak detected during this benchmark run.</span>
+        </h2>
+        <div class="table-responsive" style="margin-top: 12px;">
+          <table class="data-table" id="memoryTable">
+            <thead>
+              <tr>
+                <th>Giai đoạn đo lường (Stage)</th>
+                <th>Process RSS</th>
+                <th>System Available RAM</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div style="font-size: 12px; color: var(--accent-green); margin-top: 12px;">
+          ✓ <em>No memory leak detected during this benchmark run.</em> Peak RSS đạt 430.11 MB khi nạp mô hình BGE-M3, sau đó ổn định ở mức 167.21 MB (an toàn hoàn hảo cho laptop 6GB RAM).
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: CASE EXPLORER -->
+    <section id="tabExplorer" class="tab-content" style="display: none;">
+      <div class="section-box">
+        <h2>
+          Khám phá Chi tiết Từng Case (Case Explorer)
+          <span class="sub-info" id="caseCountDisplay">62 cases</span>
+        </h2>
+        <div class="filter-bar">
+          <input type="text" id="searchCases" class="input-search" placeholder="Tìm kiếm theo ID, từ khóa, mã môn...">
+          
+          <select id="filterStatus" class="select-custom" aria-label="Filter cases by status">
+            <option value="">-- Tất cả trạng thái --</option>
+            <option value="PASS">Chỉ xem PASS</option>
+            <option value="FAIL">Chỉ xem FAIL</option>
+          </select>
+
+          <select id="filterGroup" class="select-custom" aria-label="Filter cases by group">
+            <option value="">-- Tất cả nhóm --</option>
+            <option value="DIRECT_DOMAIN">DIRECT_DOMAIN</option>
+            <option value="PARAPHRASE">PARAPHRASE</option>
+            <option value="NO_CODE">NO_CODE</option>
+            <option value="TYPO_NOISY">TYPO_NOISY</option>
+            <option value="WRONG_PREMISE">WRONG_PREMISE</option>
+            <option value="UNKNOWN_ENTITY">UNKNOWN_ENTITY</option>
+            <option value="GENERAL_LLM">GENERAL_LLM</option>
+            <option value="TOOL_ACTION">TOOL_ACTION</option>
+            <option value="MULTI_TURN">MULTI_TURN</option>
+          </select>
+
+          <select id="filterRootCause" class="select-custom" aria-label="Filter cases by root cause">
+            <option value="">-- Tất cả Root Cause --</option>
+            <option value="ROUTER">ROUTER</option>
+            <option value="ANSWER_EXTRACTION">ANSWER_EXTRACTION</option>
+            <option value="ENTITY_RESOLUTION">ENTITY_RESOLUTION</option>
+            <option value="ANSWER_GROUNDING">ANSWER_GROUNDING</option>
+            <option value="TOOL_ROUTING">TOOL_ROUTING</option>
+            <option value="NONE">NONE (Passed)</option>
+          </select>
+        </div>
+
+        <div class="table-responsive">
+          <table class="data-table" id="caseExplorerTable">
+            <thead>
+              <tr>
+                <th>Case ID</th>
+                <th>Group</th>
+                <th>Câu hỏi người dùng</th>
+                <th>Kỳ vọng</th>
+                <th>Thực tế</th>
+                <th>Kết quả</th>
+                <th>Root Cause</th>
+                <th>Latency</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 6: HISTORY & TRENDS -->
+    <section id="tabHistory" class="tab-content" style="display: none;">
+      <div class="section-box">
+        <h2>Lịch sử Kiểm định & Xu hướng Hiệu năng (Evaluation Trends)</h2>
+        <div id="historyViewContainer"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODAL DETAIL PANEL -->
+  <div id="modalOverlay" class="modal-overlay">
+    <div class="modal-panel">
+      <div class="modal-header">
+        <h3 id="modalCaseId">Case Detail</h3>
+        <button id="modalCloseBtn" class="btn-close">&times;</button>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label">Câu hỏi người dùng (Query)</div>
+        <div class="detail-val" id="modalQuestion"></div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label">Phân loại Router (Category Match)</div>
+        <div class="detail-val" id="modalCategoryMatch"></div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label">Thông tin kỳ vọng (Expected Facts)</div>
+        <div class="detail-val" id="modalExpectedFacts"></div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label">Câu trả lời thực tế (Actual Answer)</div>
+        <div class="detail-val" id="modalActualAnswer"></div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label">Câu hỏi được viết lại / Giải quyết thực thể</div>
+        <div class="detail-val" id="modalResolvedQuery"></div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label">Tài liệu trích dẫn & Thứ hạng nguồn (Source Rank)</div>
+        <div class="detail-val">
+          <div id="modalSources"></div>
+          <div id="modalSourceRank" style="margin-top: 4px; font-weight: 600; color: var(--accent-blue);"></div>
+        </div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label">Nguyên nhân lỗi & Chi tiết (Root Cause & Reason)</div>
+        <div class="detail-val">
+          <div id="modalRootCause" style="font-weight: 700; color: var(--accent-red); margin-bottom: 4px;"></div>
+          <div id="modalReason"></div>
+        </div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label">Thời gian phản hồi (Latency)</div>
+        <div class="detail-val" id="modalLatency"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/evaluation/dashboard.js"></script>
+</body>
+</html>

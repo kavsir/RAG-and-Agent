@@ -14,6 +14,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from src.config.settings import settings
 from src.scheduler.reminder_scheduler import start_scheduler, shutdown_scheduler
 from src.api.routes import router
+from src.api.evaluation_router import eval_router
+from fastapi.responses import RedirectResponse
 
 # Cấu hình logging
 logging.basicConfig(
@@ -67,6 +69,12 @@ async def global_exception_handler(request: Request, exc: Exception):
 
 # Đăng ký routes
 app.include_router(router)
+app.include_router(eval_router)
+
+
+@app.get("/evaluation", include_in_schema=False)
+async def redirect_evaluation():
+    return RedirectResponse(url="/evaluation/")
 
 # Phục vụ Frontend Static Files
 _frontend_dir = settings.BASE_DIR / "frontend"

@@ -1,0 +1,188 @@
+{
+  "baseline": {
+    "product_commit": "4cf04cca394870b6c83e7cb54984b98bcffda846",
+    "evaluation_commit": "4cf04cca394870b6c83e7cb54984b98bcffda846"
+  },
+  "environment": {
+    "os": "Windows 10 (10.0.19045)",
+    "python_version": "3.12.10",
+    "cpu_model": "AMD Ryzen 5 5600H with Radeon Graphics",
+    "logical_cpus": 12,
+    "physical_cpus": 6,
+    "total_ram_gb": 5.86,
+    "initial_available_ram_gb": 0.33,
+    "llm_config": {
+      "provider": "openai_compatible",
+      "model": "deepseek-v4-pro",
+      "base_url_domain": "api.deepseek.com",
+      "temperature": 0.0,
+      "timeout": 60
+    },
+    "rag_config": {
+      "embedding_model": "BAAI/bge-m3",
+      "reranker_model": "cross-encoder/ms-marco-MiniLM-L-6-v2",
+      "retrieval_candidates": 20,
+      "context_top_k": 6,
+      "reranker_enabled": false
+    }
+  },
+  "cold_start": {
+    "server_ready_ms": 27536.04,
+    "first_domain_request_ms": 32798.71,
+    "cold_peak_rss_mb": 430.11
+  },
+  "latency": {
+    "domain_cache_miss": {
+      "count": 8,
+      "min": 5718.37,
+      "mean": 12188.69,
+      "p50": 10062.39,
+      "p90": 34736.49,
+      "p95": 34736.49,
+      "max": 34736.49,
+      "std_dev": 8964.41
+    },
+    "general_cache_miss": {
+      "count": 5,
+      "min": 9396.92,
+      "mean": 14222.06,
+      "p50": 14605.43,
+      "p90": 18938.01,
+      "p95": 18938.01,
+      "max": 18938.01,
+      "std_dev": 3073.49
+    },
+    "domain_cache_hit": {
+      "count": 10,
+      "min": 101.58,
+      "mean": 141.99,
+      "p50": 114.92,
+      "p90": 159.06,
+      "p95": 373.67,
+      "max": 373.67,
+      "std_dev": 78.9
+    },
+    "general_cache_hit": {
+      "count": 10,
+      "min": 18.25,
+      "mean": 23.91,
+      "p50": 21.25,
+      "p90": 35.17,
+      "p95": 35.27,
+      "max": 35.27,
+      "std_dev": 5.98
+    },
+    "abstention": {
+      "count": 5,
+      "min": 180.55,
+      "mean": 194.3,
+      "p50": 191.66,
+      "p90": 220.18,
+      "p95": 220.18,
+      "max": 220.18,
+      "std_dev": 14.2
+    }
+  },
+  "llm_contribution": {
+    "domain_llm_answer_gen": {
+      "count": 1,
+      "min": 3389.6,
+      "mean": 3389.6,
+      "p50": 3389.6,
+      "p90": 3389.6,
+      "p95": 3389.6,
+      "max": 3389.6,
+      "std_dev": 0.0
+    },
+    "domain_llm_validation": {
+      "count": 8,
+      "min": 1810.05,
+      "mean": 11341.1,
+      "p50": 9674.8,
+      "p90": 34257.42,
+      "p95": 34257.42,
+      "max": 34257.42,
+      "std_dev": 9313.74
+    }
+  },
+  "local_pipeline": {
+    "query_analysis": {
+      "count": 10,
+      "min": 0.2,
+      "mean": 0.27,
+      "p50": 0.26,
+      "p90": 0.32,
+      "p95": 0.35,
+      "max": 0.35,
+      "std_dev": 0.04
+    },
+    "dense_search": {
+      "count": 10,
+      "min": 60.99,
+      "mean": 75.82,
+      "p50": 70.38,
+      "p90": 93.93,
+      "p95": 99.62,
+      "max": 99.62,
+      "std_dev": 13.66
+    },
+    "bm25_search": {
+      "count": 10,
+      "min": 0.62,
+      "mean": 0.94,
+      "p50": 0.9,
+      "p90": 1.02,
+      "p95": 1.5,
+      "max": 1.5,
+      "std_dev": 0.21
+    },
+    "hybrid_rrf_retrieval": {
+      "count": 10,
+      "min": 71.46,
+      "mean": 79.76,
+      "p50": 77.3,
+      "p90": 85.31,
+      "p95": 101.7,
+      "max": 101.7,
+      "std_dev": 8.18
+    },
+    "reranker": {
+      "count": 10,
+      "min": 0.03,
+      "mean": 0.09,
+      "p50": 0.04,
+      "p90": 0.07,
+      "p95": 0.52,
+      "max": 0.52,
+      "std_dev": 0.14
+    },
+    "context_builder": {
+      "count": 10,
+      "min": 0.46,
+      "mean": 0.61,
+      "p50": 0.58,
+      "p90": 0.79,
+      "p95": 0.82,
+      "max": 0.82,
+      "std_dev": 0.11
+    }
+  },
+  "memory": {
+    "stage_1_before_warm": {
+      "process_rss_mb": 29.53,
+      "sys_available_gb": 1.45
+    },
+    "stage_2_after_warmup": {
+      "process_rss_mb": 426.29,
+      "sys_available_gb": 0.84
+    },
+    "stage_3_after_domain_miss": {
+      "process_rss_mb": 162.46,
+      "sys_available_gb": 0.7
+    },
+    "stage_4_after_all_workloads": {
+      "process_rss_mb": 167.21,
+      "sys_available_gb": 0.34
+    }
+  }
+}
