@@ -1,0 +1,902 @@
+[
+  {
+    "id": "v2-dir-01",
+    "dataset": "benchmark_v2",
+    "type": "direct",
+    "question": "Môn FIT4201 có bao nhiêu tín chỉ?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-dir-02",
+    "dataset": "benchmark_v2",
+    "type": "direct",
+    "question": "Ai là giảng viên phụ trách môn FIT4104?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-dir-03",
+    "dataset": "benchmark_v2",
+    "type": "direct",
+    "question": "Học phần FIT4117 có bao nhiêu tín chỉ?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-dir-04",
+    "dataset": "benchmark_v2",
+    "type": "direct",
+    "question": "Giảng viên môn FIT4113 có địa chỉ email là gì?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-dir-05",
+    "dataset": "benchmark_v2",
+    "type": "direct",
+    "question": "Môn FIT4104 có bao nhiêu tín chỉ lý thuyết và thực hành?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-dir-06",
+    "dataset": "benchmark_v2",
+    "type": "direct",
+    "question": "Email liên hệ của giảng viên môn Quản trị dự án CNTT FIT4117 là gì?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-dir-07",
+    "dataset": "benchmark_v2",
+    "type": "direct",
+    "question": "Hình thức đánh giá A1 của môn FIT4113 là gì và trọng số bao nhiêu?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-dir-08",
+    "dataset": "benchmark_v2",
+    "type": "direct",
+    "question": "Tên tiếng Anh chính thức của môn FIT4104 là gì?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-dir-09",
+    "dataset": "benchmark_v2",
+    "type": "direct",
+    "question": "Giảng viên phụ trách học phần FIT4201 có email là gì?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-dir-10",
+    "dataset": "benchmark_v2",
+    "type": "direct",
+    "question": "Quy chế đào tạo trình độ đại học của Trường Đại học Đại Nam được ban hành kèm theo quyết định nào?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-para-01",
+    "dataset": "benchmark_v2",
+    "type": "paraphrase",
+    "question": "Cho mình hỏi số lượng tín chỉ của học phần FIT4201 với?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-para-02",
+    "dataset": "benchmark_v2",
+    "type": "paraphrase",
+    "question": "Thầy cô nào phụ trách hướng dẫn môn FIT4104 vậy bạn?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-para-03",
+    "dataset": "benchmark_v2",
+    "type": "paraphrase",
+    "question": "Mã môn FIT4117 cần tích lũy bao nhiêu tín chỉ?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-para-04",
+    "dataset": "benchmark_v2",
+    "type": "paraphrase",
+    "question": "Mình cần xin hòm thư điện tử của thầy dạy môn FIT4113",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-para-05",
+    "dataset": "benchmark_v2",
+    "type": "paraphrase",
+    "question": "Cấu trúc số giờ lý thuyết với thực hành học phần FIT4104 chia thế nào?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-para-06",
+    "dataset": "benchmark_v2",
+    "type": "paraphrase",
+    "question": "Điểm chuyên cần A1 của học phần FIT4113 chiếm bao nhiêu phần trăm tổng điểm?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-para-07",
+    "dataset": "benchmark_v2",
+    "type": "paraphrase",
+    "question": "Cô Trần Thị Huệ phụ trách môn học nào có mã FIT4117?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-para-08",
+    "dataset": "benchmark_v2",
+    "type": "paraphrase",
+    "question": "Môn Hệ thống nhúng mã FIT4201 có phân bổ tín chỉ ra sao?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-nocode-01",
+    "dataset": "benchmark_v2",
+    "type": "no_code",
+    "question": "Môn Hệ thống nhúng có bao nhiêu tín chỉ?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-nocode-02",
+    "dataset": "benchmark_v2",
+    "type": "no_code",
+    "question": "Ai là giảng viên phụ trách môn Thiết kế, lập trình Full-Stack?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-nocode-03",
+    "dataset": "benchmark_v2",
+    "type": "no_code",
+    "question": "Môn Quản trị dự án Công nghệ thông tin có bao nhiêu tín chỉ?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-nocode-04",
+    "dataset": "benchmark_v2",
+    "type": "no_code",
+    "question": "Giảng viên môn Công nghệ điện toán đám mây có email là gì?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-nocode-05",
+    "dataset": "benchmark_v2",
+    "type": "no_code",
+    "question": "Quy chế đào tạo trình độ đại học của trường Đại học Đại Nam áp dụng cho đối tượng nào?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-typo-01",
+    "dataset": "benchmark_v2",
+    "type": "typo",
+    "question": "fit4201 co bao nhieu tin chi",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-typo-02",
+    "dataset": "benchmark_v2",
+    "type": "typo",
+    "question": "Môn FIT 4201 có bao nhiêu tín chỉ?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-typo-03",
+    "dataset": "benchmark_v2",
+    "type": "typo",
+    "question": "Môn Hệ thống nhúg có mấy tín chỉ?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-typo-04",
+    "dataset": "benchmark_v2",
+    "type": "typo",
+    "question": "Môn Công nghệ điẹn toán đám mây có bao nhiêu tín chỉ?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-typo-05",
+    "dataset": "benchmark_v2",
+    "type": "typo",
+    "question": "Môn FIT420l có bao nhiêu tín chỉ?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-wrong-01",
+    "dataset": "benchmark_v2",
+    "type": "wrong_premise",
+    "question": "Môn FIT4201 có 5 tín chỉ đúng không bạn?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-wrong-02",
+    "dataset": "benchmark_v2",
+    "type": "wrong_premise",
+    "question": "Có phải môn Quản trị dự án CNTT FIT4117 có 4 tín chỉ lý thuyết không?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-wrong-03",
+    "dataset": "benchmark_v2",
+    "type": "wrong_premise",
+    "question": "Môn FIT4104 do thầy Nguyễn Văn Nhẫn phụ trách đúng không?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-wrong-04",
+    "dataset": "benchmark_v2",
+    "type": "wrong_premise",
+    "question": "Môn FIT4113 điểm chuyên cần chiếm 50% tổng điểm đúng không?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-wrong-05",
+    "dataset": "benchmark_v2",
+    "type": "wrong_premise",
+    "question": "Môn FIT4104 là môn hoàn toàn lý thuyết không có thực hành đúng không?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-unk-01",
+    "dataset": "benchmark_v2",
+    "type": "unknown",
+    "question": "Môn FIT7777 có bao nhiêu tín chỉ?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-unk-02",
+    "dataset": "benchmark_v2",
+    "type": "unknown",
+    "question": "Giảng viên phụ trách môn SEC9001 là ai?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-unk-03",
+    "dataset": "benchmark_v2",
+    "type": "unknown",
+    "question": "Học phần CSC1010 có điều kiện tiên quyết là gì?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-unk-04",
+    "dataset": "benchmark_v2",
+    "type": "unknown",
+    "question": "Môn Lượng tử ứng dụng của khoa CNTT Đại Nam học ở kỳ mấy?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-unk-05",
+    "dataset": "benchmark_v2",
+    "type": "unknown",
+    "question": "Cho tôi xin đề cương chi tiết học phần FIT5555?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-unk-06",
+    "dataset": "benchmark_v2",
+    "type": "unknown",
+    "question": "Môn Thần kinh học tính toán FIT6666 có bao nhiêu tín chỉ?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-unk-07",
+    "dataset": "benchmark_v2",
+    "type": "unknown",
+    "question": "Môn Xử lý ngôn ngữ tự nhiên nâng cao mã AI9990 học ở kỳ mấy?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-gen-01",
+    "dataset": "benchmark_v2",
+    "type": "general",
+    "question": "Thuật toán Dijkstra là gì và ứng dụng trong tìm đường đi ngắn nhất như thế nào?",
+    "expected_category": "GENERAL_LLM",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-gen-02",
+    "dataset": "benchmark_v2",
+    "type": "general",
+    "question": "Giải thích nguyên lý hoạt động của thuật toán sắp xếp nhanh QuickSort?",
+    "expected_category": "GENERAL_LLM",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-gen-03",
+    "dataset": "benchmark_v2",
+    "type": "general",
+    "question": "Điểm khác biệt cơ bản giữa giao thức TCP và UDP trong mạng máy tính là gì?",
+    "expected_category": "GENERAL_LLM",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-gen-04",
+    "dataset": "benchmark_v2",
+    "type": "general",
+    "question": "Trình bày 4 tính chất cơ bản của lập trình hướng đối tượng OOP?",
+    "expected_category": "GENERAL_LLM",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-gen-05",
+    "dataset": "benchmark_v2",
+    "type": "general",
+    "question": "Cloud computing là gì và có các mô hình dịch vụ nào (IaaS, PaaS, SaaS)?",
+    "expected_category": "GENERAL_LLM",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-tool-01",
+    "dataset": "benchmark_v2",
+    "type": "tool",
+    "question": "Nhắc tôi nộp đồ án môn học lúc 14h30 ngày 15/11/2026",
+    "expected_category": "TOOL_ACTION",
+    "expected_tool_intent": "SET_REMINDER",
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-tool-02",
+    "dataset": "benchmark_v2",
+    "type": "tool",
+    "question": "Đặt lịch nhắc ôn thi cuối kỳ lúc 8 giờ ngày 25/12/2026",
+    "expected_category": "TOOL_ACTION",
+    "expected_tool_intent": "SET_REMINDER",
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-tool-03",
+    "dataset": "benchmark_v2",
+    "type": "tool",
+    "question": "Nhắc tôi nộp bài tập lớn lúc 17h ngày mai",
+    "expected_category": "TOOL_ACTION",
+    "expected_tool_intent": "SET_REMINDER",
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-tool-04",
+    "dataset": "benchmark_v2",
+    "type": "tool",
+    "question": "Soạn giúp tôi email xin hoãn nộp bài tập lớn gửi thầy giáo đến tieppv@dainam.edu.vn",
+    "expected_category": "TOOL_ACTION",
+    "expected_tool_intent": "SEND_EMAIL",
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-tool-05",
+    "dataset": "benchmark_v2",
+    "type": "tool",
+    "question": "Gửi email xin tài liệu học tập đến giảng viên namtq.dn@dainam.edu.vn",
+    "expected_category": "TOOL_ACTION",
+    "expected_tool_intent": "SEND_EMAIL",
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-multi-01-t1",
+    "dataset": "benchmark_v2",
+    "type": "multi_turn",
+    "question": "FIT4201 là môn học gì?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-multi-01-t2",
+    "dataset": "benchmark_v2",
+    "type": "multi_turn",
+    "question": "Môn đó có bao nhiêu tín chỉ?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": {
+      "course_code": "FIT4201"
+    }
+  },
+  {
+    "id": "v2-multi-01-t3",
+    "dataset": "benchmark_v2",
+    "type": "multi_turn",
+    "question": "Giảng viên phụ trách có email là gì?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": {
+      "course_code": "FIT4201"
+    }
+  },
+  {
+    "id": "v2-multi-02-t1",
+    "dataset": "benchmark_v2",
+    "type": "multi_turn",
+    "question": "Cho tôi thông tin môn học FIT4104",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-multi-02-t2",
+    "dataset": "benchmark_v2",
+    "type": "multi_turn",
+    "question": "Môn này phân bổ bao nhiêu tín chỉ lý thuyết và thực hành?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": {
+      "course_code": "FIT4104"
+    }
+  },
+  {
+    "id": "v2-multi-03-t1",
+    "dataset": "benchmark_v2",
+    "type": "multi_turn",
+    "question": "Học phần FIT4117 tên tiếng Việt là gì?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-multi-03-t2",
+    "dataset": "benchmark_v2",
+    "type": "multi_turn",
+    "question": "Ai là người phụ trách học phần đó?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": {
+      "course_code": "FIT4117"
+    }
+  },
+  {
+    "id": "v2-multi-04-t1",
+    "dataset": "benchmark_v2",
+    "type": "multi_turn",
+    "question": "Môn Công nghệ điện toán đám mây có mã học phần là gì?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-multi-04-t2",
+    "dataset": "benchmark_v2",
+    "type": "multi_turn",
+    "question": "Điểm chuyên cần của môn đó chiếm bao nhiêu phần trăm?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": {
+      "course_code": "FIT4113"
+    }
+  },
+  {
+    "id": "v2-multi-05-t1",
+    "dataset": "benchmark_v2",
+    "type": "multi_turn",
+    "question": "Môn FIT4201 có mấy tín chỉ?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null,
+    "analyzed_context": null
+  },
+  {
+    "id": "v2-multi-05-t2",
+    "dataset": "benchmark_v2",
+    "type": "multi_turn",
+    "question": "Vậy hệ thống nhúng trong thực tế thường dùng vi điều khiển nào?",
+    "expected_category": "GENERAL_LLM",
+    "expected_tool_intent": null,
+    "analyzed_context": {
+      "course_code": null
+    }
+  },
+  {
+    "id": "v2-multi-05-t3",
+    "dataset": "benchmark_v2",
+    "type": "multi_turn",
+    "question": "Nhắc tôi làm bài tập môn này lúc 20h ngày 30/11/2026",
+    "expected_category": "TOOL_ACTION",
+    "expected_tool_intent": "SET_REMINDER",
+    "analyzed_context": {
+      "course_code": null
+    }
+  },
+  {
+    "id": "ho-gen-01",
+    "dataset": "holdout",
+    "type": "general",
+    "question": "Ưu điểm và nhược điểm của microservices so với kiến trúc monolithic là gì?",
+    "expected_category": "GENERAL_LLM",
+    "expected_tool_intent": null
+  },
+  {
+    "id": "ho-gen-02",
+    "dataset": "holdout",
+    "type": "general",
+    "question": "Giải thích cơ chế hoạt động của Garbage Collection trong Java",
+    "expected_category": "GENERAL_LLM",
+    "expected_tool_intent": null
+  },
+  {
+    "id": "ho-gen-03",
+    "dataset": "holdout",
+    "type": "general",
+    "question": "Đặc điểm nổi bật của ngôn ngữ lập trình Rust về an toàn bộ nhớ memory safety",
+    "expected_category": "GENERAL_LLM",
+    "expected_tool_intent": null
+  },
+  {
+    "id": "ho-gen-04",
+    "dataset": "holdout",
+    "type": "general",
+    "question": "So sánh sự khác nhau cơ bản giữa SQL và NoSQL database",
+    "expected_category": "GENERAL_LLM",
+    "expected_tool_intent": null
+  },
+  {
+    "id": "ho-gen-05",
+    "dataset": "holdout",
+    "type": "general",
+    "question": "Mô hình MVC trong phát triển phần mềm web có cấu trúc và luồng xử lý như thế nào?",
+    "expected_category": "GENERAL_LLM",
+    "expected_tool_intent": null
+  },
+  {
+    "id": "ho-gen-06",
+    "dataset": "holdout",
+    "type": "general",
+    "question": "Thuật toán tìm kiếm nhị phân Binary Search có độ phức tạp thời gian là bao nhiêu?",
+    "expected_category": "GENERAL_LLM",
+    "expected_tool_intent": null
+  },
+  {
+    "id": "ho-gen-07",
+    "dataset": "holdout",
+    "type": "general",
+    "question": "Giải thích khái niệm Dependency Injection và Inversion of Control trong OOP",
+    "expected_category": "GENERAL_LLM",
+    "expected_tool_intent": null
+  },
+  {
+    "id": "ho-gen-08",
+    "dataset": "holdout",
+    "type": "general",
+    "question": "Email là gì và các giao thức gửi nhận thư điện tử phổ biến như SMTP, IMAP gồm những gì?",
+    "expected_category": "GENERAL_LLM",
+    "expected_tool_intent": null
+  },
+  {
+    "id": "ho-gen-09",
+    "dataset": "holdout",
+    "type": "general",
+    "question": "Nhắc lại định nghĩa về tính đa hình và đóng gói trong lập trình hướng đối tượng",
+    "expected_category": "GENERAL_LLM",
+    "expected_tool_intent": null
+  },
+  {
+    "id": "ho-gen-10",
+    "dataset": "holdout",
+    "type": "general",
+    "question": "Điểm mạnh của Python so với C++ trong xử lý dữ liệu và trí tuệ nhân tạo",
+    "expected_category": "GENERAL_LLM",
+    "expected_tool_intent": null
+  },
+  {
+    "id": "ho-gen-11",
+    "dataset": "holdout",
+    "type": "general",
+    "question": "Điểm yếu của thuật toán Bubble Sort khi sắp xếp mảng dữ liệu có kích thước lớn",
+    "expected_category": "GENERAL_LLM",
+    "expected_tool_intent": null
+  },
+  {
+    "id": "ho-gen-12",
+    "dataset": "holdout",
+    "type": "general",
+    "question": "Tại sao giao thức HTTPS lại an toàn và bảo mật hơn HTTP thông thường?",
+    "expected_category": "GENERAL_LLM",
+    "expected_tool_intent": null
+  },
+  {
+    "id": "ho-gen-13",
+    "dataset": "holdout",
+    "type": "general",
+    "question": "Lập trình bất đồng bộ asynchronous programming hoạt động như thế nào trong NodeJS?",
+    "expected_category": "GENERAL_LLM",
+    "expected_tool_intent": null
+  },
+  {
+    "id": "ho-gen-14",
+    "dataset": "holdout",
+    "type": "general",
+    "question": "Kiến trúc Event-Driven Architecture phù hợp với những bài toán hệ thống nào?",
+    "expected_category": "GENERAL_LLM",
+    "expected_tool_intent": null
+  },
+  {
+    "id": "ho-dom-01",
+    "dataset": "holdout",
+    "type": "domain_code",
+    "question": "Môn FIT3101 học vào học kỳ mấy trong khung chương trình đào tạo?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null
+  },
+  {
+    "id": "ho-dom-02",
+    "dataset": "holdout",
+    "type": "domain_reg",
+    "question": "Điều kiện để sinh viên ngành CNTT được nhận đồ án tốt nghiệp là gì?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null
+  },
+  {
+    "id": "ho-dom-03",
+    "dataset": "holdout",
+    "type": "domain_reg",
+    "question": "Quy định tính điểm rèn luyện của sinh viên Đại học Đại Nam như thế nào?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null
+  },
+  {
+    "id": "ho-dom-04",
+    "dataset": "holdout",
+    "type": "domain_curriculum",
+    "question": "Khoa CNTT có những chuyên ngành đào tạo nào cho sinh viên khoá K19?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null
+  },
+  {
+    "id": "ho-dom-05",
+    "dataset": "holdout",
+    "type": "domain_nocode",
+    "question": "Môn Học máy và ứng dụng có bao nhiêu tín chỉ lý thuyết và thực hành?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null
+  },
+  {
+    "id": "ho-dom-06",
+    "dataset": "holdout",
+    "type": "domain_nocode",
+    "question": "Giảng viên nào dạy môn Lập trình Web nâng cao của trường?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null
+  },
+  {
+    "id": "ho-dom-07",
+    "dataset": "holdout",
+    "type": "domain_reg",
+    "question": "Cách tính điểm trung bình tích lũy GPA theo thang điểm 4 tại Đại Nam ra sao?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null
+  },
+  {
+    "id": "ho-dom-08",
+    "dataset": "holdout",
+    "type": "domain_reg",
+    "question": "Sinh viên bị cảnh báo học vụ mức 2 sẽ bị xử lý như thế nào theo quy chế?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null
+  },
+  {
+    "id": "ho-dom-09",
+    "dataset": "holdout",
+    "type": "domain_curriculum",
+    "question": "Khung chương trình đào tạo ngành CNTT yêu cầu tối thiểu bao nhiêu tín chỉ tích lũy?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null
+  },
+  {
+    "id": "ho-dom-10",
+    "dataset": "holdout",
+    "type": "domain_reg",
+    "question": "Chuẩn đầu ra ngoại ngữ để được xét tốt nghiệp Đại học Đại Nam là chứng chỉ gì?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null
+  },
+  {
+    "id": "ho-dom-11",
+    "dataset": "holdout",
+    "type": "domain_code",
+    "question": "Học phần SE2024 có học phần tiên quyết là môn nào?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null
+  },
+  {
+    "id": "ho-dom-12",
+    "dataset": "holdout",
+    "type": "domain_nocode",
+    "question": "Đề cương chi tiết môn An toàn thông tin quy định tỷ lệ điểm thi cuối kỳ là bao nhiêu phần trăm?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null
+  },
+  {
+    "id": "ho-dom-13",
+    "dataset": "holdout",
+    "type": "domain_code",
+    "question": "Môn Lập trình mạng FIT3202 do thầy cô nào giảng dạy?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null
+  },
+  {
+    "id": "ho-dom-14",
+    "dataset": "holdout",
+    "type": "domain_reg",
+    "question": "Sinh viên Khoa CNTT được đăng ký tối đa bao nhiêu tín chỉ trong một học kỳ?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_tool_intent": null
+  },
+  {
+    "id": "ho-tool-01",
+    "dataset": "holdout",
+    "type": "tool",
+    "question": "Soạn giúp tôi một email gửi thầy Tiệp xin phép nộp bài muộn môn Full-Stack",
+    "expected_category": "TOOL_ACTION",
+    "expected_tool_intent": "SEND_EMAIL"
+  },
+  {
+    "id": "ho-tool-02",
+    "dataset": "holdout",
+    "type": "tool",
+    "question": "Gửi email cho văn phòng khoa CNTT hỏi về lịch bảo vệ đồ án tốt nghiệp",
+    "expected_category": "TOOL_ACTION",
+    "expected_tool_intent": "SEND_EMAIL"
+  },
+  {
+    "id": "ho-tool-03",
+    "dataset": "holdout",
+    "type": "tool",
+    "question": "Viết email gửi cô Huệ để xin file tài liệu slide bài giảng môn FIT4117",
+    "expected_category": "TOOL_ACTION",
+    "expected_tool_intent": "SEND_EMAIL"
+  },
+  {
+    "id": "ho-tool-04",
+    "dataset": "holdout",
+    "type": "tool",
+    "question": "Nhắc tôi vào phòng thi lúc 7h30 sáng thứ Hai tuần tới",
+    "expected_category": "TOOL_ACTION",
+    "expected_tool_intent": "SET_REMINDER"
+  },
+  {
+    "id": "ho-tool-05",
+    "dataset": "holdout",
+    "type": "tool",
+    "question": "Đặt lịch nhắc nhở làm bài quiz môn Hệ thống nhúng vào 9h tối mai",
+    "expected_category": "TOOL_ACTION",
+    "expected_tool_intent": "SET_REMINDER"
+  },
+  {
+    "id": "ho-tool-06",
+    "dataset": "holdout",
+    "type": "tool",
+    "question": "Hẹn giờ báo deadline nộp bài tập lớn trước 23h59 ngày 30/12/2026",
+    "expected_category": "TOOL_ACTION",
+    "expected_tool_intent": "SET_REMINDER"
+  },
+  {
+    "id": "ho-tool-07",
+    "dataset": "holdout",
+    "type": "tool",
+    "question": "Soạn thư điện tử gửi ban giám hiệu về việc xin cấp bảng điểm tạm thời",
+    "expected_category": "TOOL_ACTION",
+    "expected_tool_intent": "SEND_EMAIL"
+  },
+  {
+    "id": "ho-tool-08",
+    "dataset": "holdout",
+    "type": "tool",
+    "question": "Lên lịch hẹn nhắc nhở nhóm họp làm dự án lúc 15h chiều nay",
+    "expected_category": "TOOL_ACTION",
+    "expected_tool_intent": "SET_REMINDER"
+  },
+  {
+    "id": "ho-tool-09",
+    "dataset": "holdout",
+    "type": "tool",
+    "question": "Nhắc tôi ôn lại kiến thức thuật toán Dijkstra vào cuối tuần này",
+    "expected_category": "TOOL_ACTION",
+    "expected_tool_intent": "SET_REMINDER"
+  },
+  {
+    "id": "ho-tool-10",
+    "dataset": "holdout",
+    "type": "tool",
+    "question": "Viết giúp một email trang trọng xin thực tập tại doanh nghiệp đối tác",
+    "expected_category": "TOOL_ACTION",
+    "expected_tool_intent": "SEND_EMAIL"
+  },
+  {
+    "id": "ho-tool-11",
+    "dataset": "holdout",
+    "type": "tool",
+    "question": "Nhắc lịch đăng ký tín chỉ học kỳ mới vào lúc 8h sáng mai",
+    "expected_category": "TOOL_ACTION",
+    "expected_tool_intent": "SET_REMINDER"
+  },
+  {
+    "id": "ho-tool-12",
+    "dataset": "holdout",
+    "type": "tool",
+    "question": "Đặt chuông báo thức và hẹn giờ nộp báo cáo thực tập tốt nghiệp lúc 16h",
+    "expected_category": "TOOL_ACTION",
+    "expected_tool_intent": "SET_REMINDER"
+  },
+  {
+    "id": "ho-tool-13",
+    "dataset": "holdout",
+    "type": "tool",
+    "question": "Soạn thảo email gửi thầy Nhẫn xin phản hồi về đề cương nghiên cứu khoa học",
+    "expected_category": "TOOL_ACTION",
+    "expected_tool_intent": "SEND_EMAIL"
+  }
+]

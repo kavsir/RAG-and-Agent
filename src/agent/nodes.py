@@ -17,7 +17,7 @@ from src.rag.query_analyzer import analyze_query, AnalyzedQuery
 from src.rag.hybrid_retriever import retrieve_candidates
 from src.rag.reranker import rerank_documents
 from src.rag.context_builder import build_context
-from src.prompts.intent_prompt import INTENT_ROUTER_PROMPT
+from src.router import get_router_service
 from src.prompts.answer_prompt import GROUNDED_ANSWER_PROMPT, GENERAL_ANSWER_PROMPT
 from src.prompts.validation_prompt import VALIDATION_PROMPT
 from src.tools.email_sender import EmailSender
@@ -73,51 +73,19 @@ def query_analysis_node(state: Dict[str, Any]) -> Dict[str, Any]:
 def router_node(state: Dict[str, Any]) -> Dict[str, Any]:
     question = state.get("rewritten_question") or state.get("question", "")
     analyzed_dict = state.get("analyzed_query", {})
-    q_lower = question.lower()
 
-    # Rule-based heuristics nhanh và chuẩn xác
-    # 1. Nhận diện TOOL_ACTION
-    if any(kw in q_lower for kw in ["nhắc tôi", "nhắc lịch", "hẹn giờ", "báo lịch", "đặt lịch nhắc"]):
-        logger.info("Router: Heuristic match -> TOOL_ACTION (SET_REMINDER)")
-        return {"category": "TOOL_ACTION", "tool_intent": "SET_REMINDER"}
+    router_service = get_router_service()
+    decision = router_service.classify(query=question, analyzed_query=analyzed_dict)
 
-    if any(kw in q_lower for kw in ["gửi email", "gửi mail", "soạn email", "send email"]):
-        logger.info("Router: Heuristic match -> TOOL_ACTION (SEND_EMAIL)")
-        return {"category": "TOOL_ACTION", "tool_intent": "SEND_EMAIL"}
-
-    # 2. Nhận diện DOMAIN_DATA
-    domain_keywords = [
-        "tín chỉ", "giảng viên", "ai dạy", "clo", "chuẩn đầu ra", "kế hoạch giảng dạy",
-        "mục tiêu", "đề cương", "quy chế", "quy định", "tốt nghiệp", "học phần",
-        "học kỳ", "chương trình đào tạo", "khung", "k19", "k18", "k17", "k20", "đại học đại nam"
-    ]
-    has_course_code = bool(analyzed_dict.get("course_code"))
-    has_domain_target = bool(analyzed_dict.get("targets"))
-    has_domain_kw = any(kw in q_lower for kw in domain_keywords)
-
-    if has_course_code or has_domain_target or has_domain_kw:
-        logger.info("Router: Heuristic match -> DOMAIN_DATA")
-        return {"category": "DOMAIN_DATA", "tool_intent": None}
-
-    # 3. Nhận diện GENERAL_LLM (chào hỏi, thuật toán chung)
-    general_keywords = ["dijkstra", "python", "java", "sql", "git", "rest api", "decorator", "xin chào", "hello", "bạn là ai"]
-    if any(kw in q_lower for kw in general_keywords):
-        logger.info("Router: Heuristic match -> GENERAL_LLM")
-        return {"category": "GENERAL_LLM", "tool_intent": None}
-
-    # 4. LLM Fallback nếu câu hỏi mơ hồ
-    try:
-        prompt = INTENT_ROUTER_PROMPT.format(question=question)
-        raw_res = invoke_llm(prompt, temperature=0.0).strip()
-        cleaned = re.sub(r"```json|```", "", raw_res).strip()
-        data = json.loads(cleaned)
-        cat = data.get("category", "DOMAIN_DATA").upper()
-        tool = data.get("tool_intent")
-        logger.info(f"Router LLM classification: category={cat}, tool={tool}")
-        return {"category": cat, "tool_intent": tool}
-    except Exception as e:
-        logger.warning(f"Router LLM error: {e}. Defaulting to DOMAIN_DATA")
-        return {"category": "DOMAIN_DATA", "tool_intent": None}
+    logger.info(
+        f"Router V2 Decision: category={decision.category}, "
+        f"tool={decision.tool_intent}, path={decision.decision_path}, "
+        f"reason={decision.reason_code}, confidence={decision.confidence}"
+    )
+    return {
+        "category": decision.category,
+        "tool_intent": decision.tool_intent,
+    }
 
 
 # ==============================================================================

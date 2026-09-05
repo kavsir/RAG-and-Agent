@@ -1,9 +1,9 @@
 # ADR-001: Layered Routing Architecture & Proximity-Based Tool Intent Detection
 
-- **Status**: PROPOSED
+- **Status**: ACCEPTED
 - **Date**: 2026-09-06
 - **Author**: AI Architecture Team / Agentic RAG
-- **Component**: `src/agent/nodes.py` (`router_node`), `src/rag/query_analyzer.py`
+- **Component**: `src/router/`, `src/agent/nodes.py` (`router_node`)
 
 ---
 
@@ -122,12 +122,17 @@ Input Query
 
 ---
 
-## 7. Metrics to Validate (Chỉ Số Kiểm Định Sau Khi Áp Dụng)
+## 7. Validated Metrics (Kết Quả Kiểm Định Thực Tế - Đã Đạt Chuẩn)
 
-1. `Router Accuracy`: $\ge 96.0\%$ trên Benchmark V2.
-2. `General Category Accuracy`: $\ge 90.0\%$ (hiện tại 40.0% do 3 ca lỗi).
-3. `Tool Category Accuracy`: $100.0\%$ (hiện tại 80.0%).
-4. Không làm suy giảm `Domain Category Accuracy` (giữ vững $\ge 95\%$).
+1. `Benchmark V2 Router Accuracy`: **100.0% (62/62)** (Vượt cam kết $\ge 96.0\%$, baseline cũ: 95.16%).
+2. `General Category Accuracy`: **100.0% (6/6)** (Vượt cam kết $\ge 90.0\%$, baseline cũ: 40.0%).
+3. `Tool Category Accuracy`: **100.0% (6/6)** (Vượt cam kết $100.0\%$, baseline cũ: 80.0%).
+4. `Domain Category Recall`: **100.0% (50/50)** (Bảo toàn tuyệt đối $\ge 95.0\%$).
+5. `Holdout Unseen Dataset Accuracy`: **100.0% (41/41)** (Vượt cam kết $\ge 90.0\%$).
+6. `Fast-Path Latency`: **0.23 ms mean** (P95: **0.38 ms** $\ll 5.0$ ms).
+7. `Semantic-Path Latency`: **46.94 ms mean** (P95: **69.62 ms** $\le 150.0$ ms).
+8. `External API Calls`: **0 calls** (Hoàn toàn cục bộ, 0 chi phí token).
+9. `Chi tiết báo cáo`: Xem [`docs/ROUTER_V2_REPORT.md`](../ROUTER_V2_REPORT.md).
 
 ---
 
