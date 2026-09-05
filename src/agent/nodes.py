@@ -28,16 +28,29 @@ logger = logging.getLogger(__name__)
 _email_sender = EmailSender()
 
 
+def _compute_profile_fingerprint(profile: Optional[Dict[str, Any]]) -> Optional[str]:
+    """Tính toán fingerprint an toàn của các thuộc tính hồ sơ ảnh hưởng đến câu trả lời."""
+    if not profile:
+        return None
+    parts = []
+    for k in sorted(["response_style", "preferred_language", "major", "cohort"]):
+        if profile.get(k):
+            parts.append(f"{k}:{profile[k]}")
+    return "|".join(parts) if parts else None
+
+
 # ==============================================================================
 # 1. CACHE NODE
 # ==============================================================================
 def cache_node(state: Dict[str, Any]) -> Dict[str, Any]:
     question = state.get("question", "").strip()
+    profile = state.get("student_profile", {})
+    fingerprint = _compute_profile_fingerprint(profile)
     cache = get_exact_cache()
-    cached_entry = cache.get(question)
+    cached_entry = cache.get(question, profile_fingerprint=fingerprint)
 
     if cached_entry:
-        logger.info(f"Exact Cache HIT cho cau hoi: '{question[:50]}'")
+        logger.info(f"Exact Cache HIT cho cau hoi: '{question[:50]}' (fingerprint={fingerprint})")
         return {
             "cache_hit": True,
             "answer": cached_entry["answer"],
@@ -47,7 +60,7 @@ def cache_node(state: Dict[str, Any]) -> Dict[str, Any]:
             "retry_count": 0,
         }
 
-    logger.debug("Cache MISS")
+    logger.debug(f"Cache MISS (fingerprint={fingerprint})")
     return {"cache_hit": False, "retry_count": 0}
 
 
@@ -427,6 +440,9 @@ def save_chat_node(state: Dict[str, Any]) -> Dict[str, Any]:
     analyzed = state.get("analyzed_query")
 
     # Lưu Exact Cache nếu chưa có và không phải câu từ chối
+    profile = state.get("student_profile", {})
+    fingerprint = _compute_profile_fingerprint(profile)
+
     if not cache_hit and answer and "chưa tìm thấy đủ dữ liệu" not in answer.lower():
         cache = get_exact_cache()
         cache.set(
@@ -435,6 +451,7 @@ def save_chat_node(state: Dict[str, Any]) -> Dict[str, Any]:
             category=category,
             sources=sources,
             tool_intent=tool_intent,
+            profile_fingerprint=fingerprint,
         )
 
     # Lưu vào Memory Manager theo đúng conversation_id

@@ -4,6 +4,7 @@ SQLite Session Store: Hiện thực hóa SessionStore bằng cơ sở dữ liệ
 """
 import sqlite3
 import json
+import uuid
 import logging
 import datetime
 import threading
@@ -11,15 +12,16 @@ from pathlib import Path
 from typing import Optional, Dict, Any, List
 
 from src.config.settings import settings
-from src.memory.store import SessionStore
+from src.memory.store import SessionStore, PersonalStore
 from src.memory.session_models import SessionRecord, SessionMessage, SessionState
+from src.memory.personal_models import PersonalFact, MemoryEvent
 
 logger = logging.getLogger(__name__)
 
 
-class SQLiteSessionStore(SessionStore):
+class SQLiteSessionStore(SessionStore, PersonalStore):
     """
-    Kho lưu trữ phiên hội thoại dựa trên SQLite cục bộ (`runtime/advisor_memory.db`).
+    Kho lưu trữ phiên hội thoại và sự thật cá nhân dựa trên SQLite cục bộ (`runtime/advisor_memory.db`).
     """
 
     def __init__(self, db_path: Optional[Path] = None):
@@ -102,6 +104,54 @@ class SQLiteSessionStore(SessionStore):
                     FOREIGN KEY (conversation_id) REFERENCES sessions(conversation_id) ON DELETE CASCADE
                 );
             """)
+
+            # Đảm bảo bảng sessions có cột user_id
+            cur = conn.execute("PRAGMA table_info(sessions);")
+            cols = [row["name"] for row in cur.fetchall()]
+            if "user_id" not in cols:
+                conn.execute("ALTER TABLE sessions ADD COLUMN user_id TEXT DEFAULT 'local-user';")
+
+            # Bảng lưu trữ sự thật cá nhân bền vững
+            conn.execute("""
+                CREATE TABLE IF NOT EXISTS personal_facts (
+                    id TEXT PRIMARY KEY,
+                    user_id TEXT NOT NULL,
+                    fact_key TEXT NOT NULL,
+                    value_json TEXT NOT NULL,
+                    source_type TEXT NOT NULL,
+                    confidence REAL DEFAULT 1.0,
+                    created_at TEXT NOT NULL,
+                    updated_at TEXT NOT NULL,
+                    expires_at TEXT,
+                    status TEXT NOT NULL DEFAULT 'ACTIVE',
+                    UNIQUE(user_id, fact_key)
+                );
+            """)
+
+            conn.execute("""
+                CREATE INDEX IF NOT EXISTS idx_personal_facts_user_status
+                ON personal_facts(user_id, status);
+            """)
+
+            # Bảng kiểm toán vòng đời biến động sự thật (Audit Events)
+            conn.execute("""
+                CREATE TABLE IF NOT EXISTS memory_events (
+                    id TEXT PRIMARY KEY,
+                    user_id TEXT NOT NULL,
+                    event_type TEXT NOT NULL,
+                    fact_key TEXT NOT NULL,
+                    old_value_json TEXT,
+                    new_value_json TEXT,
+                    source_type TEXT NOT NULL,
+                    created_at TEXT NOT NULL
+                );
+            """)
+
+            conn.execute("""
+                CREATE INDEX IF NOT EXISTS idx_memory_events_user
+                ON memory_events(user_id, created_at);
+            """)
+
             conn.commit()
         logger.info(f"SQLiteSessionStore: Khoi tao CSDL thanh cong tai {self.db_path}")
 
@@ -112,14 +162,15 @@ class SQLiteSessionStore(SessionStore):
     ) -> SessionRecord:
         """Tạo phiên hội thoại mới nếu chưa tồn tại."""
         now_iso = datetime.datetime.now(datetime.timezone.utc).isoformat()
+        user_id = (metadata or {}).get("user_id", "local-user")
         meta_str = json.dumps(metadata, ensure_ascii=False) if metadata else None
 
         with self._get_connection() as conn:
             conn.execute("""
                 INSERT OR IGNORE INTO sessions
-                (conversation_id, created_at, updated_at, last_activity_at, status, metadata_json)
-                VALUES (?, ?, ?, ?, 'active', ?);
-            """, (conversation_id, now_iso, now_iso, now_iso, meta_str))
+                (conversation_id, user_id, created_at, updated_at, last_activity_at, status, metadata_json)
+                VALUES (?, ?, ?, ?, ?, 'active', ?);
+            """, (conversation_id, user_id, now_iso, now_iso, now_iso, meta_str))
 
             conn.execute("""
                 INSERT OR IGNORE INTO session_states
@@ -342,3 +393,192 @@ class SQLiteSessionStore(SessionStore):
             )
             conn.commit()
             return cur.rowcount > 0
+
+    # =========================================================================
+    # PERSONAL STORE IMPLEMENTATION
+    # =========================================================================
+    def upsert_personal_fact(
+        self,
+        user_id: str,
+        fact_key: str,
+        value: Any,
+        source_type: str,
+        confidence: float = 1.0,
+    ) -> PersonalFact:
+        """Thêm mới hoặc cập nhật sự thật cá nhân của người dùng."""
+        now_dt = datetime.datetime.now(datetime.timezone.utc)
+        now_iso = now_dt.isoformat()
+        val_str = json.dumps(value, ensure_ascii=False)
+
+        with self._get_connection() as conn:
+            cur = conn.execute(
+                "SELECT id, created_at FROM personal_facts WHERE user_id = ? AND fact_key = ?;",
+                (user_id, fact_key),
+            )
+            row = cur.fetchone()
+            if row:
+                fact_id = row["id"]
+                created_iso = row["created_at"]
+                conn.execute("""
+                    UPDATE personal_facts
+                    SET value_json = ?,
+                        source_type = ?,
+                        confidence = ?,
+                        updated_at = ?,
+                        status = 'ACTIVE'
+                    WHERE id = ?;
+                """, (val_str, source_type, confidence, now_iso, fact_id))
+            else:
+                fact_id = str(uuid.uuid4())
+                created_iso = now_iso
+                conn.execute("""
+                    INSERT INTO personal_facts (
+                        id, user_id, fact_key, value_json, source_type, confidence, created_at, updated_at, status
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'ACTIVE');
+                """, (fact_id, user_id, fact_key, val_str, source_type, confidence, now_iso, now_iso))
+            conn.commit()
+
+        return PersonalFact(
+            id=fact_id,
+            user_id=user_id,
+            fact_key=fact_key,
+            value=value,
+            source_type=source_type,
+            confidence=confidence,
+            created_at=datetime.datetime.fromisoformat(created_iso),
+            updated_at=now_dt,
+            status="ACTIVE",
+        )
+
+    def get_personal_fact(self, user_id: str, fact_key: str) -> Optional[PersonalFact]:
+        """Lấy một sự thật cá nhân đang hoạt động (ACTIVE) theo khóa."""
+        with self._get_connection() as conn:
+            cur = conn.execute(
+                "SELECT * FROM personal_facts WHERE user_id = ? AND fact_key = ? AND status = 'ACTIVE';",
+                (user_id, fact_key),
+            )
+            row = cur.fetchone()
+            if not row:
+                return None
+            return PersonalFact(
+                id=row["id"],
+                user_id=row["user_id"],
+                fact_key=row["fact_key"],
+                value=json.loads(row["value_json"]),
+                source_type=row["source_type"],
+                confidence=float(row["confidence"]),
+                created_at=datetime.datetime.fromisoformat(row["created_at"]),
+                updated_at=datetime.datetime.fromisoformat(row["updated_at"]),
+                status=row["status"],
+            )
+
+    def get_all_personal_facts(self, user_id: str, status: str = "ACTIVE") -> List[PersonalFact]:
+        """Lấy tất cả các sự thật cá nhân của người dùng."""
+        with self._get_connection() as conn:
+            if status == "ALL":
+                cur = conn.execute(
+                    "SELECT * FROM personal_facts WHERE user_id = ? ORDER BY fact_key ASC;",
+                    (user_id,),
+                )
+            else:
+                cur = conn.execute(
+                    "SELECT * FROM personal_facts WHERE user_id = ? AND status = ? ORDER BY fact_key ASC;",
+                    (user_id, status),
+                )
+            rows = cur.fetchall()
+            facts = []
+            for row in rows:
+                facts.append(
+                    PersonalFact(
+                        id=row["id"],
+                        user_id=row["user_id"],
+                        fact_key=row["fact_key"],
+                        value=json.loads(row["value_json"]),
+                        source_type=row["source_type"],
+                        confidence=float(row["confidence"]),
+                        created_at=datetime.datetime.fromisoformat(row["created_at"]),
+                        updated_at=datetime.datetime.fromisoformat(row["updated_at"]),
+                        status=row["status"],
+                    )
+                )
+            return facts
+
+    def delete_personal_fact(self, user_id: str, fact_key: str) -> bool:
+        """Xóa một sự thật cá nhân cụ thể của người dùng."""
+        with self._get_connection() as conn:
+            cur = conn.execute(
+                "DELETE FROM personal_facts WHERE user_id = ? AND fact_key = ?;",
+                (user_id, fact_key),
+            )
+            conn.commit()
+            return cur.rowcount > 0
+
+    def clear_personal_facts(self, user_id: str) -> int:
+        """Xóa toàn bộ sự thật cá nhân của người dùng."""
+        with self._get_connection() as conn:
+            cur = conn.execute(
+                "DELETE FROM personal_facts WHERE user_id = ?;",
+                (user_id,),
+            )
+            conn.commit()
+            return cur.rowcount
+
+    def log_memory_event(
+        self,
+        user_id: str,
+        event_type: str,
+        fact_key: str,
+        old_value: Optional[Any],
+        new_value: Optional[Any],
+        source_type: str,
+    ) -> MemoryEvent:
+        """Ghi nhận nhật ký kiểm toán biến động bộ nhớ."""
+        now_dt = datetime.datetime.now(datetime.timezone.utc)
+        now_iso = now_dt.isoformat()
+        evt_id = str(uuid.uuid4())
+        old_str = json.dumps(old_value, ensure_ascii=False) if old_value is not None else None
+        new_str = json.dumps(new_value, ensure_ascii=False) if new_value is not None else None
+
+        with self._get_connection() as conn:
+            conn.execute("""
+                INSERT INTO memory_events (
+                    id, user_id, event_type, fact_key, old_value_json, new_value_json, source_type, created_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+            """, (evt_id, user_id, event_type, fact_key, old_str, new_str, source_type, now_iso))
+            conn.commit()
+
+        return MemoryEvent(
+            id=evt_id,
+            user_id=user_id,
+            event_type=event_type,
+            fact_key=fact_key,
+            old_value=old_value,
+            new_value=new_value,
+            source_type=source_type,
+            created_at=now_dt,
+        )
+
+    def get_memory_events(self, user_id: str, limit: int = 50) -> List[MemoryEvent]:
+        """Lấy danh sách nhật ký kiểm toán bộ nhớ."""
+        with self._get_connection() as conn:
+            cur = conn.execute(
+                "SELECT * FROM memory_events WHERE user_id = ? ORDER BY created_at DESC LIMIT ?;",
+                (user_id, limit),
+            )
+            rows = cur.fetchall()
+            events = []
+            for row in rows:
+                events.append(
+                    MemoryEvent(
+                        id=row["id"],
+                        user_id=row["user_id"],
+                        event_type=row["event_type"],
+                        fact_key=row["fact_key"],
+                        old_value=json.loads(row["old_value_json"]) if row["old_value_json"] else None,
+                        new_value=json.loads(row["new_value_json"]) if row["new_value_json"] else None,
+                        source_type=row["source_type"],
+                        created_at=datetime.datetime.fromisoformat(row["created_at"]),
+                    )
+                )
+            return events
+

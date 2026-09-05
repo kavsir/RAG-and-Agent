@@ -1,11 +1,13 @@
 """
-Memory Manager V2: Điều phối các tầng bộ nhớ (Session Memory, Student Profile và Legacy Vector).
-Được thiết kế theo cấu trúc module để sẵn sàng tích hợp Personal Memory và Episodic Memory trong tương lai.
+Memory Manager V2: Điều phối các tầng bộ nhớ (Session Memory, Personal Memory, Student Profile và Legacy Vector).
+Được thiết kế theo kiến trúc đa tầng (ADR-002), tách bạch Working Memory, Session Memory, Personal Memory.
 """
-from typing import Optional, List, Any
+from typing import Optional, List, Any, Dict
 from src.memory.session_memory import SessionMemoryService
+from src.memory.personal_memory import PersonalMemoryService
 from src.memory.student_memory import StudentMemory
 from src.memory.session_models import SessionState, SessionMessage
+from src.memory.personal_models import MemoryWriteResult
 from src.memory.chat_memory import ChatMemory
 from src.memory.vector_memory import VectorMemory
 
@@ -14,17 +16,27 @@ class MemoryManager:
     """
     Điều phối các dịch vụ bộ nhớ:
     - session: SessionMemoryService (SQLite cục bộ, phân vùng theo conversation_id)
-    - profile: StudentMemory (hồ sơ sinh viên cá nhân hóa)
+    - personal: PersonalMemoryService (SQLite cục bộ, phân vùng theo user_id)
+    - legacy_profile: StudentMemory (hồ sơ sinh viên legacy)
     - legacy_chat: ChatMemory (lưu trữ legacy phục vụ tương thích ngược)
     - legacy_vector: VectorMemory (LEGACY / NOT ACTIVE IN SESSION V2)
     """
 
     def __init__(self):
         self.session = SessionMemoryService()
-        self.profile = StudentMemory()
+        self.personal = PersonalMemoryService(store=self.session.store)
+        self.legacy_profile = StudentMemory()
+        # Giữ thuộc tính profile trỏ về legacy_profile để bảo toàn tương thích ngược
+        self.profile = self.legacy_profile
         self.legacy_chat = ChatMemory()
         # LEGACY / NOT ACTIVE IN SESSION V2
         self.legacy_vector = VectorMemory()
+
+        # Thực hiện di chuyển an toàn hồ sơ legacy nếu có (loại bỏ placeholders)
+        try:
+            self.personal.migrate_legacy_profile(user_id="local-user")
+        except Exception:
+            pass
 
     def update(
         self,
@@ -89,6 +101,48 @@ class MemoryManager:
     def clear(self):
         """Xóa legacy chat history (giữ lại các phiên SQLite)."""
         self.legacy_chat.clear()
+
+    # =========================================================================
+    # PERSONAL MEMORY DELEGATION
+    # =========================================================================
+    def get_personal_profile(self, user_id: str = "local-user") -> Dict[str, Any]:
+        """Lấy toàn bộ thông tin cá nhân đang hoạt động của người dùng."""
+        return self.personal.get_user_profile(user_id=user_id)
+
+    def get_relevant_profile_context(
+        self,
+        query: str,
+        category: str = "DOMAIN_DATA",
+        user_id: str = "local-user",
+    ) -> Dict[str, Any]:
+        """Tiêm ngữ cảnh cá nhân hóa tối thiểu."""
+        return self.personal.get_relevant_profile_context(query=query, category=category, user_id=user_id)
+
+    def process_personal_memory(
+        self,
+        user_id: str,
+        message: str,
+    ) -> List[MemoryWriteResult]:
+        """Trích xuất và xử lý ứng viên sự thật cá nhân từ tin nhắn."""
+        return self.personal.process_user_message(user_id=user_id, message=message)
+
+    def set_personal_fact(
+        self,
+        user_id: str,
+        fact_key: str,
+        value: Any,
+        source_type: str = "PROFILE_API",
+    ) -> MemoryWriteResult:
+        """Cập nhật một sự thật cá nhân có định kiểu."""
+        return self.personal.set_profile_fact(user_id=user_id, fact_key=fact_key, value=value, source_type=source_type)
+
+    def delete_personal_fact(self, user_id: str, fact_key: str) -> bool:
+        """Xóa một sự thật cá nhân."""
+        return self.personal.delete_fact(user_id=user_id, fact_key=fact_key)
+
+    def clear_personal_memory(self, user_id: str) -> int:
+        """Xóa toàn bộ sự thật cá nhân của người dùng."""
+        return self.personal.clear_memory(user_id=user_id)
 
 
 _memory_manager_singleton: Optional[MemoryManager] = None

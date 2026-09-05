@@ -1,0 +1,386 @@
+{
+  "overall_accuracy": 100.0,
+  "overall_passed": 60,
+  "total_cases": 60,
+  "metrics": {
+    "explicit_fact_write_accuracy": 100.0,
+    "profile_api_update_accuracy": 100.0,
+    "cross_session_recall": 100.0,
+    "preference_personalization": 100.0,
+    "fact_update_accuracy": 100.0,
+    "delete_accuracy": 100.0,
+    "clear_profile_accuracy": 100.0,
+    "placeholder_rejection": 100.0,
+    "academic_claim_rejection": 100.0,
+    "authority_conflict": 100.0,
+    "principal_isolation": 100.0
+  },
+  "latencies_p95_ms": {
+    "read": 0.07,
+    "write": 1.59,
+    "delete": 0.24,
+    "context": 0.08
+  },
+  "cases": [
+    {
+      "id": "case-a-01",
+      "group": "explicit_fact_save",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "case-a-02",
+      "group": "explicit_fact_save",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "case-a-03",
+      "group": "explicit_fact_save",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "case-a-04",
+      "group": "explicit_fact_save",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "case-a-05",
+      "group": "explicit_fact_save",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "case-a-06",
+      "group": "explicit_fact_save",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "case-a-07",
+      "group": "explicit_fact_save",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "case-b-01",
+      "group": "profile_update_api",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "case-b-02",
+      "group": "profile_update_api",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "case-b-03",
+      "group": "profile_update_api",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "case-b-04",
+      "group": "profile_update_api",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "case-b-05",
+      "group": "profile_update_api",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "case-c-01",
+      "group": "cross_session_recall",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "case-c-02",
+      "group": "cross_session_recall",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "case-c-03",
+      "group": "cross_session_recall",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "case-c-04",
+      "group": "cross_session_recall",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "case-c-05",
+      "group": "cross_session_recall",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "case-d-01",
+      "group": "preference_personalization",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "case-d-02",
+      "group": "preference_personalization",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "case-d-03",
+      "group": "preference_personalization",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "case-d-04",
+      "group": "preference_personalization",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "case-d-05",
+      "group": "preference_personalization",
+      "passed": true,
+      "detail": "fp_a=response_style:concise, fp_b=response_style:detailed"
+    },
+    {
+      "id": "case-e-01",
+      "group": "fact_update",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "case-e-02",
+      "group": "fact_update",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "case-e-03",
+      "group": "fact_update",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "case-e-04",
+      "group": "fact_update",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "case-e-05",
+      "group": "fact_update",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "case-f-01",
+      "group": "forget_one_fact",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "case-f-02",
+      "group": "forget_one_fact",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "case-f-03",
+      "group": "forget_one_fact",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "case-f-04",
+      "group": "forget_one_fact",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "case-f-05",
+      "group": "forget_one_fact",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "case-g-01",
+      "group": "clear_profile",
+      "passed": true,
+      "detail": "Cleared: 4, profile: {}"
+    },
+    {
+      "id": "case-g-02",
+      "group": "clear_profile",
+      "passed": true,
+      "detail": "Messages count: 2"
+    },
+    {
+      "id": "case-g-03",
+      "group": "clear_profile",
+      "passed": true,
+      "detail": "Chroma path intact check"
+    },
+    {
+      "id": "case-g-04",
+      "group": "clear_profile",
+      "passed": true,
+      "detail": "Audit event DELETE_ALL in [MemoryEvent(id='3e2fb5e3-28c4-4259-a816-7b3f551445e9', user_id='test-user-g', event_type='DELETE_ALL', fact_key='*', old_value='count=1', new_value=None, source_type='USER_REQUEST', created_at=datetime.datetime(2026, 9, 5, 20, 22, 15, 210124, tzinfo=datetime.timezone.utc)), MemoryEvent(id='c08644cb-7c1f-4fb0-a343-04ed8cb5f15a', user_id='test-user-g', event_type='CREATED', fact_key='cohort', old_value=None, new_value='K19', source_type='PROFILE_API', created_at=datetime.datetime(2026, 9, 5, 20, 22, 15, 210124, tzinfo=datetime.timezone.utc)), MemoryEvent(id='a2afbc67-9915-4506-8df2-884eebe0d05e', user_id='test-user-g', event_type='DELETE_ALL', fact_key='*', old_value='count=4', new_value=None, source_type='USER_REQUEST', created_at=datetime.datetime(2026, 9, 5, 20, 22, 15, 209123, tzinfo=datetime.timezone.utc)), MemoryEvent(id='020c1a54-b7dc-4c6a-8835-afe609582993', user_id='test-user-g', event_type='CREATED', fact_key='response_style', old_value=None, new_value='concise', source_type='PROFILE_API', created_at=datetime.datetime(2026, 9, 5, 20, 22, 15, 209123, tzinfo=datetime.timezone.utc)), MemoryEvent(id='b0447a75-8c03-42fe-b936-c536d8a84d84', user_id='test-user-g', event_type='CREATED', fact_key='cohort', old_value=None, new_value='K19', source_type='PROFILE_API', created_at=datetime.datetime(2026, 9, 5, 20, 22, 15, 208124, tzinfo=datetime.timezone.utc))]"
+    },
+    {
+      "id": "case-h-01",
+      "group": "placeholder_rejection",
+      "passed": true,
+      "detail": "Summary: {'migrated': [], 'ignored_placeholders': ['name=Sinh viên CNTT'], 'rejected': []}"
+    },
+    {
+      "id": "case-h-02",
+      "group": "placeholder_rejection",
+      "passed": true,
+      "detail": "Summary: {'migrated': [], 'ignored_placeholders': ['email=student@dainam.edu.vn'], 'rejected': []}"
+    },
+    {
+      "id": "case-h-03",
+      "group": "placeholder_rejection",
+      "passed": true,
+      "detail": "Summary: {'migrated': [], 'ignored_placeholders': ['cohort=K19'], 'rejected': []}"
+    },
+    {
+      "id": "case-h-04",
+      "group": "placeholder_rejection",
+      "passed": true,
+      "detail": "Summary: {'migrated': [], 'ignored_placeholders': ['style=Thực hành'], 'rejected': []}"
+    },
+    {
+      "id": "case-h-05",
+      "group": "placeholder_rejection",
+      "passed": true,
+      "detail": "Summary: {'migrated': [], 'ignored_placeholders': ['major=Công nghệ thông tin'], 'rejected': []}"
+    },
+    {
+      "id": "case-h-06",
+      "group": "placeholder_rejection",
+      "passed": true,
+      "detail": "Facts count in db: 0"
+    },
+    {
+      "id": "case-i-01",
+      "group": "academic_claim_rejection",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "case-i-02",
+      "group": "academic_claim_rejection",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "case-i-03",
+      "group": "academic_claim_rejection",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "case-i-04",
+      "group": "academic_claim_rejection",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "case-i-05",
+      "group": "academic_claim_rejection",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "case-i-06",
+      "group": "academic_claim_rejection",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "case-i-07",
+      "group": "academic_claim_rejection",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "case-i-08",
+      "group": "academic_claim_rejection",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "case-j-01",
+      "group": "authority_conflict",
+      "passed": true,
+      "detail": "Academic authority: 2 tín chỉ (OFFICIAL_RAG)"
+    },
+    {
+      "id": "case-j-02",
+      "group": "authority_conflict",
+      "passed": true,
+      "detail": "Academic authority: Thầy Nguyễn Văn Nhẫn (OFFICIAL_RAG)"
+    },
+    {
+      "id": "case-j-03",
+      "group": "authority_conflict",
+      "passed": true,
+      "detail": "Personal preference authority: concise (CURRENT_EXPLICIT_STATEMENT)"
+    },
+    {
+      "id": "case-j-04",
+      "group": "authority_conflict",
+      "passed": true,
+      "detail": "Personal preference authority: concise (STORED_PERSONAL_MEMORY)"
+    },
+    {
+      "id": "case-j-05",
+      "group": "authority_conflict",
+      "passed": true,
+      "detail": "Entity authority: FIT4104 (CURRENT_EXPLICIT_QUERY)"
+    },
+    {
+      "id": "case-k-01",
+      "group": "principal_isolation",
+      "passed": true,
+      "detail": "A=Alice, B=Bob"
+    },
+    {
+      "id": "case-k-02",
+      "group": "principal_isolation",
+      "passed": true,
+      "detail": "A=K18, B=K20"
+    },
+    {
+      "id": "case-k-03",
+      "group": "principal_isolation",
+      "passed": true,
+      "detail": "A=concise, B=detailed"
+    },
+    {
+      "id": "case-k-04",
+      "group": "principal_isolation",
+      "passed": true,
+      "detail": "Profile B after A deleted: {'cohort': 'K20', 'preferred_name': 'Bob', 'response_style': 'detailed'}"
+    },
+    {
+      "id": "case-k-05",
+      "group": "principal_isolation",
+      "passed": true,
+      "detail": "Profile B length: 3"
+    }
+  ]
+}

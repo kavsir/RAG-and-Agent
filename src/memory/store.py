@@ -5,6 +5,7 @@ Tách biệt hoàn toàn logic nghiệp vụ của LangGraph Agent khỏi cơ s�
 from abc import ABC, abstractmethod
 from typing import Optional, Dict, Any, List
 from src.memory.session_models import SessionRecord, SessionMessage, SessionState
+from src.memory.personal_models import PersonalFact, MemoryEvent
 
 
 class SessionStore(ABC):
@@ -72,3 +73,58 @@ class SessionStore(ABC):
     def close(self) -> None:
         """Đóng kết nối kho lưu trữ an toàn."""
         pass
+
+
+class PersonalStore(ABC):
+    """Giao diện trừu tượng cho kho lưu trữ sự thật cá nhân và kiểm toán vòng đời."""
+
+    @abstractmethod
+    def upsert_personal_fact(
+        self,
+        user_id: str,
+        fact_key: str,
+        value: Any,
+        source_type: str,
+        confidence: float = 1.0,
+    ) -> PersonalFact:
+        """Thêm mới hoặc cập nhật sự thật cá nhân của người dùng."""
+        pass
+
+    @abstractmethod
+    def get_personal_fact(self, user_id: str, fact_key: str) -> Optional[PersonalFact]:
+        """Lấy một sự thật cá nhân đang hoạt động (ACTIVE) theo khóa."""
+        pass
+
+    @abstractmethod
+    def get_all_personal_facts(self, user_id: str, status: str = "ACTIVE") -> List[PersonalFact]:
+        """Lấy tất cả các sự thật cá nhân của người dùng."""
+        pass
+
+    @abstractmethod
+    def delete_personal_fact(self, user_id: str, fact_key: str) -> bool:
+        """Xóa mềm hoặc xóa cứng một sự thật cá nhân cụ thể."""
+        pass
+
+    @abstractmethod
+    def clear_personal_facts(self, user_id: str) -> int:
+        """Xóa toàn bộ sự thật cá nhân của người dùng."""
+        pass
+
+    @abstractmethod
+    def log_memory_event(
+        self,
+        user_id: str,
+        event_type: str,
+        fact_key: str,
+        old_value: Optional[Any],
+        new_value: Optional[Any],
+        source_type: str,
+    ) -> MemoryEvent:
+        """Ghi nhận nhật ký kiểm toán biến động bộ nhớ."""
+        pass
+
+    @abstractmethod
+    def get_memory_events(self, user_id: str, limit: int = 50) -> List[MemoryEvent]:
+        """Lấy danh sách nhật ký kiểm toán bộ nhớ."""
+        pass
+

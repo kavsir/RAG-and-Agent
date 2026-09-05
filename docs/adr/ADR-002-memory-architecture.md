@@ -1,9 +1,9 @@
 # ADR-002: Multi-Layer Memory Architecture & Structured Session State
 
-- **Status**: PARTIALLY_ACCEPTED (Session Memory Foundation: ACCEPTED; Personal & Episodic: PROPOSED)
+- **Status**: PARTIALLY_ACCEPTED (Session Memory: ACCEPTED; Personal Memory: ACCEPTED; Episodic & Skill: PROPOSED)
 - **Date**: 2026-09-06
 - **Author**: AI Architecture Team / Agentic RAG
-- **Component**: `src/memory/`, `src/rag/query_analyzer.py`, `src/agent/state.py`, `src/api/routes.py`
+- **Component**: `src/memory/`, `src/identity/`, `src/rag/query_analyzer.py`, `src/agent/state.py`, `src/api/routes.py`
 
 ---
 
@@ -184,4 +184,37 @@ Giữ nguyên interface của `get_memory_manager()`. Nếu SQLite gặp sự c�
   - SQLite Write Latency (P95): **1.54 ms** [Gate: $< 10$ ms]
   - External API calls consumed: **0**
 - **Live DeepSeek Regression**: 3 multi-turn scenarios verified via `POST /api/chat`, 14 LLM calls consumed under strict cost control.
+
+---
+
+## 8. Implementation & Verification Record (Round C Completed - Personal Memory & Authority Resolver)
+
+- **Date of Acceptance**: 2026-09-06
+- **Implementation Subsystem**:
+  - `src/identity/`: `PrincipalContext`, `resolve_principal` providing deterministic principal identity resolution.
+  - `src/memory/personal_models.py`: Strongly-typed schemas (`PersonalFact`, `MemoryEvent`, `MemoryWriteResult`), strict whitelist (`SUPPORTED_FACT_KEYS`), and placeholder default dictionary.
+  - `src/memory/personal_policy.py`: Deterministic candidate extraction, whitelist validation, academic claim rejection, transient/emotional state rejection, sensitive domain rejection, and normalization. Zero external API calls.
+  - `src/memory/authority_resolver.py`: Domain-specific authority resolver (`resolve_academic_fact`: Official RAG > Personal Memory > Session State; `resolve_personal_preference`: Current explicit request > Stored personal memory > System default; `resolve_conversation_entity`: Current explicit query > Session state > Personal memory).
+  - `src/memory/personal_memory.py`: `PersonalMemoryService` orchestrating storage, policy enforcement, lifecycle audit logging, safe legacy migration (filtering placeholder defaults), and minimal relevant context injection.
+  - `src/cache/exact_cache.py` & `src/agent/nodes.py`: Profile fingerprinting (`_compute_profile_fingerprint`) ensuring that user personalization never corrupts or collides with cached responses of other users.
+- **Benchmark Results (eval/memory/run_personal_eval.py - 60 cases across 11 groups)**:
+  - Explicit Fact Write Accuracy: **100.0% (7/7)** [Gate: $\ge 95\%$]
+  - Profile API Update Accuracy: **100.0% (5/5)** [Gate: $\ge 95\%$]
+  - Cross-session Personal Recall: **100.0% (5/5)** [Gate: $= 100\%$]
+  - Preference Personalization: **100.0% (5/5)** [Gate: $\ge 95\%$]
+  - Fact Update Accuracy: **100.0% (5/5)** [Gate: $\ge 95\%$]
+  - Forget One Fact Accuracy: **100.0% (5/5)** [Gate: $= 100\%$]
+  - Clear Profile Accuracy: **100.0% (4/4)** [Gate: $= 100\%$]
+  - System Default Rejection: **100.0% (6/6)** [Gate: $= 100\%$]
+  - Academic Claim Rejection: **100.0% (8/8)** [Gate: $= 100\%$]
+  - Authority Conflict Resolution: **100.0% (5/5)** [Gate: $= 100\%$]
+  - Principal Service Isolation: **100.0% (5/5)** [Gate: $= 100\%$]
+  - Overall Benchmark Passed: **100.0% (60/60)**
+  - Personal Fact Read Latency (P95): **0.07 ms** [Gate: $< 10$ ms]
+  - Personal Fact Write Latency (P95): **1.59 ms** [Gate: $< 10$ ms]
+  - Personal Fact Delete Latency (P95): **0.24 ms** [Gate: $< 10$ ms]
+  - Minimal Context Generation (P95): **0.08 ms** [Gate: $< 10$ ms]
+  - External API calls consumed: **0**
+- **Live DeepSeek Regression**: 3 targeted scenarios verified (`response_style=concise`, `cohort=K19`, and academic authority dispute), 8 LLM calls consumed under strict cost policy.
+
 

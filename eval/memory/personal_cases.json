@@ -1,0 +1,634 @@
+[
+  {
+    "id": "case-a-01",
+    "group": "explicit_fact_save",
+    "user_id": "test-user-a",
+    "input_message": "Từ giờ gọi tôi là Tuấn Phong nhé",
+    "expected_allowed": true,
+    "expected_fact_key": "preferred_name",
+    "expected_value": "Tuấn Phong",
+    "expected_action": "CREATED",
+    "expected_source": "EXPLICIT_USER"
+  },
+  {
+    "id": "case-a-02",
+    "group": "explicit_fact_save",
+    "user_id": "test-user-a",
+    "input_message": "Tôi học CNTT khóa K19",
+    "expected_allowed": true,
+    "expected_fact_key": "cohort",
+    "expected_value": "K19",
+    "expected_action": "CREATED",
+    "expected_source": "EXPLICIT_USER"
+  },
+  {
+    "id": "case-a-03",
+    "group": "explicit_fact_save",
+    "user_id": "test-user-a",
+    "input_message": "Tôi đang học kỳ 5",
+    "expected_allowed": true,
+    "expected_fact_key": "current_semester",
+    "expected_value": 5,
+    "expected_action": "CREATED",
+    "expected_source": "EXPLICIT_USER"
+  },
+  {
+    "id": "case-a-04",
+    "group": "explicit_fact_save",
+    "user_id": "test-user-a",
+    "input_message": "Hãy trả lời ngắn gọn súc tích",
+    "expected_allowed": true,
+    "expected_fact_key": "response_style",
+    "expected_value": "concise",
+    "expected_action": "CREATED",
+    "expected_source": "EXPLICIT_USER"
+  },
+  {
+    "id": "case-a-05",
+    "group": "explicit_fact_save",
+    "user_id": "test-user-a",
+    "input_message": "Ưu tiên trả lời bằng tiếng Anh nhé",
+    "expected_allowed": true,
+    "expected_fact_key": "preferred_language",
+    "expected_value": "tiếng anh",
+    "expected_action": "CREATED",
+    "expected_source": "EXPLICIT_USER"
+  },
+  {
+    "id": "case-a-06",
+    "group": "explicit_fact_save",
+    "user_id": "test-user-a",
+    "input_message": "Mục tiêu học tập của tôi là trở thành Kỹ sư AI",
+    "expected_allowed": true,
+    "expected_fact_key": "learning_goal",
+    "expected_value": "trở thành Kỹ sư AI",
+    "expected_action": "CREATED",
+    "expected_source": "EXPLICIT_USER"
+  },
+  {
+    "id": "case-a-07",
+    "group": "explicit_fact_save",
+    "user_id": "test-user-a",
+    "input_message": "Email của tôi là tuanphong@gmail.com",
+    "expected_allowed": true,
+    "expected_fact_key": "own_email",
+    "expected_value": "tuanphong@gmail.com",
+    "expected_action": "CREATED",
+    "expected_source": "EXPLICIT_USER"
+  },
+  {
+    "id": "case-b-01",
+    "group": "profile_update_api",
+    "user_id": "test-user-b",
+    "api_fact_key": "major",
+    "api_value": "Khoa học máy tính",
+    "expected_allowed": true,
+    "expected_value": "Khoa học máy tính",
+    "expected_action": "CREATED",
+    "expected_source": "PROFILE_API"
+  },
+  {
+    "id": "case-b-02",
+    "group": "profile_update_api",
+    "user_id": "test-user-b",
+    "api_fact_key": "cohort",
+    "api_value": "K20",
+    "expected_allowed": true,
+    "expected_value": "K20",
+    "expected_action": "CREATED",
+    "expected_source": "PROFILE_API"
+  },
+  {
+    "id": "case-b-03",
+    "group": "profile_update_api",
+    "user_id": "test-user-b",
+    "api_fact_key": "response_style",
+    "api_value": "chi tiết",
+    "expected_allowed": true,
+    "expected_value": "detailed",
+    "expected_action": "CREATED",
+    "expected_source": "PROFILE_API"
+  },
+  {
+    "id": "case-b-04",
+    "group": "profile_update_api",
+    "user_id": "test-user-b",
+    "api_fact_key": "preferred_name",
+    "api_value": "Minh Anh",
+    "expected_allowed": true,
+    "expected_value": "Minh Anh",
+    "expected_action": "CREATED",
+    "expected_source": "PROFILE_API"
+  },
+  {
+    "id": "case-b-05",
+    "group": "profile_update_api",
+    "user_id": "test-user-b",
+    "api_fact_key": "secret_token",
+    "api_value": "123456",
+    "expected_allowed": false,
+    "expected_action": "REJECTED",
+    "expected_source": "PROFILE_API"
+  },
+  {
+    "id": "case-c-01",
+    "group": "cross_session_recall",
+    "user_id": "test-user-c",
+    "setup_session_id": "sess-c-01",
+    "setup_fact_key": "cohort",
+    "setup_value": "K19",
+    "recall_session_id": "sess-c-02",
+    "expected_recalled_value": "K19"
+  },
+  {
+    "id": "case-c-02",
+    "group": "cross_session_recall",
+    "user_id": "test-user-c",
+    "setup_session_id": "sess-c-02",
+    "setup_fact_key": "preferred_name",
+    "setup_value": "Bảo Nam",
+    "recall_session_id": "sess-c-03",
+    "expected_recalled_value": "Bảo Nam"
+  },
+  {
+    "id": "case-c-03",
+    "group": "cross_session_recall",
+    "user_id": "test-user-c",
+    "setup_session_id": "sess-c-03",
+    "setup_fact_key": "major",
+    "setup_value": "Công nghệ thông tin",
+    "recall_session_id": "sess-c-04",
+    "expected_recalled_value": "Công nghệ thông tin"
+  },
+  {
+    "id": "case-c-04",
+    "group": "cross_session_recall",
+    "user_id": "test-user-c",
+    "setup_session_id": "sess-c-04",
+    "setup_fact_key": "response_style",
+    "setup_value": "concise",
+    "recall_session_id": "sess-c-05",
+    "expected_recalled_value": "concise"
+  },
+  {
+    "id": "case-c-05",
+    "group": "cross_session_recall",
+    "user_id": "test-user-c",
+    "setup_session_id": "sess-c-05",
+    "setup_fact_key": "own_email",
+    "setup_value": "nam@test.edu.vn",
+    "recall_session_id": "sess-c-06",
+    "expected_recalled_value": "nam@test.edu.vn"
+  },
+  {
+    "id": "case-d-01",
+    "group": "preference_personalization",
+    "user_id": "test-user-d",
+    "query": "Thuật toán Dijkstra hoạt động như thế nào?",
+    "category": "GENERAL_LLM",
+    "user_facts": {
+      "response_style": "concise",
+      "preferred_language": "tiếng việt",
+      "cohort": "K19",
+      "own_email": "privacy_leak@test.com"
+    },
+    "expected_injected_keys": [
+      "response_style",
+      "preferred_language"
+    ],
+    "expected_excluded_keys": [
+      "cohort",
+      "own_email"
+    ]
+  },
+  {
+    "id": "case-d-02",
+    "group": "preference_personalization",
+    "user_id": "test-user-d",
+    "query": "Học kỳ tới tôi nên chú ý kế hoạch học tập gì?",
+    "category": "DOMAIN_DATA",
+    "user_facts": {
+      "major": "Công nghệ thông tin",
+      "cohort": "K19",
+      "current_semester": 5,
+      "own_email": "privacy_leak@test.com",
+      "response_style": "concise"
+    },
+    "expected_injected_keys": [
+      "major",
+      "cohort",
+      "current_semester",
+      "response_style"
+    ],
+    "expected_excluded_keys": [
+      "own_email"
+    ]
+  },
+  {
+    "id": "case-d-03",
+    "group": "preference_personalization",
+    "user_id": "test-user-d",
+    "query": "Môn FIT4201 có mấy tín chỉ?",
+    "category": "DOMAIN_DATA",
+    "user_facts": {
+      "response_style": "practical",
+      "cohort": "K19",
+      "own_email": "test@test.com"
+    },
+    "expected_injected_keys": [
+      "response_style"
+    ],
+    "expected_excluded_keys": [
+      "cohort",
+      "own_email"
+    ]
+  },
+  {
+    "id": "case-d-04",
+    "group": "preference_personalization",
+    "user_id": "test-user-empty",
+    "query": "QuickSort là gì?",
+    "category": "GENERAL_LLM",
+    "user_facts": {},
+    "expected_injected_keys": [],
+    "expected_excluded_keys": [
+      "response_style",
+      "cohort",
+      "own_email"
+    ]
+  },
+  {
+    "id": "case-d-05",
+    "group": "preference_personalization",
+    "user_id": "test-user-d",
+    "query": "Giải thích REST API",
+    "category": "GENERAL_LLM",
+    "cache_fingerprint_check": true,
+    "style_a": "concise",
+    "style_b": "detailed",
+    "expected_fingerprints_differ": true
+  },
+  {
+    "id": "case-e-01",
+    "group": "fact_update",
+    "user_id": "test-user-e",
+    "fact_key": "cohort",
+    "initial_value": "K19",
+    "update_message": "Tôi chuyển sang học khóa K20 rồi",
+    "expected_updated_value": "K20",
+    "expected_action": "UPDATED"
+  },
+  {
+    "id": "case-e-02",
+    "group": "fact_update",
+    "user_id": "test-user-e",
+    "fact_key": "preferred_name",
+    "initial_value": "Phong",
+    "update_message": "Từ giờ gọi tôi là Hoàng Phong nhé",
+    "expected_updated_value": "Hoàng Phong",
+    "expected_action": "UPDATED"
+  },
+  {
+    "id": "case-e-03",
+    "group": "fact_update",
+    "user_id": "test-user-e",
+    "fact_key": "response_style",
+    "initial_value": "concise",
+    "update_message": "Hãy trả lời chi tiết hơn",
+    "expected_updated_value": "detailed",
+    "expected_action": "UPDATED"
+  },
+  {
+    "id": "case-e-04",
+    "group": "fact_update",
+    "user_id": "test-user-e",
+    "fact_key": "cohort",
+    "initial_value": "K20",
+    "update_message": "Tôi học khóa K20",
+    "expected_updated_value": "K20",
+    "expected_action": "UNCHANGED"
+  },
+  {
+    "id": "case-e-05",
+    "group": "fact_update",
+    "user_id": "test-user-e",
+    "fact_key": "current_semester",
+    "initial_value": 5,
+    "update_message": "Tôi đang học kỳ 6",
+    "expected_updated_value": 6,
+    "expected_action": "UPDATED"
+  },
+  {
+    "id": "case-f-01",
+    "group": "forget_one_fact",
+    "user_id": "test-user-f",
+    "setup_facts": {
+      "major": "Công nghệ thông tin",
+      "cohort": "K19",
+      "preferred_name": "Phong"
+    },
+    "delete_key": "cohort",
+    "expected_deleted": true,
+    "expected_remaining_keys": [
+      "major",
+      "preferred_name"
+    ]
+  },
+  {
+    "id": "case-f-02",
+    "group": "forget_one_fact",
+    "user_id": "test-user-f",
+    "setup_facts": {
+      "response_style": "concise",
+      "own_email": "f@test.com"
+    },
+    "delete_key": "own_email",
+    "expected_deleted": true,
+    "expected_remaining_keys": [
+      "response_style"
+    ]
+  },
+  {
+    "id": "case-f-03",
+    "group": "forget_one_fact",
+    "user_id": "test-user-f",
+    "setup_facts": {
+      "preferred_name": "Nam"
+    },
+    "delete_key": "non_existent_key",
+    "expected_deleted": false,
+    "expected_remaining_keys": [
+      "preferred_name"
+    ]
+  },
+  {
+    "id": "case-f-04",
+    "group": "forget_one_fact",
+    "user_id": "test-user-f",
+    "setup_facts": {
+      "preferred_name": "Phong"
+    },
+    "delete_key": "preferred_name",
+    "expected_deleted": true,
+    "expected_audit_event": "DELETE"
+  },
+  {
+    "id": "case-f-05",
+    "group": "forget_one_fact",
+    "user_id": "test-user-f",
+    "setup_facts": {
+      "learning_goal": "Kỹ sư AI"
+    },
+    "delete_key": "learning_goal",
+    "expected_deleted": true,
+    "expected_remaining_keys": []
+  },
+  {
+    "id": "case-g-01",
+    "group": "clear_profile",
+    "user_id": "test-user-g",
+    "setup_facts": {
+      "preferred_name": "G",
+      "major": "CNTT",
+      "cohort": "K19",
+      "response_style": "concise"
+    },
+    "action": "clear_all",
+    "expected_cleared_count": 4,
+    "expected_profile_after": {}
+  },
+  {
+    "id": "case-g-02",
+    "group": "clear_profile",
+    "user_id": "test-user-g",
+    "verify_session_history_intact": true,
+    "session_id": "sess-g-01",
+    "user_message": "FIT4201 là môn gì?",
+    "ai_message": "Là Hệ thống nhúng.",
+    "expected_session_messages_count": 2
+  },
+  {
+    "id": "case-g-03",
+    "group": "clear_profile",
+    "user_id": "test-user-g",
+    "verify_rag_intact": true,
+    "expected_rag_safe": true
+  },
+  {
+    "id": "case-g-04",
+    "group": "clear_profile",
+    "user_id": "test-user-g",
+    "expected_audit_event": "DELETE_ALL"
+  },
+  {
+    "id": "case-h-01",
+    "group": "placeholder_rejection",
+    "legacy_data": {
+      "name": "Sinh viên CNTT"
+    },
+    "expected_migrated": false,
+    "expected_ignored_placeholder": true
+  },
+  {
+    "id": "case-h-02",
+    "group": "placeholder_rejection",
+    "legacy_data": {
+      "email": "student@dainam.edu.vn"
+    },
+    "expected_migrated": false,
+    "expected_ignored_placeholder": true
+  },
+  {
+    "id": "case-h-03",
+    "group": "placeholder_rejection",
+    "legacy_data": {
+      "cohort": "K19"
+    },
+    "expected_migrated": false,
+    "expected_ignored_placeholder": true
+  },
+  {
+    "id": "case-h-04",
+    "group": "placeholder_rejection",
+    "legacy_data": {
+      "style": "Thực hành"
+    },
+    "expected_migrated": false,
+    "expected_ignored_placeholder": true
+  },
+  {
+    "id": "case-h-05",
+    "group": "placeholder_rejection",
+    "legacy_data": {
+      "major": "Công nghệ thông tin"
+    },
+    "expected_migrated": false,
+    "expected_ignored_placeholder": true
+  },
+  {
+    "id": "case-h-06",
+    "group": "placeholder_rejection",
+    "user_id": "fresh-user-h",
+    "check_presentation_default": true,
+    "expected_db_facts_count": 0
+  },
+  {
+    "id": "case-i-01",
+    "group": "academic_claim_rejection",
+    "user_id": "test-user-i",
+    "input_message": "Môn FIT4201 có 3 tín chỉ đúng không bạn?",
+    "expected_allowed": false,
+    "expected_reason": "ACADEMIC_CLAIM"
+  },
+  {
+    "id": "case-i-02",
+    "group": "academic_claim_rejection",
+    "user_id": "test-user-i",
+    "input_message": "Thầy Nguyễn Văn Nhẫn dạy môn Hệ thống nhúng",
+    "expected_allowed": false,
+    "expected_reason": "ACADEMIC_CLAIM"
+  },
+  {
+    "id": "case-i-03",
+    "group": "academic_claim_rejection",
+    "user_id": "test-user-i",
+    "input_message": "Học phần FIT4104 có điều kiện tiên quyết là gì?",
+    "expected_allowed": false,
+    "expected_reason": "ACADEMIC_CLAIM"
+  },
+  {
+    "id": "case-i-04",
+    "group": "academic_claim_rejection",
+    "user_id": "test-user-i",
+    "input_message": "Điểm chuyên cần môn FIT4117 chiếm 20% tổng điểm",
+    "expected_allowed": false,
+    "expected_reason": "ACADEMIC_CLAIM"
+  },
+  {
+    "id": "case-i-05",
+    "group": "academic_claim_rejection",
+    "user_id": "test-user-i",
+    "input_message": "Quy chế đào tạo yêu cầu tích lũy 120 tín chỉ để ra trường",
+    "expected_allowed": false,
+    "expected_reason": "ACADEMIC_CLAIM"
+  },
+  {
+    "id": "case-i-06",
+    "group": "academic_claim_rejection",
+    "user_id": "test-user-i",
+    "input_message": "Hôm nay môn này khó thật bạn ơi",
+    "expected_allowed": false,
+    "expected_reason": "TRANSIENT_OR_EMOTIONAL"
+  },
+  {
+    "id": "case-i-07",
+    "group": "academic_claim_rejection",
+    "user_id": "test-user-i",
+    "input_message": "Bài tập lớn nhiều quá tôi thấy mệt mỏi và stress",
+    "expected_allowed": false,
+    "expected_reason": "TRANSIENT_OR_EMOTIONAL"
+  },
+  {
+    "id": "case-i-08",
+    "group": "academic_claim_rejection",
+    "user_id": "test-user-i",
+    "input_message": "Số tài khoản ngân hàng và mật khẩu của tôi là 123456",
+    "expected_allowed": false,
+    "expected_reason": "SENSITIVE_INFO"
+  },
+  {
+    "id": "case-j-01",
+    "group": "authority_conflict",
+    "domain": "ACADEMIC_TRUTH",
+    "rag_fact": "2 tín chỉ",
+    "personal_claim": "5 tín chỉ",
+    "expected_chosen": "2 tín chỉ",
+    "expected_authority": "OFFICIAL_RAG"
+  },
+  {
+    "id": "case-j-02",
+    "group": "authority_conflict",
+    "domain": "ACADEMIC_TRUTH",
+    "rag_fact": "Thầy Nguyễn Văn Nhẫn",
+    "personal_claim": "Thầy Tiệp",
+    "expected_chosen": "Thầy Nguyễn Văn Nhẫn",
+    "expected_authority": "OFFICIAL_RAG"
+  },
+  {
+    "id": "case-j-03",
+    "group": "authority_conflict",
+    "domain": "PERSONAL_PREFERENCE",
+    "explicit_current": "concise",
+    "stored_personal": "detailed",
+    "system_default": "standard",
+    "expected_chosen": "concise",
+    "expected_authority": "CURRENT_EXPLICIT_STATEMENT"
+  },
+  {
+    "id": "case-j-04",
+    "group": "authority_conflict",
+    "domain": "PERSONAL_PREFERENCE",
+    "explicit_current": null,
+    "stored_personal": "concise",
+    "system_default": "standard",
+    "expected_chosen": "concise",
+    "expected_authority": "STORED_PERSONAL_MEMORY"
+  },
+  {
+    "id": "case-j-05",
+    "group": "authority_conflict",
+    "domain": "CONVERSATION_ENTITY",
+    "explicit_query": "FIT4104",
+    "session_state": "FIT4201",
+    "personal_memory": "FIT4113",
+    "expected_chosen": "FIT4104",
+    "expected_authority": "CURRENT_EXPLICIT_QUERY"
+  },
+  {
+    "id": "case-k-01",
+    "group": "principal_isolation",
+    "principal_a": "user-alice",
+    "principal_b": "user-bob",
+    "fact_key": "preferred_name",
+    "val_a": "Alice",
+    "val_b": "Bob",
+    "expected_isolated": true
+  },
+  {
+    "id": "case-k-02",
+    "group": "principal_isolation",
+    "principal_a": "user-alice",
+    "principal_b": "user-bob",
+    "fact_key": "cohort",
+    "val_a": "K18",
+    "val_b": "K20",
+    "expected_isolated": true
+  },
+  {
+    "id": "case-k-03",
+    "group": "principal_isolation",
+    "principal_a": "user-alice",
+    "principal_b": "user-bob",
+    "fact_key": "response_style",
+    "val_a": "concise",
+    "val_b": "detailed",
+    "expected_isolated": true
+  },
+  {
+    "id": "case-k-04",
+    "group": "principal_isolation",
+    "principal_a": "user-alice",
+    "principal_b": "user-bob",
+    "action": "delete_a_only",
+    "delete_key": "cohort",
+    "expected_b_intact": true
+  },
+  {
+    "id": "case-k-05",
+    "group": "principal_isolation",
+    "principal_a": "user-alice",
+    "principal_b": "user-bob",
+    "action": "clear_a_only",
+    "expected_b_count_intact": 3
+  }
+]
