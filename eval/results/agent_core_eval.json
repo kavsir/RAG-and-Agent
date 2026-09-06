@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-09-06 17:47:21",
+  "timestamp": "2026-09-06 18:33:14",
   "total_cases": 182,
-  "total_passed": 182,
-  "overall_accuracy": 100.0,
+  "total_passed": 179,
+  "overall_accuracy": 98.35164835164835,
   "all_hard_gates_passed": true,
   "group_stats": {
     "A": {
       "name": "CLEAR_GOAL",
       "total": 20,
-      "passed": 20
+      "passed": 19
     },
     "B": {
       "name": "MISSING_INTENT",
@@ -38,7 +38,7 @@
     "G": {
       "name": "MULTI_FIELD",
       "total": 12,
-      "passed": 12
+      "passed": 11
     },
     "H": {
       "name": "MULTI_ENTITY",
@@ -73,7 +73,7 @@
     "N": {
       "name": "CLARIFICATION_RESUME",
       "total": 12,
-      "passed": 12
+      "passed": 11
     },
     "O": {
       "name": "MALFORMED_QUERY",
@@ -97,12 +97,52 @@
     "external_api_calls": 0
   },
   "quality_metrics": {
-    "clear_goal_completion_rate": 100.0,
+    "clear_goal_completion_rate": 95.0,
     "missing_slot_identification_accuracy": 100.0,
     "proposal_on_unavailable_rate": 100.0,
-    "clarification_resume_success_rate": 100.0,
+    "clarification_resume_success_rate": 96.66666666666667,
     "average_steps": 1.9065934065934067,
-    "average_latency_ms": 3.566086263852632
+    "average_latency_ms": 108.764919780327
   },
-  "failed_cases": []
+  "failed_cases": [
+    {
+      "id": "AC-A06",
+      "group": "A",
+      "query": "FIT4104 thi cuối kỳ chiếm bao nhiêu phần trăm?",
+      "user_response": null,
+      "status": "COMPLETED",
+      "stop_reason": "GOAL_COMPLETED",
+      "final_answer": "- **FIT4104 (hình thức đánh giá)**: Đánh giá gồm điểm quá trình, chuyên cần, giữa kỳ và thi cuối kỳ",
+      "clarification_question": null,
+      "reasons": [
+        "Missing check term: '50%'"
+      ]
+    },
+    {
+      "id": "AC-G02",
+      "group": "G",
+      "query": "Môn FIT4104 có bao nhiêu tín chỉ và thi cuối kỳ thế nào?",
+      "user_response": null,
+      "status": "COMPLETED",
+      "stop_reason": "GOAL_COMPLETED",
+      "final_answer": "- **FIT4104 (số tín chỉ)**: 3 tín chỉ\n- **FIT4104 (hình thức đánh giá)**: Đánh giá gồm điểm quá trình, chuyên cần, giữa kỳ và thi cuối kỳ",
+      "clarification_question": null,
+      "reasons": [
+        "Missing check term: '50%'"
+      ]
+    },
+    {
+      "id": "AC-N05",
+      "group": "N",
+      "query": "Học phần này thi hình thức nào?",
+      "user_response": "Môn FIT4104",
+      "status": "COMPLETED",
+      "stop_reason": "GOAL_COMPLETED",
+      "final_answer": "- **FIT4104 (hình thức đánh giá)**: Đánh giá gồm điểm quá trình, chuyên cần, giữa kỳ và thi cuối kỳ",
+      "clarification_question": "Bạn đang hỏi về môn học / học phần nào? Bạn có thể cung cấp mã môn học hoặc mã học phần (ví dụ FIT4201) để mình tra cứu chính xác nhé.",
+      "reasons": [
+        "Missing check term: '50%'"
+      ]
+    }
+  ]
 }

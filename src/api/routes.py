@@ -1,15 +1,20 @@
 """
 API Router: Định nghĩa các endpoints cho dịch vụ AI Academic Advisor.
+Tích hợp trực tiếp AgentCoreService vào đường dẫn chính POST /api/chat.
 """
 import uuid
+import re
 import logging
+from typing import List
 from fastapi import APIRouter, HTTPException
 
 from src.config.settings import settings
-from src.agent.graph import graph
 from src.identity import resolve_principal
 from src.memory.memory_manager import get_memory_manager
+from src.cache.cache_policy import decide_cache_policy, CacheScope
 from src.cache.exact_cache import get_exact_cache
+from src.agent_core.service import get_agent_core_service
+from src.agent_core.schemas import AgentStatus, GoalType
 from src.api.schemas import (
     ChatRequest,
     ChatResponse,
@@ -27,17 +32,10 @@ router = APIRouter()
 @router.get("/health", response_model=HealthResponse)
 def health_check():
     """Kiểm tra tình trạng hoạt động của toàn bộ hệ thống."""
-    # 1. Kiểm tra Vector Store
     vector_status = "ok" if settings.CHROMA_PATH.exists() else "not_found"
-
-    # 2. Kiểm tra BM25
     bm25_files = list(settings.CHROMA_PATH.glob("bm25_*.pkl"))
     bm25_status = "ok" if len(bm25_files) >= 3 else "partial_or_missing"
-
-    # 3. Kiểm tra LLM Configuration
     llm_status = "configured" if settings.LLM_API_KEY and settings.LLM_API_KEY not in ("", "#", "your_api_key_here") else "mock_or_unconfigured"
-
-    # 4. Kiểm tra Email
     email_status = "enabled" if settings.EMAIL_ENABLED else "disabled"
 
     components = {
@@ -54,84 +52,181 @@ def health_check():
 
 @router.post("/api/chat", response_model=ChatResponse)
 def chat_endpoint(request: ChatRequest):
-    """Xử lý câu hỏi của người dùng thông qua LangGraph Agent."""
+    """
+    Xử lý câu hỏi người dùng thông qua Goal-Driven Agent Core V1.1.
+    Hỗ trợ Human-in-the-loop multi-turn resumption cô lập theo (user_id, conv_id).
+    """
     principal = resolve_principal()
     user_id = principal.user_id
     conv_id = request.conversation_id or str(uuid.uuid4())
     memory_mgr = get_memory_manager()
+    agent_service = get_agent_core_service()
 
-    # 1. Trích xuất sự thật cá nhân tiềm năng từ tin nhắn người dùng (0 external calls)
-    memory_mgr.process_personal_memory(user_id=user_id, message=request.message)
+    # 1. Trích xuất sự thật cá nhân tiềm năng từ tin nhắn người dùng
+    try:
+        memory_mgr.process_personal_memory(user_id=user_id, message=request.message)
+    except Exception as e:
+        logger.warning(f"Lỗi xử lý personal memory: {e}")
 
-    # 2. Lấy lịch sử phiên và trạng thái thực thể của đúng phiên
-    history_text = memory_mgr.get_conversation_history(conversation_id=conv_id, k=5)
+    # 2. Lấy trạng thái phiên và hồ sơ cá nhân
     session_state = memory_mgr.get_session_state(conv_id)
-
-    initial_state = {
-        "question": request.message,
-        "conversation_id": conv_id,
-        "chat_history": history_text,
-        "user_id": user_id,
-        "student_profile": {},
-        "rewritten_question": "",
-        "category": "DOMAIN_DATA",
-        "tool_intent": None,
-        "analyzed_query": {},
-        "session_context": session_state.to_context_dict(),
-        "resolved_entities": {},
-        "resolution_source": "NONE",
-        "cache_policy": None,
-        "retrieved_docs": [],
-        "context": "",
-        "sources": [],
-        "answer": "",
-        "validation_result": {},
-        "retry_count": 0,
-        "reminder_request": None,
-        "email_request": None,
-        "cache_hit": False,
-    }
+    session_ctx = session_state.to_context_dict() if session_state else {}
+    personal_ctx = memory_mgr.get_personal_profile(user_id) if hasattr(memory_mgr, "get_personal_profile") else {}
 
     try:
-        final_state = graph.invoke(initial_state)
+        # 3. Kiểm tra xem phiên này có Goal đang chờ phản hồi làm rõ hay không
+        active_goal = agent_service.get_active_goal(user_id=user_id, conversation_id=conv_id)
 
-        answer = final_state.get("answer", "Xin lỗi, không có phản hồi.")
-        category = final_state.get("category", "DOMAIN_DATA")
-        sources_raw = final_state.get("sources", [])
-        cache_hit = final_state.get("cache_hit", False)
-        tool_intent = final_state.get("tool_intent")
-        cache_policy = final_state.get("cache_policy") or {}
-
-        # Nếu câu trả lời là từ chối do thiếu dữ liệu, đảm bảo danh sách nguồn rỗng
-        if "chưa tìm thấy đủ dữ liệu" in answer.lower():
-            sources_raw = []
-
-        # Chuẩn hóa danh sách sources sang schema SourceItem
-        sources_list = []
-        for s in sources_raw:
-            sources_list.append(
-                SourceItem(
-                    source_file=s.get("source_file", ""),
-                    document_type=s.get("document_type", ""),
-                    course_code=s.get("course_code", ""),
-                    course_name=s.get("course_name", ""),
-                    section=s.get("section", ""),
-                    subsection=s.get("subsection", ""),
-                    chunk_id=s.get("chunk_id", ""),
-                )
+        if active_goal and active_goal.status == AgentStatus.NEEDS_USER_INPUT:
+            logger.info(f"Phát hiện Goal {active_goal.goal_id} đang chờ làm rõ. Tiến hành resume_goal...")
+            goal_state = agent_service.resume_goal(
+                user_id=user_id,
+                conversation_id=conv_id,
+                user_response=request.message,
+                goal_id=active_goal.goal_id,
+                session_context=session_ctx,
             )
+        else:
+            logger.info(f"Khởi tạo chu trình xử lý mục tiêu mới cho conv_id={conv_id}...")
+            goal_state = agent_service.process_query(
+                query=request.message,
+                user_id=user_id,
+                conversation_id=conv_id,
+                session_context=session_ctx,
+                personal_context=personal_ctx,
+            )
+
+        # 4. Xác định danh mục phản hồi
+        category = "DOMAIN_DATA"
+        tool_intent = None
+        if any(o in (GoalType.SEND_EMAIL, GoalType.SET_REMINDER) for o in goal_state.objectives):
+            category = "TOOL_ACTION"
+            tool_intent = "SEND_EMAIL" if GoalType.SEND_EMAIL in goal_state.objectives else "SET_REMINDER"
+        elif GoalType.GENERAL_KNOWLEDGE in goal_state.objectives:
+            category = "GENERAL_LLM"
+
+        # 4.1. Thực thi an toàn công cụ qua Action Authorization Gate
+        if category == "TOOL_ACTION" and tool_intent:
+            from src.semantics import analyze_utterance, authorize_tool_action, ActionOperation
+            sem = analyze_utterance(request.message)
+            decision = authorize_tool_action(sem, requested_tool=tool_intent)
+            if not decision.authorized:
+                answer = decision.safe_response or "Yêu cầu thực thi công cụ không được cấp phép."
+                goal_state.status = AgentStatus.ABSTAINED
+                goal_state.final_answer = answer
+            elif decision.requires_clarification:
+                answer = decision.clarification_message or "Yêu cầu có thông tin chưa rõ ràng hoặc mâu thuẫn. Bạn có muốn thực hiện không?"
+                goal_state.status = AgentStatus.NEEDS_USER_INPUT
+                goal_state.clarification_question = answer
+            elif tool_intent == "SEND_EMAIL":
+                if decision.operation == ActionOperation.COMPOSE_EMAIL or not decision.side_effect:
+                    email_match = re.search(r"[\w\.-]+@[\w\.-]+\.\w+", request.message)
+                    recipient = email_match.group(0) if email_match else "(Chưa chỉ định người nhận)"
+                    answer = (
+                        f"📝 **Bản thảo email (Draft - Chưa gửi đi)**:\n"
+                        f"- **Người nhận**: {recipient}\n"
+                        f"- **Tiêu đề**: Thông báo từ sinh viên ĐNTU\n"
+                        f"- **Nội dung dự thảo**: Kính gửi Thầy/Cô,\n\nEm gửi thông tin về: {request.message}.\n\nTrân trọng,\nSinh viên\n\n"
+                        f"*(Lưu ý: Hệ thống chỉ tạo bản thảo theo yêu cầu và tuyệt đối không tự ý gửi thư đi.)*"
+                    )
+                    goal_state.status = AgentStatus.COMPLETED
+                    goal_state.final_answer = answer
+                else:
+                    from src.tools.email_sender import send_email_direct
+                    email_match = re.search(r"[\w\.-]+@[\w\.-]+\.\w+", request.message)
+                    recipient = email_match.group(0) if email_match else "giangvien@dntu.edu.vn"
+                    send_email_direct(
+                        to=recipient,
+                        subject="Thông báo từ sinh viên ĐNTU",
+                        body=f"Nội dung: {request.message}",
+                    )
+                    answer = f"✅ Đã gửi email thành công tới: {recipient}."
+                    goal_state.status = AgentStatus.COMPLETED
+                    goal_state.final_answer = answer
+            elif tool_intent == "SET_REMINDER":
+                from src.agent.nodes import parse_reminder_datetime
+                from src.scheduler.reminder_scheduler import schedule_reminder
+                scheduled_dt = parse_reminder_datetime(request.message)
+                if not scheduled_dt:
+                    answer = "Vui lòng cung cấp ngày hoặc giờ cụ thể bạn muốn đặt lịch nhắc (Ví dụ: 'Nhắc tôi nộp bài lúc 17h ngày 20/12')."
+                    goal_state.status = AgentStatus.NEEDS_USER_INPUT
+                    goal_state.clarification_question = answer
+                else:
+                    job_id = f"remind_{uuid.uuid4().hex[:8]}"
+                    schedule_reminder(
+                        job_id=job_id,
+                        run_date=scheduled_dt,
+                        message=request.message,
+                        user_id=user_id,
+                    )
+                    answer = f"✅ Đã đặt lịch nhắc thành công vào lúc {scheduled_dt.strftime('%H:%M ngày %d/%m/%Y')}."
+                    goal_state.status = AgentStatus.COMPLETED
+                    goal_state.final_answer = answer
+
+        # 5. Xác định câu trả lời hiển thị
+        answer = goal_state.final_answer or goal_state.clarification_question or "Đã hoàn tất xử lý yêu cầu."
+        if goal_state.status == AgentStatus.NEEDS_USER_INPUT and goal_state.clarification_question:
+            answer = goal_state.clarification_question
+
+        # 6. Chuẩn hóa danh sách nguồn minh chứng chính thống (100% provenance, 0 fabricated)
+        sources_list: List[SourceItem] = []
+        if goal_state.status not in (AgentStatus.ABSTAINED, AgentStatus.NEEDS_USER_INPUT):
+            for ev in goal_state.evidence:
+                if ev.is_authoritative:
+                    sources_list.append(
+                        SourceItem(
+                            source_file=ev.source_file or ev.source,
+                            document_type=ev.document_type,
+                            course_code=ev.entity if ev.entity not in ("DNTU", "general") else "",
+                            course_name="",
+                            section=ev.section or "",
+                            subsection="",
+                            chunk_id=ev.chunk_id or ev.source,
+                        )
+                    )
+
+        # 7. Chính sách Cache: Các trạng thái tương tác hoặc thiếu dữ liệu bắt buộc KHÔNG được cache mù quáng
+        cache_hit = False
+        cache_scope = CacheScope.NON_CACHEABLE
+        if goal_state.status in (AgentStatus.NEEDS_USER_INPUT, AgentStatus.PARTIAL, AgentStatus.ABSTAINED) or category == "TOOL_ACTION":
+            cache_scope = CacheScope.NON_CACHEABLE
+        else:
+            cache_dec = decide_cache_policy(
+                query=request.message,
+                category=category,
+                tool_intent=tool_intent,
+                session_context=session_ctx,
+                relevant_profile=personal_ctx,
+            )
+            cache_scope = cache_dec.scope
+
+        # 8. Cập nhật lịch sử hội thoại phiên
+        try:
+            memory_mgr.update(
+                user_message=request.message,
+                ai_message=answer,
+                conversation_id=conv_id,
+                sources=sources_list,
+            )
+        except Exception as e:
+            logger.warning(f"Lỗi ghi nhận lịch sử phiên: {e}")
 
         return ChatResponse(
             answer=answer,
             category=category,
             sources=sources_list,
             conversation_id=conv_id,
+            goal_id=goal_state.goal_id,
+            status=goal_state.status.value,
+            clarification_question=goal_state.clarification_question,
+            clarification_options=goal_state.clarification_options,
             metadata=ChatMetadata(
                 cache_hit=cache_hit,
                 category=category,
                 tool_intent=tool_intent,
-                cache_scope=cache_policy.get("scope"),
-                profile_digest=cache_policy.get("profile_digest"),
+                cache_scope=cache_scope,
+                goal_id=goal_state.goal_id,
+                status=goal_state.status.value,
             ),
         )
     except Exception as e:
@@ -148,6 +243,18 @@ def delete_conversation_session(conversation_id: str):
         "status": "ok",
         "conversation_id": conversation_id,
         "message": f"Đã xóa thành công phiên hội thoại {conversation_id}."
+    }
+
+
+@router.post("/api/profile/reset")
+def reset_student_profile():
+    """Khởi tạo lại profile sinh viên về giá trị mặc định."""
+    principal = resolve_principal()
+    memory_mgr = get_memory_manager()
+    memory_mgr.clear_personal_profile(principal.user_id)
+    return {
+        "status": "ok",
+        "message": f"Đã reset toàn bộ sự thật cá nhân của user '{principal.user_id}'."
     }
 
 

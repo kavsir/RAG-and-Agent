@@ -5,7 +5,7 @@ Implements the OBSERVE phase:
 - Does NOT answer the user.
 - Emits typed AgentObservation to feed the Planner.
 """
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, Optional
 from src.agent_core.schemas import AgentObservation, AgentGoalState
 from src.agent_core.entity_catalog import get_entity_catalog
 from src.agent_core.environment_catalog import get_knowledge_environment_catalog

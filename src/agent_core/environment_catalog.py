@@ -1,66 +1,66 @@
 """
-Knowledge Environment Catalog for Goal-Driven Agent Core V1.
-Defines the authoritative scope of what is verifiable vs. unavailable:
-- Real document types (course_outline, curriculum, regulation)
+Knowledge Environment Catalog for Goal-Driven Agent Core V1.1.
+Data-derived from runtime/knowledge_environment.json.
+Defines authoritative scope of verifiable vs. unavailable fields:
+- Real document types (course_detail, curriculum, regulation)
 - Verifiable fields mapping
 - Explicit unavailable fields catalog with standard proposal templates
 Strictly enforces: USER GOAL > AGENT ASSUMPTION (never guess unavailable data).
 """
+import json
+from pathlib import Path
 from typing import Dict, Any, List, Optional
+
+RUNTIME_PATH = Path("runtime/knowledge_environment.json")
 
 
 class KnowledgeEnvironmentCatalog:
-    """Catalog quản lý không gian tri thức thực tế của hệ thống học vụ."""
+    """Catalog quản lý không gian tri thức thực tế được sinh từ dữ liệu thật."""
 
-    DOCUMENT_TYPES = {
-        "course_outline": {
-            "title": "Đề cương chi tiết học phần",
-            "authority_level": "PRIMARY_COURSE_AUTHORITY",
-            "directory": "data_raw/course_detail",
-            "verifiable_fields": [
-                "course_code", "course_name_vi", "course_name_en",
-                "credits", "theory_hours", "practice_hours", "hours",
-                "department", "prerequisites", "course_objective", "objectives",
-                "clo", "assessment", "course_plan", "lecturer", "lecturer_email"
-            ]
-        },
-        "curriculum": {
-            "title": "Khung chương trình đào tạo K19",
-            "authority_level": "PRIMARY_CURRICULUM_AUTHORITY",
-            "directory": "data_raw/curriculum",
-            "verifiable_fields": [
-                "course_code", "course_name", "credits", "semester",
-                "course_placement", "curriculum_structure", "cohort_plan",
-                "total_credits_program", "course_type"
-            ]
-        },
-        "regulation": {
-            "title": "Quy chế & Quy định đào tạo ĐNTU",
-            "authority_level": "PRIMARY_REGULATION_AUTHORITY",
-            "directory": "data_raw/regulation",
-            "verifiable_fields": [
-                "graduation_requirements", "academic_warning", "training_rules",
-                "grading_scale", "attendance_rules", "scholarship_rules",
-                "retake_rules", "regulation"
-            ]
-        }
-    }
+    def __init__(self, json_path: Optional[Path] = None):
+        self.json_path = json_path or RUNTIME_PATH
+        self.document_types: Dict[str, Dict[str, Any]] = {}
+        self.unavailable_fields: Dict[str, Dict[str, Any]] = {}
+        self._load_from_json()
 
-    # Bản đồ ánh xạ từng trường thông tin sang loại tài liệu lưu trữ chính thức
+    def _load_from_json(self):
+        """Nạp cấu hình môi trường tri thức từ JSON sinh tất định."""
+        if not self.json_path.exists():
+            from src.agent_core.build_knowledge_env import build_knowledge_environment
+            data = build_knowledge_environment()
+        else:
+            try:
+                with open(self.json_path, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+            except Exception:
+                from src.agent_core.build_knowledge_env import build_knowledge_environment
+                data = build_knowledge_environment()
+
+        self.document_types = data.get("document_types", {})
+        self.unavailable_fields = data.get("unavailable_fields", {})
+
+    @property
+    def DOCUMENT_TYPES(self) -> Dict[str, Dict[str, Any]]:
+        return self.document_types
+
+    @property
+    def UNAVAILABLE_FIELDS(self) -> Dict[str, Dict[str, Any]]:
+        return self.unavailable_fields
+
     FIELD_TO_DOC_TYPES = {
-        "credits": ["course_outline", "curriculum"],
-        "course_name": ["course_outline", "curriculum"],
-        "lecturer": ["course_outline"],
-        "lecturer_email": ["course_outline"],
-        "prerequisites": ["course_outline"],
-        "assessment": ["course_outline"],
-        "course_plan": ["course_outline"],
-        "course_objective": ["course_outline"],
-        "objectives": ["course_outline"],
-        "clo": ["course_outline"],
-        "hours": ["course_outline"],
-        "department": ["course_outline"],
-        "english_name": ["course_outline"],
+        "credits": ["course_detail", "curriculum"],
+        "course_name": ["course_detail", "curriculum"],
+        "lecturer": ["course_detail"],
+        "lecturer_email": ["course_detail"],
+        "prerequisites": ["course_detail", "curriculum"],
+        "assessment": ["course_detail"],
+        "course_plan": ["course_detail"],
+        "course_objective": ["course_detail"],
+        "objectives": ["course_detail"],
+        "clo": ["course_detail"],
+        "hours": ["course_detail"],
+        "department": ["course_detail"],
+        "english_name": ["course_detail"],
         "semester": ["curriculum"],
         "course_placement": ["curriculum"],
         "curriculum_structure": ["curriculum"],
@@ -77,75 +77,21 @@ class KnowledgeEnvironmentCatalog:
         "regulation": ["regulation"],
     }
 
-    # Các trường hoàn toàn KHÔNG CÓ trong cơ sở dữ liệu học vụ
-    UNAVAILABLE_FIELDS = {
-        "failure_rate": {
-            "title": "Tỷ lệ trượt môn / Thống kê rớt môn",
-            "reason": "Môi trường học vụ hiện không công bố bảng thống kê tỷ lệ trượt môn sinh viên.",
-            "alternative_fields": ["credits", "assessment", "hours"],
-            "proposal_text": (
-                "Hiện dữ liệu chính thức không công bố thống kê tỷ lệ trượt môn (tỷ lệ rớt môn). "
-                "Mình có thể phân tích cấu trúc điểm đánh giá, khối lượng tín chỉ và số giờ thực hành "
-                "để bạn ước lượng mức độ đòi hỏi của học phần. Bạn có muốn xem theo hướng này không?"
-            ),
-        },
-        "difficulty": {
-            "title": "Chỉ số độ khó học phần",
-            "reason": "Đề cương và quy chế không xếp hạng hay gán nhãn độ khó chủ quan cho môn học.",
-            "alternative_fields": ["credits", "hours", "assessment"],
-            "proposal_text": (
-                "Tài liệu chính thức hiện không xếp hạng hay đánh giá trực tiếp về độ khó hay khả năng dễ qua môn của môn học. "
-                "Mình có thể so sánh gián tiếp bằng số tín chỉ, khối lượng thực hành và cấu trúc điểm đánh giá. "
-                "Bạn có muốn dùng các tiêu chí này để so sánh không?"
-            ),
-        },
-        "student_rating": {
-            "title": "Đánh giá / Review chủ quan của sinh viên",
-            "reason": "Hệ thống học vụ chỉ lưu trữ tài liệu chuẩn ban hành, không tích hợp diễn đàn review sinh viên.",
-            "alternative_fields": ["objectives", "clo", "assessment"],
-            "proposal_text": (
-                "Tài liệu chính thức không lưu trữ review hay đánh giá của sinh viên khoá trước và cách chấm điểm của thầy. "
-                "Mình có thể cung cấp mục tiêu môn học, chuẩn đầu ra (CLO) và tiêu chí đánh giá để bạn nắm rõ kỳ vọng. "
-                "Bạn có muốn xem không?"
-            ),
-        },
-        "job_salary": {
-            "title": "Mức lương sau tốt nghiệp",
-            "reason": "Dữ liệu đào tạo không chứa khảo sát thống kê thu nhập sau tốt nghiệp.",
-            "alternative_fields": ["objectives", "clo"],
-            "proposal_text": (
-                "Dữ liệu chính thức hiện không chứa thống kê mức lương hay thu nhập sau tốt nghiệp. "
-                "Mình có thể cung cấp thông tin về chuẩn đầu ra và kiến thức kỹ năng đạt được sau môn học. "
-                "Bạn có muốn tìm hiểu không?"
-            ),
-        },
-        "exam_leak": {
-            "title": "Đề thi năm ngoái / Thông tin lộ đề",
-            "reason": "Hệ thống tuyệt đối bảo mật đề thi và không hỗ trợ các câu hỏi liên quan đến lộ đề.",
-            "alternative_fields": ["assessment"],
-            "proposal_text": (
-                "Tài liệu chính thức bảo mật và không công bố đề thi hay thông tin lộ đề (leak đề). "
-                "Mình có thể cung cấp hình thức thi và cấu trúc đánh giá chính thức của học phần. "
-                "Bạn có muốn xem không?"
-            ),
-        },
-    }
-
     def get_source_doc_types(self, field: str) -> List[str]:
         """Trả về danh sách loại tài liệu lưu trữ trường thông tin."""
         return self.FIELD_TO_DOC_TYPES.get(field, [])
 
     def is_field_unavailable(self, field: str) -> bool:
         """Kiểm tra trường thông tin có thuộc danh mục không công bố chính thức hay không."""
-        return field in self.UNAVAILABLE_FIELDS
+        return field in self.unavailable_fields
 
     def get_unavailable_field_info(self, field: str) -> Optional[Dict[str, Any]]:
         """Lấy thông tin giải thích vì sao trường không tồn tại."""
-        return self.UNAVAILABLE_FIELDS.get(field)
+        return self.unavailable_fields.get(field)
 
     def propose_alternative_for_field(self, field: str) -> Dict[str, Any]:
         """Tạo đề xuất giải pháp thay thế có cấu trúc cho trường không có sẵn."""
-        info = self.UNAVAILABLE_FIELDS.get(field)
+        info = self.unavailable_fields.get(field)
         if not info:
             return {
                 "field": field,

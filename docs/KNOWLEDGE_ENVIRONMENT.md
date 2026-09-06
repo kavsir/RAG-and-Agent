@@ -73,3 +73,24 @@ Hệ thống nhận diện chủ động 5 nhóm dữ liệu **hoàn toàn khôn
 ### 5. `exam_leak` (Đề thi các năm trước / Thông tin lộ đề thi)
 - **Lý do:** Quy định bảo mật đề thi nghiêm ngặt của Nhà trường.
 - **Phương án thay thế đề xuất:** Cung cấp hình thức thi chính thức (tự luận, bài tập lớn, thuyết trình) và tỷ trọng điểm số.
+
+---
+
+## 4. NGUYÊN TẮC BẤT BIẾN KIẾN TRÚC MÔI TRƯỜNG TRI THỨC (ROUND P1.1)
+
+### 4.1. CATALOG != ACADEMIC TRUTH (Danh mục không phải là Chân lý Học vụ)
+- `EntityCatalog` và `KnowledgeEnvironmentCatalog` chỉ là tầng siêu dữ liệu định tuyến (routing metadata), quản lý:
+  - Mã thực thể (`entity_id`), tên chuẩn hóa (`canonical_name`), danh sách định danh thay thế (`aliases`).
+  - Danh mục tài liệu có sẵn (`available_document_types`), nguồn tham chiếu (`source_references`).
+- **Tuyệt đối không nhúng cứng các dữ kiện học vụ biến động** (`credits`, `lecturer`, `lecturer_email`, `assessment`, `hours`) trực tiếp vào file mã nguồn Python (`.py`).
+- Toàn bộ chân lý học vụ được sinh ra tất định thông qua `src/agent_core/build_knowledge_env.py` ghi nhận vào `runtime/knowledge_environment.json`.
+- Mọi dữ kiện phải đi kèm xuất xứ xuất bản (`provenance`: `source_file`, `document_type`, `extracted_at`, `ingestion_version`). Không có provenance đồng nghĩa không phải bằng chứng thẩm quyền.
+
+### 4.2. EVIDENCE != RETRIEVAL RESULT (Bằng chứng không phải Kết quả Truy xuất Thô)
+- Các văn bản thu thập từ RAG chỉ là *văn bản ứng viên* (candidate chunks).
+- Một `EvidenceItem` chỉ được tạo lập sau khi `EvidenceVerifier` thẩm định cú pháp, ngữ nghĩa và trích xuất đúng trường thông tin của đúng thực thể học vụ.
+- Loại bỏ hoàn toàn kiến trúc đọc file `.docx` thứ hai (`actions.py` tái sử dụng trực tiếp `HybridRetriever` và ChromaDB với chiến lược lọc metadata chính xác và mở rộng có kiểm soát, triệt để ngăn ngừa cross-entity leakage).
+
+### 4.3. MISSING != NONE (Thiếu dữ liệu khác hoàn toàn với Xác nhận Không có)
+- **`MISSING` / `INSUFFICIENT`**: Khi tài liệu không chứa thông tin hoặc đoạn trích RAG không đủ căn cứ khẳng định. Agent bắt buộc trung thực thông báo dữ liệu chưa đủ (Zero Fabricated Fallbacks), tuyệt đối không gán giá trị mặc định.
+- **`VERIFIED_NONE`**: Khi tài liệu chứa câu khẳng định minh thị về sự vắng mặt của điều kiện (ví dụ: *"Không có học phần tiên quyết"*). Trạng thái này có giá trị chân lý độc lập, được ghi nhận kèm xuất xứ cụ thể và phân biệt rành mạch với việc thiếu dữ liệu.

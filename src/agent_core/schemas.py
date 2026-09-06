@@ -1,11 +1,11 @@
 """
-Schemas & Data Models for Goal-Driven Agent Core V1.
+Schemas & Data Models for Goal-Driven Agent Core V1.1.
 Implements typed structures for goals, observations, plans, evidence,
 progress snapshots, and anti-loop tracking.
-Enforces zero chain-of-thought text fields.
+Enforces zero chain-of-thought text fields and complete evidence provenance.
 """
 from enum import Enum
-from typing import Dict, Any, List, Optional, Union
+from typing import Dict, Any, List, Optional
 from pydantic import BaseModel, Field
 
 
@@ -52,11 +52,14 @@ class StopReason(str, Enum):
     MAX_ITERATIONS = "MAX_ITERATIONS"
     SAFETY_BLOCK = "SAFETY_BLOCK"
     UNSUPPORTED_CAPABILITY = "UNSUPPORTED_CAPABILITY"
+    FAILED = "FAILED"
 
 
 class EvidenceStatus(str, Enum):
     PENDING = "PENDING"
     SATISFIED = "SATISFIED"
+    VERIFIED_VALUE = "VERIFIED_VALUE"
+    VERIFIED_NONE = "VERIFIED_NONE"
     MISSING = "MISSING"
     CONFLICTING = "CONFLICTING"
     INSUFFICIENT = "INSUFFICIENT"
@@ -103,7 +106,7 @@ class EvidenceRequirement(BaseModel):
 
 
 class EvidenceItem(BaseModel):
-    """Một mẩu dữ liệu bằng chứng đã được thẩm định từ môi trường tri thức."""
+    """Một mẩu dữ liệu bằng chứng đã được thẩm định từ môi trường tri thức kèm xuất xứ đầy đủ."""
     entity: str
     field: str
     document_type: str
@@ -112,6 +115,11 @@ class EvidenceItem(BaseModel):
     metadata: Dict[str, Any] = Field(default_factory=dict)
     is_authoritative: bool = True
     relevance_score: float = 1.0
+    status: EvidenceStatus = EvidenceStatus.VERIFIED_VALUE
+    source_file: Optional[str] = None
+    chunk_id: Optional[str] = None
+    section: Optional[str] = None
+    extracted_at: Optional[str] = None
 
 
 class ActionFingerprint(BaseModel):
@@ -202,6 +210,8 @@ class AgentGoalState(BaseModel):
     goal_id: str
     original_query: str
     current_user_input: str
+    user_id: Optional[str] = None
+    conversation_id: Optional[str] = None
     objectives: List[GoalType] = Field(default_factory=list)
     entities: List[str] = Field(default_factory=list)
     requirements: List[EvidenceRequirement] = Field(default_factory=list)

@@ -7,8 +7,7 @@ Strictly adheres to:
 - Anti-loop invariant checks (NO_PROGRESS, DUPLICATE_ACTION, MAX_ATTEMPTS)
 - Strict local execution with 0 external API calls
 """
-import uuid
-from typing import Dict, Any, List, Optional
+from typing import Optional
 
 from src.agent_core.schemas import (
     AgentGoalState,

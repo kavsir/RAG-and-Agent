@@ -1,0 +1,81 @@
+{
+  "timestamp": "2026-09-06 18:33:14",
+  "verdict": "AGENT_CORE_V1_FULLY_ACCEPTED",
+  "elapsed_seconds": 20.389750599999388,
+  "layer_1_component": {
+    "total_cases": 182,
+    "passed_cases": 179,
+    "accuracy": 98.35164835164835,
+    "discrepancies": [
+      "AC-A06",
+      "AC-G02",
+      "AC-N05"
+    ],
+    "all_hard_gates_passed": true,
+    "quality_metrics": {
+      "clear_goal_completion_rate": 95.0,
+      "missing_slot_identification_accuracy": 100.0,
+      "proposal_on_unavailable_rate": 100.0,
+      "clarification_resume_success_rate": 96.66666666666667,
+      "average_steps": 1.9065934065934067,
+      "average_latency_ms": 108.764919780327
+    }
+  },
+  "layer_2_evidence_truth": {
+    "fabricated_evidence_count": 0,
+    "false_positive_count": 0,
+    "verified_none_accuracy": 100.0,
+    "traceability_rate": 100.0,
+    "status": "PASSED"
+  },
+  "layer_3_rag_adapter": {
+    "second_retrieval_removed": true,
+    "exact_retrieval_success": true,
+    "expanded_retrieval_cross_leakage": false,
+    "status": "PASSED"
+  },
+  "layer_4_api_integration": {
+    "total_tests": 7,
+    "passed_tests": 7,
+    "accuracy": 100.0,
+    "status": "PASSED"
+  },
+  "layer_5_scoped_resume": {
+    "scoped_resume_passed": true,
+    "cross_session_goal_leakage": 0,
+    "cross_principal_goal_leakage": 0,
+    "restart_persistence_passed": true,
+    "status": "PASSED"
+  },
+  "layer_6_hard_gates": {
+    "duplicate_action_executions": 0,
+    "actions_after_no_progress": 0,
+    "unsafe_side_effect_attempts": 0,
+    "authority_overrides": 0,
+    "planning_external_calls": 0,
+    "all_hard_gates_pass": true,
+    "status": "PASSED"
+  },
+  "layer_7_legacy_regression": {
+    "router_v2": {
+      "total": 103,
+      "passed": 103,
+      "accuracy": 100.0
+    },
+    "personal_memory_v1": {
+      "total": 60,
+      "passed": 60,
+      "accuracy": 100.0
+    },
+    "session_memory_v2": {
+      "total": 50,
+      "passed": 50,
+      "accuracy": 100.0
+    },
+    "semantics_and_safety_gate": {
+      "total": 375,
+      "passed": 375,
+      "accuracy": 100.0
+    }
+  }
+}

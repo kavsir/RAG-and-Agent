@@ -1,20 +1,17 @@
 """
-Action Executor (ACT Phase) for Goal-Driven Agent Core V1.
+Action Executor (ACT Phase) for Goal-Driven Agent Core V1.1.
 Executes atomic, verifiable, and idempotent actions:
 - CATALOG_LOOKUP
-- RETRIEVE_EXACT
-- RETRIEVE_EXPANDED
+- RETRIEVE_EXACT (RAG exact metadata filtering on ChromaDB + BM25)
+- RETRIEVE_EXPANDED (RAG search with catalog expansion, strictly entity-scoped)
 - COMPARE_EVIDENCE
 - ASK_USER
 - PARTIAL_ANSWER
 - ABSTAIN
 - FINISH
-Strictly enforces local execution with 0 external API calls.
+Reuses existing RAG infrastructure with 0 second-retrieval architectures and 0 external LLM calls.
 """
-import os
-import glob
-import docx
-from typing import Dict, Any, List, Optional
+from typing import Optional
 
 from src.agent_core.schemas import (
     ActionPlan,
@@ -29,7 +26,7 @@ from src.agent_core.schemas import (
 from src.agent_core.entity_catalog import get_entity_catalog, EntityCatalog
 from src.agent_core.environment_catalog import get_knowledge_environment_catalog, KnowledgeEnvironmentCatalog
 from src.agent_core.verifier import get_evidence_verifier, EvidenceVerifier
-
+from src.rag.hybrid_retriever import get_collection_retriever
 
 FIELD_NAMES_VN = {
     "credits": "số tín chỉ",
@@ -50,7 +47,7 @@ FIELD_NAMES_VN = {
 
 
 class ActionExecutor:
-    """Bộ thực thi hành động học vụ an toàn và cô lập."""
+    """Bộ thực thi hành động học vụ an toàn, tái sử dụng hạ tầng RAG chính quy."""
 
     def __init__(
         self,
@@ -61,30 +58,6 @@ class ActionExecutor:
         self.entity_catalog = entity_catalog or get_entity_catalog()
         self.env_catalog = env_catalog or get_knowledge_environment_catalog()
         self.verifier = verifier or get_evidence_verifier()
-        self._doc_cache: Dict[str, Dict[str, Any]] = {}
-        self._init_local_docs()
-
-    def _init_local_docs(self):
-        """Khởi tạo và nạp trước nội dung các tài liệu thực tế trong data_raw/."""
-        base_dirs = [
-            ("data_raw/course_detail", "course_outline"),
-            ("data_raw/curriculum", "curriculum"),
-            ("data_raw/regulation", "regulation"),
-        ]
-        for dir_path, doc_type in base_dirs:
-            if not os.path.exists(dir_path):
-                continue
-            for fpath in glob.glob(os.path.join(dir_path, "*.docx")):
-                try:
-                    doc = docx.Document(fpath)
-                    text = "\n".join([p.text for p in doc.paragraphs if p.text.strip()])
-                    self._doc_cache[fpath] = {
-                        "file_path": fpath,
-                        "document_type": doc_type,
-                        "content": text,
-                    }
-                except Exception:
-                    pass
 
     def execute(self, plan: ActionPlan, state: AgentGoalState) -> ActionObservation:
         """Thực thi một kế hoạch hành động đã được lập."""
@@ -95,7 +68,7 @@ class ActionExecutor:
         elif a_type == ActionType.RETRIEVE_EXACT:
             return self._execute_exact_retrieval(plan, state)
         elif a_type == ActionType.RETRIEVE_EXPANDED:
-            return self._execute_exact_retrieval(plan, state)
+            return self._execute_expanded_retrieval(plan, state)
         elif a_type == ActionType.COMPARE_EVIDENCE:
             return self._execute_compare_evidence(plan, state)
         elif a_type == ActionType.ASK_USER:
@@ -115,7 +88,7 @@ class ActionExecutor:
             )
 
     def _execute_catalog_lookup(self, plan: ActionPlan, state: AgentGoalState) -> ActionObservation:
-        """Tra cứu nhanh danh mục chính thống từ bộ nhớ cục bộ."""
+        """Tra cứu nhanh danh mục chính thống từ metadata/manifests có nguồn gốc provenance."""
         target_req = next(
             (r for r in state.requirements if r.entity == plan.entity and r.field == plan.requested_field),
             None
@@ -135,7 +108,7 @@ class ActionExecutor:
         target_req.status = status
         target_req.attempt_count += 1
 
-        if status == EvidenceStatus.SATISFIED and item:
+        if status in (EvidenceStatus.SATISFIED, EvidenceStatus.VERIFIED_VALUE, EvidenceStatus.VERIFIED_NONE) and item:
             target_req.extracted_value = item.content
             target_req.source_doc_id = item.source
             state.evidence.append(item)
@@ -157,7 +130,7 @@ class ActionExecutor:
         )
 
     def _execute_exact_retrieval(self, plan: ActionPlan, state: AgentGoalState) -> ActionObservation:
-        """Tra cứu chính xác từ tài liệu docx tương ứng với thực thể."""
+        """Truy xuất chính xác qua RAG sử dụng metadata filtering theo course_code và document_type."""
         target_req = next(
             (r for r in state.requirements if r.entity == plan.entity and r.field == plan.requested_field),
             None
@@ -173,22 +146,70 @@ class ActionExecutor:
                 message="Không tìm thấy requirement mục tiêu.",
             )
 
+        collections_to_search = []
+        for doc_type in target_req.accepted_document_types:
+            if doc_type in ("course_detail", "course_outline"):
+                collections_to_search.append("course_detail")
+            elif doc_type == "curriculum":
+                collections_to_search.append("curriculum")
+            elif doc_type == "regulation":
+                collections_to_search.append("regulation")
+
+        if not collections_to_search:
+            collections_to_search = ["course_detail", "curriculum"]
+
+        where_filter = {"course_code": target_req.entity} if target_req.entity and target_req.entity not in ("DNTU", "general") else None
         matching_docs = []
-        for fpath, doc_info in self._doc_cache.items():
-            if target_req.accepted_document_types and doc_info["document_type"] in target_req.accepted_document_types:
-                if target_req.entity and target_req.entity not in ("DNTU", "general"):
-                    if target_req.entity.lower() in fpath.lower() or target_req.entity.lower() in doc_info["content"].lower():
-                        matching_docs.append(doc_info)
-                else:
-                    matching_docs.append(doc_info)
-            elif target_req.entity and (target_req.entity.lower() in fpath.lower() or target_req.entity.lower() in doc_info["content"].lower()):
-                matching_docs.append(doc_info)
+
+        for col_name in collections_to_search:
+            try:
+                retriever = get_collection_retriever(col_name)
+                # 1. Exact metadata query trực tiếp trên Chroma Persistent Collection
+                if where_filter and retriever.collection:
+                    res = retriever.collection.get(where=where_filter, limit=10)
+                    if res and res.get("documents"):
+                        for cid, meta, text in zip(res["ids"], res["metadatas"], res["documents"]):
+                            matching_docs.append({
+                                "id": cid,
+                                "chunk_id": cid,
+                                "text": text,
+                                "content": text,
+                                "metadata": meta or {},
+                                "document_type": (meta or {}).get("document_type", col_name),
+                                "source_file": (meta or {}).get("source_file", ""),
+                                "section": (meta or {}).get("section", ""),
+                            })
+                elif not where_filter and col_name == "regulation" and retriever.collection:
+                    res = retriever.collection.get(limit=10)
+                    if res and res.get("documents"):
+                        for cid, meta, text in zip(res["ids"], res["metadatas"], res["documents"]):
+                            matching_docs.append({
+                                "id": cid,
+                                "chunk_id": cid,
+                                "text": text,
+                                "content": text,
+                                "metadata": meta or {},
+                                "document_type": "regulation",
+                                "source_file": (meta or {}).get("source_file", ""),
+                                "section": (meta or {}).get("section", ""),
+                            })
+
+                # 2. Nếu chưa có docs, truy xuất qua BM25
+                if not matching_docs and retriever.bm25_index:
+                    f_vn = FIELD_NAMES_VN.get(target_req.field, "")
+                    query_str = f"{target_req.field} {f_vn}" if target_req.entity in ("DNTU", "general") else f"{target_req.entity} {target_req.field}"
+                    b_docs = retriever.bm25_search(query_str, top_k=5)
+                    for d in b_docs:
+                        d["content"] = d.get("text", "")
+                        matching_docs.append(d)
+            except Exception:
+                pass
 
         status, item = self.verifier.verify_requirement(target_req, matching_docs)
         target_req.status = status
         target_req.attempt_count += 1
 
-        if status == EvidenceStatus.SATISFIED and item:
+        if status in (EvidenceStatus.SATISFIED, EvidenceStatus.VERIFIED_VALUE, EvidenceStatus.VERIFIED_NONE) and item:
             target_req.extracted_value = item.content
             target_req.source_doc_id = item.source
             state.evidence.append(item)
@@ -210,19 +231,90 @@ class ActionExecutor:
                 documents_found=len(matching_docs),
                 new_evidence_count=0,
                 requirements_satisfied=[],
-                message=f"Tài liệu không chứa thông tin đáp ứng {target_req.requirement_key}",
+                message=f"Exact retrieval không tìm thấy thông tin hợp lệ cho {target_req.requirement_key}",
+            )
+
+    def _execute_expanded_retrieval(self, plan: ActionPlan, state: AgentGoalState) -> ActionObservation:
+        """Truy xuất mở rộng qua RAG (tên môn, alias) khi exact retrieval không tìm thấy, bảo vệ không chéo thực thể."""
+        target_req = next(
+            (r for r in state.requirements if r.entity == plan.entity and r.field == plan.requested_field),
+            None
+        )
+        if not target_req and state.requirements:
+            target_req = state.requirements[0]
+
+        if not target_req:
+            return ActionObservation(
+                action_id=plan.action_id,
+                action_type=plan.action_type,
+                success=False,
+                message="Không tìm thấy requirement mục tiêu.",
+            )
+
+        c_info = self.entity_catalog.get_course_info(target_req.entity)
+        c_name = c_info.get("canonical_name", "") if c_info else ""
+        aliases = c_info.get("aliases", []) if c_info else []
+        alias_str = " ".join(aliases[:2])
+
+        query_str = f"{target_req.entity} {c_name} {alias_str} {target_req.field}".strip()
+
+        collections_to_search = ["course_detail", "curriculum", "regulation"]
+        matching_docs = []
+
+        for col_name in collections_to_search:
+            try:
+                retriever = get_collection_retriever(col_name)
+                # BM25 search mở rộng
+                docs = retriever.bm25_search(query_str, top_k=5)
+                for d in docs:
+                    d_code = d.get("metadata", {}).get("course_code")
+                    if d_code and target_req.entity and d_code != target_req.entity:
+                        continue
+                    d["content"] = d.get("text", "")
+                    matching_docs.append(d)
+            except Exception:
+                pass
+
+        status, item = self.verifier.verify_requirement(target_req, matching_docs)
+        target_req.status = status
+        target_req.attempt_count += 1
+
+        if status in (EvidenceStatus.SATISFIED, EvidenceStatus.VERIFIED_VALUE, EvidenceStatus.VERIFIED_NONE) and item:
+            target_req.extracted_value = item.content
+            target_req.source_doc_id = item.source
+            state.evidence.append(item)
+            return ActionObservation(
+                action_id=plan.action_id,
+                action_type=plan.action_type,
+                success=True,
+                documents_found=len(matching_docs),
+                new_evidence_count=1,
+                requirements_satisfied=[target_req.requirement_key],
+                evidence_items=[item],
+                message=f"Đã thu thập bằng chứng mở rộng cho {target_req.requirement_key}: {item.content}",
+            )
+        else:
+            return ActionObservation(
+                action_id=plan.action_id,
+                action_type=plan.action_type,
+                success=False,
+                documents_found=len(matching_docs),
+                new_evidence_count=0,
+                requirements_satisfied=[],
+                message=f"Expanded retrieval không tìm thấy thông tin hợp lệ cho {target_req.requirement_key}",
             )
 
     def _execute_compare_evidence(self, plan: ActionPlan, state: AgentGoalState) -> ActionObservation:
         """Tổng hợp so sánh đa thực thể dựa trên các bằng chứng đã thẩm định."""
-        fields = list(set(r.field for r in state.requirements if r.status == EvidenceStatus.SATISFIED))
+        valid_statuses = (EvidenceStatus.SATISFIED, EvidenceStatus.VERIFIED_VALUE, EvidenceStatus.VERIFIED_NONE)
+        fields = list(set(r.field for r in state.requirements if r.status in valid_statuses))
         comparison_lines = [f"### So sánh các học phần: {', '.join(state.entities)}"]
 
         for f in fields:
             f_title = FIELD_NAMES_VN.get(f, f.replace("_", " ").title())
             comparison_lines.append(f"\n- **{f_title.title()}**:")
             for ent in state.entities:
-                val = next((r.extracted_value for r in state.requirements if r.entity == ent and r.field == f and r.status == EvidenceStatus.SATISFIED), "Chưa có thông tin")
+                val = next((r.extracted_value for r in state.requirements if r.entity == ent and r.field == f and r.status in valid_statuses), "Chưa có thông tin")
                 comparison_lines.append(f"  + **{ent}**: {val}")
 
         state.final_answer = "\n".join(comparison_lines)
@@ -264,8 +356,9 @@ class ActionExecutor:
 
     def _execute_partial_answer(self, plan: ActionPlan, state: AgentGoalState) -> ActionObservation:
         """Sinh câu trả lời từng phần: nêu rõ phần đã xác minh và phần dữ liệu chưa có."""
-        sat_reqs = [r for r in state.requirements if r.status == EvidenceStatus.SATISFIED]
-        unsat_reqs = [r for r in state.requirements if r.status != EvidenceStatus.SATISFIED]
+        valid_statuses = (EvidenceStatus.SATISFIED, EvidenceStatus.VERIFIED_VALUE, EvidenceStatus.VERIFIED_NONE)
+        sat_reqs = [r for r in state.requirements if r.status in valid_statuses]
+        unsat_reqs = [r for r in state.requirements if r.status not in valid_statuses]
 
         lines = ["Thông tin đã xác thực từ tài liệu chính quy:"]
         for r in sat_reqs:
@@ -320,9 +413,10 @@ class ActionExecutor:
 
     def _execute_finish(self, plan: ActionPlan, state: AgentGoalState) -> ActionObservation:
         """Hoàn tất mục tiêu và kết xuất câu trả lời đầy đủ kèm nguồn thẩm định."""
+        valid_statuses = (EvidenceStatus.SATISFIED, EvidenceStatus.VERIFIED_VALUE, EvidenceStatus.VERIFIED_NONE)
         lines = []
         for r in state.requirements:
-            if r.status == EvidenceStatus.SATISFIED:
+            if r.status in valid_statuses:
                 f_vn = FIELD_NAMES_VN.get(r.field, r.field)
                 lines.append(f"- **{r.entity} ({f_vn})**: {r.extracted_value}")
 

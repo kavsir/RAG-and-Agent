@@ -1,6 +1,7 @@
 """
-Service layer for Agent Core V1.
-Manages active goal states, human-in-the-loop resumption, and singleton lifecycle.
+Service layer for Agent Core V1.1.
+Manages active goal states, human-in-the-loop resumption, and SQLite persistence.
+Strictly scopes goals by (user_id, conversation_id, goal_id).
 """
 from typing import Dict, Any, Optional
 import uuid
@@ -8,26 +9,31 @@ import uuid
 from src.agent_core.schemas import (
     AgentGoalState,
     AgentStatus,
-    GoalType,
     StopReason,
 )
 from src.agent_core.loop import get_agent_loop, AgentLoop
+from src.agent_core.goal_store import get_agent_goal_store, AgentGoalStore
 
 
 class AgentCoreService:
     """
-    Public Service API for Agent Core V1.
-    Provides execution, session/goal management, and resumption for clarify/approval flows.
+    Public Service API for Agent Core V1.1.
+    Provides execution, scoped session/goal management, and resumption for clarify/approval flows.
     """
 
-    def __init__(self, loop: Optional[AgentLoop] = None):
+    def __init__(
+        self,
+        loop: Optional[AgentLoop] = None,
+        goal_store: Optional[AgentGoalStore] = None,
+    ):
         self.loop = loop or get_agent_loop()
-        self._active_goals: Dict[str, AgentGoalState] = {}
-        self._goal_history: Dict[str, AgentGoalState] = {}
+        self.goal_store = goal_store or get_agent_goal_store()
 
     def process_query(
         self,
         query: str,
+        user_id: str = "default_user",
+        conversation_id: str = "default_conv",
         session_context: Optional[Dict[str, Any]] = None,
         personal_context: Optional[Dict[str, Any]] = None,
         router_hint: Optional[Dict[str, Any]] = None,
@@ -35,7 +41,7 @@ class AgentCoreService:
     ) -> AgentGoalState:
         """
         Process a user query through the Agent Core execution loop.
-        Stores pending goals waiting for user clarification.
+        Persists active goals awaiting user input to SQLite.
         """
         gid = goal_id or f"goal-{uuid.uuid4().hex[:8]}"
 
@@ -46,37 +52,41 @@ class AgentCoreService:
             router_hint=router_hint,
             goal_id=gid,
         )
+        result.user_id = user_id
+        result.conversation_id = conversation_id
 
-        # Lưu trạng thái
-        if result.status == AgentStatus.NEEDS_USER_INPUT:
-            self._active_goals[result.goal_id] = result
-        else:
-            self._goal_history[result.goal_id] = result
-            if result.goal_id in self._active_goals:
-                del self._active_goals[result.goal_id]
-
+        # Persist to SQLite store
+        self.goal_store.save_goal(user_id=user_id, conversation_id=conversation_id, state=result)
         return result
 
     def resume_goal(
         self,
-        goal_id: str,
+        user_id: str,
+        conversation_id: str,
         user_response: str,
+        goal_id: Optional[str] = None,
         session_context: Optional[Dict[str, Any]] = None,
     ) -> AgentGoalState:
         """
         Resume an existing goal paused for user clarification or proposal confirmation.
+        Scoped strictly by user_id and conversation_id.
         """
-        state = self._active_goals.get(goal_id)
+        state = self.goal_store.get_active_goal(
+            user_id=user_id, conversation_id=conversation_id, goal_id=goal_id
+        )
         if not state:
-            state = self._goal_history.get(goal_id)
+            if goal_id:
+                state = self.goal_store.get_goal(user_id=user_id, conversation_id=conversation_id, goal_id=goal_id)
             if not state:
                 return AgentGoalState(
-                    goal_id=goal_id,
+                    goal_id=goal_id or f"goal-{uuid.uuid4().hex[:8]}",
                     original_query=user_response,
                     current_user_input=user_response,
+                    user_id=user_id,
+                    conversation_id=conversation_id,
                     status=AgentStatus.ABSTAINED,
                     stop_reason=StopReason.FAILED,
-                    final_answer=f"Không tìm thấy phiên mục tiêu tương ứng với mã '{goal_id}'.",
+                    final_answer="Không tìm thấy mục tiêu đang chờ làm rõ trong phiên hội thoại này.",
                 )
 
         result = self.loop.resume_with_user_response(
@@ -84,24 +94,23 @@ class AgentCoreService:
             user_response=user_response,
             session_context=session_context,
         )
+        result.user_id = user_id
+        result.conversation_id = conversation_id
 
-        if result.status == AgentStatus.NEEDS_USER_INPUT:
-            self._active_goals[result.goal_id] = result
-        else:
-            self._goal_history[result.goal_id] = result
-            if result.goal_id in self._active_goals:
-                del self._active_goals[result.goal_id]
-
+        self.goal_store.save_goal(user_id=user_id, conversation_id=conversation_id, state=result)
         return result
 
-    def get_active_goal(self, goal_id: str) -> Optional[AgentGoalState]:
+    def get_active_goal(
+        self, user_id: str, conversation_id: str, goal_id: Optional[str] = None
+    ) -> Optional[AgentGoalState]:
         """Retrieve an active goal awaiting input."""
-        return self._active_goals.get(goal_id)
+        return self.goal_store.get_active_goal(
+            user_id=user_id, conversation_id=conversation_id, goal_id=goal_id
+        )
 
     def clear_active_goals(self):
         """Clear all active goals (for testing/cleanup)."""
-        self._active_goals.clear()
-        self._goal_history.clear()
+        self.goal_store.clear_all()
 
 
 # Global Singleton

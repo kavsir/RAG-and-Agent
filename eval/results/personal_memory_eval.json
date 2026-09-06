@@ -16,10 +16,10 @@
     "principal_isolation": 100.0
   },
   "latencies_p95_ms": {
-    "read": 0.11,
-    "write": 7.28,
-    "delete": 0.55,
-    "context": 0.19
+    "read": 0.06,
+    "write": 4.65,
+    "delete": 0.4,
+    "context": 0.07
   },
   "cases": [
     {
@@ -236,7 +236,7 @@
       "id": "case-g-04",
       "group": "clear_profile",
       "passed": true,
-      "detail": "Audit event DELETE_ALL in [MemoryEvent(id='0a9e6d6b-39b6-45b5-a0bc-78565a8b1581', user_id='test-user-g', event_type='DELETE_ALL', fact_key='*', old_value='count=1', new_value=None, source_type='USER_REQUEST', created_at=datetime.datetime(2026, 9, 6, 10, 46, 32, 203628, tzinfo=datetime.timezone.utc)), MemoryEvent(id='f84799ad-5305-46fc-b801-46e7e45a22c5', user_id='test-user-g', event_type='CREATED', fact_key='cohort', old_value=None, new_value='K19', source_type='PROFILE_API', created_at=datetime.datetime(2026, 9, 6, 10, 46, 32, 203628, tzinfo=datetime.timezone.utc)), MemoryEvent(id='c9ade35c-144a-4b10-9c44-3eae8232637a', user_id='test-user-g', event_type='DELETE_ALL', fact_key='*', old_value='count=4', new_value=None, source_type='USER_REQUEST', created_at=datetime.datetime(2026, 9, 6, 10, 46, 32, 201628, tzinfo=datetime.timezone.utc)), MemoryEvent(id='a723564d-fd88-4f4d-a9c0-e4dac1837577', user_id='test-user-g', event_type='CREATED', fact_key='response_style', old_value=None, new_value='concise', source_type='PROFILE_API', created_at=datetime.datetime(2026, 9, 6, 10, 46, 32, 201628, tzinfo=datetime.timezone.utc)), MemoryEvent(id='6a646c1b-83df-46e2-84a0-295b80cd8292', user_id='test-user-g', event_type='CREATED', fact_key='cohort', old_value=None, new_value='K19', source_type='PROFILE_API', created_at=datetime.datetime(2026, 9, 6, 10, 46, 32, 201628, tzinfo=datetime.timezone.utc))]"
+      "detail": "Audit event DELETE_ALL in [MemoryEvent(id='fc38ae9a-be45-4655-8f29-ae43b48dd432', user_id='test-user-g', event_type='DELETE_ALL', fact_key='*', old_value='count=1', new_value=None, source_type='USER_REQUEST', created_at=datetime.datetime(2026, 9, 6, 11, 13, 41, 311611, tzinfo=datetime.timezone.utc)), MemoryEvent(id='7b61f0cd-77e3-46b8-9b22-cc3f22282d3f', user_id='test-user-g', event_type='CREATED', fact_key='cohort', old_value=None, new_value='K19', source_type='PROFILE_API', created_at=datetime.datetime(2026, 9, 6, 11, 13, 41, 310611, tzinfo=datetime.timezone.utc)), MemoryEvent(id='570daea6-9e33-4d7b-b230-b639f744ea32', user_id='test-user-g', event_type='DELETE_ALL', fact_key='*', old_value='count=4', new_value=None, source_type='USER_REQUEST', created_at=datetime.datetime(2026, 9, 6, 11, 13, 41, 310611, tzinfo=datetime.timezone.utc)), MemoryEvent(id='70e21d18-829a-4d0a-bb26-2bbda9f7bae5', user_id='test-user-g', event_type='CREATED', fact_key='response_style', old_value=None, new_value='concise', source_type='PROFILE_API', created_at=datetime.datetime(2026, 9, 6, 11, 13, 41, 310611, tzinfo=datetime.timezone.utc)), MemoryEvent(id='dae7e95e-2399-4f00-8969-5631472e4bc2', user_id='test-user-g', event_type='CREATED', fact_key='cohort', old_value=None, new_value='K19', source_type='PROFILE_API', created_at=datetime.datetime(2026, 9, 6, 11, 13, 41, 309611, tzinfo=datetime.timezone.utc))]"
     },
     {
       "id": "case-h-01",

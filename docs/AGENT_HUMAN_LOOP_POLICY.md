@@ -57,3 +57,29 @@ Khi người dùng phản hồi câu hỏi làm rõ:
    - Nếu người dùng đồng ý phương án thay thế: Cập nhật `state.alternative_authorized = True`, thay thế các requirement không khả dụng bằng các requirement thay thế hợp lệ và tiếp tục vòng lặp.
    - Nếu người dùng từ chối: Chuyển ngay sang `state.status = AgentStatus.ABSTAINED` với phản hồi ghi nhận lịch sự, không tra cứu tiếp.
    - Nếu người dùng bổ sung mã môn: Cập nhật `state.entities`, giữ nguyên các trường yêu cầu ban đầu và tiến hành tra cứu.
+
+---
+
+## 4. QUY TRÌNH TÍCH HỢP PRODUCTION & AN TOÀN CÔNG CỤ (ROUND P1.1)
+
+### 4.1. AGENT CORE != STANDALONE DEMO (Đường dẫn sản xuất trực tiếp)
+- Toàn bộ yêu cầu học vụ qua endpoint chính thức **`POST /api/chat`** (`src/api/routes.py`) được định tuyến trực tiếp vào `AgentCoreService`.
+- **Phạm vi cô lập mục tiêu (Scoped Goal Resumption):**
+  - Mọi mục tiêu đang chờ làm rõ (`NEEDS_USER_INPUT`) được định danh bởi khóa phức hợp: `(user_id, conversation_id, goal_id)`.
+  - Tuyệt đối không lưu trữ mục tiêu trong từ điển toàn cục phi phạm vi (Global Unscoped Dictionary).
+  - Ngăn chặn triệt để rò rỉ chéo phiên (Cross-Session Leakage = 0) và rò rỉ chéo người dùng (Cross-Principal Leakage = 0).
+- **Lưu trữ trạng thái bền vững (SQLite Persistence):**
+  - Trạng thái mục tiêu `AgentGoalState` được ghi nhận lập tức vào SQLite `runtime/agent_goals.sqlite3` ở chế độ WAL.
+  - Khi hệ thống hoặc tiến trình uvicorn khởi động lại (service restart), trạng thái mục tiêu đang chờ vẫn được khôi phục nguyên vẹn.
+
+### 4.2. PLANNER != TOOL AUTHORIZATION (Thẩm quyền thực thi độc lập)
+- Agent Planner có thể đề xuất hành động công cụ (ví dụ: `SEND_EMAIL`, `SET_REMINDER`) như một phần của kế hoạch hành động.
+- **Ranh giới an toàn nghiêm ngặt:** Đề xuất của Planner **bắt buộc** phải được thẩm định độc lập thông qua **`ActionAuthorizationGate`** (`src/semantics`).
+- Nếu câu nói người dùng mang tính phủ định (*"đừng gửi email"*, *"không cần đặt lịch"*), giả định, điều kiện hoặc chứa chỉ dẫn mâu thuẫn:
+  - Gate từ chối ủy quyền thực thi có hiệu ứng phụ (`authorized = False`, `side_effect = False`).
+  - Hệ thống chỉ soạn thảo bản thảo (`COMPOSE_EMAIL` - Draft only) hoặc yêu cầu làm rõ, tuyệt đối không gửi thư hay tạo lịch nhắc tự động.
+
+### 4.3. CHÍNH SÁCH BỘ NHỚ ĐỆM (CONTEXT-SAFE CACHE INTEGRATION)
+- Để bảo toàn tính an toàn ngữ cảnh:
+  - Các phản hồi ở trạng thái `NEEDS_USER_INPUT`, `PARTIAL`, `ABSTAINED` hoặc có danh mục `TOOL_ACTION` bắt buộc được gán `CacheScope.NON_CACHEABLE`.
+  - Không bao giờ lưu vào bộ nhớ đệm các trạng thái đang tương tác dở dang hoặc thiếu dữ liệu ngữ cảnh.

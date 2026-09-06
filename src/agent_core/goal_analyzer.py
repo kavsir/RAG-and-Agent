@@ -37,6 +37,19 @@ class GoalAnalyzer:
         raw_query = (query or "").strip()
         lower_query = raw_query.lower()
 
+        # Tự động phân tích ngữ nghĩa phát ngôn nếu chưa được cung cấp
+        if utterance_semantics is None:
+            try:
+                from src.semantics import analyze_utterance
+                sem = analyze_utterance(raw_query)
+                utterance_semantics = {
+                    "polarity": sem.polarity.value,
+                    "modality": sem.modality.value,
+                    "is_contradictory": sem.is_contradictory,
+                }
+            except Exception:
+                utterance_semantics = None
+
         # 1. Kiểm tra THỰC THỂ KHÔNG XÁC ĐỊNH (UNKNOWN ENTITY)
         unknown_entities = self.entity_catalog.find_unknown_entities(raw_query)
         if unknown_entities:
@@ -274,8 +287,13 @@ class GoalAnalyzer:
         tools: List[GoalType] = []
 
         # Kiểm tra qua Utterance Semantics nếu có
-        if utterance_semantics and utterance_semantics.get("modality") != "ASSERTED":
-            return tools
+        if utterance_semantics:
+            if (
+                utterance_semantics.get("polarity") == "NEGATED"
+                or utterance_semantics.get("modality") != "ASSERTED"
+                or utterance_semantics.get("is_contradictory")
+            ):
+                return tools
 
         if any(w in lower_text for w in ["nhắc tôi", "đặt lịch", "tạo reminder", "nhớ báo", "hẹn giờ"]):
             tools.append(GoalType.SET_REMINDER)

@@ -10,8 +10,6 @@ from src.agent_core.schemas import (
     AgentGoalState,
     ProgressSnapshot,
     EvidenceStatus,
-    ActionFingerprint,
-    StopReason,
 )
 
 

@@ -1,5 +1,5 @@
 """
-Pydantic Schemas cho FastAPI API endpoints.
+Pydantic Schemas cho FastAPI API endpoints (Agent Core V1.1 Production Integration).
 """
 from typing import List, Optional, Dict
 from pydantic import BaseModel, Field
@@ -26,6 +26,8 @@ class ChatMetadata(BaseModel):
     tool_intent: Optional[str] = None
     cache_scope: Optional[str] = None
     profile_digest: Optional[str] = None
+    goal_id: Optional[str] = None
+    status: Optional[str] = None
 
 
 class ChatResponse(BaseModel):
@@ -34,6 +36,10 @@ class ChatResponse(BaseModel):
     sources: List[SourceItem] = Field(default_factory=list)
     conversation_id: str
     metadata: ChatMetadata
+    goal_id: Optional[str] = None
+    status: Optional[str] = None
+    clarification_question: Optional[str] = None
+    clarification_options: List[str] = Field(default_factory=list)
 
 
 class ProfileData(BaseModel):
