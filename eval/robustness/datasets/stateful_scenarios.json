@@ -1,0 +1,2642 @@
+[
+  {
+    "scenario_id": "CHAOS-SCENARIO-01",
+    "title": "Chaos Multi-turn Scenario #1 (Entity shift & Adversarial noise)",
+    "session_id": "sess-chaos-01",
+    "user_id": "user-chaos-01",
+    "turns": [
+      {
+        "turn_id": 1,
+        "user_input": "Môn FIT4201 có bao nhiêu tín chỉ?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 2,
+        "user_input": "Ai dạy môn đó?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 3,
+        "user_input": "asdf ???? !!!!!",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 4,
+        "user_input": "Thuật toán Dijkstra là gì?",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 5,
+        "user_input": "Tôi là sinh viên K19 ngành CNTT.",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 6,
+        "user_input": "Thế còn môn FIT3101 thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT3101",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 7,
+        "user_input": "Email thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT3101",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 8,
+        "user_input": "Soạn email gửi thầy nhưng đừng gửi nhé.",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT3101",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 9,
+        "user_input": "Môn FIT9999 học vào kỳ mấy?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 10,
+        "user_input": "Nó có thực hành không?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      }
+    ]
+  },
+  {
+    "scenario_id": "CHAOS-SCENARIO-02",
+    "title": "Chaos Multi-turn Scenario #2 (Entity shift & Adversarial noise)",
+    "session_id": "sess-chaos-02",
+    "user_id": "user-chaos-02",
+    "turns": [
+      {
+        "turn_id": 1,
+        "user_input": "Môn FIT4201 có bao nhiêu tín chỉ?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 2,
+        "user_input": "Ai dạy môn đó?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 3,
+        "user_input": "asdf ???? !!!!!",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 4,
+        "user_input": "Thuật toán Dijkstra là gì?",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 5,
+        "user_input": "Tôi là sinh viên K20 ngành CNTT.",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 6,
+        "user_input": "Thế còn môn FIT4104 thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4104",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 7,
+        "user_input": "Email thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4104",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 8,
+        "user_input": "Soạn email gửi thầy nhưng đừng gửi nhé.",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4104",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 9,
+        "user_input": "Môn FIT9999 học vào kỳ mấy?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 10,
+        "user_input": "Nó có thực hành không?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      }
+    ]
+  },
+  {
+    "scenario_id": "CHAOS-SCENARIO-03",
+    "title": "Chaos Multi-turn Scenario #3 (Entity shift & Adversarial noise)",
+    "session_id": "sess-chaos-03",
+    "user_id": "user-chaos-03",
+    "turns": [
+      {
+        "turn_id": 1,
+        "user_input": "Môn FIT4201 có bao nhiêu tín chỉ?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 2,
+        "user_input": "Ai dạy môn đó?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 3,
+        "user_input": "asdf ???? !!!!!",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 4,
+        "user_input": "Thuật toán Dijkstra là gì?",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 5,
+        "user_input": "Tôi là sinh viên K18 ngành CNTT.",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 6,
+        "user_input": "Thế còn môn FIT3101 thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT3101",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 7,
+        "user_input": "Email thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT3101",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 8,
+        "user_input": "Soạn email gửi thầy nhưng đừng gửi nhé.",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT3101",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 9,
+        "user_input": "Môn FIT9999 học vào kỳ mấy?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 10,
+        "user_input": "Nó có thực hành không?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      }
+    ]
+  },
+  {
+    "scenario_id": "CHAOS-SCENARIO-04",
+    "title": "Chaos Multi-turn Scenario #4 (Entity shift & Adversarial noise)",
+    "session_id": "sess-chaos-04",
+    "user_id": "user-chaos-04",
+    "turns": [
+      {
+        "turn_id": 1,
+        "user_input": "Môn FIT4201 có bao nhiêu tín chỉ?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 2,
+        "user_input": "Ai dạy môn đó?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 3,
+        "user_input": "asdf ???? !!!!!",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 4,
+        "user_input": "Thuật toán Dijkstra là gì?",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 5,
+        "user_input": "Tôi là sinh viên K19 ngành CNTT.",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 6,
+        "user_input": "Thế còn môn FIT4104 thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4104",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 7,
+        "user_input": "Email thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4104",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 8,
+        "user_input": "Soạn email gửi thầy nhưng đừng gửi nhé.",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4104",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 9,
+        "user_input": "Môn FIT9999 học vào kỳ mấy?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 10,
+        "user_input": "Nó có thực hành không?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      }
+    ]
+  },
+  {
+    "scenario_id": "CHAOS-SCENARIO-05",
+    "title": "Chaos Multi-turn Scenario #5 (Entity shift & Adversarial noise)",
+    "session_id": "sess-chaos-05",
+    "user_id": "user-chaos-05",
+    "turns": [
+      {
+        "turn_id": 1,
+        "user_input": "Môn FIT4201 có bao nhiêu tín chỉ?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 2,
+        "user_input": "Ai dạy môn đó?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 3,
+        "user_input": "asdf ???? !!!!!",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 4,
+        "user_input": "Thuật toán Dijkstra là gì?",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 5,
+        "user_input": "Tôi là sinh viên K20 ngành CNTT.",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 6,
+        "user_input": "Thế còn môn FIT3101 thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT3101",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 7,
+        "user_input": "Email thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT3101",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 8,
+        "user_input": "Soạn email gửi thầy nhưng đừng gửi nhé.",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT3101",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 9,
+        "user_input": "Môn FIT9999 học vào kỳ mấy?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 10,
+        "user_input": "Nó có thực hành không?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      }
+    ]
+  },
+  {
+    "scenario_id": "CHAOS-SCENARIO-06",
+    "title": "Chaos Multi-turn Scenario #6 (Entity shift & Adversarial noise)",
+    "session_id": "sess-chaos-06",
+    "user_id": "user-chaos-06",
+    "turns": [
+      {
+        "turn_id": 1,
+        "user_input": "Môn FIT4201 có bao nhiêu tín chỉ?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 2,
+        "user_input": "Ai dạy môn đó?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 3,
+        "user_input": "asdf ???? !!!!!",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 4,
+        "user_input": "Thuật toán Dijkstra là gì?",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 5,
+        "user_input": "Tôi là sinh viên K18 ngành CNTT.",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 6,
+        "user_input": "Thế còn môn FIT4104 thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4104",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 7,
+        "user_input": "Email thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4104",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 8,
+        "user_input": "Soạn email gửi thầy nhưng đừng gửi nhé.",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4104",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 9,
+        "user_input": "Môn FIT9999 học vào kỳ mấy?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 10,
+        "user_input": "Nó có thực hành không?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      }
+    ]
+  },
+  {
+    "scenario_id": "CHAOS-SCENARIO-07",
+    "title": "Chaos Multi-turn Scenario #7 (Entity shift & Adversarial noise)",
+    "session_id": "sess-chaos-07",
+    "user_id": "user-chaos-07",
+    "turns": [
+      {
+        "turn_id": 1,
+        "user_input": "Môn FIT4201 có bao nhiêu tín chỉ?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 2,
+        "user_input": "Ai dạy môn đó?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 3,
+        "user_input": "asdf ???? !!!!!",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 4,
+        "user_input": "Thuật toán Dijkstra là gì?",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 5,
+        "user_input": "Tôi là sinh viên K19 ngành CNTT.",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 6,
+        "user_input": "Thế còn môn FIT3101 thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT3101",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 7,
+        "user_input": "Email thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT3101",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 8,
+        "user_input": "Soạn email gửi thầy nhưng đừng gửi nhé.",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT3101",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 9,
+        "user_input": "Môn FIT9999 học vào kỳ mấy?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 10,
+        "user_input": "Nó có thực hành không?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      }
+    ]
+  },
+  {
+    "scenario_id": "CHAOS-SCENARIO-08",
+    "title": "Chaos Multi-turn Scenario #8 (Entity shift & Adversarial noise)",
+    "session_id": "sess-chaos-08",
+    "user_id": "user-chaos-08",
+    "turns": [
+      {
+        "turn_id": 1,
+        "user_input": "Môn FIT4201 có bao nhiêu tín chỉ?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 2,
+        "user_input": "Ai dạy môn đó?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 3,
+        "user_input": "asdf ???? !!!!!",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 4,
+        "user_input": "Thuật toán Dijkstra là gì?",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 5,
+        "user_input": "Tôi là sinh viên K20 ngành CNTT.",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 6,
+        "user_input": "Thế còn môn FIT4104 thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4104",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 7,
+        "user_input": "Email thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4104",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 8,
+        "user_input": "Soạn email gửi thầy nhưng đừng gửi nhé.",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4104",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 9,
+        "user_input": "Môn FIT9999 học vào kỳ mấy?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 10,
+        "user_input": "Nó có thực hành không?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      }
+    ]
+  },
+  {
+    "scenario_id": "CHAOS-SCENARIO-09",
+    "title": "Chaos Multi-turn Scenario #9 (Entity shift & Adversarial noise)",
+    "session_id": "sess-chaos-09",
+    "user_id": "user-chaos-09",
+    "turns": [
+      {
+        "turn_id": 1,
+        "user_input": "Môn FIT4201 có bao nhiêu tín chỉ?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 2,
+        "user_input": "Ai dạy môn đó?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 3,
+        "user_input": "asdf ???? !!!!!",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 4,
+        "user_input": "Thuật toán Dijkstra là gì?",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 5,
+        "user_input": "Tôi là sinh viên K18 ngành CNTT.",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 6,
+        "user_input": "Thế còn môn FIT3101 thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT3101",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 7,
+        "user_input": "Email thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT3101",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 8,
+        "user_input": "Soạn email gửi thầy nhưng đừng gửi nhé.",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT3101",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 9,
+        "user_input": "Môn FIT9999 học vào kỳ mấy?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 10,
+        "user_input": "Nó có thực hành không?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      }
+    ]
+  },
+  {
+    "scenario_id": "CHAOS-SCENARIO-10",
+    "title": "Chaos Multi-turn Scenario #10 (Entity shift & Adversarial noise)",
+    "session_id": "sess-chaos-10",
+    "user_id": "user-chaos-10",
+    "turns": [
+      {
+        "turn_id": 1,
+        "user_input": "Môn FIT4201 có bao nhiêu tín chỉ?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 2,
+        "user_input": "Ai dạy môn đó?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 3,
+        "user_input": "asdf ???? !!!!!",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 4,
+        "user_input": "Thuật toán Dijkstra là gì?",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 5,
+        "user_input": "Tôi là sinh viên K19 ngành CNTT.",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 6,
+        "user_input": "Thế còn môn FIT4104 thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4104",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 7,
+        "user_input": "Email thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4104",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 8,
+        "user_input": "Soạn email gửi thầy nhưng đừng gửi nhé.",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4104",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 9,
+        "user_input": "Môn FIT9999 học vào kỳ mấy?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 10,
+        "user_input": "Nó có thực hành không?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      }
+    ]
+  },
+  {
+    "scenario_id": "CHAOS-SCENARIO-11",
+    "title": "Chaos Multi-turn Scenario #11 (Entity shift & Adversarial noise)",
+    "session_id": "sess-chaos-11",
+    "user_id": "user-chaos-11",
+    "turns": [
+      {
+        "turn_id": 1,
+        "user_input": "Môn FIT4201 có bao nhiêu tín chỉ?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 2,
+        "user_input": "Ai dạy môn đó?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 3,
+        "user_input": "asdf ???? !!!!!",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 4,
+        "user_input": "Thuật toán Dijkstra là gì?",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 5,
+        "user_input": "Tôi là sinh viên K20 ngành CNTT.",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 6,
+        "user_input": "Thế còn môn FIT3101 thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT3101",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 7,
+        "user_input": "Email thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT3101",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 8,
+        "user_input": "Soạn email gửi thầy nhưng đừng gửi nhé.",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT3101",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 9,
+        "user_input": "Môn FIT9999 học vào kỳ mấy?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 10,
+        "user_input": "Nó có thực hành không?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      }
+    ]
+  },
+  {
+    "scenario_id": "CHAOS-SCENARIO-12",
+    "title": "Chaos Multi-turn Scenario #12 (Entity shift & Adversarial noise)",
+    "session_id": "sess-chaos-12",
+    "user_id": "user-chaos-12",
+    "turns": [
+      {
+        "turn_id": 1,
+        "user_input": "Môn FIT4201 có bao nhiêu tín chỉ?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 2,
+        "user_input": "Ai dạy môn đó?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 3,
+        "user_input": "asdf ???? !!!!!",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 4,
+        "user_input": "Thuật toán Dijkstra là gì?",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 5,
+        "user_input": "Tôi là sinh viên K18 ngành CNTT.",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 6,
+        "user_input": "Thế còn môn FIT4104 thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4104",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 7,
+        "user_input": "Email thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4104",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 8,
+        "user_input": "Soạn email gửi thầy nhưng đừng gửi nhé.",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4104",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 9,
+        "user_input": "Môn FIT9999 học vào kỳ mấy?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 10,
+        "user_input": "Nó có thực hành không?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      }
+    ]
+  },
+  {
+    "scenario_id": "CHAOS-SCENARIO-13",
+    "title": "Chaos Multi-turn Scenario #13 (Entity shift & Adversarial noise)",
+    "session_id": "sess-chaos-13",
+    "user_id": "user-chaos-13",
+    "turns": [
+      {
+        "turn_id": 1,
+        "user_input": "Môn FIT4201 có bao nhiêu tín chỉ?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 2,
+        "user_input": "Ai dạy môn đó?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 3,
+        "user_input": "asdf ???? !!!!!",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 4,
+        "user_input": "Thuật toán Dijkstra là gì?",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 5,
+        "user_input": "Tôi là sinh viên K19 ngành CNTT.",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 6,
+        "user_input": "Thế còn môn FIT3101 thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT3101",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 7,
+        "user_input": "Email thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT3101",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 8,
+        "user_input": "Soạn email gửi thầy nhưng đừng gửi nhé.",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT3101",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 9,
+        "user_input": "Môn FIT9999 học vào kỳ mấy?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 10,
+        "user_input": "Nó có thực hành không?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      }
+    ]
+  },
+  {
+    "scenario_id": "CHAOS-SCENARIO-14",
+    "title": "Chaos Multi-turn Scenario #14 (Entity shift & Adversarial noise)",
+    "session_id": "sess-chaos-14",
+    "user_id": "user-chaos-14",
+    "turns": [
+      {
+        "turn_id": 1,
+        "user_input": "Môn FIT4201 có bao nhiêu tín chỉ?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 2,
+        "user_input": "Ai dạy môn đó?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 3,
+        "user_input": "asdf ???? !!!!!",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 4,
+        "user_input": "Thuật toán Dijkstra là gì?",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 5,
+        "user_input": "Tôi là sinh viên K20 ngành CNTT.",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 6,
+        "user_input": "Thế còn môn FIT4104 thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4104",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 7,
+        "user_input": "Email thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4104",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 8,
+        "user_input": "Soạn email gửi thầy nhưng đừng gửi nhé.",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4104",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 9,
+        "user_input": "Môn FIT9999 học vào kỳ mấy?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 10,
+        "user_input": "Nó có thực hành không?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      }
+    ]
+  },
+  {
+    "scenario_id": "CHAOS-SCENARIO-15",
+    "title": "Chaos Multi-turn Scenario #15 (Entity shift & Adversarial noise)",
+    "session_id": "sess-chaos-15",
+    "user_id": "user-chaos-15",
+    "turns": [
+      {
+        "turn_id": 1,
+        "user_input": "Môn FIT4201 có bao nhiêu tín chỉ?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 2,
+        "user_input": "Ai dạy môn đó?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 3,
+        "user_input": "asdf ???? !!!!!",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 4,
+        "user_input": "Thuật toán Dijkstra là gì?",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 5,
+        "user_input": "Tôi là sinh viên K18 ngành CNTT.",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 6,
+        "user_input": "Thế còn môn FIT3101 thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT3101",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 7,
+        "user_input": "Email thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT3101",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 8,
+        "user_input": "Soạn email gửi thầy nhưng đừng gửi nhé.",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT3101",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 9,
+        "user_input": "Môn FIT9999 học vào kỳ mấy?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 10,
+        "user_input": "Nó có thực hành không?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      }
+    ]
+  },
+  {
+    "scenario_id": "CHAOS-SCENARIO-16",
+    "title": "Chaos Multi-turn Scenario #16 (Entity shift & Adversarial noise)",
+    "session_id": "sess-chaos-16",
+    "user_id": "user-chaos-16",
+    "turns": [
+      {
+        "turn_id": 1,
+        "user_input": "Môn FIT4201 có bao nhiêu tín chỉ?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 2,
+        "user_input": "Ai dạy môn đó?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 3,
+        "user_input": "asdf ???? !!!!!",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 4,
+        "user_input": "Thuật toán Dijkstra là gì?",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 5,
+        "user_input": "Tôi là sinh viên K19 ngành CNTT.",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 6,
+        "user_input": "Thế còn môn FIT4104 thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4104",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 7,
+        "user_input": "Email thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4104",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 8,
+        "user_input": "Soạn email gửi thầy nhưng đừng gửi nhé.",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4104",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 9,
+        "user_input": "Môn FIT9999 học vào kỳ mấy?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 10,
+        "user_input": "Nó có thực hành không?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      }
+    ]
+  },
+  {
+    "scenario_id": "CHAOS-SCENARIO-17",
+    "title": "Chaos Multi-turn Scenario #17 (Entity shift & Adversarial noise)",
+    "session_id": "sess-chaos-17",
+    "user_id": "user-chaos-17",
+    "turns": [
+      {
+        "turn_id": 1,
+        "user_input": "Môn FIT4201 có bao nhiêu tín chỉ?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 2,
+        "user_input": "Ai dạy môn đó?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 3,
+        "user_input": "asdf ???? !!!!!",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 4,
+        "user_input": "Thuật toán Dijkstra là gì?",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 5,
+        "user_input": "Tôi là sinh viên K20 ngành CNTT.",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 6,
+        "user_input": "Thế còn môn FIT3101 thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT3101",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 7,
+        "user_input": "Email thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT3101",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 8,
+        "user_input": "Soạn email gửi thầy nhưng đừng gửi nhé.",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT3101",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 9,
+        "user_input": "Môn FIT9999 học vào kỳ mấy?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 10,
+        "user_input": "Nó có thực hành không?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      }
+    ]
+  },
+  {
+    "scenario_id": "CHAOS-SCENARIO-18",
+    "title": "Chaos Multi-turn Scenario #18 (Entity shift & Adversarial noise)",
+    "session_id": "sess-chaos-18",
+    "user_id": "user-chaos-18",
+    "turns": [
+      {
+        "turn_id": 1,
+        "user_input": "Môn FIT4201 có bao nhiêu tín chỉ?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 2,
+        "user_input": "Ai dạy môn đó?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 3,
+        "user_input": "asdf ???? !!!!!",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 4,
+        "user_input": "Thuật toán Dijkstra là gì?",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 5,
+        "user_input": "Tôi là sinh viên K18 ngành CNTT.",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 6,
+        "user_input": "Thế còn môn FIT4104 thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4104",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 7,
+        "user_input": "Email thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4104",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 8,
+        "user_input": "Soạn email gửi thầy nhưng đừng gửi nhé.",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4104",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 9,
+        "user_input": "Môn FIT9999 học vào kỳ mấy?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 10,
+        "user_input": "Nó có thực hành không?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      }
+    ]
+  },
+  {
+    "scenario_id": "CHAOS-SCENARIO-19",
+    "title": "Chaos Multi-turn Scenario #19 (Entity shift & Adversarial noise)",
+    "session_id": "sess-chaos-19",
+    "user_id": "user-chaos-19",
+    "turns": [
+      {
+        "turn_id": 1,
+        "user_input": "Môn FIT4201 có bao nhiêu tín chỉ?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 2,
+        "user_input": "Ai dạy môn đó?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 3,
+        "user_input": "asdf ???? !!!!!",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 4,
+        "user_input": "Thuật toán Dijkstra là gì?",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 5,
+        "user_input": "Tôi là sinh viên K19 ngành CNTT.",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 6,
+        "user_input": "Thế còn môn FIT3101 thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT3101",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 7,
+        "user_input": "Email thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT3101",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 8,
+        "user_input": "Soạn email gửi thầy nhưng đừng gửi nhé.",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT3101",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 9,
+        "user_input": "Môn FIT9999 học vào kỳ mấy?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 10,
+        "user_input": "Nó có thực hành không?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      }
+    ]
+  },
+  {
+    "scenario_id": "CHAOS-SCENARIO-20",
+    "title": "Chaos Multi-turn Scenario #20 (Entity shift & Adversarial noise)",
+    "session_id": "sess-chaos-20",
+    "user_id": "user-chaos-20",
+    "turns": [
+      {
+        "turn_id": 1,
+        "user_input": "Môn FIT4201 có bao nhiêu tín chỉ?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 2,
+        "user_input": "Ai dạy môn đó?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 3,
+        "user_input": "asdf ???? !!!!!",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 4,
+        "user_input": "Thuật toán Dijkstra là gì?",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 5,
+        "user_input": "Tôi là sinh viên K20 ngành CNTT.",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 6,
+        "user_input": "Thế còn môn FIT4104 thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4104",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 7,
+        "user_input": "Email thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4104",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 8,
+        "user_input": "Soạn email gửi thầy nhưng đừng gửi nhé.",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4104",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 9,
+        "user_input": "Môn FIT9999 học vào kỳ mấy?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 10,
+        "user_input": "Nó có thực hành không?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      }
+    ]
+  },
+  {
+    "scenario_id": "CHAOS-SCENARIO-21",
+    "title": "Chaos Multi-turn Scenario #21 (Entity shift & Adversarial noise)",
+    "session_id": "sess-chaos-21",
+    "user_id": "user-chaos-21",
+    "turns": [
+      {
+        "turn_id": 1,
+        "user_input": "Môn FIT4201 có bao nhiêu tín chỉ?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 2,
+        "user_input": "Ai dạy môn đó?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 3,
+        "user_input": "asdf ???? !!!!!",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 4,
+        "user_input": "Thuật toán Dijkstra là gì?",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 5,
+        "user_input": "Tôi là sinh viên K18 ngành CNTT.",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 6,
+        "user_input": "Thế còn môn FIT3101 thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT3101",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 7,
+        "user_input": "Email thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT3101",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 8,
+        "user_input": "Soạn email gửi thầy nhưng đừng gửi nhé.",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT3101",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 9,
+        "user_input": "Môn FIT9999 học vào kỳ mấy?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 10,
+        "user_input": "Nó có thực hành không?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      }
+    ]
+  },
+  {
+    "scenario_id": "CHAOS-SCENARIO-22",
+    "title": "Chaos Multi-turn Scenario #22 (Entity shift & Adversarial noise)",
+    "session_id": "sess-chaos-22",
+    "user_id": "user-chaos-22",
+    "turns": [
+      {
+        "turn_id": 1,
+        "user_input": "Môn FIT4201 có bao nhiêu tín chỉ?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 2,
+        "user_input": "Ai dạy môn đó?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 3,
+        "user_input": "asdf ???? !!!!!",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 4,
+        "user_input": "Thuật toán Dijkstra là gì?",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 5,
+        "user_input": "Tôi là sinh viên K19 ngành CNTT.",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 6,
+        "user_input": "Thế còn môn FIT4104 thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4104",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 7,
+        "user_input": "Email thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4104",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 8,
+        "user_input": "Soạn email gửi thầy nhưng đừng gửi nhé.",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4104",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 9,
+        "user_input": "Môn FIT9999 học vào kỳ mấy?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 10,
+        "user_input": "Nó có thực hành không?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      }
+    ]
+  },
+  {
+    "scenario_id": "CHAOS-SCENARIO-23",
+    "title": "Chaos Multi-turn Scenario #23 (Entity shift & Adversarial noise)",
+    "session_id": "sess-chaos-23",
+    "user_id": "user-chaos-23",
+    "turns": [
+      {
+        "turn_id": 1,
+        "user_input": "Môn FIT4201 có bao nhiêu tín chỉ?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 2,
+        "user_input": "Ai dạy môn đó?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 3,
+        "user_input": "asdf ???? !!!!!",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 4,
+        "user_input": "Thuật toán Dijkstra là gì?",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 5,
+        "user_input": "Tôi là sinh viên K20 ngành CNTT.",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 6,
+        "user_input": "Thế còn môn FIT3101 thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT3101",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 7,
+        "user_input": "Email thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT3101",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 8,
+        "user_input": "Soạn email gửi thầy nhưng đừng gửi nhé.",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT3101",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 9,
+        "user_input": "Môn FIT9999 học vào kỳ mấy?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 10,
+        "user_input": "Nó có thực hành không?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      }
+    ]
+  },
+  {
+    "scenario_id": "CHAOS-SCENARIO-24",
+    "title": "Chaos Multi-turn Scenario #24 (Entity shift & Adversarial noise)",
+    "session_id": "sess-chaos-24",
+    "user_id": "user-chaos-24",
+    "turns": [
+      {
+        "turn_id": 1,
+        "user_input": "Môn FIT4201 có bao nhiêu tín chỉ?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 2,
+        "user_input": "Ai dạy môn đó?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 3,
+        "user_input": "asdf ???? !!!!!",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 4,
+        "user_input": "Thuật toán Dijkstra là gì?",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 5,
+        "user_input": "Tôi là sinh viên K18 ngành CNTT.",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 6,
+        "user_input": "Thế còn môn FIT4104 thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4104",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 7,
+        "user_input": "Email thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4104",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 8,
+        "user_input": "Soạn email gửi thầy nhưng đừng gửi nhé.",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4104",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 9,
+        "user_input": "Môn FIT9999 học vào kỳ mấy?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 10,
+        "user_input": "Nó có thực hành không?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      }
+    ]
+  },
+  {
+    "scenario_id": "CHAOS-SCENARIO-25",
+    "title": "Chaos Multi-turn Scenario #25 (Entity shift & Adversarial noise)",
+    "session_id": "sess-chaos-25",
+    "user_id": "user-chaos-25",
+    "turns": [
+      {
+        "turn_id": 1,
+        "user_input": "Môn FIT4201 có bao nhiêu tín chỉ?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 2,
+        "user_input": "Ai dạy môn đó?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 3,
+        "user_input": "asdf ???? !!!!!",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 4,
+        "user_input": "Thuật toán Dijkstra là gì?",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 5,
+        "user_input": "Tôi là sinh viên K19 ngành CNTT.",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 6,
+        "user_input": "Thế còn môn FIT3101 thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT3101",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 7,
+        "user_input": "Email thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT3101",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 8,
+        "user_input": "Soạn email gửi thầy nhưng đừng gửi nhé.",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT3101",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 9,
+        "user_input": "Môn FIT9999 học vào kỳ mấy?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 10,
+        "user_input": "Nó có thực hành không?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      }
+    ]
+  },
+  {
+    "scenario_id": "CHAOS-SCENARIO-26",
+    "title": "Chaos Multi-turn Scenario #26 (Entity shift & Adversarial noise)",
+    "session_id": "sess-chaos-26",
+    "user_id": "user-chaos-26",
+    "turns": [
+      {
+        "turn_id": 1,
+        "user_input": "Môn FIT4201 có bao nhiêu tín chỉ?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 2,
+        "user_input": "Ai dạy môn đó?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 3,
+        "user_input": "asdf ???? !!!!!",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 4,
+        "user_input": "Thuật toán Dijkstra là gì?",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 5,
+        "user_input": "Tôi là sinh viên K20 ngành CNTT.",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 6,
+        "user_input": "Thế còn môn FIT4104 thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4104",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 7,
+        "user_input": "Email thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4104",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 8,
+        "user_input": "Soạn email gửi thầy nhưng đừng gửi nhé.",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4104",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 9,
+        "user_input": "Môn FIT9999 học vào kỳ mấy?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 10,
+        "user_input": "Nó có thực hành không?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      }
+    ]
+  },
+  {
+    "scenario_id": "CHAOS-SCENARIO-27",
+    "title": "Chaos Multi-turn Scenario #27 (Entity shift & Adversarial noise)",
+    "session_id": "sess-chaos-27",
+    "user_id": "user-chaos-27",
+    "turns": [
+      {
+        "turn_id": 1,
+        "user_input": "Môn FIT4201 có bao nhiêu tín chỉ?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 2,
+        "user_input": "Ai dạy môn đó?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 3,
+        "user_input": "asdf ???? !!!!!",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 4,
+        "user_input": "Thuật toán Dijkstra là gì?",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 5,
+        "user_input": "Tôi là sinh viên K18 ngành CNTT.",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 6,
+        "user_input": "Thế còn môn FIT3101 thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT3101",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 7,
+        "user_input": "Email thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT3101",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 8,
+        "user_input": "Soạn email gửi thầy nhưng đừng gửi nhé.",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT3101",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 9,
+        "user_input": "Môn FIT9999 học vào kỳ mấy?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 10,
+        "user_input": "Nó có thực hành không?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      }
+    ]
+  },
+  {
+    "scenario_id": "CHAOS-SCENARIO-28",
+    "title": "Chaos Multi-turn Scenario #28 (Entity shift & Adversarial noise)",
+    "session_id": "sess-chaos-28",
+    "user_id": "user-chaos-28",
+    "turns": [
+      {
+        "turn_id": 1,
+        "user_input": "Môn FIT4201 có bao nhiêu tín chỉ?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 2,
+        "user_input": "Ai dạy môn đó?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 3,
+        "user_input": "asdf ???? !!!!!",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 4,
+        "user_input": "Thuật toán Dijkstra là gì?",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 5,
+        "user_input": "Tôi là sinh viên K19 ngành CNTT.",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 6,
+        "user_input": "Thế còn môn FIT4104 thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4104",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 7,
+        "user_input": "Email thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4104",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 8,
+        "user_input": "Soạn email gửi thầy nhưng đừng gửi nhé.",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4104",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 9,
+        "user_input": "Môn FIT9999 học vào kỳ mấy?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 10,
+        "user_input": "Nó có thực hành không?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      }
+    ]
+  },
+  {
+    "scenario_id": "CHAOS-SCENARIO-29",
+    "title": "Chaos Multi-turn Scenario #29 (Entity shift & Adversarial noise)",
+    "session_id": "sess-chaos-29",
+    "user_id": "user-chaos-29",
+    "turns": [
+      {
+        "turn_id": 1,
+        "user_input": "Môn FIT4201 có bao nhiêu tín chỉ?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 2,
+        "user_input": "Ai dạy môn đó?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 3,
+        "user_input": "asdf ???? !!!!!",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 4,
+        "user_input": "Thuật toán Dijkstra là gì?",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 5,
+        "user_input": "Tôi là sinh viên K20 ngành CNTT.",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 6,
+        "user_input": "Thế còn môn FIT3101 thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT3101",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 7,
+        "user_input": "Email thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT3101",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 8,
+        "user_input": "Soạn email gửi thầy nhưng đừng gửi nhé.",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT3101",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 9,
+        "user_input": "Môn FIT9999 học vào kỳ mấy?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 10,
+        "user_input": "Nó có thực hành không?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      }
+    ]
+  },
+  {
+    "scenario_id": "CHAOS-SCENARIO-30",
+    "title": "Chaos Multi-turn Scenario #30 (Entity shift & Adversarial noise)",
+    "session_id": "sess-chaos-30",
+    "user_id": "user-chaos-30",
+    "turns": [
+      {
+        "turn_id": 1,
+        "user_input": "Môn FIT4201 có bao nhiêu tín chỉ?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 2,
+        "user_input": "Ai dạy môn đó?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 3,
+        "user_input": "asdf ???? !!!!!",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 4,
+        "user_input": "Thuật toán Dijkstra là gì?",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 5,
+        "user_input": "Tôi là sinh viên K18 ngành CNTT.",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4201",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 6,
+        "user_input": "Thế còn môn FIT4104 thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4104",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 7,
+        "user_input": "Email thì sao?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT4104",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 8,
+        "user_input": "Soạn email gửi thầy nhưng đừng gửi nhé.",
+        "expected_category": "GENERAL_LLM",
+        "expected_active_entity": "FIT4104",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 9,
+        "user_input": "Môn FIT9999 học vào kỳ mấy?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      },
+      {
+        "turn_id": 10,
+        "user_input": "Nó có thực hành không?",
+        "expected_category": "DOMAIN_DATA",
+        "expected_active_entity": "FIT9999",
+        "verify_session_isolation": true,
+        "verify_cache_safety": true
+      }
+    ]
+  }
+]

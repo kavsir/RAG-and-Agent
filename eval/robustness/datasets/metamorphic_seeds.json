@@ -1,0 +1,212 @@
+[
+  {
+    "id": "SEED-01",
+    "seed_query": "Môn FIT4201 có bao nhiêu tín chỉ?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_entity": "FIT4201",
+    "domain": "course_detail"
+  },
+  {
+    "id": "SEED-02",
+    "seed_query": "Ai là giảng viên phụ trách môn Hệ thống nhúng?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_entity": "FIT4201",
+    "domain": "course_detail"
+  },
+  {
+    "id": "SEED-03",
+    "seed_query": "Học phần FIT4104 gồm những nội dung gì?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_entity": "FIT4104",
+    "domain": "course_detail"
+  },
+  {
+    "id": "SEED-04",
+    "seed_query": "Hình thức đánh giá môn Điện toán đám mây FIT4113 thế nào?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_entity": "FIT4113",
+    "domain": "course_detail"
+  },
+  {
+    "id": "SEED-05",
+    "seed_query": "Môn Quản trị dự án CNTT FIT4117 học vào kỳ mấy?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_entity": "FIT4117",
+    "domain": "course_detail"
+  },
+  {
+    "id": "SEED-06",
+    "seed_query": "Điều kiện làm khóa luận tốt nghiệp ngành CNTT là gì?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_entity": null,
+    "domain": "regulation"
+  },
+  {
+    "id": "SEED-07",
+    "seed_query": "Chuẩn đầu ra tiếng Anh để tốt nghiệp Đại Nam là bao nhiêu?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_entity": null,
+    "domain": "regulation"
+  },
+  {
+    "id": "SEED-08",
+    "seed_query": "Quy chế cảnh báo học vụ được quy định như thế nào?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_entity": null,
+    "domain": "regulation"
+  },
+  {
+    "id": "SEED-09",
+    "seed_query": "Sinh viên nghỉ học bao nhiêu phần trăm thì bị cấm thi?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_entity": null,
+    "domain": "regulation"
+  },
+  {
+    "id": "SEED-10",
+    "seed_query": "Khung chương trình đào tạo ngành Công nghệ thông tin gồm những môn nào?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_entity": null,
+    "domain": "curriculum"
+  },
+  {
+    "id": "SEED-11",
+    "seed_query": "Thuật toán Dijkstra dùng để làm gì trong mạng máy tính?",
+    "expected_category": "GENERAL_LLM",
+    "expected_entity": null,
+    "domain": "general"
+  },
+  {
+    "id": "SEED-12",
+    "seed_query": "Điểm khác biệt cơ bản giữa giao thức TCP và UDP là gì?",
+    "expected_category": "GENERAL_LLM",
+    "expected_entity": null,
+    "domain": "general"
+  },
+  {
+    "id": "SEED-13",
+    "seed_query": "Giải thích 4 tính chất ACID của hệ quản trị cơ sở dữ liệu.",
+    "expected_category": "GENERAL_LLM",
+    "expected_entity": null,
+    "domain": "general"
+  },
+  {
+    "id": "SEED-14",
+    "seed_query": "RESTful API hoạt động theo những nguyên tắc thiết kế nào?",
+    "expected_category": "GENERAL_LLM",
+    "expected_entity": null,
+    "domain": "general"
+  },
+  {
+    "id": "SEED-15",
+    "seed_query": "Phân biệt giữa kiến trúc vi dịch vụ Microservices và Monolith.",
+    "expected_category": "GENERAL_LLM",
+    "expected_entity": null,
+    "domain": "general"
+  },
+  {
+    "id": "SEED-16",
+    "seed_query": "Nhắc tôi nộp bài tập lớn vào 17h chiều mai.",
+    "expected_category": "TOOL_ACTION",
+    "expected_entity": null,
+    "domain": "tool"
+  },
+  {
+    "id": "SEED-17",
+    "seed_query": "Đặt lịch nhắc ôn thi môn FIT4201 lúc 8h sáng chủ nhật.",
+    "expected_category": "TOOL_ACTION",
+    "expected_entity": null,
+    "domain": "tool"
+  },
+  {
+    "id": "SEED-18",
+    "seed_query": "Gửi email cho giảng viên phụ trách tieppv@dainam.edu.vn.",
+    "expected_category": "TOOL_ACTION",
+    "expected_entity": null,
+    "domain": "tool"
+  },
+  {
+    "id": "SEED-19",
+    "seed_query": "Tư vấn cho tôi lộ trình học kỳ tới của khóa K19.",
+    "expected_category": "DOMAIN_DATA",
+    "expected_entity": null,
+    "domain": "curriculum"
+  },
+  {
+    "id": "SEED-20",
+    "seed_query": "Môn FIT2102 Cơ sở dữ liệu có cần môn tiên quyết nào không?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_entity": "FIT2102",
+    "domain": "course_detail"
+  },
+  {
+    "id": "SEED-21",
+    "seed_query": "Xin chào trợ lý học vụ ĐNTU!",
+    "expected_category": "GENERAL_LLM",
+    "expected_entity": null,
+    "domain": "general"
+  },
+  {
+    "id": "SEED-22",
+    "seed_query": "Tôi muốn biết mục tiêu đầu ra CLO của môn FIT4201.",
+    "expected_category": "DOMAIN_DATA",
+    "expected_entity": "FIT4201",
+    "domain": "course_detail"
+  },
+  {
+    "id": "SEED-23",
+    "seed_query": "Thực tập doanh nghiệp diễn ra vào học kỳ mấy?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_entity": null,
+    "domain": "curriculum"
+  },
+  {
+    "id": "SEED-24",
+    "seed_query": "Khái niệm Overfitting trong Machine Learning được giải quyết ra sao?",
+    "expected_category": "GENERAL_LLM",
+    "expected_entity": null,
+    "domain": "general"
+  },
+  {
+    "id": "SEED-25",
+    "seed_query": "Điểm rèn luyện ảnh hưởng thế nào đến việc xét học bổng?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_entity": null,
+    "domain": "regulation"
+  },
+  {
+    "id": "SEED-26",
+    "seed_query": "Gửi email xin phép nghỉ học tới gv@dainam.edu.vn.",
+    "expected_category": "TOOL_ACTION",
+    "expected_entity": null,
+    "domain": "tool"
+  },
+  {
+    "id": "SEED-27",
+    "seed_query": "Học phần FIT3101 có bao nhiêu bài thực hành trong phòng lab?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_entity": "FIT3101",
+    "domain": "course_detail"
+  },
+  {
+    "id": "SEED-28",
+    "seed_query": "Cách tính điểm trung bình tích lũy GPA theo thang điểm 4.",
+    "expected_category": "DOMAIN_DATA",
+    "expected_entity": null,
+    "domain": "regulation"
+  },
+  {
+    "id": "SEED-29",
+    "seed_query": "Design pattern Singleton được cài đặt như thế nào trong Python?",
+    "expected_category": "GENERAL_LLM",
+    "expected_entity": null,
+    "domain": "general"
+  },
+  {
+    "id": "SEED-30",
+    "seed_query": "Đặt lịch nhắc tôi nộp học phí trước ngày 15 tháng này.",
+    "expected_category": "TOOL_ACTION",
+    "expected_entity": null,
+    "domain": "tool"
+  }
+]
