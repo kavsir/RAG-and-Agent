@@ -15,15 +15,13 @@ Strict Zero External API Cost Gate:
 0 DeepSeek calls, 0 Gemini calls, 0 external LLM/API calls for planning/reasoning.
 """
 import sys
-import os
 import io
 import time
 import json
 import uuid
-import re
 from pathlib import Path
-from typing import Dict, Any, List
-from unittest.mock import patch, MagicMock
+from typing import Dict, Any
+from unittest.mock import patch
 
 # Reconfigure stdout for UTF-8 on Windows
 if hasattr(sys.stdout, "reconfigure"):
@@ -39,29 +37,23 @@ if "RAG-and-Agent" not in str(repo_root):
 if str(repo_root) not in sys.path:
     sys.path.insert(0, str(repo_root))
 
-from fastapi.testclient import TestClient
-from src.api.main import app
-from src.agent_core.schemas import (
+from fastapi.testclient import TestClient  # noqa: E402
+from src.api.main import app  # noqa: E402
+from src.agent_core.schemas import (  # noqa: E402
     AgentGoalState,
     AgentStatus,
-    StopReason,
     EvidenceStatus,
     EvidenceRequirement,
     EvidenceItem,
     ActionPlan,
     ActionType,
-    ActionObservation,
-    QuestionType,
-    GoalType,
 )
-from src.agent_core.loop import get_agent_loop, AgentLoop
-from src.agent_core.service import AgentCoreService, get_agent_core_service
-from src.agent_core.goal_store import AgentGoalStore
-from src.agent_core.verifier import get_evidence_verifier, EvidenceVerifier
-from src.agent_core.actions import get_action_executor, ActionExecutor
-from src.agent_core.entity_catalog import get_entity_catalog
-from src.agent_core.environment_catalog import get_knowledge_environment_catalog
-from src.config.settings import settings
+from src.agent_core.loop import get_agent_loop  # noqa: E402
+from src.agent_core.service import AgentCoreService  # noqa: E402
+from src.agent_core.goal_store import AgentGoalStore  # noqa: E402
+from src.agent_core.verifier import get_evidence_verifier  # noqa: E402
+from src.agent_core.actions import get_action_executor  # noqa: E402
+from src.config.settings import settings  # noqa: E402
 
 
 # ==============================================================================
@@ -78,7 +70,7 @@ def run_layer_1_component_suite() -> Dict[str, Any]:
     # The 3 factual discrepancies (AC-A06, AC-G02, AC-N05) occur because real syllabus
     # specifies final exam is 60% (while legacy synthetic benchmark expected '50%').
     discrepancy_cases = [fc["id"] for fc in results.get("failed_cases", [])]
-    print(f"\n[Layer 1 Honest Discrepancy Analysis]:")
+    print("\n[Layer 1 Honest Discrepancy Analysis]:")
     print(f"Total Canonical Cases: {results['total_cases']}")
     print(f"Passed Cases: {results['total_passed']} ({results['overall_accuracy']:.2f}%)")
     print(f"Known Document Truth Discrepancies ({len(discrepancy_cases)}): {discrepancy_cases}")
@@ -259,7 +251,7 @@ def run_layer_3_rag_adapter_suite() -> Dict[str, Any]:
 
     has_docx_import = "import docx" in code_content or "from docx" in code_content
     has_doc_cache = "_doc_cache" in code_content
-    print(f"  [3.1 Second Retrieval Elimination Audit]:")
+    print("  [3.1 Second Retrieval Elimination Audit]:")
     print(f"    - 'import docx' in actions.py: {has_docx_import} (Target: False)")
     print(f"    - '_doc_cache' in actions.py: {has_doc_cache} (Target: False)")
 
@@ -432,7 +424,7 @@ def run_layer_5_scoped_resume_suite() -> Dict[str, Any]:
     print(f"  [5.1 Scoped Resume]: Initial={g_init.status.value}, Resumed={resumed.status.value} -> {'PASSED' if ok_resume else 'FAILED'}")
     print(f"  [5.2 Cross-Session Isolation]: Leakage={cross_session_leakage} (Count: {0 if not cross_session_leakage else 1}) -> PASSED")
     print(f"  [5.3 Cross-Principal Isolation]: Leakage={cross_principal_leakage} (Count: {0 if not cross_principal_leakage else 1}) -> PASSED")
-    print(f"  [5.4 SQLite Restart Persistence]: Restored successfully across instance recreation -> PASSED")
+    print("  [5.4 SQLite Restart Persistence]: Restored successfully across instance recreation -> PASSED")
 
     pass_all = ok_init and (not cross_session_leakage) and (not cross_principal_leakage) and ok_resume
 
@@ -573,10 +565,10 @@ def run_layer_7_legacy_regression_summary() -> Dict[str, Any]:
         "semantics_and_safety_gate": {"total": 375, "passed": 375, "accuracy": 100.0},
     }
 
-    print(f"  - Router V2 Full Suite         : 103/103 (100.00%) -> PASSED")
-    print(f"  - Personal Memory V1 Suite     : 60/60   (100.00%) -> PASSED")
-    print(f"  - Session Memory V2 Suite      : 50/50   (100.00%) -> PASSED")
-    print(f"  - Utterance Semantics & Safety : 375/375 (100.00%) -> PASSED")
+    print("  - Router V2 Full Suite         : 103/103 (100.00%) -> PASSED")
+    print("  - Personal Memory V1 Suite     : 60/60   (100.00%) -> PASSED")
+    print("  - Session Memory V2 Suite      : 50/50   (100.00%) -> PASSED")
+    print("  - Utterance Semantics & Safety : 375/375 (100.00%) -> PASSED")
 
     return legacy_results
 
@@ -634,62 +626,62 @@ def run_all_evaluations():
     print("\n" + "=" * 80)
     print("P1.1 AGENT CORE INTEGRATION EVALUATION COMPLETE")
     print("=" * 80)
-    print(f"\nProduction /api/chat integration:")
+    print("\nProduction /api/chat integration:")
     print(f"  Live endpoint POST /api/chat verified with multi-turn scoped goal resumption ({layer4['passed_tests']}/{layer4['total_tests']} tests passed, 100%).")
 
-    print(f"\nExisting RAG reused:")
-    print(f"  HybridRetriever & ChromaDB collections reused directly via ActionExecutor._execute_exact_retrieval / _execute_expanded_retrieval.")
+    print("\nExisting RAG reused:")
+    print("  HybridRetriever & ChromaDB collections reused directly via ActionExecutor._execute_exact_retrieval / _execute_expanded_retrieval.")
 
-    print(f"\nSecond retrieval implementation removed:")
+    print("\nSecond retrieval implementation removed:")
     print(f"  docx import and _doc_cache completely eliminated from actions.py (second_retrieval_removed: {layer3['second_retrieval_removed']}).")
 
-    print(f"\nFabricated evidence count:")
+    print("\nFabricated evidence count:")
     print(f"  {layer2['fabricated_evidence_count']} (Target: 0)")
 
-    print(f"\nVerified evidence traceability:")
+    print("\nVerified evidence traceability:")
     print(f"  {layer2['traceability_rate']:.2f}% (100% of verified items link to authoritative source files and chunks)")
 
-    print(f"\nUnknown entity hallucination:")
-    print(f"  0.00% (FIT9999 / unknown entities return UNKNOWN_ENTITY, sources=[], 0 LLM calls)")
+    print("\nUnknown entity hallucination:")
+    print("  0.00% (FIT9999 / unknown entities return UNKNOWN_ENTITY, sources=[], 0 LLM calls)")
 
-    print(f"\nDuplicate action execution:")
+    print("\nDuplicate action execution:")
     print(f"  {layer6['duplicate_action_executions']} (Duplicate action attempts blocked by ActionFingerprint registry)")
 
-    print(f"\nActions after no-progress:")
+    print("\nActions after no-progress:")
     print(f"  {layer6['actions_after_no_progress']} (Evaluated by ProgressSnapshot, bounded loop terminates safely)")
 
-    print(f"\nUnsafe side effects:")
+    print("\nUnsafe side effects:")
     print(f"  {layer6['unsafe_side_effect_attempts']} (All tool proposals strictly gated by ActionAuthorizationGate)")
 
-    print(f"\nAuthority overrides:")
+    print("\nAuthority overrides:")
     print(f"  {layer6['authority_overrides']} (Adversarial memory/claims cannot override official academic evidence)")
 
-    print(f"\nCross-session goal leakage:")
+    print("\nCross-session goal leakage:")
     print(f"  {layer5['cross_session_goal_leakage']} (Goals scoped strictly by user_id and conversation_id)")
 
-    print(f"\nCross-principal goal leakage:")
+    print("\nCross-principal goal leakage:")
     print(f"  {layer5['cross_principal_goal_leakage']} (Goals isolated across principals)")
 
-    print(f"\nPlanning external API calls:")
+    print("\nPlanning external API calls:")
     print(f"  {layer6['planning_external_calls']} (Strict zero-cost policy: 0 DeepSeek, 0 Gemini calls for planning)")
 
-    print(f"\nAgent Core component suite:")
+    print("\nAgent Core component suite:")
     print(f"  {layer1['passed_cases']}/{layer1['total_cases']} ({layer1['accuracy']:.2f}%) across 16 canonical groups A-P.")
-    print(f"  Honest factual discrepancy: 3 syllabus cases report actual 60% final assessment per FIT4104 docx.")
+    print("  Honest factual discrepancy: 3 syllabus cases report actual 60% final assessment per FIT4104 docx.")
 
-    print(f"\nEvidence truth suite:")
-    print(f"  False-positive handling: 100% (status=INSUFFICIENT/MISSING), Verified None: 100%, Traceability: 100%.")
+    print("\nEvidence truth suite:")
+    print("  False-positive handling: 100% (status=INSUFFICIENT/MISSING), Verified None: 100%, Traceability: 100%.")
 
-    print(f"\nAPI integration suite:")
+    print("\nAPI integration suite:")
     print(f"  {layer4['passed_tests']}/{layer4['total_tests']} endpoints passed (Clear query, Ambiguity, Resume, Unknown entity, Proposals, Negated tools, Cache safety).")
 
-    print(f"\nRegression suites:")
-    print(f"  - Router V2 Suite             : 103/103 (100.00%)")
-    print(f"  - Personal Memory V1 Suite    : 60/60   (100.00%)")
-    print(f"  - Session Memory V2 Suite     : 50/50   (100.00%)")
-    print(f"  - Semantics & Safety Gate     : 375/375 (100.00%)")
+    print("\nRegression suites:")
+    print("  - Router V2 Suite             : 103/103 (100.00%)")
+    print("  - Personal Memory V1 Suite    : 60/60   (100.00%)")
+    print("  - Session Memory V2 Suite     : 50/50   (100.00%)")
+    print("  - Semantics & Safety Gate     : 375/375 (100.00%)")
 
-    print(f"\nVerdict:")
+    print("\nVerdict:")
     print(verdict)
     print("=" * 80 + "\n")
 

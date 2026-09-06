@@ -13,6 +13,9 @@ import logging
 from pathlib import Path
 from typing import Dict, Any, List
 
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+
 from src.config.settings import settings
 from src.rag.query_analyzer import analyze_query
 from src.rag.hybrid_retriever import retrieve_candidates

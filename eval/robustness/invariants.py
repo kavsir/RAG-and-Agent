@@ -11,10 +11,8 @@ Implements non-negotiable safety rules:
 All invariant check functions return: Tuple[bool, str] -> (is_safe, error_message)
 """
 import re
-import time
-from typing import Dict, Any, List, Optional, Tuple, Callable, Set
+from typing import Any, Optional, Tuple, Callable, Set
 
-from eval.robustness.schemas import FailureType, Severity
 
 # Danh mục mã học phần chuẩn của Đại học Đại Nam (Ground Truth Catalog)
 KNOWN_COURSE_CODES: Set[str] = {

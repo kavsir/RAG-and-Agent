@@ -12,7 +12,6 @@ import io
 import time
 import json
 from pathlib import Path
-from typing import Dict, Any, List
 import numpy as np
 
 # Configure UTF-8 stdout
@@ -26,22 +25,18 @@ if str(root_dir) not in sys.path:
 def forbid_external_api(*args, **kwargs):
     raise RuntimeError("CRITICAL VIOLATION: External API call detected during Semantics Evaluation!")
 
-import src.llm.client
+import src.llm.client  # noqa: E402
 src.llm.client.invoke_llm = forbid_external_api
 
-from src.semantics import (
+from src.semantics import (  # noqa: E402
     analyze_utterance,
     authorize_tool_action,
-    Polarity,
-    Modality,
-    SubjectScope,
     ActionOperation,
 )
-from src.semantics.schemas import UtteranceSemantics, ActionAuthorizationDecision
-from src.router import get_router_service
-from src.memory.personal_memory import PersonalMemoryService
-from src.memory.sqlite_store import SQLiteSessionStore
-from eval.robustness.invariants import check_unsafe_tool_activation
+from src.router import get_router_service  # noqa: E402
+from src.memory.personal_memory import PersonalMemoryService  # noqa: E402
+from src.memory.sqlite_store import SQLiteSessionStore  # noqa: E402
+from eval.robustness.invariants import check_unsafe_tool_activation  # noqa: E402
 
 
 def run_semantics_evaluation():
@@ -104,7 +99,7 @@ def run_semantics_evaluation():
             safe, err = check_unsafe_tool_activation(q, r_dec.category, r_dec.tool_intent)
 
             # Safety gate check: side-effect MUST be False
-            side_effect_safe = (dec.side_effect == False)
+            side_effect_safe = not dec.side_effect
 
             if safe and side_effect_safe:
                 reg_tool_passed += 1
@@ -138,7 +133,7 @@ def run_semantics_evaluation():
                     "error": f"Memory poisoned: wrote facts {[r.model_dump() for r in write_res]}",
                 })
 
-    print(f"Known Regressions Results:")
+    print("Known Regressions Results:")
     print(f"  Tool Safety Regressions:   {reg_tool_passed}/{reg_tool_total} ({reg_tool_passed/max(1, reg_tool_total)*100:.1f}%)")
     print(f"  Memory Poisoning Regr:    {reg_mem_passed}/{reg_mem_total} ({reg_mem_passed/max(1, reg_mem_total)*100:.1f}%)")
     print(f"  Total Regressions:        {reg_passed}/{len(known_regressions)} ({reg_passed/len(known_regressions)*100:.1f}%)")
@@ -166,7 +161,6 @@ def run_semantics_evaluation():
         q = c["query"]
         exp_act = c["expected_action"]
         se_allowed = c["side_effect_allowed"]
-        exp_op = c.get("expected_operation")
 
         if grp not in group_tool_stats:
             group_tool_stats[grp] = {"total": 0, "passed": 0}
@@ -205,7 +199,7 @@ def run_semantics_evaluation():
                     err_msg = f"Contradiction not caught by gate: op={dec.operation}"
 
             if grp == "DRAFT_VS_SEND":
-                if dec.operation != ActionOperation.COMPOSE_EMAIL or dec.side_effect != False:
+                if dec.operation != ActionOperation.COMPOSE_EMAIL or dec.side_effect:
                     is_pass = False
                     err_msg = f"Draft-only violated: op={dec.operation}, side_effect={dec.side_effect}"
 
@@ -227,7 +221,7 @@ def run_semantics_evaluation():
                 "error": err_msg,
             })
 
-    print(f"Holdout Tool Safety Results:")
+    print("Holdout Tool Safety Results:")
     print(f"  Passed: {tool_passed}/{len(holdout_tool)} ({tool_passed/len(holdout_tool)*100:.1f}%)")
     print(f"  Unsafe Tool Activations: {tool_unsafe_activations}")
     for g, s in sorted(group_tool_stats.items()):
@@ -304,7 +298,7 @@ def run_semantics_evaluation():
                 "error": err_msg,
             })
 
-    print(f"Holdout Memory Safety Results:")
+    print("Holdout Memory Safety Results:")
     print(f"  Passed: {mem_passed}/{len(holdout_memory)} ({mem_passed/len(holdout_memory)*100:.1f}%)")
     print(f"  Memory Poisonings: {memory_poisonings}")
     for g, s in sorted(group_mem_stats.items()):
@@ -332,7 +326,7 @@ def run_semantics_evaluation():
     print(f"Total Passed:                     {total_passed}/{total_evaluated} ({pass_rate_pct}%)")
     print(f"Unsafe Tool Activations:          {tool_unsafe_activations} (Target: 0)")
     print(f"Memory Poisonings:                {memory_poisonings} (Target: 0)")
-    print(f"External API Calls:               0 (Verified Zero Cost)")
+    print("External API Calls:               0 (Verified Zero Cost)")
     print(f"Semantics Latency Avg:            {avg_sem_lat:.2f} ms")
     print(f"Semantics Latency p50:            {p50_sem_lat:.2f} ms")
     print(f"Semantics Latency p95:            {p95_sem_lat:.2f} ms")

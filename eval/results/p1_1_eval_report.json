@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-09-06 18:33:14",
+  "timestamp": "2026-09-06 23:55:11",
   "verdict": "AGENT_CORE_V1_FULLY_ACCEPTED",
-  "elapsed_seconds": 20.389750599999388,
+  "elapsed_seconds": 36.65901049999957,
   "layer_1_component": {
     "total_cases": 182,
     "passed_cases": 179,
@@ -18,7 +18,7 @@
       "proposal_on_unavailable_rate": 100.0,
       "clarification_resume_success_rate": 96.66666666666667,
       "average_steps": 1.9065934065934067,
-      "average_latency_ms": 108.764919780327
+      "average_latency_ms": 177.36743186841332
     }
   },
   "layer_2_evidence_truth": {

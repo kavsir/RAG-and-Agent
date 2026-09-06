@@ -7,7 +7,7 @@ import sys
 import json
 import time
 import os
-from typing import Dict, Any, List
+from typing import Dict, Any
 
 # Reconfigure stdout for UTF-8 on Windows
 if hasattr(sys.stdout, "reconfigure"):
@@ -17,12 +17,11 @@ repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 if repo_root not in sys.path:
     sys.path.insert(0, repo_root)
 
-from src.agent_core.loop import get_agent_loop
-from src.agent_core.schemas import AgentStatus, StopReason, QuestionType
+from src.agent_core.loop import get_agent_loop  # noqa: E402
+from src.agent_core.schemas import AgentStatus, StopReason  # noqa: E402
 
 
 def run_agent_core_evaluation(cases_path: str = None, results_path: str = None):
-    start_all = time.perf_counter()
     loop = get_agent_loop()
 
     if cases_path is None:

@@ -290,7 +290,7 @@ class GoalAnalyzer:
         if utterance_semantics:
             if (
                 utterance_semantics.get("polarity") == "NEGATED"
-                or utterance_semantics.get("modality") != "ASSERTED"
+                or utterance_semantics.get("modality") in ("HYPOTHETICAL", "CONDITIONAL", "EXPLANATORY")
                 or utterance_semantics.get("is_contradictory")
             ):
                 return tools

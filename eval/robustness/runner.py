@@ -12,8 +12,9 @@ import json
 import argparse
 import subprocess
 from datetime import datetime
+import hashlib
 from pathlib import Path
-from typing import Dict, Any, List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple
 
 # Ensure UTF-8 output on Windows console
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace", line_buffering=True)
@@ -27,7 +28,7 @@ if str(root_dir) not in sys.path:
 EXTERNAL_API_CALL_COUNT = 0
 ALLOW_EXTERNAL_API = False
 
-import src.llm.client
+import src.llm.client  # noqa: E402
 
 _original_invoke = src.llm.client.LLMClient.invoke
 
@@ -40,46 +41,40 @@ def _guarded_invoke(self, *args, **kwargs):
 
 src.llm.client.LLMClient.invoke = _guarded_invoke
 
-from src.memory.sqlite_store import SQLiteSessionStore
-from src.memory.session_memory import SessionMemoryService
-from src.memory.personal_memory import PersonalMemoryService
-from src.rag.query_analyzer import analyze_query, AnalyzedQuery
-from src.router import get_router_service
-from src.cache.cache_policy import decide_cache_policy
-from src.cache.exact_cache import get_exact_cache
+from src.memory.sqlite_store import SQLiteSessionStore  # noqa: E402
+from src.memory.session_memory import SessionMemoryService  # noqa: E402
+from src.memory.personal_memory import PersonalMemoryService  # noqa: E402
+from src.rag.query_analyzer import analyze_query, AnalyzedQuery  # noqa: E402
+from src.router import get_router_service  # noqa: E402
+from src.cache.cache_policy import decide_cache_policy  # noqa: E402
 
-from eval.robustness.schemas import (
+from eval.robustness.schemas import (  # noqa: E402
     FailureType,
     Severity,
     CaseResult,
     LayerMetric,
     RobustnessReport,
 )
-from eval.robustness.invariants import (
+from eval.robustness.invariants import (  # noqa: E402
     check_no_crash,
     check_unsafe_tool_activation,
     check_academic_authority_invariant,
-    check_session_isolation_invariant,
-    check_cache_safety_invariant,
     check_unknown_course_invariant,
 )
-from eval.robustness.mutation_engine import MutationEngine
-from eval.robustness.generators import (
+from eval.robustness.mutation_engine import MutationEngine  # noqa: E402
+from eval.robustness.generators import (  # noqa: E402
     generate_unknown_course_codes,
     generate_boundary_inputs,
 )
-from eval.robustness.stateful_runner import (
+from eval.robustness.stateful_runner import (  # noqa: E402
     run_stateful_scenarios,
     run_interleaved_chaos_test,
 )
-from eval.robustness.reporters import (
+from eval.robustness.reporters import (  # noqa: E402
     format_terminal_summary,
     generate_markdown_report,
     generate_architecture_gaps_doc,
 )
-
-
-import hashlib
 
 
 def get_git_provenance() -> Tuple[str, str, bool, Optional[str]]:
@@ -563,7 +558,6 @@ def run_layer3_metamorphic(seed: int = 20260906) -> Tuple[List[CaseResult], Laye
     for s in seeds_data:
         base_query = s["seed_query"]
         expected_cat = s["expected_category"]
-        expected_code = s.get("expected_course_code")
 
         # Mutate seed across 10 operators
         for op in mutation_operators:
@@ -986,7 +980,6 @@ def main():
     args = parser.parse_args()
 
     commit_sha, commit_short, is_clean, diff_hash = get_git_provenance()
-    commit_hash = commit_short
     timestamp = datetime.now().isoformat()
 
     all_case_results: List[CaseResult] = []

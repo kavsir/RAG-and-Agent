@@ -4,8 +4,6 @@ Executes multi-turn stateful adversarial scenarios and interleaved multi-session
 Validates session isolation, active entity persistence, cache scoping, and authority boundaries.
 Strict zero-external-API cost policy.
 """
-import sys
-import io
 import time
 import json
 from pathlib import Path
@@ -22,7 +20,6 @@ from eval.robustness.schemas import (
     FailureType,
     Severity,
     CaseResult,
-    LayerMetric,
 )
 from eval.robustness.invariants import (
     check_no_crash,
@@ -308,7 +305,7 @@ def run_interleaved_chaos_test(count: int = 100) -> Tuple[List[CaseResult], Dict
         )
 
         aq = analyze_query(query=user_msg, session_context=session_ctx)
-        r_decision = router.classify(query=user_msg, analyzed_query=session_ctx)
+        router.classify(query=user_msg, analyzed_query=session_ctx)
 
         # Cập nhật phiên hiện tại
         session_service.update_turn(

@@ -11,7 +11,7 @@ from src.cache.exact_cache import get_exact_cache
 
 def mock_api_llm(prompt, system_prompt=None):
     p = prompt.lower()
-    if "kiểm định" in p or "tiêu chí" in p or "groundedness" in p:
+    if "kiểm định viên" in p or "groundedness" in p:
         return '{"valid": true}'
 
     # Ưu tiên kiểm tra phần [câu hỏi]: nếu có để tránh ảnh hưởng bởi chat_history

@@ -30,7 +30,7 @@ def evaluate_policy(
     # LAYER 0: STRONG TOOL FAST PATH
     # =========================================================================
     if evidence.tool_strength == "STRONG":
-        from src.semantics import analyze_utterance, Polarity, Modality, ActionOperation
+        from src.semantics import analyze_utterance, Polarity, Modality
         sem = analyze_utterance(text)
         if (
             sem.polarity == Polarity.NEGATED
@@ -182,7 +182,7 @@ def evaluate_policy(
         if margin >= 0.05:
             tool_intent = None
             if top_cat == "TOOL_ACTION":
-                from src.semantics import analyze_utterance, Polarity, Modality, ActionOperation
+                from src.semantics import analyze_utterance, Polarity, Modality
                 sem = analyze_utterance(text)
                 if (
                     sem.polarity == Polarity.NEGATED
@@ -230,7 +230,7 @@ def evaluate_policy(
         )
 
     if any(w in lower_text for w in ["gửi", "soạn", "nhắc", "lịch", "báo", "hẹn"]):
-        from src.semantics import analyze_utterance, Polarity, Modality, ActionOperation
+        from src.semantics import analyze_utterance, Polarity, Modality
         sem = analyze_utterance(text)
         if (
             sem.polarity == Polarity.NEGATED

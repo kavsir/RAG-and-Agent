@@ -12,7 +12,7 @@ from src.agent.graph import graph
 
 def mock_llm_handler(prompt, system_prompt=None):
     prompt_lower = prompt.lower()
-    if "kiểm định" in prompt_lower or "tiêu chí" in prompt_lower or "groundedness" in prompt_lower:
+    if "kiểm định viên" in prompt_lower or "groundedness" in prompt_lower:
         return '{"valid": true}'
     if "xyz9999" in prompt_lower:
         return "Chưa tìm thấy đủ dữ liệu trong tài liệu hiện có để trả lời chính xác."

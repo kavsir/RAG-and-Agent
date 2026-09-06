@@ -5,7 +5,7 @@ and action operations from Vietnamese and bilingual user utterances.
 Strictly local: 0 external LLM calls.
 """
 import re
-from typing import List, Optional, Tuple, Dict, Any
+from typing import List, Optional, Tuple
 
 from src.semantics.schemas import (
     Polarity,
@@ -15,9 +15,7 @@ from src.semantics.schemas import (
     UtteranceSemantics,
 )
 from src.semantics.normalizer import (
-    normalize_whitespace,
     normalize_for_semantics,
-    split_clauses,
 )
 
 

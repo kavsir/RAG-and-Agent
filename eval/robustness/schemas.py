@@ -4,7 +4,7 @@ Provides standardized models for adversarial inputs, metamorphic tests,
 stateful scenarios, execution results, and reporting metrics.
 """
 from enum import Enum
-from typing import Dict, Any, List, Optional, Union
+from typing import Dict, Any, List, Optional
 from pydantic import BaseModel, Field
 
 

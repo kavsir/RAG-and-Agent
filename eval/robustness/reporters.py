@@ -4,10 +4,8 @@ Formats terminal outputs, JSON summaries, and markdown engineering documentation
 Follows strict user guidelines: reports are written as technical engineering documentation / lessons learned,
 not acceptance reports ("đừng ghi báo cáo nghiệm thu, mà là 1 kinh nghiệm / tài liệu kỹ thuật").
 """
-import json
 from pathlib import Path
-from typing import Dict, Any, List, Optional
-from eval.robustness.schemas import RobustnessReport, FailureType, Severity, CaseResult
+from eval.robustness.schemas import RobustnessReport
 
 
 def format_terminal_summary(report: RobustnessReport) -> str:

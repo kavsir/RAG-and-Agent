@@ -110,7 +110,7 @@ class AgentLoop:
             state.iteration += 1
 
             # 2.1 OBSERVE: Quan sát môi trường
-            obs = self.observer.observe(
+            self.observer.observe(
                 current_input=state.current_user_input,
                 state=state,
                 session_context=session_context,

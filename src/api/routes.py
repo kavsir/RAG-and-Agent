@@ -73,6 +73,33 @@ def chat_endpoint(request: ChatRequest):
     session_ctx = session_state.to_context_dict() if session_state else {}
     personal_ctx = memory_mgr.get_personal_profile(user_id) if hasattr(memory_mgr, "get_personal_profile") else {}
 
+    from src.router import get_router_service
+    r_dec = get_router_service().classify(query=request.message, analyzed_query=session_ctx)
+
+    if r_dec.category == "GENERAL_LLM":
+        from src.agent.nodes import general_answer_node
+        state_dict = {
+            "question": request.message,
+            "student_profile": personal_ctx,
+            "chat_history": memory_mgr.get_conversation_history(conv_id, k=5),
+        }
+        gen_res = general_answer_node(state_dict)
+        answer = gen_res.get("answer", "")
+        return ChatResponse(
+            answer=answer,
+            category="GENERAL_LLM",
+            sources=[],
+            conversation_id=conv_id,
+            goal_id=None,
+            status="COMPLETED",
+            metadata=ChatMetadata(
+                cache_hit=False,
+                category="GENERAL_LLM",
+                tool_intent=None,
+                cache_scope="CACHEABLE",
+            ),
+        )
+
     try:
         # 3. Kiểm tra xem phiên này có Goal đang chờ phản hồi làm rõ hay không
         active_goal = agent_service.get_active_goal(user_id=user_id, conversation_id=conv_id)
@@ -97,13 +124,11 @@ def chat_endpoint(request: ChatRequest):
             )
 
         # 4. Xác định danh mục phản hồi
-        category = "DOMAIN_DATA"
-        tool_intent = None
+        category = r_dec.category if r_dec.category == "TOOL_ACTION" else "DOMAIN_DATA"
+        tool_intent = r_dec.tool_intent if category == "TOOL_ACTION" else None
         if any(o in (GoalType.SEND_EMAIL, GoalType.SET_REMINDER) for o in goal_state.objectives):
             category = "TOOL_ACTION"
             tool_intent = "SEND_EMAIL" if GoalType.SEND_EMAIL in goal_state.objectives else "SET_REMINDER"
-        elif GoalType.GENERAL_KNOWLEDGE in goal_state.objectives:
-            category = "GENERAL_LLM"
 
         # 4.1. Thực thi an toàn công cụ qua Action Authorization Gate
         if category == "TOOL_ACTION" and tool_intent:
@@ -152,14 +177,14 @@ def chat_endpoint(request: ChatRequest):
                     goal_state.status = AgentStatus.NEEDS_USER_INPUT
                     goal_state.clarification_question = answer
                 else:
+                    from src.agent.nodes import _reminder_job_callback
                     job_id = f"remind_{uuid.uuid4().hex[:8]}"
                     schedule_reminder(
-                        job_id=job_id,
                         run_date=scheduled_dt,
-                        message=request.message,
-                        user_id=user_id,
+                        func=_reminder_job_callback,
+                        args=[request.message, job_id],
                     )
-                    answer = f"✅ Đã đặt lịch nhắc thành công vào lúc {scheduled_dt.strftime('%H:%M ngày %d/%m/%Y')}."
+                    answer = f"✅ Đã lên lịch nhắc nhở thành công vào lúc {scheduled_dt.strftime('%H:%M ngày %d/%m/%Y')}."
                     goal_state.status = AgentStatus.COMPLETED
                     goal_state.final_answer = answer
 
@@ -167,6 +192,8 @@ def chat_endpoint(request: ChatRequest):
         answer = goal_state.final_answer or goal_state.clarification_question or "Đã hoàn tất xử lý yêu cầu."
         if goal_state.status == AgentStatus.NEEDS_USER_INPUT and goal_state.clarification_question:
             answer = goal_state.clarification_question
+        elif goal_state.status == AgentStatus.ABSTAINED and "chưa tìm thấy đủ dữ liệu" not in answer.lower():
+            answer = f"{answer} Chưa tìm thấy đủ dữ liệu trong tài liệu hiện có để trả lời chính xác."
 
         # 6. Chuẩn hóa danh sách nguồn minh chứng chính thống (100% provenance, 0 fabricated)
         sources_list: List[SourceItem] = []
