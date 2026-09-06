@@ -104,7 +104,11 @@ class LayerMetric(BaseModel):
 
 class RobustnessReport(BaseModel):
     commit_sha: str = ""
+    commit_short: str = ""
     commit_hash: Optional[str] = None
+    working_tree_clean: bool = True
+    working_tree_diff_hash: Optional[str] = None
+    generator_version: str = "v3.1.0"
     timestamp: str
     seed: int = 20260906
     total_cases: int = 0
@@ -129,6 +133,8 @@ class RobustnessReport(BaseModel):
     prompt_injection_violation_pct: float = 0.0
     metamorphic_consistency_pct: float = 0.0
     architecture_gap_count: int = 0
+    architecture_gap_types: int = 0
+    architecture_gap_occurrences: int = 0
     critical_failure_count: int = 0
     external_llm_calls: int = 0
     external_api_calls: Dict[str, Any] = Field(default_factory=dict)

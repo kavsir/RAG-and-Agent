@@ -1,0 +1,1016 @@
+[
+  {
+    "case_id": "META-0017",
+    "seed": 20260906,
+    "seed_query": "Ai là giảng viên phụ trách môn Hệ thống nhúng?",
+    "operator": "diacritic_remove",
+    "mutation_sequence": [
+      "diacritic_remove"
+    ],
+    "mutated_query": "Ai la giang vien phu trach mon He thong nhung?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_course_code": null,
+    "observed_category": "GENERAL_LLM",
+    "observed_tool_intent": null,
+    "decision_path": "LOW_CONFIDENCE_FALLBACK",
+    "reason_code": "FALLBACK_DEFAULT_GENERAL",
+    "resolved_entity": null,
+    "resolved_target": [],
+    "semantics": {
+      "polarity": "AFFIRMATIVE",
+      "modality": "QUESTION",
+      "scope": "UNKNOWN",
+      "target_op": "NO_ACTION",
+      "prohibition": false
+    },
+    "tool_safe": true,
+    "tool_err": "",
+    "failure_type": "ROUTING_FAILURE"
+  },
+  {
+    "case_id": "META-0067",
+    "seed": 20260906,
+    "seed_query": "Chuẩn đầu ra tiếng Anh để tốt nghiệp Đại Nam là bao nhiêu?",
+    "operator": "diacritic_remove",
+    "mutation_sequence": [
+      "diacritic_remove"
+    ],
+    "mutated_query": "Chuan dau ra tieng Anh de tot nghiep Dai Nam la bao nhieu?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_course_code": null,
+    "observed_category": "GENERAL_LLM",
+    "observed_tool_intent": null,
+    "decision_path": "LOW_CONFIDENCE_FALLBACK",
+    "reason_code": "FALLBACK_DEFAULT_GENERAL",
+    "resolved_entity": null,
+    "resolved_target": [],
+    "semantics": {
+      "polarity": "AFFIRMATIVE",
+      "modality": "QUESTION",
+      "scope": "UNKNOWN",
+      "target_op": "NO_ACTION",
+      "prohibition": false
+    },
+    "tool_safe": true,
+    "tool_err": "",
+    "failure_type": "ROUTING_FAILURE"
+  },
+  {
+    "case_id": "META-0087",
+    "seed": 20260906,
+    "seed_query": "Sinh viên nghỉ học bao nhiêu phần trăm thì bị cấm thi?",
+    "operator": "diacritic_remove",
+    "mutation_sequence": [
+      "diacritic_remove"
+    ],
+    "mutated_query": "Sinh vien nghi hoc bao nhieu phan tram thi bi cam thi?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_course_code": null,
+    "observed_category": "GENERAL_LLM",
+    "observed_tool_intent": null,
+    "decision_path": "LOW_CONFIDENCE_FALLBACK",
+    "reason_code": "FALLBACK_DEFAULT_GENERAL",
+    "resolved_entity": null,
+    "resolved_target": [
+      "assessment"
+    ],
+    "semantics": {
+      "polarity": "AFFIRMATIVE",
+      "modality": "QUESTION",
+      "scope": "UNKNOWN",
+      "target_op": "NO_ACTION",
+      "prohibition": false
+    },
+    "tool_safe": true,
+    "tool_err": "",
+    "failure_type": "ROUTING_FAILURE"
+  },
+  {
+    "case_id": "META-0097",
+    "seed": 20260906,
+    "seed_query": "Khung chương trình đào tạo ngành Công nghệ thông tin gồm những môn nào?",
+    "operator": "diacritic_remove",
+    "mutation_sequence": [
+      "diacritic_remove"
+    ],
+    "mutated_query": "Khung chuong trinh dao tao nganh Cong nghe thong tin gom nhung mon nao?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_course_code": null,
+    "observed_category": "GENERAL_LLM",
+    "observed_tool_intent": null,
+    "decision_path": "LOW_CONFIDENCE_FALLBACK",
+    "reason_code": "FALLBACK_DEFAULT_GENERAL",
+    "resolved_entity": null,
+    "resolved_target": [],
+    "semantics": {
+      "polarity": "AFFIRMATIVE",
+      "modality": "QUESTION",
+      "scope": "UNKNOWN",
+      "target_op": "COMPOSE_EMAIL",
+      "prohibition": false
+    },
+    "tool_safe": true,
+    "tool_err": "",
+    "failure_type": "ROUTING_FAILURE"
+  },
+  {
+    "case_id": "META-0153",
+    "seed": 20260906,
+    "seed_query": "Nhắc tôi nộp bài tập lớn vào 17h chiều mai.",
+    "operator": "char_substitute",
+    "mutation_sequence": [
+      "char_substitute"
+    ],
+    "mutated_query": "Nh_c tôi nộp bài tập lớn vào 17h chiều mai.",
+    "expected_category": "TOOL_ACTION",
+    "expected_course_code": null,
+    "observed_category": "GENERAL_LLM",
+    "observed_tool_intent": null,
+    "decision_path": "SEMANTIC_CLASSIFIER",
+    "reason_code": "SEMANTIC_MARGIN_0.23_TOP_GENERAL_LLM",
+    "resolved_entity": null,
+    "resolved_target": [],
+    "semantics": {
+      "polarity": "AFFIRMATIVE",
+      "modality": "DIRECT",
+      "scope": "SELF",
+      "target_op": "NO_ACTION",
+      "prohibition": false
+    },
+    "tool_safe": true,
+    "tool_err": "",
+    "failure_type": "ROUTING_FAILURE"
+  },
+  {
+    "case_id": "META-0157",
+    "seed": 20260906,
+    "seed_query": "Nhắc tôi nộp bài tập lớn vào 17h chiều mai.",
+    "operator": "diacritic_remove",
+    "mutation_sequence": [
+      "diacritic_remove"
+    ],
+    "mutated_query": "Nhac toi nop bai tap lon vao 17h chieu mai.",
+    "expected_category": "TOOL_ACTION",
+    "expected_course_code": null,
+    "observed_category": "GENERAL_LLM",
+    "observed_tool_intent": null,
+    "decision_path": "SEMANTIC_CLASSIFIER",
+    "reason_code": "SEMANTIC_MARGIN_0.15_TOP_GENERAL_LLM",
+    "resolved_entity": null,
+    "resolved_target": [],
+    "semantics": {
+      "polarity": "AFFIRMATIVE",
+      "modality": "DIRECT",
+      "scope": "UNKNOWN",
+      "target_op": "NO_ACTION",
+      "prohibition": false
+    },
+    "tool_safe": true,
+    "tool_err": "",
+    "failure_type": "ROUTING_FAILURE"
+  },
+  {
+    "case_id": "META-0159",
+    "seed": 20260906,
+    "seed_query": "Nhắc tôi nộp bài tập lớn vào 17h chiều mai.",
+    "operator": "unicode_fullwidth",
+    "mutation_sequence": [
+      "unicode_fullwidth"
+    ],
+    "mutated_query": "Ｎｈắｃ　ｔôｉ　ｎộｐ　ｂàｉ　ｔậｐ　ｌớｎ　ｖàｏ　１７ｈ　ｃｈｉềｕ　ｍａｉ．",
+    "expected_category": "TOOL_ACTION",
+    "expected_course_code": null,
+    "observed_category": "GENERAL_LLM",
+    "observed_tool_intent": null,
+    "decision_path": "SEMANTIC_CLASSIFIER",
+    "reason_code": "SEMANTIC_MARGIN_0.26_TOP_GENERAL_LLM",
+    "resolved_entity": null,
+    "resolved_target": [],
+    "semantics": {
+      "polarity": "AFFIRMATIVE",
+      "modality": "DIRECT",
+      "scope": "UNKNOWN",
+      "target_op": "NO_ACTION",
+      "prohibition": false
+    },
+    "tool_safe": true,
+    "tool_err": "",
+    "failure_type": "ROUTING_FAILURE"
+  },
+  {
+    "case_id": "META-0167",
+    "seed": 20260906,
+    "seed_query": "Đặt lịch nhắc ôn thi môn FIT4201 lúc 8h sáng chủ nhật.",
+    "operator": "diacritic_remove",
+    "mutation_sequence": [
+      "diacritic_remove"
+    ],
+    "mutated_query": "Dat lich nhac on thi mon FIT4201 luc 8h sang chu nhat.",
+    "expected_category": "TOOL_ACTION",
+    "expected_course_code": null,
+    "observed_category": "DOMAIN_DATA",
+    "observed_tool_intent": null,
+    "decision_path": "STRONG_DOMAIN_FAST_PATH",
+    "reason_code": "COURSE_CODE_FIT4201",
+    "resolved_entity": "FIT4201",
+    "resolved_target": [
+      "assessment"
+    ],
+    "semantics": {
+      "polarity": "AFFIRMATIVE",
+      "modality": "DIRECT",
+      "scope": "UNKNOWN",
+      "target_op": "NO_ACTION",
+      "prohibition": false
+    },
+    "tool_safe": true,
+    "tool_err": "",
+    "failure_type": "ROUTING_FAILURE"
+  },
+  {
+    "case_id": "META-0169",
+    "seed": 20260906,
+    "seed_query": "Đặt lịch nhắc ôn thi môn FIT4201 lúc 8h sáng chủ nhật.",
+    "operator": "unicode_fullwidth",
+    "mutation_sequence": [
+      "unicode_fullwidth"
+    ],
+    "mutated_query": "Đặｔ　ｌịｃｈ　ｎｈắｃ　ôｎ　ｔｈｉ　ｍôｎ　ＦＩＴ４２０１　ｌúｃ　８ｈ　ｓáｎｇ　ｃｈủ　ｎｈậｔ．",
+    "expected_category": "TOOL_ACTION",
+    "expected_course_code": null,
+    "observed_category": "GENERAL_LLM",
+    "observed_tool_intent": null,
+    "decision_path": "SEMANTIC_CLASSIFIER",
+    "reason_code": "SEMANTIC_MARGIN_0.24_TOP_GENERAL_LLM",
+    "resolved_entity": null,
+    "resolved_target": [],
+    "semantics": {
+      "polarity": "AFFIRMATIVE",
+      "modality": "DIRECT",
+      "scope": "UNKNOWN",
+      "target_op": "NO_ACTION",
+      "prohibition": false
+    },
+    "tool_safe": true,
+    "tool_err": "",
+    "failure_type": "ROUTING_FAILURE"
+  },
+  {
+    "case_id": "META-0174",
+    "seed": 20260906,
+    "seed_query": "Gửi email cho giảng viên phụ trách tieppv@dainam.edu.vn.",
+    "operator": "char_transpose",
+    "mutation_sequence": [
+      "char_transpose"
+    ],
+    "mutated_query": "Gửi emali cho giảng viên phụ trách tieppv@dainam.edu.vn.",
+    "expected_category": "TOOL_ACTION",
+    "expected_course_code": null,
+    "observed_category": "DOMAIN_DATA",
+    "observed_tool_intent": null,
+    "decision_path": "STRONG_DOMAIN_FAST_PATH",
+    "reason_code": "ACADEMIC_TARGET_WITH_CUES_lecturer",
+    "resolved_entity": null,
+    "resolved_target": [
+      "lecturer"
+    ],
+    "semantics": {
+      "polarity": "AFFIRMATIVE",
+      "modality": "DIRECT",
+      "scope": "UNKNOWN",
+      "target_op": "SEND_EMAIL",
+      "prohibition": false
+    },
+    "tool_safe": true,
+    "tool_err": "",
+    "failure_type": "ROUTING_FAILURE"
+  },
+  {
+    "case_id": "META-0177",
+    "seed": 20260906,
+    "seed_query": "Gửi email cho giảng viên phụ trách tieppv@dainam.edu.vn.",
+    "operator": "diacritic_remove",
+    "mutation_sequence": [
+      "diacritic_remove"
+    ],
+    "mutated_query": "Gui email cho giang vien phu trach tieppv@dainam.edu.vn.",
+    "expected_category": "TOOL_ACTION",
+    "expected_course_code": null,
+    "observed_category": "GENERAL_LLM",
+    "observed_tool_intent": null,
+    "decision_path": "SEMANTIC_CLASSIFIER",
+    "reason_code": "SEMANTIC_MARGIN_0.10_TOP_GENERAL_LLM",
+    "resolved_entity": null,
+    "resolved_target": [
+      "lecturer"
+    ],
+    "semantics": {
+      "polarity": "AFFIRMATIVE",
+      "modality": "DIRECT",
+      "scope": "UNKNOWN",
+      "target_op": "NO_ACTION",
+      "prohibition": false
+    },
+    "tool_safe": true,
+    "tool_err": "",
+    "failure_type": "ROUTING_FAILURE"
+  },
+  {
+    "case_id": "META-0179",
+    "seed": 20260906,
+    "seed_query": "Gửi email cho giảng viên phụ trách tieppv@dainam.edu.vn.",
+    "operator": "unicode_fullwidth",
+    "mutation_sequence": [
+      "unicode_fullwidth"
+    ],
+    "mutated_query": "Ｇửｉ　ｅｍａｉｌ　ｃｈｏ　ｇｉảｎｇ　ｖｉêｎ　ｐｈụ　ｔｒáｃｈ　ｔｉｅｐｐｖ＠ｄａｉｎａｍ．ｅｄｕ．ｖｎ．",
+    "expected_category": "TOOL_ACTION",
+    "expected_course_code": null,
+    "observed_category": "GENERAL_LLM",
+    "observed_tool_intent": null,
+    "decision_path": "SEMANTIC_CLASSIFIER",
+    "reason_code": "SEMANTIC_MARGIN_0.12_TOP_GENERAL_LLM",
+    "resolved_entity": null,
+    "resolved_target": [],
+    "semantics": {
+      "polarity": "AFFIRMATIVE",
+      "modality": "DIRECT",
+      "scope": "UNKNOWN",
+      "target_op": "NO_ACTION",
+      "prohibition": false
+    },
+    "tool_safe": true,
+    "tool_err": "",
+    "failure_type": "ROUTING_FAILURE"
+  },
+  {
+    "case_id": "META-0184",
+    "seed": 20260906,
+    "seed_query": "Tư vấn cho tôi lộ trình học kỳ tới của khóa K19.",
+    "operator": "char_transpose",
+    "mutation_sequence": [
+      "char_transpose"
+    ],
+    "mutated_query": "Tư vấn cho tôil ộ trình học kỳ tới của khóa K19.",
+    "expected_category": "DOMAIN_DATA",
+    "expected_course_code": null,
+    "observed_category": "GENERAL_LLM",
+    "observed_tool_intent": null,
+    "decision_path": "SEMANTIC_CLASSIFIER",
+    "reason_code": "SEMANTIC_MARGIN_0.06_TOP_GENERAL_LLM",
+    "resolved_entity": null,
+    "resolved_target": [
+      "semester"
+    ],
+    "semantics": {
+      "polarity": "AFFIRMATIVE",
+      "modality": "DIRECT",
+      "scope": "UNKNOWN",
+      "target_op": "NO_ACTION",
+      "prohibition": false
+    },
+    "tool_safe": true,
+    "tool_err": "",
+    "failure_type": "ROUTING_FAILURE"
+  },
+  {
+    "case_id": "META-0188",
+    "seed": 20260906,
+    "seed_query": "Tư vấn cho tôi lộ trình học kỳ tới của khóa K19.",
+    "operator": "mixed_case",
+    "mutation_sequence": [
+      "mixed_case"
+    ],
+    "mutated_query": "tư VấN cHo tÔI lỘ tRìNh HỌc Kỳ TớI CỦa kHóa k19.",
+    "expected_category": "DOMAIN_DATA",
+    "expected_course_code": null,
+    "observed_category": "GENERAL_LLM",
+    "observed_tool_intent": null,
+    "decision_path": "SEMANTIC_CLASSIFIER",
+    "reason_code": "SEMANTIC_MARGIN_0.09_TOP_GENERAL_LLM",
+    "resolved_entity": null,
+    "resolved_target": [
+      "semester"
+    ],
+    "semantics": {
+      "polarity": "AFFIRMATIVE",
+      "modality": "DIRECT",
+      "scope": "SELF",
+      "target_op": "NO_ACTION",
+      "prohibition": false
+    },
+    "tool_safe": true,
+    "tool_err": "",
+    "failure_type": "ROUTING_FAILURE"
+  },
+  {
+    "case_id": "META-0189",
+    "seed": 20260906,
+    "seed_query": "Tư vấn cho tôi lộ trình học kỳ tới của khóa K19.",
+    "operator": "unicode_fullwidth",
+    "mutation_sequence": [
+      "unicode_fullwidth"
+    ],
+    "mutated_query": "Ｔư　ｖấｎ　ｃｈｏ　ｔôｉ　ｌộ　ｔｒìｎｈ　ｈọｃ　ｋỳ　ｔớｉ　ｃủａ　ｋｈóａ　Ｋ１９．",
+    "expected_category": "DOMAIN_DATA",
+    "expected_course_code": null,
+    "observed_category": "GENERAL_LLM",
+    "observed_tool_intent": null,
+    "decision_path": "LOW_CONFIDENCE_FALLBACK",
+    "reason_code": "FALLBACK_DEFAULT_GENERAL",
+    "resolved_entity": null,
+    "resolved_target": [],
+    "semantics": {
+      "polarity": "AFFIRMATIVE",
+      "modality": "DIRECT",
+      "scope": "UNKNOWN",
+      "target_op": "NO_ACTION",
+      "prohibition": false
+    },
+    "tool_safe": true,
+    "tool_err": "",
+    "failure_type": "ROUTING_FAILURE"
+  },
+  {
+    "case_id": "META-0225",
+    "seed": 20260906,
+    "seed_query": "Thực tập doanh nghiệp diễn ra vào học kỳ mấy?",
+    "operator": "space_insert",
+    "mutation_sequence": [
+      "space_insert"
+    ],
+    "mutated_query": "Thực tập doanh nghiệp diễn ra vào học k  ỳ mấy?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_course_code": null,
+    "observed_category": "GENERAL_LLM",
+    "observed_tool_intent": null,
+    "decision_path": "LOW_CONFIDENCE_FALLBACK",
+    "reason_code": "FALLBACK_DEFAULT_GENERAL",
+    "resolved_entity": null,
+    "resolved_target": [],
+    "semantics": {
+      "polarity": "AFFIRMATIVE",
+      "modality": "QUESTION",
+      "scope": "UNKNOWN",
+      "target_op": "NO_ACTION",
+      "prohibition": false
+    },
+    "tool_safe": true,
+    "tool_err": "",
+    "failure_type": "ROUTING_FAILURE"
+  },
+  {
+    "case_id": "META-0227",
+    "seed": 20260906,
+    "seed_query": "Thực tập doanh nghiệp diễn ra vào học kỳ mấy?",
+    "operator": "diacritic_remove",
+    "mutation_sequence": [
+      "diacritic_remove"
+    ],
+    "mutated_query": "Thuc tap doanh nghiep dien ra vao hoc ky may?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_course_code": null,
+    "observed_category": "GENERAL_LLM",
+    "observed_tool_intent": null,
+    "decision_path": "LOW_CONFIDENCE_FALLBACK",
+    "reason_code": "FALLBACK_DEFAULT_GENERAL",
+    "resolved_entity": null,
+    "resolved_target": [],
+    "semantics": {
+      "polarity": "AFFIRMATIVE",
+      "modality": "QUESTION",
+      "scope": "UNKNOWN",
+      "target_op": "NO_ACTION",
+      "prohibition": false
+    },
+    "tool_safe": true,
+    "tool_err": "",
+    "failure_type": "ROUTING_FAILURE"
+  },
+  {
+    "case_id": "META-0229",
+    "seed": 20260906,
+    "seed_query": "Thực tập doanh nghiệp diễn ra vào học kỳ mấy?",
+    "operator": "unicode_fullwidth",
+    "mutation_sequence": [
+      "unicode_fullwidth"
+    ],
+    "mutated_query": "Ｔｈựｃ　ｔậｐ　ｄｏａｎｈ　ｎｇｈｉệｐ　ｄｉễｎ　ｒａ　ｖàｏ　ｈọｃ　ｋỳ　ｍấｙ？",
+    "expected_category": "DOMAIN_DATA",
+    "expected_course_code": null,
+    "observed_category": "GENERAL_LLM",
+    "observed_tool_intent": null,
+    "decision_path": "LOW_CONFIDENCE_FALLBACK",
+    "reason_code": "FALLBACK_DEFAULT_GENERAL",
+    "resolved_entity": null,
+    "resolved_target": [],
+    "semantics": {
+      "polarity": "AFFIRMATIVE",
+      "modality": "DIRECT",
+      "scope": "UNKNOWN",
+      "target_op": "NO_ACTION",
+      "prohibition": false
+    },
+    "tool_safe": true,
+    "tool_err": "",
+    "failure_type": "ROUTING_FAILURE"
+  },
+  {
+    "case_id": "META-0247",
+    "seed": 20260906,
+    "seed_query": "Điểm rèn luyện ảnh hưởng thế nào đến việc xét học bổng?",
+    "operator": "diacritic_remove",
+    "mutation_sequence": [
+      "diacritic_remove"
+    ],
+    "mutated_query": "Diem ren luyen anh huong the nao den viec xet hoc bong?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_course_code": null,
+    "observed_category": "GENERAL_LLM",
+    "observed_tool_intent": null,
+    "decision_path": "LOW_CONFIDENCE_FALLBACK",
+    "reason_code": "FALLBACK_DEFAULT_GENERAL",
+    "resolved_entity": null,
+    "resolved_target": [],
+    "semantics": {
+      "polarity": "AFFIRMATIVE",
+      "modality": "QUESTION",
+      "scope": "UNKNOWN",
+      "target_op": "NO_ACTION",
+      "prohibition": false
+    },
+    "tool_safe": true,
+    "tool_err": "",
+    "failure_type": "ROUTING_FAILURE"
+  },
+  {
+    "case_id": "META-0248",
+    "seed": 20260906,
+    "seed_query": "Điểm rèn luyện ảnh hưởng thế nào đến việc xét học bổng?",
+    "operator": "mixed_case",
+    "mutation_sequence": [
+      "mixed_case"
+    ],
+    "mutated_query": "ĐIỂM rèN luYệN ẢnH HưởNg ThẾ nÀO Đến VIệc Xét học bổnG?",
+    "expected_category": "DOMAIN_DATA",
+    "expected_course_code": null,
+    "observed_category": "GENERAL_LLM",
+    "observed_tool_intent": null,
+    "decision_path": "LOW_CONFIDENCE_FALLBACK",
+    "reason_code": "FALLBACK_DEFAULT_GENERAL",
+    "resolved_entity": null,
+    "resolved_target": [
+      "assessment"
+    ],
+    "semantics": {
+      "polarity": "AFFIRMATIVE",
+      "modality": "QUESTION",
+      "scope": "UNKNOWN",
+      "target_op": "NO_ACTION",
+      "prohibition": false
+    },
+    "tool_safe": true,
+    "tool_err": "",
+    "failure_type": "ROUTING_FAILURE"
+  },
+  {
+    "case_id": "META-0251",
+    "seed": 20260906,
+    "seed_query": "Gửi email xin phép nghỉ học tới gv@dainam.edu.vn.",
+    "operator": "char_delete",
+    "mutation_sequence": [
+      "char_delete"
+    ],
+    "mutated_query": "Gử email xin phép nghỉ học tới gv@dainam.edu.vn.",
+    "expected_category": "TOOL_ACTION",
+    "expected_course_code": null,
+    "observed_category": "GENERAL_LLM",
+    "observed_tool_intent": null,
+    "decision_path": "SEMANTIC_CLASSIFIER",
+    "reason_code": "SEMANTIC_MARGIN_0.21_TOP_GENERAL_LLM",
+    "resolved_entity": null,
+    "resolved_target": [
+      "lecturer"
+    ],
+    "semantics": {
+      "polarity": "AFFIRMATIVE",
+      "modality": "DIRECT",
+      "scope": "UNKNOWN",
+      "target_op": "NO_ACTION",
+      "prohibition": false
+    },
+    "tool_safe": true,
+    "tool_err": "",
+    "failure_type": "ROUTING_FAILURE"
+  },
+  {
+    "case_id": "META-0255",
+    "seed": 20260906,
+    "seed_query": "Gửi email xin phép nghỉ học tới gv@dainam.edu.vn.",
+    "operator": "space_insert",
+    "mutation_sequence": [
+      "space_insert"
+    ],
+    "mutated_query": "G  ửi email xin phép nghỉ học tới gv@dainam.edu.vn.",
+    "expected_category": "TOOL_ACTION",
+    "expected_course_code": null,
+    "observed_category": "GENERAL_LLM",
+    "observed_tool_intent": null,
+    "decision_path": "SEMANTIC_CLASSIFIER",
+    "reason_code": "SEMANTIC_MARGIN_0.21_TOP_GENERAL_LLM",
+    "resolved_entity": null,
+    "resolved_target": [
+      "lecturer"
+    ],
+    "semantics": {
+      "polarity": "AFFIRMATIVE",
+      "modality": "DIRECT",
+      "scope": "UNKNOWN",
+      "target_op": "NO_ACTION",
+      "prohibition": false
+    },
+    "tool_safe": true,
+    "tool_err": "",
+    "failure_type": "ROUTING_FAILURE"
+  },
+  {
+    "case_id": "META-0257",
+    "seed": 20260906,
+    "seed_query": "Gửi email xin phép nghỉ học tới gv@dainam.edu.vn.",
+    "operator": "diacritic_remove",
+    "mutation_sequence": [
+      "diacritic_remove"
+    ],
+    "mutated_query": "Gui email xin phep nghi hoc toi gv@dainam.edu.vn.",
+    "expected_category": "TOOL_ACTION",
+    "expected_course_code": null,
+    "observed_category": "GENERAL_LLM",
+    "observed_tool_intent": null,
+    "decision_path": "SEMANTIC_CLASSIFIER",
+    "reason_code": "SEMANTIC_MARGIN_0.11_TOP_GENERAL_LLM",
+    "resolved_entity": null,
+    "resolved_target": [
+      "lecturer"
+    ],
+    "semantics": {
+      "polarity": "AFFIRMATIVE",
+      "modality": "DIRECT",
+      "scope": "UNKNOWN",
+      "target_op": "NO_ACTION",
+      "prohibition": false
+    },
+    "tool_safe": true,
+    "tool_err": "",
+    "failure_type": "ROUTING_FAILURE"
+  },
+  {
+    "case_id": "META-0259",
+    "seed": 20260906,
+    "seed_query": "Gửi email xin phép nghỉ học tới gv@dainam.edu.vn.",
+    "operator": "unicode_fullwidth",
+    "mutation_sequence": [
+      "unicode_fullwidth"
+    ],
+    "mutated_query": "Ｇửｉ　ｅｍａｉｌ　ｘｉｎ　ｐｈéｐ　ｎｇｈỉ　ｈọｃ　ｔớｉ　ｇｖ＠ｄａｉｎａｍ．ｅｄｕ．ｖｎ．",
+    "expected_category": "TOOL_ACTION",
+    "expected_course_code": null,
+    "observed_category": "GENERAL_LLM",
+    "observed_tool_intent": null,
+    "decision_path": "SEMANTIC_CLASSIFIER",
+    "reason_code": "SEMANTIC_MARGIN_0.21_TOP_GENERAL_LLM",
+    "resolved_entity": null,
+    "resolved_target": [],
+    "semantics": {
+      "polarity": "AFFIRMATIVE",
+      "modality": "DIRECT",
+      "scope": "UNKNOWN",
+      "target_op": "NO_ACTION",
+      "prohibition": false
+    },
+    "tool_safe": true,
+    "tool_err": "",
+    "failure_type": "ROUTING_FAILURE"
+  },
+  {
+    "case_id": "META-0271",
+    "seed": 20260906,
+    "seed_query": "Cách tính điểm trung bình tích lũy GPA theo thang điểm 4.",
+    "operator": "char_delete",
+    "mutation_sequence": [
+      "char_delete"
+    ],
+    "mutated_query": "Cách tính điểm trung bình tíc lũy GPA theo thang điểm 4.",
+    "expected_category": "DOMAIN_DATA",
+    "expected_course_code": null,
+    "observed_category": "GENERAL_LLM",
+    "observed_tool_intent": null,
+    "decision_path": "LOW_CONFIDENCE_FALLBACK",
+    "reason_code": "FALLBACK_DEFAULT_GENERAL",
+    "resolved_entity": null,
+    "resolved_target": [
+      "assessment"
+    ],
+    "semantics": {
+      "polarity": "AFFIRMATIVE",
+      "modality": "DIRECT",
+      "scope": "UNKNOWN",
+      "target_op": "NO_ACTION",
+      "prohibition": false
+    },
+    "tool_safe": true,
+    "tool_err": "",
+    "failure_type": "ROUTING_FAILURE"
+  },
+  {
+    "case_id": "META-0272",
+    "seed": 20260906,
+    "seed_query": "Cách tính điểm trung bình tích lũy GPA theo thang điểm 4.",
+    "operator": "char_insert",
+    "mutation_sequence": [
+      "char_insert"
+    ],
+    "mutated_query": "Cách tính đicểm trung bình tích lũy GPA theo thang điểm 4.",
+    "expected_category": "DOMAIN_DATA",
+    "expected_course_code": null,
+    "observed_category": "GENERAL_LLM",
+    "observed_tool_intent": null,
+    "decision_path": "LOW_CONFIDENCE_FALLBACK",
+    "reason_code": "FALLBACK_DEFAULT_GENERAL",
+    "resolved_entity": null,
+    "resolved_target": [
+      "assessment"
+    ],
+    "semantics": {
+      "polarity": "AFFIRMATIVE",
+      "modality": "DIRECT",
+      "scope": "UNKNOWN",
+      "target_op": "NO_ACTION",
+      "prohibition": false
+    },
+    "tool_safe": true,
+    "tool_err": "",
+    "failure_type": "ROUTING_FAILURE"
+  },
+  {
+    "case_id": "META-0273",
+    "seed": 20260906,
+    "seed_query": "Cách tính điểm trung bình tích lũy GPA theo thang điểm 4.",
+    "operator": "char_substitute",
+    "mutation_sequence": [
+      "char_substitute"
+    ],
+    "mutated_query": "Cách tính điểm trung btnh tích lũy GPA theo thang điểm 4.",
+    "expected_category": "DOMAIN_DATA",
+    "expected_course_code": null,
+    "observed_category": "GENERAL_LLM",
+    "observed_tool_intent": null,
+    "decision_path": "LOW_CONFIDENCE_FALLBACK",
+    "reason_code": "FALLBACK_DEFAULT_GENERAL",
+    "resolved_entity": null,
+    "resolved_target": [
+      "assessment"
+    ],
+    "semantics": {
+      "polarity": "AFFIRMATIVE",
+      "modality": "DIRECT",
+      "scope": "UNKNOWN",
+      "target_op": "NO_ACTION",
+      "prohibition": false
+    },
+    "tool_safe": true,
+    "tool_err": "",
+    "failure_type": "ROUTING_FAILURE"
+  },
+  {
+    "case_id": "META-0274",
+    "seed": 20260906,
+    "seed_query": "Cách tính điểm trung bình tích lũy GPA theo thang điểm 4.",
+    "operator": "char_transpose",
+    "mutation_sequence": [
+      "char_transpose"
+    ],
+    "mutated_query": "Cách tính điể mtrung bình tích lũy GPA theo thang điểm 4.",
+    "expected_category": "DOMAIN_DATA",
+    "expected_course_code": null,
+    "observed_category": "GENERAL_LLM",
+    "observed_tool_intent": null,
+    "decision_path": "LOW_CONFIDENCE_FALLBACK",
+    "reason_code": "FALLBACK_DEFAULT_GENERAL",
+    "resolved_entity": null,
+    "resolved_target": [
+      "assessment"
+    ],
+    "semantics": {
+      "polarity": "AFFIRMATIVE",
+      "modality": "DIRECT",
+      "scope": "UNKNOWN",
+      "target_op": "NO_ACTION",
+      "prohibition": false
+    },
+    "tool_safe": true,
+    "tool_err": "",
+    "failure_type": "ROUTING_FAILURE"
+  },
+  {
+    "case_id": "META-0275",
+    "seed": 20260906,
+    "seed_query": "Cách tính điểm trung bình tích lũy GPA theo thang điểm 4.",
+    "operator": "space_insert",
+    "mutation_sequence": [
+      "space_insert"
+    ],
+    "mutated_query": "Cách tính điểm trung bình tích lũy GPA theo   thang điểm 4.",
+    "expected_category": "DOMAIN_DATA",
+    "expected_course_code": null,
+    "observed_category": "GENERAL_LLM",
+    "observed_tool_intent": null,
+    "decision_path": "LOW_CONFIDENCE_FALLBACK",
+    "reason_code": "FALLBACK_DEFAULT_GENERAL",
+    "resolved_entity": null,
+    "resolved_target": [
+      "assessment"
+    ],
+    "semantics": {
+      "polarity": "AFFIRMATIVE",
+      "modality": "DIRECT",
+      "scope": "UNKNOWN",
+      "target_op": "NO_ACTION",
+      "prohibition": false
+    },
+    "tool_safe": true,
+    "tool_err": "",
+    "failure_type": "ROUTING_FAILURE"
+  },
+  {
+    "case_id": "META-0276",
+    "seed": 20260906,
+    "seed_query": "Cách tính điểm trung bình tích lũy GPA theo thang điểm 4.",
+    "operator": "space_remove",
+    "mutation_sequence": [
+      "space_remove"
+    ],
+    "mutated_query": "Cách tính điểm trung bình tíchlũy GPA theo thang điểm 4.",
+    "expected_category": "DOMAIN_DATA",
+    "expected_course_code": null,
+    "observed_category": "GENERAL_LLM",
+    "observed_tool_intent": null,
+    "decision_path": "LOW_CONFIDENCE_FALLBACK",
+    "reason_code": "FALLBACK_DEFAULT_GENERAL",
+    "resolved_entity": null,
+    "resolved_target": [
+      "assessment"
+    ],
+    "semantics": {
+      "polarity": "AFFIRMATIVE",
+      "modality": "DIRECT",
+      "scope": "UNKNOWN",
+      "target_op": "NO_ACTION",
+      "prohibition": false
+    },
+    "tool_safe": true,
+    "tool_err": "",
+    "failure_type": "ROUTING_FAILURE"
+  },
+  {
+    "case_id": "META-0277",
+    "seed": 20260906,
+    "seed_query": "Cách tính điểm trung bình tích lũy GPA theo thang điểm 4.",
+    "operator": "diacritic_remove",
+    "mutation_sequence": [
+      "diacritic_remove"
+    ],
+    "mutated_query": "Cach tinh diem trung binh tich luy GPA theo thang diem 4.",
+    "expected_category": "DOMAIN_DATA",
+    "expected_course_code": null,
+    "observed_category": "GENERAL_LLM",
+    "observed_tool_intent": null,
+    "decision_path": "LOW_CONFIDENCE_FALLBACK",
+    "reason_code": "FALLBACK_DEFAULT_GENERAL",
+    "resolved_entity": null,
+    "resolved_target": [],
+    "semantics": {
+      "polarity": "AFFIRMATIVE",
+      "modality": "DIRECT",
+      "scope": "UNKNOWN",
+      "target_op": "NO_ACTION",
+      "prohibition": false
+    },
+    "tool_safe": true,
+    "tool_err": "",
+    "failure_type": "ROUTING_FAILURE"
+  },
+  {
+    "case_id": "META-0278",
+    "seed": 20260906,
+    "seed_query": "Cách tính điểm trung bình tích lũy GPA theo thang điểm 4.",
+    "operator": "mixed_case",
+    "mutation_sequence": [
+      "mixed_case"
+    ],
+    "mutated_query": "CÁch tínH ĐIểm TRuNG BÌNH tícH lũY gpA ThEO THaNG ĐiểM 4.",
+    "expected_category": "DOMAIN_DATA",
+    "expected_course_code": null,
+    "observed_category": "GENERAL_LLM",
+    "observed_tool_intent": null,
+    "decision_path": "LOW_CONFIDENCE_FALLBACK",
+    "reason_code": "FALLBACK_DEFAULT_GENERAL",
+    "resolved_entity": null,
+    "resolved_target": [
+      "assessment"
+    ],
+    "semantics": {
+      "polarity": "AFFIRMATIVE",
+      "modality": "DIRECT",
+      "scope": "UNKNOWN",
+      "target_op": "NO_ACTION",
+      "prohibition": false
+    },
+    "tool_safe": true,
+    "tool_err": "",
+    "failure_type": "ROUTING_FAILURE"
+  },
+  {
+    "case_id": "META-0279",
+    "seed": 20260906,
+    "seed_query": "Cách tính điểm trung bình tích lũy GPA theo thang điểm 4.",
+    "operator": "unicode_fullwidth",
+    "mutation_sequence": [
+      "unicode_fullwidth"
+    ],
+    "mutated_query": "Ｃáｃｈ　ｔíｎｈ　đｉểｍ　ｔｒｕｎｇ　ｂìｎｈ　ｔíｃｈ　ｌũｙ　ＧＰＡ　ｔｈｅｏ　ｔｈａｎｇ　đｉểｍ　４．",
+    "expected_category": "DOMAIN_DATA",
+    "expected_course_code": null,
+    "observed_category": "GENERAL_LLM",
+    "observed_tool_intent": null,
+    "decision_path": "LOW_CONFIDENCE_FALLBACK",
+    "reason_code": "FALLBACK_DEFAULT_GENERAL",
+    "resolved_entity": null,
+    "resolved_target": [],
+    "semantics": {
+      "polarity": "AFFIRMATIVE",
+      "modality": "DIRECT",
+      "scope": "UNKNOWN",
+      "target_op": "NO_ACTION",
+      "prohibition": false
+    },
+    "tool_safe": true,
+    "tool_err": "",
+    "failure_type": "ROUTING_FAILURE"
+  },
+  {
+    "case_id": "META-0297",
+    "seed": 20260906,
+    "seed_query": "Đặt lịch nhắc tôi nộp học phí trước ngày 15 tháng này.",
+    "operator": "diacritic_remove",
+    "mutation_sequence": [
+      "diacritic_remove"
+    ],
+    "mutated_query": "Dat lich nhac toi nop hoc phi truoc ngay 15 thang nay.",
+    "expected_category": "TOOL_ACTION",
+    "expected_course_code": null,
+    "observed_category": "GENERAL_LLM",
+    "observed_tool_intent": null,
+    "decision_path": "LOW_CONFIDENCE_FALLBACK",
+    "reason_code": "FALLBACK_DEFAULT_GENERAL",
+    "resolved_entity": null,
+    "resolved_target": [],
+    "semantics": {
+      "polarity": "AFFIRMATIVE",
+      "modality": "DIRECT",
+      "scope": "UNKNOWN",
+      "target_op": "NO_ACTION",
+      "prohibition": false
+    },
+    "tool_safe": true,
+    "tool_err": "",
+    "failure_type": "ROUTING_FAILURE"
+  },
+  {
+    "case_id": "META-0299",
+    "seed": 20260906,
+    "seed_query": "Đặt lịch nhắc tôi nộp học phí trước ngày 15 tháng này.",
+    "operator": "unicode_fullwidth",
+    "mutation_sequence": [
+      "unicode_fullwidth"
+    ],
+    "mutated_query": "Đặｔ　ｌịｃｈ　ｎｈắｃ　ｔôｉ　ｎộｐ　ｈọｃ　ｐｈí　ｔｒướｃ　ｎｇàｙ　１５　ｔｈáｎｇ　ｎàｙ．",
+    "expected_category": "TOOL_ACTION",
+    "expected_course_code": null,
+    "observed_category": "GENERAL_LLM",
+    "observed_tool_intent": null,
+    "decision_path": "SEMANTIC_CLASSIFIER",
+    "reason_code": "SEMANTIC_MARGIN_0.19_TOP_GENERAL_LLM",
+    "resolved_entity": null,
+    "resolved_target": [],
+    "semantics": {
+      "polarity": "AFFIRMATIVE",
+      "modality": "DIRECT",
+      "scope": "UNKNOWN",
+      "target_op": "NO_ACTION",
+      "prohibition": false
+    },
+    "tool_safe": true,
+    "tool_err": "",
+    "failure_type": "ROUTING_FAILURE"
+  }
+]

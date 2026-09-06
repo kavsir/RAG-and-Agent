@@ -37,7 +37,6 @@ def evaluate_policy(
             or sem.prohibition_detected
             or sem.modality in [Modality.EXPLANATORY, Modality.HYPOTHETICAL]
             or sem.is_contradictory
-            or sem.target_operation not in [ActionOperation.SEND_EMAIL, ActionOperation.SET_REMINDER]
             or (sem.polarity == Polarity.MIXED and any(w in lower_text for w in ["đừng gửi", "không gửi", "chớ gửi", "thôi đừng", "không nhắc", "đừng nhắc"]))
         ):
             evidence.tool_strength = "NONE"
@@ -190,7 +189,6 @@ def evaluate_policy(
                     or sem.prohibition_detected
                     or sem.modality in [Modality.EXPLANATORY, Modality.HYPOTHETICAL]
                     or sem.is_contradictory
-                    or sem.target_operation not in [ActionOperation.SEND_EMAIL, ActionOperation.SET_REMINDER]
                     or (sem.polarity == Polarity.MIXED and any(w in lower_text for w in ["đừng gửi", "không gửi", "chớ gửi", "thôi đừng", "không nhắc", "đừng nhắc"]))
                 ):
                     top_cat = "GENERAL_LLM"
@@ -239,7 +237,6 @@ def evaluate_policy(
             or sem.prohibition_detected
             or sem.modality in [Modality.EXPLANATORY, Modality.HYPOTHETICAL]
             or sem.is_contradictory
-            or sem.target_operation not in [ActionOperation.SEND_EMAIL, ActionOperation.SET_REMINDER]
             or (sem.polarity == Polarity.MIXED and any(w in lower_text for w in ["đừng gửi", "không gửi", "chớ gửi", "thôi đừng", "không nhắc", "đừng nhắc"]))
         ):
             return IntentDecision(

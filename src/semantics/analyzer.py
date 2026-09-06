@@ -235,6 +235,8 @@ class UtteranceSemanticsAnalyzer:
         # Kiểm tra xem trong phần còn lại có yêu cầu gửi khẳng định không
         send_positive_patterns = [
             r"\b(gửi|send)\s+(?:email|mail|thư)\b",
+            r"\b(email|mail|thư)\s+(?:gửi|tới|cho|đến)\b",
+            r"\b(soạn|viết|soạn thảo|gửi|send)\s+(?:giúp\s+|hộ\s+)?(?:tôi\s+)?(?:một\s+)?(?:bản\s+)?(?:email|mail|thư)(?:\s+điện\s+tử)?\b",
             r"\b(gửi|send)\s+.*@.*\b",
             r"\b(bắn|chuyển)\s+(?:email|mail)\b",
         ]

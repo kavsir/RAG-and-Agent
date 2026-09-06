@@ -44,3 +44,4 @@ vector_store/
 
 # Model/cache artifacts where applicable
 .cache/
+scratch/

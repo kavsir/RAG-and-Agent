@@ -17,8 +17,8 @@ def normalize_query(raw_query: str) -> Tuple[str, str]:
     if not raw_query:
         return "", ""
 
-    # 1. Unicode NFC normalization
-    text = unicodedata.normalize("NFC", raw_query)
+    # 1. Unicode NFKC normalization
+    text = unicodedata.normalize("NFKC", raw_query)
 
     # 2. Xóa khoảng trắng thừa
     text = re.sub(r"\s+", " ", text).strip()

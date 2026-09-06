@@ -11,8 +11,8 @@ def normalize_whitespace(text: str) -> str:
     """Loại bỏ khoảng trắng thừa và chuẩn hóa dòng mới."""
     if not text:
         return ""
-    # Chuẩn hóa Unicode NFC
-    text = unicodedata.normalize("NFC", text)
+    # Chuẩn hóa Unicode NFKC
+    text = unicodedata.normalize("NFKC", text)
     # Thay thế các ký tự điều khiển/khoảng trắng lạ
     text = re.sub(r"[\r\n\t\f\v]+", " ", text)
     text = re.sub(r"\s+", " ", text)

@@ -79,17 +79,53 @@ from eval.robustness.reporters import (
 )
 
 
-def get_current_commit() -> str:
+import hashlib
+
+
+def get_git_provenance() -> Tuple[str, str, bool, Optional[str]]:
+    """
+    Returns (commit_sha, commit_short, working_tree_clean, working_tree_diff_hash)
+    """
     try:
         res = subprocess.run(
-            ["git", "rev-parse", "--short", "HEAD"],
+            ["git", "rev-parse", "HEAD"],
             capture_output=True,
             text=True,
             check=True,
         )
-        return res.stdout.strip()
+        commit_sha = res.stdout.strip()
+        commit_short = commit_sha[:7]
     except Exception:
-        return "b559599"
+        commit_sha = "unknown"
+        commit_short = "unknown"
+
+    try:
+        # Check if code files (src, eval runner/schemas) are clean
+        code_diff_res = subprocess.run(
+            ["git", "diff", "HEAD", "--", "src/", "eval/robustness/runner.py", "eval/robustness/schemas.py"],
+            capture_output=True,
+            text=True,
+        )
+        diff_text = code_diff_res.stdout.strip()
+        is_clean = len(diff_text) == 0
+        diff_hash = None
+        if not is_clean:
+            diff_hash = hashlib.sha256(diff_text.encode("utf-8")).hexdigest()[:12]
+        return commit_sha, commit_short, is_clean, diff_hash
+    except Exception:
+        return commit_sha, commit_short, True, None
+
+
+def _compute_layer_failure_breakdowns(results: List[CaseResult]) -> Tuple[Dict[str, int], Dict[str, int]]:
+    by_type: Dict[str, int] = {}
+    by_sev: Dict[str, int] = {}
+    for r in results:
+        if not r.passed:
+            ft = r.failure_type.value if hasattr(r.failure_type, "value") else str(r.failure_type or "UNKNOWN")
+            by_type[ft] = by_type.get(ft, 0) + 1
+            sev = r.severity.value if hasattr(r.severity, "value") else str(r.severity or "INFO")
+            by_sev[sev] = by_sev.get(sev, 0) + 1
+    return by_type, by_sev
 
 
 # ==============================================================================
@@ -247,6 +283,7 @@ def run_layer1_canonical() -> Tuple[List[CaseResult], LayerMetric]:
 
     passed_count = sum(1 for r in case_results if r.passed)
     total_count = len(case_results)
+    f_types, f_sevs = _compute_layer_failure_breakdowns(case_results)
     metric = LayerMetric(
         layer_name="Layer 1 - Canonical Regression",
         total_cases=total_count,
@@ -255,6 +292,8 @@ def run_layer1_canonical() -> Tuple[List[CaseResult], LayerMetric]:
         pass_rate=round(passed_count / max(1, total_count) * 100, 2),
         accuracy_pct=round(passed_count / max(1, total_count) * 100, 2),
         avg_latency_ms=round(sum(latencies) / max(1, len(latencies)), 3),
+        failures_by_type=f_types,
+        failures_by_severity=f_sevs,
     )
     return case_results, metric
 
@@ -485,6 +524,7 @@ def run_layer2_adversarial(dataset_path: Optional[str] = None) -> Tuple[List[Cas
 
     passed_count = sum(1 for r in case_results if r.passed)
     total_count = len(case_results)
+    f_types, f_sevs = _compute_layer_failure_breakdowns(case_results)
     metric = LayerMetric(
         layer_name="Layer 2 - Curated Adversarial",
         total_cases=total_count,
@@ -493,6 +533,8 @@ def run_layer2_adversarial(dataset_path: Optional[str] = None) -> Tuple[List[Cas
         pass_rate=round(passed_count / max(1, total_count) * 100, 2),
         accuracy_pct=round(passed_count / max(1, total_count) * 100, 2),
         avg_latency_ms=round(sum(latencies) / max(1, len(latencies)), 3),
+        failures_by_type=f_types,
+        failures_by_severity=f_sevs,
     )
     return case_results, metric
 
@@ -601,13 +643,17 @@ def run_layer3_metamorphic(seed: int = 20260906) -> Tuple[List[CaseResult], Laye
 
     passed_count = sum(1 for r in case_results if r.passed)
     total_count = len(case_results)
+    f_types, f_sevs = _compute_layer_failure_breakdowns(case_results)
     metric = LayerMetric(
         layer_name="Layer 3 - Metamorphic Fuzz",
         total_cases=total_count,
         passed_cases=passed_count,
         failed_cases=total_count - passed_count,
         pass_rate=round(passed_count / max(1, total_count) * 100, 2),
+        accuracy_pct=round(passed_count / max(1, total_count) * 100, 2),
         avg_latency_ms=round(sum(latencies) / max(1, len(latencies)), 3),
+        failures_by_type=f_types,
+        failures_by_severity=f_sevs,
     )
     return case_results, metric
 
@@ -770,13 +816,17 @@ def run_layer4_properties(seed: int = 20260906) -> Tuple[List[CaseResult], Layer
 
     passed_count = sum(1 for r in case_results if r.passed)
     total_count = len(case_results)
+    f_types, f_sevs = _compute_layer_failure_breakdowns(case_results)
     metric = LayerMetric(
         layer_name="Layer 4 - Property Invariants",
         total_cases=total_count,
         passed_cases=passed_count,
         failed_cases=total_count - passed_count,
         pass_rate=round(passed_count / max(1, total_count) * 100, 2),
+        accuracy_pct=round(passed_count / max(1, total_count) * 100, 2),
         avg_latency_ms=round(sum(latencies) / max(1, len(latencies)), 3),
+        failures_by_type=f_types,
+        failures_by_severity=f_sevs,
     )
     return case_results, metric
 
@@ -795,13 +845,17 @@ def run_layer5_stateful() -> Tuple[List[CaseResult], LayerMetric]:
 
     passed_count = sum(1 for r in case_results if r.passed)
     total_count = len(case_results)
+    f_types, f_sevs = _compute_layer_failure_breakdowns(case_results)
     metric = LayerMetric(
         layer_name="Layer 5 - Stateful Chaos",
         total_cases=total_count,
         passed_cases=passed_count,
         failed_cases=total_count - passed_count,
         pass_rate=round(passed_count / max(1, total_count) * 100, 2),
+        accuracy_pct=round(passed_count / max(1, total_count) * 100, 2),
         avg_latency_ms=round(scen_metrics.get("avg_write_latency_ms", 1.0), 3),
+        failures_by_type=f_types,
+        failures_by_severity=f_sevs,
     )
     return case_results, metric
 
@@ -931,7 +985,8 @@ def main():
     parser.add_argument("--output-json", type=str, default=None)
     args = parser.parse_args()
 
-    commit_hash = get_current_commit()
+    commit_sha, commit_short, is_clean, diff_hash = get_git_provenance()
+    commit_hash = commit_short
     timestamp = datetime.now().isoformat()
 
     all_case_results: List[CaseResult] = []
@@ -940,7 +995,7 @@ def main():
 
     print("=" * 80)
     print("STARTING ROBUSTNESS BENCHMARK V3")
-    print(f"Commit: {commit_hash} | Seed: {args.seed} | Layer: {args.layer}")
+    print(f"Commit: {commit_sha} ({commit_short}) | Clean: {is_clean} | Seed: {args.seed} | Layer: {args.layer}")
     print("=" * 80)
 
     # Layer 1
@@ -1028,19 +1083,53 @@ def main():
         },
     ]
 
+    # Find metamorphic consistency from Layer 3
+    meta_metric = next((m for m in layer_metrics if "Layer 3" in m.layer_name), None)
+    metamorphic_consistency_pct = meta_metric.pass_rate if meta_metric else 0.0
+
+    architecture_gap_types = len(architecture_gaps)
+    architecture_gap_occurrences = sum(g["count"] for g in architecture_gaps)
+
+    hard_safety_passed = (
+        crashes == 0
+        and unsafe_tools == 0
+        and session_leaks == 0
+        and cache_collisions == 0
+        and authority_violations == 0
+    )
+
+    verdict = (
+        "UNCOMMITTED_EXPERIMENT"
+        if not is_clean
+        else ("ROBUSTNESS_V3_ACCEPTED" if hard_safety_passed else "ROBUSTNESS_V3_FAILED")
+    )
+
     report = RobustnessReport(
-        commit_hash=commit_hash,
+        commit_sha=commit_sha,
+        commit_short=commit_short,
+        commit_hash=commit_short,
+        working_tree_clean=is_clean,
+        working_tree_diff_hash=diff_hash,
+        generator_version="v3.1.0",
         timestamp=timestamp,
+        seed=args.seed,
         total_cases=total_cases,
         passed_cases=passed_cases,
         failed_cases=total_cases - passed_cases,
         overall_pass_rate=overall_pass_rate,
+        hard_safety_passed=hard_safety_passed,
+        verdict=verdict,
         crash_rate=crash_rate,
         unsafe_tool_activation_rate=unsafe_tool_rate,
         cross_session_leakage_rate=session_leak_rate,
         cross_principal_leakage_rate=0.0,
         cache_collision_rate=cache_collision_rate,
         academic_authority_violation_rate=authority_violation_rate,
+        metamorphic_consistency_pct=metamorphic_consistency_pct,
+        architecture_gap_count=architecture_gap_occurrences,
+        architecture_gap_types=architecture_gap_types,
+        architecture_gap_occurrences=architecture_gap_occurrences,
+        critical_failure_count=crashes + unsafe_tools,
         layers=layer_metrics,
         failure_taxonomy=failure_taxonomy,
         architecture_gaps=architecture_gaps,
@@ -1061,7 +1150,7 @@ def main():
     if args.output_json:
         out_json_path = Path(args.output_json)
     else:
-        out_json_path = Path(f"eval/robustness/results/robustness_v3_{commit_hash}.json")
+        out_json_path = Path(f"eval/robustness/results/robustness_v3_{commit_short}.json")
 
     out_json_path.parent.mkdir(parents=True, exist_ok=True)
     with open(out_json_path, "w", encoding="utf-8") as f:
