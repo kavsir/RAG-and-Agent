@@ -1,7 +1,7 @@
 # Tài liệu Kỹ thuật: Phân tích Khoảng trống Kiến trúc & Giới hạn Hệ thống (Architecture Gaps V3)
 
-> **Mã Commit**: `c57f208`  
-> **Cập nhật ngày**: 2026-09-06T16:34:00.150760  
+> **Mã Commit**: `9a4469d`  
+> **Cập nhật ngày**: 2026-09-06T17:05:16.187367  
 
 Tài liệu này tổng hợp toàn bộ các điểm nghẽn kiến trúc và giới hạn thiết kế được phát hiện thông qua bộ kiểm thử độ bền vững (Robustness Benchmark V3). Đây là cơ sở kỹ thuật khách quan để định hướng phát triển cho các giai đoạn tiếp theo (như Episodic Memory, Multi-Intent Decomposition, Tool Planning).
 

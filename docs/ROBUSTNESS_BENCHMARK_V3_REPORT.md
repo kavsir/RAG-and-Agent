@@ -1,9 +1,9 @@
 # Tài liệu Kỹ thuật & Kinh nghiệm Đánh giá Độ bền vững Hệ thống (Robustness Benchmark V3)
 
-> **Mã Commit Kiểm thử**: `c57f208`  
-> **Thời gian sinh tài liệu**: 2026-09-06T16:34:00.150760  
+> **Mã Commit Kiểm thử**: `9a4469d`  
+> **Thời gian sinh tài liệu**: 2026-09-06T17:05:16.187367  
 > **Tổng số trường hợp kiểm thử**: `1509`  
-> **Tỷ lệ vượt qua tổng thể (Overall Robustness Pass Rate)**: `97.35%`  
+> **Tỷ lệ vượt qua tổng thể (Overall Robustness Pass Rate)**: `98.28%`  
 
 ---
 
@@ -30,12 +30,12 @@ Khác với các bộ kiểm thử thông thường chỉ tập trung chứng mi
 
 | Tầng Kiểm thử | Tổng số ca | Đạt (Pass) | Không đạt / Gap | Tỷ lệ Đạt | Ý nghĩa Kỹ thuật |
 |---|:---:|:---:|:---:|:---:|---|
-| **Layer 1 - Canonical Regression** | 255 | 250 | 5 | `98.04%` | Đo lường tính ổn định tầng Layer 1 - Canonical Regression |
+| **Layer 1 - Canonical Regression** | 255 | 255 | 0 | `100.0%` | Đo lường tính ổn định tầng Layer 1 - Canonical Regression |
 | **Layer 2 - Curated Adversarial** | 180 | 180 | 0 | `100.0%` | Đo lường tính ổn định tầng Layer 2 - Curated Adversarial |
-| **Layer 3 - Metamorphic Fuzz** | 300 | 265 | 35 | `88.33%` | Đo lường tính ổn định tầng Layer 3 - Metamorphic Fuzz |
+| **Layer 3 - Metamorphic Fuzz** | 300 | 275 | 25 | `91.67%` | Đo lường tính ổn định tầng Layer 3 - Metamorphic Fuzz |
 | **Layer 4 - Property Invariants** | 354 | 354 | 0 | `100.0%` | Đo lường tính ổn định tầng Layer 4 - Property Invariants |
 | **Layer 5 - Stateful Chaos** | 400 | 400 | 0 | `100.0%` | Đo lường tính ổn định tầng Layer 5 - Stateful Chaos |
-| **Live LLM Sample** | 20 | 20 | 0 | `100.0%` | Đo lường tính ổn định tầng Live LLM Sample |
+| **Live LLM Sample** | 20 | 19 | 1 | `95.0%` | Đo lường tính ổn định tầng Live LLM Sample |
 
 ---
 
@@ -45,7 +45,7 @@ Các lỗi phát hiện được phân loại rõ ràng theo nguyên nhân bản
 
 | Loại Lỗi (FailureType) | Số lượng | Mức độ Nghiêm trọng | Phân tích Nguyên nhân Gốc rễ |
 |---|:---:|:---:|---|
-| `ROUTING_FAILURE` | 40 | `MEDIUM` | Phát hiện qua bộ kiểm thử nghịch đảo & biến dị |
+| `ROUTING_FAILURE` | 25 | `MEDIUM` | Phát hiện qua bộ kiểm thử nghịch đảo & biến dị |
 
 ---
 
