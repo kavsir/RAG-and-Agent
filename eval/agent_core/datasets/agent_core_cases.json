@@ -1,0 +1,2476 @@
+[
+  {
+    "id": "AC-A01",
+    "group": "A",
+    "group_name": "CLEAR_GOAL",
+    "query": "FIT4201 bao nhiêu tín chỉ?",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "2 tín chỉ"
+    ]
+  },
+  {
+    "id": "AC-A02",
+    "group": "A",
+    "group_name": "CLEAR_GOAL",
+    "query": "Môn FIT4104 có bao nhiêu tín chỉ?",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "3 tín chỉ"
+    ]
+  },
+  {
+    "id": "AC-A03",
+    "group": "A",
+    "group_name": "CLEAR_GOAL",
+    "query": "Ai dạy môn FIT4113?",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4113",
+      "giảng viên"
+    ]
+  },
+  {
+    "id": "AC-A04",
+    "group": "A",
+    "group_name": "CLEAR_GOAL",
+    "query": "FIT4117 giảng viên phụ trách là ai?",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4117",
+      "giảng viên"
+    ]
+  },
+  {
+    "id": "AC-A05",
+    "group": "A",
+    "group_name": "CLEAR_GOAL",
+    "query": "Hình thức đánh giá của môn FIT4201 thế nào?",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4201",
+      "đánh giá"
+    ]
+  },
+  {
+    "id": "AC-A06",
+    "group": "A",
+    "group_name": "CLEAR_GOAL",
+    "query": "FIT4104 thi cuối kỳ chiếm bao nhiêu phần trăm?",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4104",
+      "50%"
+    ]
+  },
+  {
+    "id": "AC-A07",
+    "group": "A",
+    "group_name": "CLEAR_GOAL",
+    "query": "Chuẩn đầu ra của môn FIT4113 là gì?",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4113",
+      "CLO"
+    ]
+  },
+  {
+    "id": "AC-A08",
+    "group": "A",
+    "group_name": "CLEAR_GOAL",
+    "query": "Học phần FIT4201 có yêu cầu môn học trước hay tiên quyết không?",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4201"
+    ]
+  },
+  {
+    "id": "AC-A09",
+    "group": "A",
+    "group_name": "CLEAR_GOAL",
+    "query": "Mục tiêu môn học của FIT4117 là gì?",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4117",
+      "mục tiêu môn học"
+    ]
+  },
+  {
+    "id": "AC-A10",
+    "group": "A",
+    "group_name": "CLEAR_GOAL",
+    "query": "Môn FIT4104 có bao nhiêu giờ lý thuyết và thực hành?",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4104",
+      "giờ"
+    ]
+  },
+  {
+    "id": "AC-A11",
+    "group": "A",
+    "group_name": "CLEAR_GOAL",
+    "query": "FIT4113 hình thức đánh giá giữa kỳ gồm những gì?",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4113",
+      "đánh giá"
+    ]
+  },
+  {
+    "id": "AC-A12",
+    "group": "A",
+    "group_name": "CLEAR_GOAL",
+    "query": "Môn đó bao nhiêu tín chỉ?",
+    "session_context": {
+      "active_course": "FIT4201"
+    },
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4201",
+      "2 tín chỉ"
+    ]
+  },
+  {
+    "id": "AC-A13",
+    "group": "A",
+    "group_name": "CLEAR_GOAL",
+    "query": "Ai dạy môn này?",
+    "session_context": {
+      "active_course": "FIT4104"
+    },
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4104",
+      "giảng viên"
+    ]
+  },
+  {
+    "id": "AC-A14",
+    "group": "A",
+    "group_name": "CLEAR_GOAL",
+    "query": "Chuẩn đầu ra của học phần đó là gì?",
+    "session_context": {
+      "active_course": "FIT4117"
+    },
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4117",
+      "CLO"
+    ]
+  },
+  {
+    "id": "AC-A15",
+    "group": "A",
+    "group_name": "CLEAR_GOAL",
+    "query": "Đánh giá môn này ra sao?",
+    "session_context": {
+      "active_course": "FIT4113"
+    },
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4113",
+      "đánh giá"
+    ]
+  },
+  {
+    "id": "AC-A16",
+    "group": "A",
+    "group_name": "CLEAR_GOAL",
+    "query": "Quy định điểm chuyên cần tối đa là bao nhiêu?",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "quy chế",
+      "đào tạo"
+    ]
+  },
+  {
+    "id": "AC-A17",
+    "group": "A",
+    "group_name": "CLEAR_GOAL",
+    "query": "Quy chế đào tạo về xử lý học vụ như thế nào?",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "quy chế"
+    ]
+  },
+  {
+    "id": "AC-A18",
+    "group": "A",
+    "group_name": "CLEAR_GOAL",
+    "query": "FIT4201 do khoa bộ môn nào phụ trách?",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4201",
+      "khoa"
+    ]
+  },
+  {
+    "id": "AC-A19",
+    "group": "A",
+    "group_name": "CLEAR_GOAL",
+    "query": "Môn FIT4117 thuộc học kỳ mấy trong khung chương trình?",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4117",
+      "học kỳ"
+    ]
+  },
+  {
+    "id": "AC-A20",
+    "group": "A",
+    "group_name": "CLEAR_GOAL",
+    "query": "Mã học phần FIT4104 tên tiếng Anh là gì?",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4104",
+      "tiếng Anh"
+    ]
+  },
+  {
+    "id": "AC-B01",
+    "group": "B",
+    "group_name": "MISSING_INTENT",
+    "query": "FIT4201 với FIT4104 thì sao?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "MISSING_INTENT",
+    "check_terms": [
+      "so sánh",
+      "tín chỉ"
+    ]
+  },
+  {
+    "id": "AC-B02",
+    "group": "B",
+    "group_name": "MISSING_INTENT",
+    "query": "Môn FIT4113",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "MISSING_INTENT",
+    "check_terms": [
+      "FIT4113",
+      "thông tin"
+    ]
+  },
+  {
+    "id": "AC-B03",
+    "group": "B",
+    "group_name": "MISSING_INTENT",
+    "query": "FIT4201?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "MISSING_INTENT",
+    "check_terms": [
+      "FIT4201",
+      "thông tin"
+    ]
+  },
+  {
+    "id": "AC-B04",
+    "group": "B",
+    "group_name": "MISSING_INTENT",
+    "query": "Học kỳ này học môn gì?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "MISSING_INTENT",
+    "check_terms": [
+      "thông tin",
+      "học phần"
+    ]
+  },
+  {
+    "id": "AC-B05",
+    "group": "B",
+    "group_name": "MISSING_INTENT",
+    "query": "Đăng ký môn học thì thế nào?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "MISSING_INTENT",
+    "check_terms": [
+      "thông tin",
+      "học phần"
+    ]
+  },
+  {
+    "id": "AC-B06",
+    "group": "B",
+    "group_name": "MISSING_INTENT",
+    "query": "Môn FIT4104 và FIT4117",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "MISSING_INTENT",
+    "check_terms": [
+      "so sánh",
+      "thông tin"
+    ]
+  },
+  {
+    "id": "AC-B07",
+    "group": "B",
+    "group_name": "MISSING_INTENT",
+    "query": "Học phần FIT4201",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "MISSING_INTENT",
+    "check_terms": [
+      "FIT4201",
+      "thông tin"
+    ]
+  },
+  {
+    "id": "AC-B08",
+    "group": "B",
+    "group_name": "MISSING_INTENT",
+    "query": "Còn môn FIT4113 thì sao?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "MISSING_INTENT",
+    "check_terms": [
+      "FIT4113",
+      "thông tin"
+    ]
+  },
+  {
+    "id": "AC-B09",
+    "group": "B",
+    "group_name": "MISSING_INTENT",
+    "query": "FIT4104 nè",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "MISSING_INTENT",
+    "check_terms": [
+      "FIT4104",
+      "thông tin"
+    ]
+  },
+  {
+    "id": "AC-B10",
+    "group": "B",
+    "group_name": "MISSING_INTENT",
+    "query": "FIT4201 có gì hay?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "MISSING_INTENT",
+    "check_terms": [
+      "FIT4201",
+      "thông tin"
+    ]
+  },
+  {
+    "id": "AC-B11",
+    "group": "B",
+    "group_name": "MISSING_INTENT",
+    "query": "Học phần FIT4117",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "MISSING_INTENT",
+    "check_terms": [
+      "FIT4117",
+      "thông tin"
+    ]
+  },
+  {
+    "id": "AC-B12",
+    "group": "B",
+    "group_name": "MISSING_INTENT",
+    "query": "So sánh FIT4201 và FIT4113",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "MISSING_INTENT",
+    "check_terms": [
+      "so sánh",
+      "tiêu chí"
+    ]
+  },
+  {
+    "id": "AC-C01",
+    "group": "C",
+    "group_name": "MISSING_ENTITY",
+    "query": "Môn đó bao nhiêu tín chỉ?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "MISSING_ENTITY",
+    "check_terms": [
+      "môn học",
+      "mã"
+    ]
+  },
+  {
+    "id": "AC-C02",
+    "group": "C",
+    "group_name": "MISSING_ENTITY",
+    "query": "Học phần này thi hình thức nào?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "MISSING_ENTITY",
+    "check_terms": [
+      "môn học",
+      "mã"
+    ]
+  },
+  {
+    "id": "AC-C03",
+    "group": "C",
+    "group_name": "MISSING_ENTITY",
+    "query": "Giảng viên môn này là ai?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "MISSING_ENTITY",
+    "check_terms": [
+      "môn học",
+      "mã"
+    ]
+  },
+  {
+    "id": "AC-C04",
+    "group": "C",
+    "group_name": "MISSING_ENTITY",
+    "query": "Chuẩn đầu ra của môn học là gì?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "MISSING_ENTITY",
+    "check_terms": [
+      "môn học",
+      "mã"
+    ]
+  },
+  {
+    "id": "AC-C05",
+    "group": "C",
+    "group_name": "MISSING_ENTITY",
+    "query": "Môn này học trước môn nào?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "MISSING_ENTITY",
+    "check_terms": [
+      "môn học",
+      "mã"
+    ]
+  },
+  {
+    "id": "AC-C06",
+    "group": "C",
+    "group_name": "MISSING_ENTITY",
+    "query": "Tỷ lệ điểm giữa kỳ của môn đó là bao nhiêu?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "MISSING_ENTITY",
+    "check_terms": [
+      "môn học",
+      "mã"
+    ]
+  },
+  {
+    "id": "AC-C07",
+    "group": "C",
+    "group_name": "MISSING_ENTITY",
+    "query": "Bao nhiêu tín chỉ?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "MISSING_ENTITY",
+    "check_terms": [
+      "môn học",
+      "mã"
+    ]
+  },
+  {
+    "id": "AC-C08",
+    "group": "C",
+    "group_name": "MISSING_ENTITY",
+    "query": "Ai dạy vậy?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "MISSING_ENTITY",
+    "check_terms": [
+      "môn học",
+      "mã"
+    ]
+  },
+  {
+    "id": "AC-C09",
+    "group": "C",
+    "group_name": "MISSING_ENTITY",
+    "query": "Thi môn này tự luận hay trắc nghiệm?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "MISSING_ENTITY",
+    "check_terms": [
+      "môn học",
+      "mã"
+    ]
+  },
+  {
+    "id": "AC-C10",
+    "group": "C",
+    "group_name": "MISSING_ENTITY",
+    "query": "Môn học có thực hành không?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "MISSING_ENTITY",
+    "check_terms": [
+      "môn học",
+      "mã"
+    ]
+  },
+  {
+    "id": "AC-C11",
+    "group": "C",
+    "group_name": "MISSING_ENTITY",
+    "query": "Đề cương môn học chi tiết ở đâu?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "MISSING_ENTITY",
+    "check_terms": [
+      "môn học",
+      "mã"
+    ]
+  },
+  {
+    "id": "AC-C12",
+    "group": "C",
+    "group_name": "MISSING_ENTITY",
+    "query": "Học phần này có mấy tín chỉ?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "MISSING_ENTITY",
+    "check_terms": [
+      "môn học",
+      "mã"
+    ]
+  },
+  {
+    "id": "AC-D01",
+    "group": "D",
+    "group_name": "MISSING_DATA",
+    "query": "FIT4201 tỷ lệ trượt bao nhiêu?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "MISSING_DATA_ALTERNATIVE",
+    "check_terms": [
+      "không công bố",
+      "tỷ lệ trượt"
+    ]
+  },
+  {
+    "id": "AC-D02",
+    "group": "D",
+    "group_name": "MISSING_DATA",
+    "query": "FIT4104 có khó không?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "MISSING_DATA_ALTERNATIVE",
+    "check_terms": [
+      "độ khó",
+      "chính thức"
+    ]
+  },
+  {
+    "id": "AC-D03",
+    "group": "D",
+    "group_name": "MISSING_DATA",
+    "query": "Môn FIT4113 sinh viên review đánh giá thế nào?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "MISSING_DATA_ALTERNATIVE",
+    "check_terms": [
+      "review",
+      "đánh giá của sinh viên"
+    ]
+  },
+  {
+    "id": "AC-D04",
+    "group": "D",
+    "group_name": "MISSING_DATA",
+    "query": "Lương ra trường ngành CNTT sau khi học FIT4201 là bao nhiêu?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "MISSING_DATA_ALTERNATIVE",
+    "check_terms": [
+      "mức lương",
+      "thu nhập"
+    ]
+  },
+  {
+    "id": "AC-D05",
+    "group": "D",
+    "group_name": "MISSING_DATA",
+    "query": "Đề thi năm ngoái môn FIT4201 có bị lộ không?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "MISSING_DATA_ALTERNATIVE",
+    "check_terms": [
+      "đề thi",
+      "lộ đề"
+    ]
+  },
+  {
+    "id": "AC-D06",
+    "group": "D",
+    "group_name": "MISSING_DATA",
+    "query": "Môn FIT4117 có dễ qua môn không?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "MISSING_DATA_ALTERNATIVE",
+    "check_terms": [
+      "độ khó",
+      "chính thức"
+    ]
+  },
+  {
+    "id": "AC-D07",
+    "group": "D",
+    "group_name": "MISSING_DATA",
+    "query": "Thầy dạy môn FIT4104 chấm điểm có gắt không?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "MISSING_DATA_ALTERNATIVE",
+    "check_terms": [
+      "chấm điểm",
+      "đánh giá của sinh viên"
+    ]
+  },
+  {
+    "id": "AC-D08",
+    "group": "D",
+    "group_name": "MISSING_DATA",
+    "query": "Tỷ lệ rớt môn FIT4113 có cao không?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "MISSING_DATA_ALTERNATIVE",
+    "check_terms": [
+      "tỷ lệ rớt",
+      "không công bố"
+    ]
+  },
+  {
+    "id": "AC-D09",
+    "group": "D",
+    "group_name": "MISSING_DATA",
+    "query": "Mức lương của kỹ sư học FIT4104 là bao nhiêu?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "MISSING_DATA_ALTERNATIVE",
+    "check_terms": [
+      "mức lương",
+      "thu nhập"
+    ]
+  },
+  {
+    "id": "AC-D10",
+    "group": "D",
+    "group_name": "MISSING_DATA",
+    "query": "Review độ khó môn FIT4201",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "MISSING_DATA_ALTERNATIVE",
+    "check_terms": [
+      "độ khó",
+      "chính thức"
+    ]
+  },
+  {
+    "id": "AC-D11",
+    "group": "D",
+    "group_name": "MISSING_DATA",
+    "query": "FIT4117 tỷ lệ sinh viên qua môn là bao nhiêu?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "MISSING_DATA_ALTERNATIVE",
+    "check_terms": [
+      "tỷ lệ",
+      "không công bố"
+    ]
+  },
+  {
+    "id": "AC-D12",
+    "group": "D",
+    "group_name": "MISSING_DATA",
+    "query": "Môn FIT4104 đề thi có leak ở đâu không?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "MISSING_DATA_ALTERNATIVE",
+    "check_terms": [
+      "đề thi",
+      "lộ đề"
+    ]
+  },
+  {
+    "id": "AC-D13",
+    "group": "D",
+    "group_name": "MISSING_DATA",
+    "query": "Học FIT4113 ra trường lương khởi điểm mấy chục triệu?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "MISSING_DATA_ALTERNATIVE",
+    "check_terms": [
+      "mức lương",
+      "thu nhập"
+    ]
+  },
+  {
+    "id": "AC-D14",
+    "group": "D",
+    "group_name": "MISSING_DATA",
+    "query": "Môn FIT4201 có dễ đạt điểm A không?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "MISSING_DATA_ALTERNATIVE",
+    "check_terms": [
+      "độ khó",
+      "chính thức"
+    ]
+  },
+  {
+    "id": "AC-E01",
+    "group": "E",
+    "group_name": "UNKNOWN_ENTITY",
+    "query": "FIT9999 bao nhiêu tín chỉ?",
+    "session_context": null,
+    "expected_status": "ABSTAINED",
+    "expected_stop_reason": "UNKNOWN_ENTITY",
+    "check_terms": [
+      "FIT9999",
+      "không có trong"
+    ]
+  },
+  {
+    "id": "AC-E02",
+    "group": "E",
+    "group_name": "UNKNOWN_ENTITY",
+    "query": "Môn CS50 học kỳ mấy?",
+    "session_context": null,
+    "expected_status": "ABSTAINED",
+    "expected_stop_reason": "UNKNOWN_ENTITY",
+    "check_terms": [
+      "CS50",
+      "không có trong"
+    ]
+  },
+  {
+    "id": "AC-E03",
+    "group": "E",
+    "group_name": "UNKNOWN_ENTITY",
+    "query": "FIT8888 giảng viên là ai?",
+    "session_context": null,
+    "expected_status": "ABSTAINED",
+    "expected_stop_reason": "UNKNOWN_ENTITY",
+    "check_terms": [
+      "FIT8888",
+      "không có trong"
+    ]
+  },
+  {
+    "id": "AC-E04",
+    "group": "E",
+    "group_name": "UNKNOWN_ENTITY",
+    "query": "Học phần KTTT101 có bao nhiêu tín chỉ?",
+    "session_context": null,
+    "expected_status": "ABSTAINED",
+    "expected_stop_reason": "UNKNOWN_ENTITY",
+    "check_terms": [
+      "KTTT101",
+      "không có trong"
+    ]
+  },
+  {
+    "id": "AC-E05",
+    "group": "E",
+    "group_name": "UNKNOWN_ENTITY",
+    "query": "Hình thức thi của môn ABC1234 là gì?",
+    "session_context": null,
+    "expected_status": "ABSTAINED",
+    "expected_stop_reason": "UNKNOWN_ENTITY",
+    "check_terms": [
+      "ABC1234",
+      "không có trong"
+    ]
+  },
+  {
+    "id": "AC-E06",
+    "group": "E",
+    "group_name": "UNKNOWN_ENTITY",
+    "query": "Môn FIT0000 có tiên quyết không?",
+    "session_context": null,
+    "expected_status": "ABSTAINED",
+    "expected_stop_reason": "UNKNOWN_ENTITY",
+    "check_terms": [
+      "FIT0000",
+      "không có trong"
+    ]
+  },
+  {
+    "id": "AC-E07",
+    "group": "E",
+    "group_name": "UNKNOWN_ENTITY",
+    "query": "Chuẩn đầu ra môn XYZ999 là gì?",
+    "session_context": null,
+    "expected_status": "ABSTAINED",
+    "expected_stop_reason": "UNKNOWN_ENTITY",
+    "check_terms": [
+      "XYZ999",
+      "không có trong"
+    ]
+  },
+  {
+    "id": "AC-E08",
+    "group": "E",
+    "group_name": "UNKNOWN_ENTITY",
+    "query": "FIT7777 do ai giảng dạy?",
+    "session_context": null,
+    "expected_status": "ABSTAINED",
+    "expected_stop_reason": "UNKNOWN_ENTITY",
+    "check_terms": [
+      "FIT7777",
+      "không có trong"
+    ]
+  },
+  {
+    "id": "AC-E09",
+    "group": "E",
+    "group_name": "UNKNOWN_ENTITY",
+    "query": "Môn MATH999 có bao nhiêu tiết lý thuyết?",
+    "session_context": null,
+    "expected_status": "ABSTAINED",
+    "expected_stop_reason": "UNKNOWN_ENTITY",
+    "check_terms": [
+      "MATH999",
+      "không có trong"
+    ]
+  },
+  {
+    "id": "AC-E10",
+    "group": "E",
+    "group_name": "UNKNOWN_ENTITY",
+    "query": "Học phí môn UNKNOWN101 là bao nhiêu?",
+    "session_context": null,
+    "expected_status": "ABSTAINED",
+    "expected_stop_reason": "UNKNOWN_ENTITY",
+    "check_terms": [
+      "UNKNOWN101",
+      "không có trong"
+    ]
+  },
+  {
+    "id": "AC-E11",
+    "group": "E",
+    "group_name": "UNKNOWN_ENTITY",
+    "query": "Môn FIT5555 có đồ án không?",
+    "session_context": null,
+    "expected_status": "ABSTAINED",
+    "expected_stop_reason": "UNKNOWN_ENTITY",
+    "check_terms": [
+      "FIT5555",
+      "không có trong"
+    ]
+  },
+  {
+    "id": "AC-E12",
+    "group": "E",
+    "group_name": "UNKNOWN_ENTITY",
+    "query": "FIT6666 thuộc khoa nào?",
+    "session_context": null,
+    "expected_status": "ABSTAINED",
+    "expected_stop_reason": "UNKNOWN_ENTITY",
+    "check_terms": [
+      "FIT6666",
+      "không có trong"
+    ]
+  },
+  {
+    "id": "AC-F01",
+    "group": "F",
+    "group_name": "ENTITY_CONFLICT",
+    "query": "FIT4201 môn Full-Stack bao nhiêu tín chỉ?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "ENTITY_CONFLICT",
+    "check_terms": [
+      "FIT4201",
+      "FIT4104",
+      "hay"
+    ]
+  },
+  {
+    "id": "AC-F02",
+    "group": "F",
+    "group_name": "ENTITY_CONFLICT",
+    "query": "FIT4104 môn Kiến trúc phần mềm bao nhiêu tín chỉ?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "ENTITY_CONFLICT",
+    "check_terms": [
+      "FIT4104",
+      "FIT4101",
+      "hay"
+    ]
+  },
+  {
+    "id": "AC-F03",
+    "group": "F",
+    "group_name": "ENTITY_CONFLICT",
+    "query": "FIT4113 môn Trí tuệ nhân tạo ai dạy?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "ENTITY_CONFLICT",
+    "check_terms": [
+      "FIT4113",
+      "FIT4011",
+      "hay"
+    ]
+  },
+  {
+    "id": "AC-F04",
+    "group": "F",
+    "group_name": "ENTITY_CONFLICT",
+    "query": "FIT4117 môn An toàn mạng chuẩn đầu ra là gì?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "ENTITY_CONFLICT",
+    "check_terms": [
+      "FIT4117",
+      "FIT4012",
+      "hay"
+    ]
+  },
+  {
+    "id": "AC-F05",
+    "group": "F",
+    "group_name": "ENTITY_CONFLICT",
+    "query": "Học phần FIT4201 môn Điện toán đám mây thi thế nào?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "ENTITY_CONFLICT",
+    "check_terms": [
+      "FIT4201",
+      "FIT4113",
+      "hay"
+    ]
+  },
+  {
+    "id": "AC-F06",
+    "group": "F",
+    "group_name": "ENTITY_CONFLICT",
+    "query": "Môn FIT4104 Công nghệ phần mềm có mấy tín chỉ?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "ENTITY_CONFLICT",
+    "check_terms": [
+      "FIT4104",
+      "FIT4010",
+      "hay"
+    ]
+  },
+  {
+    "id": "AC-F07",
+    "group": "F",
+    "group_name": "ENTITY_CONFLICT",
+    "query": "FIT4113 môn Cơ sở dữ liệu học ai?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "ENTITY_CONFLICT",
+    "check_terms": [
+      "FIT4113",
+      "FIT4005",
+      "hay"
+    ]
+  },
+  {
+    "id": "AC-F08",
+    "group": "F",
+    "group_name": "ENTITY_CONFLICT",
+    "query": "FIT4117 môn Lập trình di động có tiên quyết không?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "ENTITY_CONFLICT",
+    "check_terms": [
+      "FIT4117",
+      "FIT4102",
+      "hay"
+    ]
+  },
+  {
+    "id": "AC-F09",
+    "group": "F",
+    "group_name": "ENTITY_CONFLICT",
+    "query": "FIT4201 môn Quản trị dự án CNTT mấy tín chỉ?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "ENTITY_CONFLICT",
+    "check_terms": [
+      "FIT4201",
+      "FIT4117",
+      "hay"
+    ]
+  },
+  {
+    "id": "AC-F10",
+    "group": "F",
+    "group_name": "ENTITY_CONFLICT",
+    "query": "FIT4104 môn Mạng máy tính đánh giá ra sao?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "expected_question_type": "ENTITY_CONFLICT",
+    "check_terms": [
+      "FIT4104",
+      "FIT4006",
+      "hay"
+    ]
+  },
+  {
+    "id": "AC-G01",
+    "group": "G",
+    "group_name": "MULTI_FIELD",
+    "query": "FIT4201 bao nhiêu tín chỉ và ai dạy?",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "2 tín chỉ",
+      "giảng viên"
+    ]
+  },
+  {
+    "id": "AC-G02",
+    "group": "G",
+    "group_name": "MULTI_FIELD",
+    "query": "Môn FIT4104 có bao nhiêu tín chỉ và thi cuối kỳ thế nào?",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "3 tín chỉ",
+      "50%"
+    ]
+  },
+  {
+    "id": "AC-G03",
+    "group": "G",
+    "group_name": "MULTI_FIELD",
+    "query": "FIT4113 giảng viên là ai và chuẩn đầu ra gồm những gì?",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "giảng viên",
+      "CLO"
+    ]
+  },
+  {
+    "id": "AC-G04",
+    "group": "G",
+    "group_name": "MULTI_FIELD",
+    "query": "FIT4117 có mấy tín chỉ, môn tiên quyết là gì và hình thức đánh giá ra sao?",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4117",
+      "tín chỉ",
+      "đánh giá"
+    ]
+  },
+  {
+    "id": "AC-G05",
+    "group": "G",
+    "group_name": "MULTI_FIELD",
+    "query": "Học phần FIT4201 số giờ lý thuyết, thực hành và số tín chỉ là bao nhiêu?",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4201",
+      "tín chỉ",
+      "giờ"
+    ]
+  },
+  {
+    "id": "AC-G06",
+    "group": "G",
+    "group_name": "MULTI_FIELD",
+    "query": "Môn FIT4104 giảng viên phụ trách và mục tiêu môn học là gì?",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4104",
+      "giảng viên",
+      "mục tiêu"
+    ]
+  },
+  {
+    "id": "AC-G07",
+    "group": "G",
+    "group_name": "MULTI_FIELD",
+    "query": "FIT4113 số tín chỉ và tỷ lệ đánh giá giữa kỳ là bao nhiêu?",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4113",
+      "tín chỉ",
+      "đánh giá"
+    ]
+  },
+  {
+    "id": "AC-G08",
+    "group": "G",
+    "group_name": "MULTI_FIELD",
+    "query": "FIT4117 ai dạy và có yêu cầu học phần tiên quyết nào không?",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4117",
+      "giảng viên"
+    ]
+  },
+  {
+    "id": "AC-G09",
+    "group": "G",
+    "group_name": "MULTI_FIELD",
+    "query": "FIT4201 chuẩn đầu ra và cấu trúc điểm số gồm các cột nào?",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4201",
+      "CLO",
+      "đánh giá"
+    ]
+  },
+  {
+    "id": "AC-G10",
+    "group": "G",
+    "group_name": "MULTI_FIELD",
+    "query": "Môn FIT4104 tên tiếng Anh là gì và có bao nhiêu tín chỉ?",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4104",
+      "tín chỉ",
+      "tiếng Anh"
+    ]
+  },
+  {
+    "id": "AC-G11",
+    "group": "G",
+    "group_name": "MULTI_FIELD",
+    "query": "FIT4113 mục tiêu môn học và giảng viên phụ trách là ai?",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4113",
+      "mục tiêu",
+      "giảng viên"
+    ]
+  },
+  {
+    "id": "AC-G12",
+    "group": "G",
+    "group_name": "MULTI_FIELD",
+    "query": "FIT4201 bao nhiêu tín chỉ, ai dạy và chuẩn đầu ra là gì?",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4201",
+      "tín chỉ",
+      "giảng viên",
+      "CLO"
+    ]
+  },
+  {
+    "id": "AC-H01",
+    "group": "H",
+    "group_name": "MULTI_ENTITY",
+    "query": "So sánh số tín chỉ của FIT4201 và FIT4104",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4201",
+      "FIT4104",
+      "tín chỉ"
+    ]
+  },
+  {
+    "id": "AC-H02",
+    "group": "H",
+    "group_name": "MULTI_ENTITY",
+    "query": "FIT4201 và FIT4113 môn nào nhiều tín chỉ hơn?",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4201",
+      "FIT4113",
+      "tín chỉ"
+    ]
+  },
+  {
+    "id": "AC-H03",
+    "group": "H",
+    "group_name": "MULTI_ENTITY",
+    "query": "So sánh giảng viên phụ trách giữa FIT4104 và FIT4113",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4104",
+      "FIT4113",
+      "giảng viên"
+    ]
+  },
+  {
+    "id": "AC-H04",
+    "group": "H",
+    "group_name": "MULTI_ENTITY",
+    "query": "FIT4113 và FIT4117 có cùng số tín chỉ không?",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4113",
+      "FIT4117",
+      "tín chỉ"
+    ]
+  },
+  {
+    "id": "AC-H05",
+    "group": "H",
+    "group_name": "MULTI_ENTITY",
+    "query": "So sánh hình thức đánh giá giữa FIT4201 và FIT4104",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4201",
+      "FIT4104",
+      "đánh giá"
+    ]
+  },
+  {
+    "id": "AC-H06",
+    "group": "H",
+    "group_name": "MULTI_ENTITY",
+    "query": "FIT4104 và FIT4117 môn nào có môn tiên quyết?",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4104",
+      "FIT4117"
+    ]
+  },
+  {
+    "id": "AC-H07",
+    "group": "H",
+    "group_name": "MULTI_ENTITY",
+    "query": "So sánh chuẩn đầu ra của FIT4201 và FIT4117",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4201",
+      "FIT4117",
+      "CLO"
+    ]
+  },
+  {
+    "id": "AC-H08",
+    "group": "H",
+    "group_name": "MULTI_ENTITY",
+    "query": "FIT4201 với FIT4113 môn nào có nhiều giờ thực hành hơn?",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4201",
+      "FIT4113",
+      "giờ"
+    ]
+  },
+  {
+    "id": "AC-H09",
+    "group": "H",
+    "group_name": "MULTI_ENTITY",
+    "query": "So sánh số tín chỉ của 3 môn FIT4201, FIT4104 và FIT4113",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4201",
+      "FIT4104",
+      "FIT4113",
+      "tín chỉ"
+    ]
+  },
+  {
+    "id": "AC-H10",
+    "group": "H",
+    "group_name": "MULTI_ENTITY",
+    "query": "FIT4104 và FIT4201 có cùng giảng viên phụ trách không?",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4104",
+      "FIT4201",
+      "giảng viên"
+    ]
+  },
+  {
+    "id": "AC-H11",
+    "group": "H",
+    "group_name": "MULTI_ENTITY",
+    "query": "So sánh tỷ trọng thi cuối kỳ của FIT4113 và FIT4117",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4113",
+      "FIT4117",
+      "đánh giá"
+    ]
+  },
+  {
+    "id": "AC-H12",
+    "group": "H",
+    "group_name": "MULTI_ENTITY",
+    "query": "Giữa FIT4201 và FIT4117, môn nào có nhiều tín chỉ hơn?",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4201",
+      "FIT4117",
+      "tín chỉ"
+    ]
+  },
+  {
+    "id": "AC-I01",
+    "group": "I",
+    "group_name": "PARTIAL_EVIDENCE",
+    "query": "FIT4201 bao nhiêu tín chỉ và tỷ lệ trượt bao nhiêu?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "check_terms": [
+      "không công bố",
+      "tỷ lệ trượt"
+    ]
+  },
+  {
+    "id": "AC-I02",
+    "group": "I",
+    "group_name": "PARTIAL_EVIDENCE",
+    "query": "FIT4104 giảng viên là ai và độ khó thế nào?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "check_terms": [
+      "độ khó",
+      "chính thức"
+    ]
+  },
+  {
+    "id": "AC-I03",
+    "group": "I",
+    "group_name": "PARTIAL_EVIDENCE",
+    "query": "FIT4113 chuẩn đầu ra là gì và sinh viên review sao?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "check_terms": [
+      "review",
+      "đánh giá của sinh viên"
+    ]
+  },
+  {
+    "id": "AC-I04",
+    "group": "I",
+    "group_name": "PARTIAL_EVIDENCE",
+    "query": "FIT4117 hình thức thi thế nào và có bị leak đề không?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "check_terms": [
+      "lộ đề",
+      "đề thi"
+    ]
+  },
+  {
+    "id": "AC-I05",
+    "group": "I",
+    "group_name": "PARTIAL_EVIDENCE",
+    "query": "FIT4201 có mấy tín chỉ và lương ra trường bao nhiêu?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "check_terms": [
+      "mức lương",
+      "thu nhập"
+    ]
+  },
+  {
+    "id": "AC-I06",
+    "group": "I",
+    "group_name": "PARTIAL_EVIDENCE",
+    "query": "Môn FIT4104 số tín chỉ và đánh giá của sinh viên khoá trước",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "check_terms": [
+      "review",
+      "đánh giá của sinh viên"
+    ]
+  },
+  {
+    "id": "AC-I07",
+    "group": "I",
+    "group_name": "PARTIAL_EVIDENCE",
+    "query": "FIT4113 giảng viên nào dạy và tỷ lệ qua môn là mấy phần trăm?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "check_terms": [
+      "tỷ lệ",
+      "không công bố"
+    ]
+  },
+  {
+    "id": "AC-I08",
+    "group": "I",
+    "group_name": "PARTIAL_EVIDENCE",
+    "query": "FIT4117 chuẩn đầu ra và đề thi năm ngoái có lộ không?",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "check_terms": [
+      "đề thi",
+      "lộ đề"
+    ]
+  },
+  {
+    "id": "AC-I09",
+    "group": "I",
+    "group_name": "PARTIAL_EVIDENCE",
+    "query": "FIT4201 mục tiêu môn học và lương khởi điểm sau khi học",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "check_terms": [
+      "mức lương",
+      "thu nhập"
+    ]
+  },
+  {
+    "id": "AC-I10",
+    "group": "I",
+    "group_name": "PARTIAL_EVIDENCE",
+    "query": "FIT4104 thi cuối kỳ chiếm bao nhiêu phần trăm và tỷ lệ trượt môn",
+    "session_context": null,
+    "expected_status": "NEEDS_USER_INPUT",
+    "expected_stop_reason": "USER_INPUT_REQUIRED",
+    "check_terms": [
+      "không công bố",
+      "tỷ lệ trượt"
+    ]
+  },
+  {
+    "id": "AC-J01",
+    "group": "J",
+    "group_name": "NO_PROGRESS",
+    "query": "FIT9991 bao nhiêu tín chỉ?",
+    "session_context": null,
+    "expected_status": "ABSTAINED",
+    "expected_stop_reason": "UNKNOWN_ENTITY",
+    "check_terms": [
+      "không có trong"
+    ]
+  },
+  {
+    "id": "AC-J02",
+    "group": "J",
+    "group_name": "NO_PROGRESS",
+    "query": "FIT9992 bao nhiêu tín chỉ?",
+    "session_context": null,
+    "expected_status": "ABSTAINED",
+    "expected_stop_reason": "UNKNOWN_ENTITY",
+    "check_terms": [
+      "không có trong"
+    ]
+  },
+  {
+    "id": "AC-J03",
+    "group": "J",
+    "group_name": "NO_PROGRESS",
+    "query": "FIT9993 bao nhiêu tín chỉ?",
+    "session_context": null,
+    "expected_status": "ABSTAINED",
+    "expected_stop_reason": "UNKNOWN_ENTITY",
+    "check_terms": [
+      "không có trong"
+    ]
+  },
+  {
+    "id": "AC-J04",
+    "group": "J",
+    "group_name": "NO_PROGRESS",
+    "query": "FIT9994 bao nhiêu tín chỉ?",
+    "session_context": null,
+    "expected_status": "ABSTAINED",
+    "expected_stop_reason": "UNKNOWN_ENTITY",
+    "check_terms": [
+      "không có trong"
+    ]
+  },
+  {
+    "id": "AC-J05",
+    "group": "J",
+    "group_name": "NO_PROGRESS",
+    "query": "FIT9995 bao nhiêu tín chỉ?",
+    "session_context": null,
+    "expected_status": "ABSTAINED",
+    "expected_stop_reason": "UNKNOWN_ENTITY",
+    "check_terms": [
+      "không có trong"
+    ]
+  },
+  {
+    "id": "AC-J06",
+    "group": "J",
+    "group_name": "NO_PROGRESS",
+    "query": "FIT9996 bao nhiêu tín chỉ?",
+    "session_context": null,
+    "expected_status": "ABSTAINED",
+    "expected_stop_reason": "UNKNOWN_ENTITY",
+    "check_terms": [
+      "không có trong"
+    ]
+  },
+  {
+    "id": "AC-J07",
+    "group": "J",
+    "group_name": "NO_PROGRESS",
+    "query": "FIT9997 bao nhiêu tín chỉ?",
+    "session_context": null,
+    "expected_status": "ABSTAINED",
+    "expected_stop_reason": "UNKNOWN_ENTITY",
+    "check_terms": [
+      "không có trong"
+    ]
+  },
+  {
+    "id": "AC-J08",
+    "group": "J",
+    "group_name": "NO_PROGRESS",
+    "query": "FIT9998 bao nhiêu tín chỉ?",
+    "session_context": null,
+    "expected_status": "ABSTAINED",
+    "expected_stop_reason": "UNKNOWN_ENTITY",
+    "check_terms": [
+      "không có trong"
+    ]
+  },
+  {
+    "id": "AC-K01",
+    "group": "K",
+    "group_name": "DUPLICATE_ACTION",
+    "query": "FIT4201 tín chỉ môn học lần 1",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4201",
+      "2 tín chỉ"
+    ]
+  },
+  {
+    "id": "AC-K02",
+    "group": "K",
+    "group_name": "DUPLICATE_ACTION",
+    "query": "FIT4201 tín chỉ môn học lần 2",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4201",
+      "2 tín chỉ"
+    ]
+  },
+  {
+    "id": "AC-K03",
+    "group": "K",
+    "group_name": "DUPLICATE_ACTION",
+    "query": "FIT4201 tín chỉ môn học lần 3",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4201",
+      "2 tín chỉ"
+    ]
+  },
+  {
+    "id": "AC-K04",
+    "group": "K",
+    "group_name": "DUPLICATE_ACTION",
+    "query": "FIT4201 tín chỉ môn học lần 4",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4201",
+      "2 tín chỉ"
+    ]
+  },
+  {
+    "id": "AC-K05",
+    "group": "K",
+    "group_name": "DUPLICATE_ACTION",
+    "query": "FIT4201 tín chỉ môn học lần 5",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4201",
+      "2 tín chỉ"
+    ]
+  },
+  {
+    "id": "AC-K06",
+    "group": "K",
+    "group_name": "DUPLICATE_ACTION",
+    "query": "FIT4201 tín chỉ môn học lần 6",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4201",
+      "2 tín chỉ"
+    ]
+  },
+  {
+    "id": "AC-K07",
+    "group": "K",
+    "group_name": "DUPLICATE_ACTION",
+    "query": "FIT4201 tín chỉ môn học lần 7",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4201",
+      "2 tín chỉ"
+    ]
+  },
+  {
+    "id": "AC-K08",
+    "group": "K",
+    "group_name": "DUPLICATE_ACTION",
+    "query": "FIT4201 tín chỉ môn học lần 8",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4201",
+      "2 tín chỉ"
+    ]
+  },
+  {
+    "id": "AC-L01",
+    "group": "L",
+    "group_name": "APPROVED_ALTERNATIVE",
+    "query": "FIT4201 tỷ lệ trượt bao nhiêu?",
+    "user_response": "Đồng ý, hãy so sánh theo các tiêu chí trên",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4201",
+      "2 tín chỉ",
+      "đánh giá"
+    ]
+  },
+  {
+    "id": "AC-L02",
+    "group": "L",
+    "group_name": "APPROVED_ALTERNATIVE",
+    "query": "FIT4104 có khó không?",
+    "user_response": "Được, bạn phân tích cấu trúc điểm và khối lượng cho mình",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4104",
+      "3 tín chỉ",
+      "đánh giá"
+    ]
+  },
+  {
+    "id": "AC-L03",
+    "group": "L",
+    "group_name": "APPROVED_ALTERNATIVE",
+    "query": "FIT4113 sinh viên review đánh giá thế nào?",
+    "user_response": "Có, hãy phân tích giúp mình",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4113"
+    ]
+  },
+  {
+    "id": "AC-L04",
+    "group": "L",
+    "group_name": "APPROVED_ALTERNATIVE",
+    "query": "Lương ra trường khi học FIT4201 bao nhiêu?",
+    "user_response": "Đồng ý",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4201"
+    ]
+  },
+  {
+    "id": "AC-L05",
+    "group": "L",
+    "group_name": "APPROVED_ALTERNATIVE",
+    "query": "Môn FIT4117 có dễ qua môn không?",
+    "user_response": "Ok bạn, hãy phân tích cấu trúc đánh giá",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4117",
+      "đánh giá"
+    ]
+  },
+  {
+    "id": "AC-L06",
+    "group": "L",
+    "group_name": "APPROVED_ALTERNATIVE",
+    "query": "Thầy dạy FIT4104 chấm gắt không?",
+    "user_response": "Đồng ý xem cấu trúc điểm",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4104",
+      "đánh giá"
+    ]
+  },
+  {
+    "id": "AC-L07",
+    "group": "L",
+    "group_name": "APPROVED_ALTERNATIVE",
+    "query": "Tỷ lệ rớt môn FIT4113",
+    "user_response": "Đồng ý xem tiêu chí thay thế",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4113",
+      "tín chỉ"
+    ]
+  },
+  {
+    "id": "AC-L08",
+    "group": "L",
+    "group_name": "APPROVED_ALTERNATIVE",
+    "query": "Review độ khó FIT4201",
+    "user_response": "Được, phân tích giúp mình nhé",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4201",
+      "tín chỉ"
+    ]
+  },
+  {
+    "id": "AC-L09",
+    "group": "L",
+    "group_name": "APPROVED_ALTERNATIVE",
+    "query": "FIT4117 tỷ lệ qua môn thế nào?",
+    "user_response": "Đồng ý phân tích chuẩn đầu ra và đánh giá",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4117",
+      "đánh giá"
+    ]
+  },
+  {
+    "id": "AC-L10",
+    "group": "L",
+    "group_name": "APPROVED_ALTERNATIVE",
+    "query": "Môn FIT4104 đề thi có bị lộ không?",
+    "user_response": "Được, hãy xem hình thức thi chính thức",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4104",
+      "đánh giá"
+    ]
+  },
+  {
+    "id": "AC-M01",
+    "group": "M",
+    "group_name": "REJECTED_ALTERNATIVE",
+    "query": "FIT4201 tỷ lệ trượt bao nhiêu?",
+    "user_response": "Không, tôi không muốn xem các thông tin đó",
+    "session_context": null,
+    "expected_status": "ABSTAINED",
+    "expected_stop_reason": "DATA_NOT_AVAILABLE",
+    "check_terms": [
+      "đã ghi nhận",
+      "dừng tra cứu"
+    ]
+  },
+  {
+    "id": "AC-M02",
+    "group": "M",
+    "group_name": "REJECTED_ALTERNATIVE",
+    "query": "FIT4104 có khó không?",
+    "user_response": "Không cần đâu bạn",
+    "session_context": null,
+    "expected_status": "ABSTAINED",
+    "expected_stop_reason": "DATA_NOT_AVAILABLE",
+    "check_terms": [
+      "đã ghi nhận",
+      "dừng tra cứu"
+    ]
+  },
+  {
+    "id": "AC-M03",
+    "group": "M",
+    "group_name": "REJECTED_ALTERNATIVE",
+    "query": "FIT4113 sinh viên review thế nào?",
+    "user_response": "Thôi không cần",
+    "session_context": null,
+    "expected_status": "ABSTAINED",
+    "expected_stop_reason": "DATA_NOT_AVAILABLE",
+    "check_terms": [
+      "đã ghi nhận",
+      "dừng tra cứu"
+    ]
+  },
+  {
+    "id": "AC-M04",
+    "group": "M",
+    "group_name": "REJECTED_ALTERNATIVE",
+    "query": "Lương ra trường ngành CNTT sau khi học FIT4201?",
+    "user_response": "Không, chỉ cần biết lương thôi",
+    "session_context": null,
+    "expected_status": "ABSTAINED",
+    "expected_stop_reason": "DATA_NOT_AVAILABLE",
+    "check_terms": [
+      "đã ghi nhận",
+      "dừng tra cứu"
+    ]
+  },
+  {
+    "id": "AC-M05",
+    "group": "M",
+    "group_name": "REJECTED_ALTERNATIVE",
+    "query": "FIT4117 có dễ qua môn không?",
+    "user_response": "Không xem phương án khác",
+    "session_context": null,
+    "expected_status": "ABSTAINED",
+    "expected_stop_reason": "DATA_NOT_AVAILABLE",
+    "check_terms": [
+      "đã ghi nhận",
+      "dừng tra cứu"
+    ]
+  },
+  {
+    "id": "AC-M06",
+    "group": "M",
+    "group_name": "REJECTED_ALTERNATIVE",
+    "query": "Thầy dạy FIT4104 chấm có gắt không?",
+    "user_response": "Từ chối",
+    "session_context": null,
+    "expected_status": "ABSTAINED",
+    "expected_stop_reason": "DATA_NOT_AVAILABLE",
+    "check_terms": [
+      "đã ghi nhận",
+      "dừng tra cứu"
+    ]
+  },
+  {
+    "id": "AC-M07",
+    "group": "M",
+    "group_name": "REJECTED_ALTERNATIVE",
+    "query": "Review độ khó môn FIT4201",
+    "user_response": "Không đồng ý",
+    "session_context": null,
+    "expected_status": "ABSTAINED",
+    "expected_stop_reason": "DATA_NOT_AVAILABLE",
+    "check_terms": [
+      "đã ghi nhận",
+      "dừng tra cứu"
+    ]
+  },
+  {
+    "id": "AC-M08",
+    "group": "M",
+    "group_name": "REJECTED_ALTERNATIVE",
+    "query": "FIT4117 tỷ lệ sinh viên qua môn là bao nhiêu?",
+    "user_response": "Thôi bỏ qua đi",
+    "session_context": null,
+    "expected_status": "ABSTAINED",
+    "expected_stop_reason": "DATA_NOT_AVAILABLE",
+    "check_terms": [
+      "đã ghi nhận",
+      "dừng tra cứu"
+    ]
+  },
+  {
+    "id": "AC-N01",
+    "group": "N",
+    "group_name": "CLARIFICATION_RESUME",
+    "query": "FIT4201 với FIT4104 thì sao?",
+    "user_response": "So sánh số tín chỉ của hai môn",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4201",
+      "FIT4104",
+      "tín chỉ"
+    ]
+  },
+  {
+    "id": "AC-N02",
+    "group": "N",
+    "group_name": "CLARIFICATION_RESUME",
+    "query": "FIT4201 với FIT4104 thì sao?",
+    "user_response": "Ai là giảng viên dạy hai môn này?",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4201",
+      "FIT4104",
+      "giảng viên"
+    ]
+  },
+  {
+    "id": "AC-N03",
+    "group": "N",
+    "group_name": "CLARIFICATION_RESUME",
+    "query": "FIT4201 với FIT4104 thì sao?",
+    "user_response": "So sánh hình thức đánh giá",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4201",
+      "FIT4104",
+      "đánh giá"
+    ]
+  },
+  {
+    "id": "AC-N04",
+    "group": "N",
+    "group_name": "CLARIFICATION_RESUME",
+    "query": "Môn đó bao nhiêu tín chỉ?",
+    "user_response": "Là môn FIT4201",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4201",
+      "2 tín chỉ"
+    ]
+  },
+  {
+    "id": "AC-N05",
+    "group": "N",
+    "group_name": "CLARIFICATION_RESUME",
+    "query": "Học phần này thi hình thức nào?",
+    "user_response": "Môn FIT4104",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4104",
+      "50%"
+    ]
+  },
+  {
+    "id": "AC-N06",
+    "group": "N",
+    "group_name": "CLARIFICATION_RESUME",
+    "query": "Giảng viên môn này là ai?",
+    "user_response": "Môn FIT4113 nhé",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4113",
+      "giảng viên"
+    ]
+  },
+  {
+    "id": "AC-N07",
+    "group": "N",
+    "group_name": "CLARIFICATION_RESUME",
+    "query": "Chuẩn đầu ra của môn học là gì?",
+    "user_response": "Mã môn là FIT4117",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4117",
+      "CLO"
+    ]
+  },
+  {
+    "id": "AC-N08",
+    "group": "N",
+    "group_name": "CLARIFICATION_RESUME",
+    "query": "Bao nhiêu tín chỉ?",
+    "user_response": "Môn FIT4104",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4104",
+      "3 tín chỉ"
+    ]
+  },
+  {
+    "id": "AC-N09",
+    "group": "N",
+    "group_name": "CLARIFICATION_RESUME",
+    "query": "FIT4201 môn Full-Stack bao nhiêu tín chỉ?",
+    "user_response": "Là môn FIT4201",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4201",
+      "2 tín chỉ"
+    ]
+  },
+  {
+    "id": "AC-N10",
+    "group": "N",
+    "group_name": "CLARIFICATION_RESUME",
+    "query": "FIT4104 môn Kiến trúc phần mềm bao nhiêu tín chỉ?",
+    "user_response": "Môn FIT4104",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4104",
+      "3 tín chỉ"
+    ]
+  },
+  {
+    "id": "AC-N11",
+    "group": "N",
+    "group_name": "CLARIFICATION_RESUME",
+    "query": "Học kỳ này học môn gì?",
+    "user_response": "Xem số tín chỉ của FIT4201",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4201",
+      "2 tín chỉ"
+    ]
+  },
+  {
+    "id": "AC-N12",
+    "group": "N",
+    "group_name": "CLARIFICATION_RESUME",
+    "query": "Còn môn FIT4113 thì sao?",
+    "user_response": "Xem giảng viên môn này",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4113",
+      "giảng viên"
+    ]
+  },
+  {
+    "id": "AC-O01",
+    "group": "O",
+    "group_name": "MALFORMED_QUERY",
+    "query": "FIT4201 ??? bao nhiêu tín chỉ !!!",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4201",
+      "2 tín chỉ"
+    ]
+  },
+  {
+    "id": "AC-O02",
+    "group": "O",
+    "group_name": "MALFORMED_QUERY",
+    "query": "môn fit4104 bao nhiu tin chi zay?",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4104",
+      "3 tín chỉ"
+    ]
+  },
+  {
+    "id": "AC-O03",
+    "group": "O",
+    "group_name": "MALFORMED_QUERY",
+    "query": "cho hỏi FIT4113 ai dạy thế ạ.......",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4113",
+      "giảng viên"
+    ]
+  },
+  {
+    "id": "AC-O04",
+    "group": "O",
+    "group_name": "MALFORMED_QUERY",
+    "query": "FIT4117 --- chuan dau ra ???",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4117",
+      "CLO"
+    ]
+  },
+  {
+    "id": "AC-O05",
+    "group": "O",
+    "group_name": "MALFORMED_QUERY",
+    "query": "alo alo FIT4201 may tin chi",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4201",
+      "2 tín chỉ"
+    ]
+  },
+  {
+    "id": "AC-O06",
+    "group": "O",
+    "group_name": "MALFORMED_QUERY",
+    "query": "ADVISOR OI FIT4104 THI THE NAO",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4104",
+      "đánh giá"
+    ]
+  },
+  {
+    "id": "AC-O07",
+    "group": "O",
+    "group_name": "MALFORMED_QUERY",
+    "query": "fit4113 giang vien la ai??",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4113",
+      "giảng viên"
+    ]
+  },
+  {
+    "id": "AC-O08",
+    "group": "O",
+    "group_name": "MALFORMED_QUERY",
+    "query": "môn FIT4201: tín chỉ = ?",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4201",
+      "2 tín chỉ"
+    ]
+  },
+  {
+    "id": "AC-O09",
+    "group": "O",
+    "group_name": "MALFORMED_QUERY",
+    "query": "ad cho em hỏi môn FIT4117 có bao nhiêu tín chỉ vậy ạ",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4117",
+      "tín chỉ"
+    ]
+  },
+  {
+    "id": "AC-O10",
+    "group": "O",
+    "group_name": "MALFORMED_QUERY",
+    "query": "FIT4104 - số tín chỉ, FIT4201 - số tín chỉ",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4104",
+      "FIT4201",
+      "tín chỉ"
+    ]
+  },
+  {
+    "id": "AC-O11",
+    "group": "O",
+    "group_name": "MALFORMED_QUERY",
+    "query": "Ủa môn FIT4113 có thực hành hông ad?",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4113",
+      "giờ"
+    ]
+  },
+  {
+    "id": "AC-O12",
+    "group": "O",
+    "group_name": "MALFORMED_QUERY",
+    "query": "Học phần FIT4201, muốn biết hình thức thi cuối kỳ á",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4201",
+      "đánh giá"
+    ]
+  },
+  {
+    "id": "AC-P01",
+    "group": "P",
+    "group_name": "MULTI_INTENT",
+    "query": "FIT4201 bao nhiêu tín chỉ và nhắc tôi mai học nhé",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4201",
+      "2 tín chỉ"
+    ]
+  },
+  {
+    "id": "AC-P02",
+    "group": "P",
+    "group_name": "MULTI_INTENT",
+    "query": "Môn FIT4104 ai dạy và gửi mail cho tôi đề cương",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4104",
+      "giảng viên"
+    ]
+  },
+  {
+    "id": "AC-P03",
+    "group": "P",
+    "group_name": "MULTI_INTENT",
+    "query": "FIT4113 có mấy tín chỉ rồi đặt lịch học lúc 8h",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4113",
+      "tín chỉ"
+    ]
+  },
+  {
+    "id": "AC-P04",
+    "group": "P",
+    "group_name": "MULTI_INTENT",
+    "query": "FIT4117 chuẩn đầu ra là gì và gửi thông báo cho tôi",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4117",
+      "CLO"
+    ]
+  },
+  {
+    "id": "AC-P05",
+    "group": "P",
+    "group_name": "MULTI_INTENT",
+    "query": "FIT4201 thi thế nào và nhớ báo tôi ôn bài",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4201",
+      "đánh giá"
+    ]
+  },
+  {
+    "id": "AC-P06",
+    "group": "P",
+    "group_name": "MULTI_INTENT",
+    "query": "Môn FIT4104 bao nhiêu tín chỉ và gửi email cho thầy",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4104",
+      "3 tín chỉ"
+    ]
+  },
+  {
+    "id": "AC-P07",
+    "group": "P",
+    "group_name": "MULTI_INTENT",
+    "query": "FIT4113 giảng viên là ai và tạo reminder học bài",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4113",
+      "giảng viên"
+    ]
+  },
+  {
+    "id": "AC-P08",
+    "group": "P",
+    "group_name": "MULTI_INTENT",
+    "query": "FIT4117 có tiên quyết không và nhắc tôi đăng ký",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4117"
+    ]
+  },
+  {
+    "id": "AC-P09",
+    "group": "P",
+    "group_name": "MULTI_INTENT",
+    "query": "FIT4201 bao nhiêu tín chỉ và gửi email cho khoa",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4201",
+      "2 tín chỉ"
+    ]
+  },
+  {
+    "id": "AC-P10",
+    "group": "P",
+    "group_name": "MULTI_INTENT",
+    "query": "FIT4104 chuẩn đầu ra là gì và lên lịch ôn thi",
+    "session_context": null,
+    "expected_status": "COMPLETED",
+    "expected_stop_reason": "GOAL_COMPLETED",
+    "check_terms": [
+      "FIT4104",
+      "CLO"
+    ]
+  }
+]

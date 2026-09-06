@@ -1,0 +1,108 @@
+{
+  "timestamp": "2026-09-06 17:47:21",
+  "total_cases": 182,
+  "total_passed": 182,
+  "overall_accuracy": 100.0,
+  "all_hard_gates_passed": true,
+  "group_stats": {
+    "A": {
+      "name": "CLEAR_GOAL",
+      "total": 20,
+      "passed": 20
+    },
+    "B": {
+      "name": "MISSING_INTENT",
+      "total": 12,
+      "passed": 12
+    },
+    "C": {
+      "name": "MISSING_ENTITY",
+      "total": 12,
+      "passed": 12
+    },
+    "D": {
+      "name": "MISSING_DATA",
+      "total": 14,
+      "passed": 14
+    },
+    "E": {
+      "name": "UNKNOWN_ENTITY",
+      "total": 12,
+      "passed": 12
+    },
+    "F": {
+      "name": "ENTITY_CONFLICT",
+      "total": 10,
+      "passed": 10
+    },
+    "G": {
+      "name": "MULTI_FIELD",
+      "total": 12,
+      "passed": 12
+    },
+    "H": {
+      "name": "MULTI_ENTITY",
+      "total": 12,
+      "passed": 12
+    },
+    "I": {
+      "name": "PARTIAL_EVIDENCE",
+      "total": 10,
+      "passed": 10
+    },
+    "J": {
+      "name": "NO_PROGRESS",
+      "total": 8,
+      "passed": 8
+    },
+    "K": {
+      "name": "DUPLICATE_ACTION",
+      "total": 8,
+      "passed": 8
+    },
+    "L": {
+      "name": "APPROVED_ALTERNATIVE",
+      "total": 10,
+      "passed": 10
+    },
+    "M": {
+      "name": "REJECTED_ALTERNATIVE",
+      "total": 8,
+      "passed": 8
+    },
+    "N": {
+      "name": "CLARIFICATION_RESUME",
+      "total": 12,
+      "passed": 12
+    },
+    "O": {
+      "name": "MALFORMED_QUERY",
+      "total": 12,
+      "passed": 12
+    },
+    "P": {
+      "name": "MULTI_INTENT",
+      "total": 10,
+      "passed": 10
+    }
+  },
+  "hard_gates": {
+    "infinite_loop_count": 0,
+    "duplicate_loop_count": 0,
+    "no_progress_loop_count": 0,
+    "planner_termination_count": 182,
+    "unknown_entity_hallucination_count": 0,
+    "unsafe_tools_triggered": 0,
+    "authority_violations": 0,
+    "external_api_calls": 0
+  },
+  "quality_metrics": {
+    "clear_goal_completion_rate": 100.0,
+    "missing_slot_identification_accuracy": 100.0,
+    "proposal_on_unavailable_rate": 100.0,
+    "clarification_resume_success_rate": 100.0,
+    "average_steps": 1.9065934065934067,
+    "average_latency_ms": 3.566086263852632
+  },
+  "failed_cases": []
+}
