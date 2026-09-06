@@ -30,17 +30,30 @@ def evaluate_policy(
     # LAYER 0: STRONG TOOL FAST PATH
     # =========================================================================
     if evidence.tool_strength == "STRONG":
-        logger.info(
-            f"Router Policy: Layer 0 Triggered -> TOOL_ACTION ({evidence.tool_intent})"
-        )
-        return IntentDecision(
-            category="TOOL_ACTION",
-            tool_intent=evidence.tool_intent,
-            confidence=1.0,
-            reason_code=f"STRONG_TOOL_{evidence.tool_intent}",
-            decision_path="STRONG_TOOL_FAST_PATH",
-            evidence=evidence.model_dump(),
-        )
+        from src.semantics import analyze_utterance, Polarity, Modality, ActionOperation
+        sem = analyze_utterance(text)
+        if (
+            sem.polarity == Polarity.NEGATED
+            or sem.prohibition_detected
+            or sem.modality in [Modality.EXPLANATORY, Modality.HYPOTHETICAL]
+            or sem.is_contradictory
+            or sem.target_operation not in [ActionOperation.SEND_EMAIL, ActionOperation.SET_REMINDER]
+            or (sem.polarity == Polarity.MIXED and any(w in lower_text for w in ["đừng gửi", "không gửi", "chớ gửi", "thôi đừng", "không nhắc", "đừng nhắc"]))
+        ):
+            evidence.tool_strength = "NONE"
+            evidence.tool_intent = None
+        else:
+            logger.info(
+                f"Router Policy: Layer 0 Triggered -> TOOL_ACTION ({evidence.tool_intent})"
+            )
+            return IntentDecision(
+                category="TOOL_ACTION",
+                tool_intent=evidence.tool_intent,
+                confidence=1.0,
+                reason_code=f"STRONG_TOOL_{evidence.tool_intent}",
+                decision_path="STRONG_TOOL_FAST_PATH",
+                evidence=evidence.model_dump(),
+            )
 
     # =========================================================================
     # LAYER 1: STRONG DOMAIN FAST PATH
@@ -170,13 +183,26 @@ def evaluate_policy(
         if margin >= 0.05:
             tool_intent = None
             if top_cat == "TOOL_ACTION":
-                tool_intent = evidence.tool_intent
-                if not tool_intent:
-                    tool_intent = (
-                        "SEND_EMAIL"
-                        if any(w in lower_text for w in ["email", "mail", "thư"])
-                        else "SET_REMINDER"
-                    )
+                from src.semantics import analyze_utterance, Polarity, Modality, ActionOperation
+                sem = analyze_utterance(text)
+                if (
+                    sem.polarity == Polarity.NEGATED
+                    or sem.prohibition_detected
+                    or sem.modality in [Modality.EXPLANATORY, Modality.HYPOTHETICAL]
+                    or sem.is_contradictory
+                    or sem.target_operation not in [ActionOperation.SEND_EMAIL, ActionOperation.SET_REMINDER]
+                    or (sem.polarity == Polarity.MIXED and any(w in lower_text for w in ["đừng gửi", "không gửi", "chớ gửi", "thôi đừng", "không nhắc", "đừng nhắc"]))
+                ):
+                    top_cat = "GENERAL_LLM"
+                    tool_intent = None
+                else:
+                    tool_intent = evidence.tool_intent
+                    if not tool_intent:
+                        tool_intent = (
+                            "SEND_EMAIL"
+                            if any(w in lower_text for w in ["email", "mail", "thư"])
+                            else "SET_REMINDER"
+                        )
 
             return IntentDecision(
                 category=top_cat,
@@ -206,6 +232,25 @@ def evaluate_policy(
         )
 
     if any(w in lower_text for w in ["gửi", "soạn", "nhắc", "lịch", "báo", "hẹn"]):
+        from src.semantics import analyze_utterance, Polarity, Modality, ActionOperation
+        sem = analyze_utterance(text)
+        if (
+            sem.polarity == Polarity.NEGATED
+            or sem.prohibition_detected
+            or sem.modality in [Modality.EXPLANATORY, Modality.HYPOTHETICAL]
+            or sem.is_contradictory
+            or sem.target_operation not in [ActionOperation.SEND_EMAIL, ActionOperation.SET_REMINDER]
+            or (sem.polarity == Polarity.MIXED and any(w in lower_text for w in ["đừng gửi", "không gửi", "chớ gửi", "thôi đừng", "không nhắc", "đừng nhắc"]))
+        ):
+            return IntentDecision(
+                category="GENERAL_LLM",
+                tool_intent=None,
+                confidence=0.55,
+                reason_code="FALLBACK_NEGATED_TOOL_TO_GENERAL",
+                decision_path="LOW_CONFIDENCE_FALLBACK",
+                evidence=evidence.model_dump(),
+            )
+
         tool_intent = (
             "SEND_EMAIL"
             if any(w in lower_text for w in ["email", "mail", "thư"])

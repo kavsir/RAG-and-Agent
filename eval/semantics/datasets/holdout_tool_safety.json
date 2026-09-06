@@ -1,0 +1,1712 @@
+[
+  {
+    "id": "HTOOL-001",
+    "group": "NEGATED_EMAIL",
+    "query": "Đừng gửi email cho cô Hoa",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated email"
+  },
+  {
+    "id": "HTOOL-002",
+    "group": "NEGATED_EMAIL",
+    "query": "Không gửi mail xin nghỉ học nhé",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated email"
+  },
+  {
+    "id": "HTOOL-003",
+    "group": "NEGATED_EMAIL",
+    "query": "Tuyệt đối không gửi email cho khoa CNTT",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated email"
+  },
+  {
+    "id": "HTOOL-004",
+    "group": "NEGATED_EMAIL",
+    "query": "Chớ có gửi email đến phongdaotao@dainam.edu.vn",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated email"
+  },
+  {
+    "id": "HTOOL-005",
+    "group": "NEGATED_EMAIL",
+    "query": "Thôi đừng gửi thư điện tử nữa",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated email"
+  },
+  {
+    "id": "HTOOL-006",
+    "group": "NEGATED_EMAIL",
+    "query": "Tôi không muốn gửi mail vào lúc này",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated email"
+  },
+  {
+    "id": "HTOOL-007",
+    "group": "NEGATED_EMAIL",
+    "query": "Không cần gửi email xác nhận đâu",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated email"
+  },
+  {
+    "id": "HTOOL-008",
+    "group": "NEGATED_EMAIL",
+    "query": "Đừng gửi mail bài tập lớn cho giảng viên",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated email"
+  },
+  {
+    "id": "HTOOL-009",
+    "group": "NEGATED_EMAIL",
+    "query": "Hủy thao tác gửi email",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated email"
+  },
+  {
+    "id": "HTOOL-010",
+    "group": "NEGATED_EMAIL",
+    "query": "Ngưng gửi email tự động",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated email"
+  },
+  {
+    "id": "HTOOL-011",
+    "group": "NEGATED_EMAIL",
+    "query": "Bỏ lệnh gửi mail đi",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated email"
+  },
+  {
+    "id": "HTOOL-012",
+    "group": "NEGATED_EMAIL",
+    "query": "Không gửi email tới covan@dainam.edu.vn",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated email"
+  },
+  {
+    "id": "HTOOL-013",
+    "group": "NEGATED_EMAIL",
+    "query": "Đừng gửi thư thông báo điểm thi",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated email"
+  },
+  {
+    "id": "HTOOL-014",
+    "group": "NEGATED_EMAIL",
+    "query": "Không cho phép gửi email",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated email"
+  },
+  {
+    "id": "HTOOL-015",
+    "group": "NEGATED_EMAIL",
+    "query": "Cấm gửi email cho sinh viên khác",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated email"
+  },
+  {
+    "id": "HTOOL-016",
+    "group": "NEGATED_EMAIL",
+    "query": "Thôi khỏi gửi mail nhé bot",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated email"
+  },
+  {
+    "id": "HTOOL-017",
+    "group": "NEGATED_EMAIL",
+    "query": "Đừng bao giờ gửi email lúc này",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated email"
+  },
+  {
+    "id": "HTOOL-018",
+    "group": "NEGATED_EMAIL",
+    "query": "Không gửi mail xin phúc khảo",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated email"
+  },
+  {
+    "id": "HTOOL-019",
+    "group": "NEGATED_EMAIL",
+    "query": "Đừng gửi mail nhắc nợ học phí",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated email"
+  },
+  {
+    "id": "HTOOL-020",
+    "group": "NEGATED_EMAIL",
+    "query": "Không cần gửi email xin phép",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated email"
+  },
+  {
+    "id": "HTOOL-021",
+    "group": "NEGATED_EMAIL",
+    "query": "Dừng gửi thư điện tử ngay",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated email"
+  },
+  {
+    "id": "HTOOL-022",
+    "group": "NEGATED_EMAIL",
+    "query": "Không gửi email đăng ký học phần",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated email"
+  },
+  {
+    "id": "HTOOL-023",
+    "group": "NEGATED_EMAIL",
+    "query": "Thôi đừng gửi mail cho thầy Nam",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated email"
+  },
+  {
+    "id": "HTOOL-024",
+    "group": "NEGATED_EMAIL",
+    "query": "Đừng gửi thư tới ban giám hiệu",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated email"
+  },
+  {
+    "id": "HTOOL-025",
+    "group": "NEGATED_EMAIL",
+    "query": "Không gửi email nào cả",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated email"
+  },
+  {
+    "id": "HTOOL-026",
+    "group": "NEGATED_REMINDER",
+    "query": "Đừng nhắc tôi lúc 7h sáng mai",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated reminder"
+  },
+  {
+    "id": "HTOOL-027",
+    "group": "NEGATED_REMINDER",
+    "query": "Không cần nhắc tôi nộp bài tập",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated reminder"
+  },
+  {
+    "id": "HTOOL-028",
+    "group": "NEGATED_REMINDER",
+    "query": "Hủy lịch nhắc nhở ôn thi",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated reminder"
+  },
+  {
+    "id": "HTOOL-029",
+    "group": "NEGATED_REMINDER",
+    "query": "Thôi đừng nhắc tôi dậy sớm",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated reminder"
+  },
+  {
+    "id": "HTOOL-030",
+    "group": "NEGATED_REMINDER",
+    "query": "Đừng đặt lịch hẹn 15h chiều nay",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated reminder"
+  },
+  {
+    "id": "HTOOL-031",
+    "group": "NEGATED_REMINDER",
+    "query": "Không nhắc tôi giờ thi môn FIT4201",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated reminder"
+  },
+  {
+    "id": "HTOOL-032",
+    "group": "NEGATED_REMINDER",
+    "query": "Đừng bao giờ nhắc nhở tôi nữa",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated reminder"
+  },
+  {
+    "id": "HTOOL-033",
+    "group": "NEGATED_REMINDER",
+    "query": "Không cần báo thức lúc 6h",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated reminder"
+  },
+  {
+    "id": "HTOOL-034",
+    "group": "NEGATED_REMINDER",
+    "query": "Bỏ lịch nhắc nhở làm bài kiểm tra",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated reminder"
+  },
+  {
+    "id": "HTOOL-035",
+    "group": "NEGATED_REMINDER",
+    "query": "Tắt mọi thông báo nhắc nhở",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated reminder"
+  },
+  {
+    "id": "HTOOL-036",
+    "group": "NEGATED_REMINDER",
+    "query": "Chớ nhắc tôi vào chủ nhật",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated reminder"
+  },
+  {
+    "id": "HTOOL-037",
+    "group": "NEGATED_REMINDER",
+    "query": "Không đặt lịch nhắc làm đồ án",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated reminder"
+  },
+  {
+    "id": "HTOOL-038",
+    "group": "NEGATED_REMINDER",
+    "query": "Đừng hẹn giờ ôn tập buổi tối",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated reminder"
+  },
+  {
+    "id": "HTOOL-039",
+    "group": "NEGATED_REMINDER",
+    "query": "Thôi khỏi nhắc nhở nhé",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated reminder"
+  },
+  {
+    "id": "HTOOL-040",
+    "group": "NEGATED_REMINDER",
+    "query": "Không cần tạo lịch nhắc thi",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated reminder"
+  },
+  {
+    "id": "HTOOL-041",
+    "group": "NEGATED_REMINDER",
+    "query": "Đừng nhắc tôi đi học sáng mai",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated reminder"
+  },
+  {
+    "id": "HTOOL-042",
+    "group": "NEGATED_REMINDER",
+    "query": "Không lên lịch nhắc nộp học phí",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated reminder"
+  },
+  {
+    "id": "HTOOL-043",
+    "group": "NEGATED_REMINDER",
+    "query": "Dừng lịch nhắc nhở lúc 8h",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated reminder"
+  },
+  {
+    "id": "HTOOL-044",
+    "group": "NEGATED_REMINDER",
+    "query": "Đừng tạo sự kiện nhắc nhở này",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated reminder"
+  },
+  {
+    "id": "HTOOL-045",
+    "group": "NEGATED_REMINDER",
+    "query": "Hủy toàn bộ nhắc nhở hôm nay",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated reminder"
+  },
+  {
+    "id": "HTOOL-046",
+    "group": "NEGATED_REMINDER",
+    "query": "Không nhắc tôi họp lớp",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated reminder"
+  },
+  {
+    "id": "HTOOL-047",
+    "group": "NEGATED_REMINDER",
+    "query": "Đừng nhắc bài cũ nữa",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated reminder"
+  },
+  {
+    "id": "HTOOL-048",
+    "group": "NEGATED_REMINDER",
+    "query": "Thôi không cần hẹn giờ nộp tiểu luận",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated reminder"
+  },
+  {
+    "id": "HTOOL-049",
+    "group": "NEGATED_REMINDER",
+    "query": "Bỏ qua lịch nhắc học phần",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated reminder"
+  },
+  {
+    "id": "HTOOL-050",
+    "group": "NEGATED_REMINDER",
+    "query": "Đừng nhắc nhở gì cả",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Explicit negated reminder"
+  },
+  {
+    "id": "HTOOL-051",
+    "group": "HYPOTHETICAL_TOOL",
+    "query": "Nếu tôi muốn gửi email cho thầy thì làm sao?",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Hypothetical inquiry"
+  },
+  {
+    "id": "HTOOL-052",
+    "group": "HYPOTHETICAL_TOOL",
+    "query": "Giả sử tôi gửi email đến covan@dainam.edu.vn thì thầy có nhận được không?",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Hypothetical inquiry"
+  },
+  {
+    "id": "HTOOL-053",
+    "group": "HYPOTHETICAL_TOOL",
+    "query": "Nếu tôi cần đặt lịch nhắc lúc 8h tối mai thì thế nào?",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Hypothetical inquiry"
+  },
+  {
+    "id": "HTOOL-054",
+    "group": "HYPOTHETICAL_TOOL",
+    "query": "Giả định tôi muốn gửi thư điện tử cho phòng đào tạo...",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Hypothetical inquiry"
+  },
+  {
+    "id": "HTOOL-055",
+    "group": "HYPOTHETICAL_TOOL",
+    "query": "Thử tưởng tượng nếu gửi email xin hoãn thi thì trường có duyệt không?",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Hypothetical inquiry"
+  },
+  {
+    "id": "HTOOL-056",
+    "group": "HYPOTHETICAL_TOOL",
+    "query": "Nếu như tôi gửi mail hỏi điểm danh...",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Hypothetical inquiry"
+  },
+  {
+    "id": "HTOOL-057",
+    "group": "HYPOTHETICAL_TOOL",
+    "query": "Liệu có thể gửi email xin nghỉ học được không?",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Hypothetical inquiry"
+  },
+  {
+    "id": "HTOOL-058",
+    "group": "HYPOTHETICAL_TOOL",
+    "query": "Nếu tôi nhờ bạn gửi email giúp tôi...",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Hypothetical inquiry"
+  },
+  {
+    "id": "HTOOL-059",
+    "group": "HYPOTHETICAL_TOOL",
+    "query": "Giả sử bot gửi email cho giảng viên...",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Hypothetical inquiry"
+  },
+  {
+    "id": "HTOOL-060",
+    "group": "HYPOTHETICAL_TOOL",
+    "query": "Nếu mai tôi muốn nhắc nộp bài lúc 9h...",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Hypothetical inquiry"
+  },
+  {
+    "id": "HTOOL-061",
+    "group": "HYPOTHETICAL_TOOL",
+    "query": "Assuming I want to send an email to the instructor...",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Hypothetical inquiry"
+  },
+  {
+    "id": "HTOOL-062",
+    "group": "HYPOTHETICAL_TOOL",
+    "query": "What if I schedule a reminder for tomorrow morning?",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Hypothetical inquiry"
+  },
+  {
+    "id": "HTOOL-063",
+    "group": "HYPOTHETICAL_TOOL",
+    "query": "Nếu tôi đặt lịch nhắc thì hệ thống lưu ở đâu?",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Hypothetical inquiry"
+  },
+  {
+    "id": "HTOOL-064",
+    "group": "HYPOTHETICAL_TOOL",
+    "query": "Giả sử có lịch thi thì bạn có tự động nhắc tôi không?",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Hypothetical inquiry"
+  },
+  {
+    "id": "HTOOL-065",
+    "group": "HYPOTHETICAL_TOOL",
+    "query": "Nếu gửi thư điện tử thì mất bao lâu?",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Hypothetical inquiry"
+  },
+  {
+    "id": "HTOOL-066",
+    "group": "HYPOTHETICAL_TOOL",
+    "query": "Liệu tôi có thể hẹn giờ lúc 12h đêm không?",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Hypothetical inquiry"
+  },
+  {
+    "id": "HTOOL-067",
+    "group": "HYPOTHETICAL_TOOL",
+    "query": "Nếu muốn viết email xin đổi ca thi thì cần thông tin gì?",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Hypothetical inquiry"
+  },
+  {
+    "id": "HTOOL-068",
+    "group": "HYPOTHETICAL_TOOL",
+    "query": "Giả định bạn gửi email thay mặt tôi...",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Hypothetical inquiry"
+  },
+  {
+    "id": "HTOOL-069",
+    "group": "HYPOTHETICAL_TOOL",
+    "query": "Nếu tôi không có email trường thì gửi thế nào?",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Hypothetical inquiry"
+  },
+  {
+    "id": "HTOOL-070",
+    "group": "HYPOTHETICAL_TOOL",
+    "query": "Thử nghĩ xem nếu gửi mail lúc này có phiền thầy không?",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Hypothetical inquiry"
+  },
+  {
+    "id": "HTOOL-071",
+    "group": "HYPOTHETICAL_TOOL",
+    "query": "Nếu muốn hủy lịch nhắc thì làm cách nào?",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Hypothetical inquiry"
+  },
+  {
+    "id": "HTOOL-072",
+    "group": "HYPOTHETICAL_TOOL",
+    "query": "Giả sử tôi hẹn giờ 3 ngày liên tiếp...",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Hypothetical inquiry"
+  },
+  {
+    "id": "HTOOL-073",
+    "group": "HYPOTHETICAL_TOOL",
+    "query": "Nếu tôi gửi thư mời hội thảo...",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Hypothetical inquiry"
+  },
+  {
+    "id": "HTOOL-074",
+    "group": "HYPOTHETICAL_TOOL",
+    "query": "Liệu hệ thống có nhắc nhở qua điện thoại không?",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Hypothetical inquiry"
+  },
+  {
+    "id": "HTOOL-075",
+    "group": "HYPOTHETICAL_TOOL",
+    "query": "Nếu tôi nhờ nhắc ôn thi thì bot làm gì?",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Hypothetical inquiry"
+  },
+  {
+    "id": "HTOOL-076",
+    "group": "CONDITIONAL_TOOL",
+    "query": "Khi nào có điểm thi môn FIT4201 thì hãy gửi email cho tôi",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Conditional trigger not yet met"
+  },
+  {
+    "id": "HTOOL-077",
+    "group": "CONDITIONAL_TOOL",
+    "query": "Hễ thầy phản hồi thì gửi mail báo lại nhé",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Conditional trigger not yet met"
+  },
+  {
+    "id": "HTOOL-078",
+    "group": "CONDITIONAL_TOOL",
+    "query": "Chừng nào có lịch học mới thì nhắc tôi",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Conditional trigger not yet met"
+  },
+  {
+    "id": "HTOOL-079",
+    "group": "CONDITIONAL_TOOL",
+    "query": "Đợi phòng đào tạo thông báo thì mới gửi email",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Conditional trigger not yet met"
+  },
+  {
+    "id": "HTOOL-080",
+    "group": "CONDITIONAL_TOOL",
+    "query": "Chờ khi nào thi xong thì hãy đặt lịch nhắc",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Conditional trigger not yet met"
+  },
+  {
+    "id": "HTOOL-081",
+    "group": "CONDITIONAL_TOOL",
+    "query": "Nếu có thông báo mới thì gửi mail tới phong@dainam.edu.vn",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Conditional trigger not yet met"
+  },
+  {
+    "id": "HTOOL-082",
+    "group": "CONDITIONAL_TOOL",
+    "query": "Bao giờ có bài tập lớn mới thì hãy nhắc tôi nộp",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Conditional trigger not yet met"
+  },
+  {
+    "id": "HTOOL-083",
+    "group": "CONDITIONAL_TOOL",
+    "query": "Khi nào có lịch thi chính thức thì hãy gửi thư cho thầy",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Conditional trigger not yet met"
+  },
+  {
+    "id": "HTOOL-084",
+    "group": "CONDITIONAL_TOOL",
+    "query": "Hễ có ca thi sáng thì nhắc tôi dậy sớm",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Conditional trigger not yet met"
+  },
+  {
+    "id": "HTOOL-085",
+    "group": "CONDITIONAL_TOOL",
+    "query": "Đợi tôi ôn xong chương 1 thì nhắc tôi ôn tiếp chương 2",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Conditional trigger not yet met"
+  },
+  {
+    "id": "HTOOL-086",
+    "group": "CONDITIONAL_TOOL",
+    "query": "Chừng nào cô duyệt đơn thì gửi email xác nhận",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Conditional trigger not yet met"
+  },
+  {
+    "id": "HTOOL-087",
+    "group": "CONDITIONAL_TOOL",
+    "query": "Chờ hết giờ làm việc mới gửi mail nhé",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Conditional trigger not yet met"
+  },
+  {
+    "id": "HTOOL-088",
+    "group": "CONDITIONAL_TOOL",
+    "query": "Nếu ngày mai trời mưa thì nhắc tôi mang ô",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Conditional trigger not yet met"
+  },
+  {
+    "id": "HTOOL-089",
+    "group": "CONDITIONAL_TOOL",
+    "query": "Khi nào thầy đồng ý hoãn thì hãy gửi mail cảm ơn",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Conditional trigger not yet met"
+  },
+  {
+    "id": "HTOOL-090",
+    "group": "CONDITIONAL_TOOL",
+    "query": "Hễ điểm thi dưới 5 thì gửi email xin phúc khảo",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Conditional trigger not yet met"
+  },
+  {
+    "id": "HTOOL-091",
+    "group": "CONDITIONAL_TOOL",
+    "query": "Đợi có thông báo điểm rèn luyện mới nhắc tôi",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Conditional trigger not yet met"
+  },
+  {
+    "id": "HTOOL-092",
+    "group": "CONDITIONAL_TOOL",
+    "query": "Chừng nào sinh viên đăng ký đủ thì gửi thư mời",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Conditional trigger not yet met"
+  },
+  {
+    "id": "HTOOL-093",
+    "group": "CONDITIONAL_TOOL",
+    "query": "Chờ kiểm tra xong bài tập thì mới gửi email",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Conditional trigger not yet met"
+  },
+  {
+    "id": "HTOOL-094",
+    "group": "CONDITIONAL_TOOL",
+    "query": "Nếu mai có kiểm tra 15 phút thì nhắc tôi lúc 6h",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Conditional trigger not yet met"
+  },
+  {
+    "id": "HTOOL-095",
+    "group": "CONDITIONAL_TOOL",
+    "query": "Khi nào có link zoom thì gửi mail cho lớp",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Conditional trigger not yet met"
+  },
+  {
+    "id": "HTOOL-096",
+    "group": "CONDITIONAL_TOOL",
+    "query": "Hễ được nghỉ học thì hủy lịch nhắc nhở",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Conditional trigger not yet met"
+  },
+  {
+    "id": "HTOOL-097",
+    "group": "CONDITIONAL_TOOL",
+    "query": "Đợi đến hạn cuối cùng hãy nhắc tôi nộp đồ án",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Conditional trigger not yet met"
+  },
+  {
+    "id": "HTOOL-098",
+    "group": "CONDITIONAL_TOOL",
+    "query": "Chừng nào nhà trường mở cổng thì gửi email",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Conditional trigger not yet met"
+  },
+  {
+    "id": "HTOOL-099",
+    "group": "CONDITIONAL_TOOL",
+    "query": "Chờ tôi xác nhận lần nữa rồi mới gửi mail",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Conditional trigger not yet met"
+  },
+  {
+    "id": "HTOOL-100",
+    "group": "CONDITIONAL_TOOL",
+    "query": "Nếu có thay đổi phòng học thì nhắc tôi ngay",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Conditional trigger not yet met"
+  },
+  {
+    "id": "HTOOL-101",
+    "group": "CONTRADICTORY_TOOL",
+    "query": "Gửi email cho thầy giáo... à mà thôi đừng gửi nhé",
+    "expected_action": "CLARIFICATION_REQUIRED",
+    "side_effect_allowed": false,
+    "expected_operation": "CLARIFY",
+    "note": "Contradiction / mind change requires clarification"
+  },
+  {
+    "id": "HTOOL-102",
+    "group": "CONTRADICTORY_TOOL",
+    "query": "Soạn và gửi thư tới covan@dainam.edu.vn, khoan đã đừng gửi vội",
+    "expected_action": "CLARIFICATION_REQUIRED",
+    "side_effect_allowed": false,
+    "expected_operation": "CLARIFY",
+    "note": "Contradiction / mind change requires clarification"
+  },
+  {
+    "id": "HTOOL-103",
+    "group": "CONTRADICTORY_TOOL",
+    "query": "Nhắc tôi ôn thi lúc 8h tối mai... thôi không cần đâu",
+    "expected_action": "CLARIFICATION_REQUIRED",
+    "side_effect_allowed": false,
+    "expected_operation": "CLARIFY",
+    "note": "Contradiction / mind change requires clarification"
+  },
+  {
+    "id": "HTOOL-104",
+    "group": "CONTRADICTORY_TOOL",
+    "query": "Đặt lịch nhắc nộp bài lúc 17h, à nhầm đừng nhắc nữa",
+    "expected_action": "CLARIFICATION_REQUIRED",
+    "side_effect_allowed": false,
+    "expected_operation": "CLARIFY",
+    "note": "Contradiction / mind change requires clarification"
+  },
+  {
+    "id": "HTOOL-105",
+    "group": "CONTRADICTORY_TOOL",
+    "query": "Gửi mail cho giảng viên, đổi ý rồi không gửi nữa",
+    "expected_action": "CLARIFICATION_REQUIRED",
+    "side_effect_allowed": false,
+    "expected_operation": "CLARIFY",
+    "note": "Contradiction / mind change requires clarification"
+  },
+  {
+    "id": "HTOOL-106",
+    "group": "CONTRADICTORY_TOOL",
+    "query": "Nhắc tôi 9h sáng mai... thôi khỏi nhé",
+    "expected_action": "CLARIFICATION_REQUIRED",
+    "side_effect_allowed": false,
+    "expected_operation": "CLARIFY",
+    "note": "Contradiction / mind change requires clarification"
+  },
+  {
+    "id": "HTOOL-107",
+    "group": "CONTRADICTORY_TOOL",
+    "query": "Gửi email... không, đừng gửi gì cả",
+    "expected_action": "CLARIFICATION_REQUIRED",
+    "side_effect_allowed": false,
+    "expected_operation": "CLARIFY",
+    "note": "Contradiction / mind change requires clarification"
+  },
+  {
+    "id": "HTOOL-108",
+    "group": "CONTRADICTORY_TOOL",
+    "query": "Nhắc nhở tôi lúc 8h... thôi bỏ đi",
+    "expected_action": "CLARIFICATION_REQUIRED",
+    "side_effect_allowed": false,
+    "expected_operation": "CLARIFY",
+    "note": "Contradiction / mind change requires clarification"
+  },
+  {
+    "id": "HTOOL-109",
+    "group": "CONTRADICTORY_TOOL",
+    "query": "Soạn thư gửi cô Hoa, à không cần gửi đâu",
+    "expected_action": "CLARIFICATION_REQUIRED",
+    "side_effect_allowed": false,
+    "expected_operation": "CLARIFY",
+    "note": "Contradiction / mind change requires clarification"
+  },
+  {
+    "id": "HTOOL-110",
+    "group": "CONTRADICTORY_TOOL",
+    "query": "Đặt lịch hẹn 14h chiều nay nhưng mà thôi",
+    "expected_action": "CLARIFICATION_REQUIRED",
+    "side_effect_allowed": false,
+    "expected_operation": "CLARIFY",
+    "note": "Contradiction / mind change requires clarification"
+  },
+  {
+    "id": "HTOOL-111",
+    "group": "CONTRADICTORY_TOOL",
+    "query": "Gửi thư cho phòng đào tạo... khoan, dừng lại đừng gửi",
+    "expected_action": "CLARIFICATION_REQUIRED",
+    "side_effect_allowed": false,
+    "expected_operation": "CLARIFY",
+    "note": "Contradiction / mind change requires clarification"
+  },
+  {
+    "id": "HTOOL-112",
+    "group": "CONTRADICTORY_TOOL",
+    "query": "Nhắc tôi làm bài tập... thôi không cần nhắc",
+    "expected_action": "CLARIFICATION_REQUIRED",
+    "side_effect_allowed": false,
+    "expected_operation": "CLARIFY",
+    "note": "Contradiction / mind change requires clarification"
+  },
+  {
+    "id": "HTOOL-113",
+    "group": "CONTRADICTORY_TOOL",
+    "query": "Gửi mail xin nghỉ học, thôi hủy đi không gửi nữa",
+    "expected_action": "CLARIFICATION_REQUIRED",
+    "side_effect_allowed": false,
+    "expected_operation": "CLARIFY",
+    "note": "Contradiction / mind change requires clarification"
+  },
+  {
+    "id": "HTOOL-114",
+    "group": "CONTRADICTORY_TOOL",
+    "query": "Lên lịch ôn thi cuối kỳ... à nhầm thôi bỏ qua",
+    "expected_action": "CLARIFICATION_REQUIRED",
+    "side_effect_allowed": false,
+    "expected_operation": "CLARIFY",
+    "note": "Contradiction / mind change requires clarification"
+  },
+  {
+    "id": "HTOOL-115",
+    "group": "CONTRADICTORY_TOOL",
+    "query": "Gửi email tới tieppv@dainam.edu.vn, nhưng thôi đừng gửi",
+    "expected_action": "CLARIFICATION_REQUIRED",
+    "side_effect_allowed": false,
+    "expected_operation": "CLARIFY",
+    "note": "Contradiction / mind change requires clarification"
+  },
+  {
+    "id": "HTOOL-116",
+    "group": "CONTRADICTORY_TOOL",
+    "query": "Nhắc tôi lúc 7h... à không, đừng nhắc",
+    "expected_action": "CLARIFICATION_REQUIRED",
+    "side_effect_allowed": false,
+    "expected_operation": "CLARIFY",
+    "note": "Contradiction / mind change requires clarification"
+  },
+  {
+    "id": "HTOOL-117",
+    "group": "CONTRADICTORY_TOOL",
+    "query": "Gửi email nhé... thôi đừng có gửi",
+    "expected_action": "CLARIFICATION_REQUIRED",
+    "side_effect_allowed": false,
+    "expected_operation": "CLARIFY",
+    "note": "Contradiction / mind change requires clarification"
+  },
+  {
+    "id": "HTOOL-118",
+    "group": "CONTRADICTORY_TOOL",
+    "query": "Đặt hẹn giờ 20h ngày mai... thôi khỏi phiền bot",
+    "expected_action": "CLARIFICATION_REQUIRED",
+    "side_effect_allowed": false,
+    "expected_operation": "CLARIFY",
+    "note": "Contradiction / mind change requires clarification"
+  },
+  {
+    "id": "HTOOL-119",
+    "group": "CONTRADICTORY_TOOL",
+    "query": "Soạn email gửi ban chủ nhiệm, mà thôi đừng gửi",
+    "expected_action": "CLARIFICATION_REQUIRED",
+    "side_effect_allowed": false,
+    "expected_operation": "CLARIFY",
+    "note": "Contradiction / mind change requires clarification"
+  },
+  {
+    "id": "HTOOL-120",
+    "group": "CONTRADICTORY_TOOL",
+    "query": "Gửi email bài tập... à quên, đừng gửi vội",
+    "expected_action": "CLARIFICATION_REQUIRED",
+    "side_effect_allowed": false,
+    "expected_operation": "CLARIFY",
+    "note": "Contradiction / mind change requires clarification"
+  },
+  {
+    "id": "HTOOL-121",
+    "group": "CONTRADICTORY_TOOL",
+    "query": "Nhắc tôi nộp tiểu luận... thôi tôi tự nhớ được",
+    "expected_action": "CLARIFICATION_REQUIRED",
+    "side_effect_allowed": false,
+    "expected_operation": "CLARIFY",
+    "note": "Contradiction / mind change requires clarification"
+  },
+  {
+    "id": "HTOOL-122",
+    "group": "CONTRADICTORY_TOOL",
+    "query": "Gửi mail cho thầy... khoan đã, đừng gửi",
+    "expected_action": "CLARIFICATION_REQUIRED",
+    "side_effect_allowed": false,
+    "expected_operation": "CLARIFY",
+    "note": "Contradiction / mind change requires clarification"
+  },
+  {
+    "id": "HTOOL-123",
+    "group": "CONTRADICTORY_TOOL",
+    "query": "Đặt lịch nhắc... thôi không cần đâu ạ",
+    "expected_action": "CLARIFICATION_REQUIRED",
+    "side_effect_allowed": false,
+    "expected_operation": "CLARIFY",
+    "note": "Contradiction / mind change requires clarification"
+  },
+  {
+    "id": "HTOOL-124",
+    "group": "CONTRADICTORY_TOOL",
+    "query": "Gửi thư mời dự lễ... đổi ý rồi đừng gửi",
+    "expected_action": "CLARIFICATION_REQUIRED",
+    "side_effect_allowed": false,
+    "expected_operation": "CLARIFY",
+    "note": "Contradiction / mind change requires clarification"
+  },
+  {
+    "id": "HTOOL-125",
+    "group": "CONTRADICTORY_TOOL",
+    "query": "Nhắc nhở học tập... thôi hủy giúp tôi",
+    "expected_action": "CLARIFICATION_REQUIRED",
+    "side_effect_allowed": false,
+    "expected_operation": "CLARIFY",
+    "note": "Contradiction / mind change requires clarification"
+  },
+  {
+    "id": "HTOOL-126",
+    "group": "DRAFT_VS_SEND",
+    "query": "Soạn email gửi thầy nhưng đừng gửi đi nhé",
+    "expected_action": "DRAFT_ONLY",
+    "side_effect_allowed": false,
+    "expected_operation": "COMPOSE_EMAIL",
+    "note": "Compose email draft only without side effect"
+  },
+  {
+    "id": "HTOOL-127",
+    "group": "DRAFT_VS_SEND",
+    "query": "Viết giúp tôi bản nháp email xin nghỉ ốm, không gửi",
+    "expected_action": "DRAFT_ONLY",
+    "side_effect_allowed": false,
+    "expected_operation": "COMPOSE_EMAIL",
+    "note": "Compose email draft only without side effect"
+  },
+  {
+    "id": "HTOOL-128",
+    "group": "DRAFT_VS_SEND",
+    "query": "Draft email gửi phòng công tác sinh viên, chưa cần gửi",
+    "expected_action": "DRAFT_ONLY",
+    "side_effect_allowed": false,
+    "expected_operation": "COMPOSE_EMAIL",
+    "note": "Compose email draft only without side effect"
+  },
+  {
+    "id": "HTOOL-129",
+    "group": "DRAFT_VS_SEND",
+    "query": "Tạo nội dung thư gửi giảng viên nhưng không gửi qua mạng",
+    "expected_action": "DRAFT_ONLY",
+    "side_effect_allowed": false,
+    "expected_operation": "COMPOSE_EMAIL",
+    "note": "Compose email draft only without side effect"
+  },
+  {
+    "id": "HTOOL-130",
+    "group": "DRAFT_VS_SEND",
+    "query": "Soạn giúp tôi bức thư xin hoãn thi, tôi sẽ tự gửi sau",
+    "expected_action": "DRAFT_ONLY",
+    "side_effect_allowed": false,
+    "expected_operation": "COMPOSE_EMAIL",
+    "note": "Compose email draft only without side effect"
+  },
+  {
+    "id": "HTOOL-131",
+    "group": "DRAFT_VS_SEND",
+    "query": "Viết dự thảo email hỏi về đề cương chi tiết môn học",
+    "expected_action": "DRAFT_ONLY",
+    "side_effect_allowed": false,
+    "expected_operation": "COMPOSE_EMAIL",
+    "note": "Compose email draft only without side effect"
+  },
+  {
+    "id": "HTOOL-132",
+    "group": "DRAFT_VS_SEND",
+    "query": "Soạn thư điện tử gửi thầy Nam nhưng chớ có gửi đi",
+    "expected_action": "DRAFT_ONLY",
+    "side_effect_allowed": false,
+    "expected_operation": "COMPOSE_EMAIL",
+    "note": "Compose email draft only without side effect"
+  },
+  {
+    "id": "HTOOL-133",
+    "group": "DRAFT_VS_SEND",
+    "query": "Tạo template email phản hồi điểm thi, không gửi nhé",
+    "expected_action": "DRAFT_ONLY",
+    "side_effect_allowed": false,
+    "expected_operation": "COMPOSE_EMAIL",
+    "note": "Compose email draft only without side effect"
+  },
+  {
+    "id": "HTOOL-134",
+    "group": "DRAFT_VS_SEND",
+    "query": "Soạn bản thảo email gửi cô giáo, lưu nháp thôi",
+    "expected_action": "DRAFT_ONLY",
+    "side_effect_allowed": false,
+    "expected_operation": "COMPOSE_EMAIL",
+    "note": "Compose email draft only without side effect"
+  },
+  {
+    "id": "HTOOL-135",
+    "group": "DRAFT_VS_SEND",
+    "query": "Viết email mẫu để xin chuyển lớp tín chỉ",
+    "expected_action": "DRAFT_ONLY",
+    "side_effect_allowed": false,
+    "expected_operation": "COMPOSE_EMAIL",
+    "note": "Compose email draft only without side effect"
+  },
+  {
+    "id": "HTOOL-136",
+    "group": "DRAFT_VS_SEND",
+    "query": "Draft an email to instructor without sending it",
+    "expected_action": "DRAFT_ONLY",
+    "side_effect_allowed": false,
+    "expected_operation": "COMPOSE_EMAIL",
+    "note": "Compose email draft only without side effect"
+  },
+  {
+    "id": "HTOOL-137",
+    "group": "DRAFT_VS_SEND",
+    "query": "Soạn email xin tài liệu nhưng để tôi tự gửi",
+    "expected_action": "DRAFT_ONLY",
+    "side_effect_allowed": false,
+    "expected_operation": "COMPOSE_EMAIL",
+    "note": "Compose email draft only without side effect"
+  },
+  {
+    "id": "HTOOL-138",
+    "group": "DRAFT_VS_SEND",
+    "query": "Viết hộ tôi email gửi khoa CNTT, chỉ soạn thôi đừng gửi",
+    "expected_action": "DRAFT_ONLY",
+    "side_effect_allowed": false,
+    "expected_operation": "COMPOSE_EMAIL",
+    "note": "Compose email draft only without side effect"
+  },
+  {
+    "id": "HTOOL-139",
+    "group": "DRAFT_VS_SEND",
+    "query": "Lập dàn ý và lời văn cho email gửi giảng viên",
+    "expected_action": "DRAFT_ONLY",
+    "side_effect_allowed": false,
+    "expected_operation": "COMPOSE_EMAIL",
+    "note": "Compose email draft only without side effect"
+  },
+  {
+    "id": "HTOOL-140",
+    "group": "DRAFT_VS_SEND",
+    "query": "Soạn sẵn thư điện tử gửi thầy, không bấm gửi",
+    "expected_action": "DRAFT_ONLY",
+    "side_effect_allowed": false,
+    "expected_operation": "COMPOSE_EMAIL",
+    "note": "Compose email draft only without side effect"
+  },
+  {
+    "id": "HTOOL-141",
+    "group": "DRAFT_VS_SEND",
+    "query": "Viết thư xin gia hạn nộp bài tập lớn, để nháp",
+    "expected_action": "DRAFT_ONLY",
+    "side_effect_allowed": false,
+    "expected_operation": "COMPOSE_EMAIL",
+    "note": "Compose email draft only without side effect"
+  },
+  {
+    "id": "HTOOL-142",
+    "group": "DRAFT_VS_SEND",
+    "query": "Soạn email mời dự hội thảo khoa học nhưng đừng send",
+    "expected_action": "DRAFT_ONLY",
+    "side_effect_allowed": false,
+    "expected_operation": "COMPOSE_EMAIL",
+    "note": "Compose email draft only without side effect"
+  },
+  {
+    "id": "HTOOL-143",
+    "group": "DRAFT_VS_SEND",
+    "query": "Lên khung email gửi văn phòng khoa, không gửi đi",
+    "expected_action": "DRAFT_ONLY",
+    "side_effect_allowed": false,
+    "expected_operation": "COMPOSE_EMAIL",
+    "note": "Compose email draft only without side effect"
+  },
+  {
+    "id": "HTOOL-144",
+    "group": "DRAFT_VS_SEND",
+    "query": "Soạn email hỏi thầy về CLO môn học, tôi tự copy gửi",
+    "expected_action": "DRAFT_ONLY",
+    "side_effect_allowed": false,
+    "expected_operation": "COMPOSE_EMAIL",
+    "note": "Compose email draft only without side effect"
+  },
+  {
+    "id": "HTOOL-145",
+    "group": "DRAFT_VS_SEND",
+    "query": "Viết thử một email xin phép vắng mặt 1 buổi học",
+    "expected_action": "DRAFT_ONLY",
+    "side_effect_allowed": false,
+    "expected_operation": "COMPOSE_EMAIL",
+    "note": "Compose email draft only without side effect"
+  },
+  {
+    "id": "HTOOL-146",
+    "group": "DRAFT_VS_SEND",
+    "query": "Tạo mẫu thư điện tử xin xác nhận sinh viên",
+    "expected_action": "DRAFT_ONLY",
+    "side_effect_allowed": false,
+    "expected_operation": "COMPOSE_EMAIL",
+    "note": "Compose email draft only without side effect"
+  },
+  {
+    "id": "HTOOL-147",
+    "group": "DRAFT_VS_SEND",
+    "query": "Soạn email giải trình vắng thi, chưa gửi nhé",
+    "expected_action": "DRAFT_ONLY",
+    "side_effect_allowed": false,
+    "expected_operation": "COMPOSE_EMAIL",
+    "note": "Compose email draft only without side effect"
+  },
+  {
+    "id": "HTOOL-148",
+    "group": "DRAFT_VS_SEND",
+    "query": "Viết thư hỏi thông tin thực tập tốt nghiệp, lưu nháp",
+    "expected_action": "DRAFT_ONLY",
+    "side_effect_allowed": false,
+    "expected_operation": "COMPOSE_EMAIL",
+    "note": "Compose email draft only without side effect"
+  },
+  {
+    "id": "HTOOL-149",
+    "group": "DRAFT_VS_SEND",
+    "query": "Soạn nội dung mail xin hỗ trợ học phí, đừng gửi ngay",
+    "expected_action": "DRAFT_ONLY",
+    "side_effect_allowed": false,
+    "expected_operation": "COMPOSE_EMAIL",
+    "note": "Compose email draft only without side effect"
+  },
+  {
+    "id": "HTOOL-150",
+    "group": "DRAFT_VS_SEND",
+    "query": "Draft giúp email giải thích bài tập, chỉ xem thử",
+    "expected_action": "DRAFT_ONLY",
+    "side_effect_allowed": false,
+    "expected_operation": "COMPOSE_EMAIL",
+    "note": "Compose email draft only without side effect"
+  },
+  {
+    "id": "HTOOL-151",
+    "group": "EXPLANATORY_TOOL",
+    "query": "Email là gì và có vai trò gì trong giao tiếp học vụ?",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Informational query about tool"
+  },
+  {
+    "id": "HTOOL-152",
+    "group": "EXPLANATORY_TOOL",
+    "query": "Làm thế nào để gửi email qua hệ thống cố vấn học tập?",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Informational query about tool"
+  },
+  {
+    "id": "HTOOL-153",
+    "group": "EXPLANATORY_TOOL",
+    "query": "Hướng dẫn gửi email liên hệ cho giảng viên trường Đại Nam",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Informational query about tool"
+  },
+  {
+    "id": "HTOOL-154",
+    "group": "EXPLANATORY_TOOL",
+    "query": "Giao thức SMTP trong hệ thống gửi email hoạt động ra sao?",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Informational query about tool"
+  },
+  {
+    "id": "HTOOL-155",
+    "group": "EXPLANATORY_TOOL",
+    "query": "Ai được phép gửi email trong hệ thống này?",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Informational query about tool"
+  },
+  {
+    "id": "HTOOL-156",
+    "group": "EXPLANATORY_TOOL",
+    "query": "Lịch nhắc nhở là gì và hoạt động như thế nào?",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Informational query about tool"
+  },
+  {
+    "id": "HTOOL-157",
+    "group": "EXPLANATORY_TOOL",
+    "query": "Cách đặt lịch nhắc ôn thi trên trợ lý học vụ",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Informational query about tool"
+  },
+  {
+    "id": "HTOOL-158",
+    "group": "EXPLANATORY_TOOL",
+    "query": "Hệ thống scheduler dùng thư viện gì để lên lịch nhắc?",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Informational query about tool"
+  },
+  {
+    "id": "HTOOL-159",
+    "group": "EXPLANATORY_TOOL",
+    "query": "Làm sao để xem danh sách các lịch nhắc đã đặt?",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Informational query about tool"
+  },
+  {
+    "id": "HTOOL-160",
+    "group": "EXPLANATORY_TOOL",
+    "query": "Giải thích tính năng đặt lịch nhắc học tập",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Informational query about tool"
+  },
+  {
+    "id": "HTOOL-161",
+    "group": "EXPLANATORY_TOOL",
+    "query": "Chức năng gửi thư điện tử có mất phí không?",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Informational query about tool"
+  },
+  {
+    "id": "HTOOL-162",
+    "group": "EXPLANATORY_TOOL",
+    "query": "Có những hình thức nhắc nhở nào trong ứng dụng?",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Informational query about tool"
+  },
+  {
+    "id": "HTOOL-163",
+    "group": "EXPLANATORY_TOOL",
+    "query": "Địa chỉ email của giảng viên khoa CNTT lấy ở đâu?",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Informational query about tool"
+  },
+  {
+    "id": "HTOOL-164",
+    "group": "EXPLANATORY_TOOL",
+    "query": "Làm cách nào để hủy một lịch nhắc đã hẹn giờ?",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Informational query about tool"
+  },
+  {
+    "id": "HTOOL-165",
+    "group": "EXPLANATORY_TOOL",
+    "query": "Khi nào bot sẽ gửi email thông báo cho sinh viên?",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Informational query about tool"
+  },
+  {
+    "id": "HTOOL-166",
+    "group": "EXPLANATORY_TOOL",
+    "query": "Giới hạn dung lượng email gửi qua hệ thống là bao nhiêu?",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Informational query about tool"
+  },
+  {
+    "id": "HTOOL-167",
+    "group": "EXPLANATORY_TOOL",
+    "query": "Định dạng thời gian hợp lệ khi đặt lịch nhắc là gì?",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Informational query about tool"
+  },
+  {
+    "id": "HTOOL-168",
+    "group": "EXPLANATORY_TOOL",
+    "query": "Làm thế nào để biết email đã được gửi thành công?",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Informational query about tool"
+  },
+  {
+    "id": "HTOOL-169",
+    "group": "EXPLANATORY_TOOL",
+    "query": "Cơ chế bảo mật khi gửi email trong ứng dụng",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Informational query about tool"
+  },
+  {
+    "id": "HTOOL-170",
+    "group": "EXPLANATORY_TOOL",
+    "query": "Lịch nhắc có tự động gửi email không hay chỉ báo trên web?",
+    "expected_action": "NON_ACTIVATION",
+    "side_effect_allowed": false,
+    "expected_operation": "NO_ACTION",
+    "note": "Informational query about tool"
+  },
+  {
+    "id": "HTOOL-171",
+    "group": "POSITIVE_TOOL",
+    "query": "Gửi email tới giangvien@dainam.edu.vn xin tài liệu học tập",
+    "expected_action": "SEND_EMAIL",
+    "side_effect_allowed": true,
+    "expected_operation": "SEND_EMAIL",
+    "note": "Valid positive command with authorized side-effect"
+  },
+  {
+    "id": "HTOOL-172",
+    "group": "POSITIVE_TOOL",
+    "query": "Gửi email cho thầy qua địa chỉ tieppv@dainam.edu.vn thông báo nộp bài",
+    "expected_action": "SEND_EMAIL",
+    "side_effect_allowed": true,
+    "expected_operation": "SEND_EMAIL",
+    "note": "Valid positive command with authorized side-effect"
+  },
+  {
+    "id": "HTOOL-173",
+    "group": "POSITIVE_TOOL",
+    "query": "Gửi email tới covan@dainam.edu.vn xin tư vấn học phần",
+    "expected_action": "SEND_EMAIL",
+    "side_effect_allowed": true,
+    "expected_operation": "SEND_EMAIL",
+    "note": "Valid positive command with authorized side-effect"
+  },
+  {
+    "id": "HTOOL-174",
+    "group": "POSITIVE_TOOL",
+    "query": "Gửi mail tới phongdaotao@dainam.edu.vn xin cấp bảng điểm",
+    "expected_action": "SEND_EMAIL",
+    "side_effect_allowed": true,
+    "expected_operation": "SEND_EMAIL",
+    "note": "Valid positive command with authorized side-effect"
+  },
+  {
+    "id": "HTOOL-175",
+    "group": "POSITIVE_TOOL",
+    "query": "Gửi thư điện tử tới khoacntt@dainam.edu.vn xin mẫu đơn",
+    "expected_action": "SEND_EMAIL",
+    "side_effect_allowed": true,
+    "expected_operation": "SEND_EMAIL",
+    "note": "Valid positive command with authorized side-effect"
+  },
+  {
+    "id": "HTOOL-176",
+    "group": "POSITIVE_TOOL",
+    "query": "Gửi email tới teacher@dainam.edu.vn về đề tài tốt nghiệp",
+    "expected_action": "SEND_EMAIL",
+    "side_effect_allowed": true,
+    "expected_operation": "SEND_EMAIL",
+    "note": "Valid positive command with authorized side-effect"
+  },
+  {
+    "id": "HTOOL-177",
+    "group": "POSITIVE_TOOL",
+    "query": "Gửi email tới contact@dainam.edu.vn hỏi lịch đăng ký tín chỉ",
+    "expected_action": "SEND_EMAIL",
+    "side_effect_allowed": true,
+    "expected_operation": "SEND_EMAIL",
+    "note": "Valid positive command with authorized side-effect"
+  },
+  {
+    "id": "HTOOL-178",
+    "group": "POSITIVE_TOOL",
+    "query": "Gửi mail ngay tới support@dainam.edu.vn báo lỗi học vụ",
+    "expected_action": "SEND_EMAIL",
+    "side_effect_allowed": true,
+    "expected_operation": "SEND_EMAIL",
+    "note": "Valid positive command with authorized side-effect"
+  },
+  {
+    "id": "HTOOL-179",
+    "group": "POSITIVE_TOOL",
+    "query": "Gửi email đến advisor@dainam.edu.vn xin hoãn kiểm tra",
+    "expected_action": "SEND_EMAIL",
+    "side_effect_allowed": true,
+    "expected_operation": "SEND_EMAIL",
+    "note": "Valid positive command with authorized side-effect"
+  },
+  {
+    "id": "HTOOL-180",
+    "group": "POSITIVE_TOOL",
+    "query": "Gửi email cho phòng CTSV tới ctsv@dainam.edu.vn",
+    "expected_action": "SEND_EMAIL",
+    "side_effect_allowed": true,
+    "expected_operation": "SEND_EMAIL",
+    "note": "Valid positive command with authorized side-effect"
+  },
+  {
+    "id": "HTOOL-181",
+    "group": "POSITIVE_TOOL",
+    "query": "Nhắc tôi ôn thi lúc 8h tối mai",
+    "expected_action": "SET_REMINDER",
+    "side_effect_allowed": true,
+    "expected_operation": "SET_REMINDER",
+    "note": "Valid positive command with authorized side-effect"
+  },
+  {
+    "id": "HTOOL-182",
+    "group": "POSITIVE_TOOL",
+    "query": "Đặt lịch nhắc nộp bài tập lớn lúc 17h ngày 20/12/2026",
+    "expected_action": "SET_REMINDER",
+    "side_effect_allowed": true,
+    "expected_operation": "SET_REMINDER",
+    "note": "Valid positive command with authorized side-effect"
+  },
+  {
+    "id": "HTOOL-183",
+    "group": "POSITIVE_TOOL",
+    "query": "Nhắc tôi đi thi môn FIT4201 lúc 7h sáng mai",
+    "expected_action": "SET_REMINDER",
+    "side_effect_allowed": true,
+    "expected_operation": "SET_REMINDER",
+    "note": "Valid positive command with authorized side-effect"
+  },
+  {
+    "id": "HTOOL-184",
+    "group": "POSITIVE_TOOL",
+    "query": "Lên lịch nhắc học bài lúc 20h hôm nay",
+    "expected_action": "SET_REMINDER",
+    "side_effect_allowed": true,
+    "expected_operation": "SET_REMINDER",
+    "note": "Valid positive command with authorized side-effect"
+  },
+  {
+    "id": "HTOOL-185",
+    "group": "POSITIVE_TOOL",
+    "query": "Hẹn giờ nhắc làm đồ án tốt nghiệp lúc 9h ngày mai",
+    "expected_action": "SET_REMINDER",
+    "side_effect_allowed": true,
+    "expected_operation": "SET_REMINDER",
+    "note": "Valid positive command with authorized side-effect"
+  },
+  {
+    "id": "HTOOL-186",
+    "group": "POSITIVE_TOOL",
+    "query": "Đặt lịch nhắc tôi nộp học phí lúc 10h ngày 15/05/2026",
+    "expected_action": "SET_REMINDER",
+    "side_effect_allowed": true,
+    "expected_operation": "SET_REMINDER",
+    "note": "Valid positive command with authorized side-effect"
+  },
+  {
+    "id": "HTOOL-187",
+    "group": "POSITIVE_TOOL",
+    "query": "Nhắc tôi gặp thầy hướng dẫn lúc 14h chiều mai",
+    "expected_action": "SET_REMINDER",
+    "side_effect_allowed": true,
+    "expected_operation": "SET_REMINDER",
+    "note": "Valid positive command with authorized side-effect"
+  },
+  {
+    "id": "HTOOL-188",
+    "group": "POSITIVE_TOOL",
+    "query": "Nhắc tôi kiểm tra email lúc 16h hôm nay",
+    "expected_action": "SET_REMINDER",
+    "side_effect_allowed": true,
+    "expected_operation": "SET_REMINDER",
+    "note": "Valid positive command with authorized side-effect"
+  },
+  {
+    "id": "HTOOL-189",
+    "group": "POSITIVE_TOOL",
+    "query": "Đặt lịch nhắc làm bài kiểm tra trắc nghiệm lúc 21h tối mai",
+    "expected_action": "SET_REMINDER",
+    "side_effect_allowed": true,
+    "expected_operation": "SET_REMINDER",
+    "note": "Valid positive command with authorized side-effect"
+  },
+  {
+    "id": "HTOOL-190",
+    "group": "POSITIVE_TOOL",
+    "query": "Nhắc tôi ôn thi cuối kỳ lúc 8 giờ sáng ngày 25/12/2026",
+    "expected_action": "SET_REMINDER",
+    "side_effect_allowed": true,
+    "expected_operation": "SET_REMINDER",
+    "note": "Valid positive command with authorized side-effect"
+  }
+]

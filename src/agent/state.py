@@ -18,6 +18,7 @@ class AgentState(TypedDict):
     session_context: Optional[Dict[str, Any]]
     resolved_entities: Dict[str, Any]
     resolution_source: str
+    utterance_semantics: Optional[Dict[str, Any]]
 
     # Cache Policy (Context-Safe)
     cache_policy: Optional[Dict[str, Any]]

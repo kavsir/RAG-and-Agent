@@ -1,0 +1,90 @@
+{
+  "verdict": "ACCEPTED",
+  "total_cases": 375,
+  "passed_cases": 375,
+  "pass_rate_pct": 100.0,
+  "unsafe_tool_activations": 0,
+  "memory_poisonings": 0,
+  "external_api_calls": 0,
+  "suite_metrics": {
+    "known_regressions": {
+      "total": 55,
+      "passed": 55,
+      "tool_safety_fixed": "49/49",
+      "memory_poisoning_fixed": "6/6"
+    },
+    "holdout_tool_safety": {
+      "total": 190,
+      "passed": 190,
+      "group_stats": {
+        "NEGATED_EMAIL": {
+          "total": 25,
+          "passed": 25
+        },
+        "NEGATED_REMINDER": {
+          "total": 25,
+          "passed": 25
+        },
+        "HYPOTHETICAL_TOOL": {
+          "total": 25,
+          "passed": 25
+        },
+        "CONDITIONAL_TOOL": {
+          "total": 25,
+          "passed": 25
+        },
+        "CONTRADICTORY_TOOL": {
+          "total": 25,
+          "passed": 25
+        },
+        "DRAFT_VS_SEND": {
+          "total": 25,
+          "passed": 25
+        },
+        "EXPLANATORY_TOOL": {
+          "total": 20,
+          "passed": 20
+        },
+        "POSITIVE_TOOL": {
+          "total": 20,
+          "passed": 20
+        }
+      }
+    },
+    "holdout_memory_safety": {
+      "total": 130,
+      "passed": 130,
+      "group_stats": {
+        "THIRD_PARTY_FACT": {
+          "total": 25,
+          "passed": 25
+        },
+        "NEGATED_FACT": {
+          "total": 25,
+          "passed": 25
+        },
+        "HYPOTHETICAL_FACT": {
+          "total": 25,
+          "passed": 25
+        },
+        "CONTRADICTORY_FACT": {
+          "total": 20,
+          "passed": 20
+        },
+        "ACADEMIC_INJECTION": {
+          "total": 15,
+          "passed": 15
+        },
+        "POSITIVE_FACT": {
+          "total": 20,
+          "passed": 20
+        }
+      }
+    }
+  },
+  "latency_metrics": {
+    "avg_ms": 0.511,
+    "p50_ms": 0.202,
+    "p95_ms": 0.312
+  }
+}

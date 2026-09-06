@@ -163,7 +163,7 @@ def extract_candidate_facts(text: str) -> List[Tuple[str, Any]]:
 
     # 5. Phong cách phản hồi (response_style)
     m_style = re.search(
-        r"(?:hãy|thích|muốn|yêu cầu)\s+(?:trả lời|phản hồi)\s+(ngắn gọn|chi tiết|súc tích|thực hành)",
+        r"(?:hãy|thích|muốn|yêu cầu)\s+(?:trả lời|phản hồi|phong\s+cách)?\s*(ngắn gọn|chi tiết|súc tích|thực hành)",
         text,
         re.IGNORECASE,
     )
@@ -173,6 +173,8 @@ def extract_candidate_facts(text: str) -> List[Tuple[str, Any]]:
         candidates.append(("response_style", "concise"))
     elif any(w in text.lower() for w in ["trả lời chi tiết hơn", "phản hồi chi tiết hơn", "trả lời chi tiết"]):
         candidates.append(("response_style", "detailed"))
+    elif any(w in text.lower() for w in ["thích phong cách thực hành", "phong cách thực hành"]):
+        candidates.append(("response_style", "practical"))
 
     # 6. Ngôn ngữ ưa thích (preferred_language)
     m_lang = re.search(
@@ -236,6 +238,21 @@ def evaluate_candidate(
     # 4. Kiểm tra dữ liệu nhạy cảm (Sensitive info)
     if is_sensitive_topic(full_text):
         return False, "SENSITIVE_INFO_REJECTED: Statement involves sensitive privacy domains", None
+
+    # 4.1 Kiểm tra ngữ nghĩa phát ngôn (Utterance Semantics Layer)
+    if source_type == SOURCE_EXPLICIT_USER:
+        from src.semantics import analyze_utterance, Polarity, Modality, SubjectScope
+        sem = analyze_utterance(full_text)
+        if sem.subject_scope == SubjectScope.THIRD_PARTY:
+            return False, "THIRD_PARTY_FACT_REJECTED: Statement refers to a third party, not the user", None
+        if sem.polarity == Polarity.NEGATED:
+            return False, "NEGATED_FACT_REJECTED: Negated statement cannot be stored as positive personal fact", None
+        if sem.modality in [Modality.HYPOTHETICAL, Modality.CONDITIONAL, Modality.EXPLANATORY]:
+            return False, "HYPOTHETICAL_FACT_REJECTED: Statement is hypothetical, conditional, or explanatory", None
+        if sem.is_contradictory:
+            return False, "CONTRADICTORY_FACT_REJECTED: Statement contains contradictory instructions", None
+        if sem.prohibition_detected:
+            return False, "PROHIBITION_REJECTED: Statement explicitly prohibits remembering", None
 
     # 5. Chuẩn hóa giá trị
     norm_val = normalize_fact_value(fact_key, raw_val)

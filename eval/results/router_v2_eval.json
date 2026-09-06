@@ -59,8 +59,8 @@
   },
   "holdout": {
     "total": 41,
-    "correct": 41,
-    "accuracy": 100.0,
+    "correct": 36,
+    "accuracy": 87.8048780487805,
     "categories": {
       "GENERAL_LLM": {
         "total": 14,
@@ -72,14 +72,14 @@
       },
       "TOOL_ACTION": {
         "total": 13,
-        "correct": 13
+        "correct": 8
       }
     }
   },
   "overall": {
     "total": 103,
-    "correct": 103,
-    "accuracy": 100.0,
+    "correct": 98,
+    "accuracy": 95.14563106796116,
     "confusion_matrix": {
       "DOMAIN_DATA": {
         "DOMAIN_DATA": 64,
@@ -92,56 +92,132 @@
         "TOOL_ACTION": 0
       },
       "TOOL_ACTION": {
-        "DOMAIN_DATA": 0,
-        "GENERAL_LLM": 0,
-        "TOOL_ACTION": 19
+        "DOMAIN_DATA": 1,
+        "GENERAL_LLM": 4,
+        "TOOL_ACTION": 14
       }
     },
     "prf_metrics": {
       "DOMAIN_DATA": {
-        "precision": 100.0,
+        "precision": 98.46,
         "recall": 100.0,
-        "f1": 100.0,
+        "f1": 99.22,
         "support": 64
       },
       "GENERAL_LLM": {
-        "precision": 100.0,
+        "precision": 83.33,
         "recall": 100.0,
-        "f1": 100.0,
+        "f1": 90.91,
         "support": 20
       },
       "TOOL_ACTION": {
         "precision": 100.0,
-        "recall": 100.0,
-        "f1": 100.0,
+        "recall": 73.68,
+        "f1": 84.85,
         "support": 19
       }
     }
   },
   "latency": {
     "fast_path": {
-      "mean": 0.63,
-      "median": 0.31,
-      "p95": 1.29,
-      "p99": 5.17,
-      "count": 92
+      "mean": 0.38,
+      "median": 0.33,
+      "p95": 0.63,
+      "p99": 1.24,
+      "count": 88
     },
     "semantic_path": {
-      "mean": 121.38,
-      "median": 116.84,
-      "p95": 162.11,
-      "p99": 162.88,
-      "count": 11
+      "mean": 42.28,
+      "median": 38.46,
+      "p95": 56.23,
+      "p99": 63.77,
+      "count": 15
     },
     "overall": {
-      "mean": 13.52,
-      "median": 0.33,
-      "p95": 115.31,
-      "p99": 161.15,
+      "mean": 6.48,
+      "median": 0.36,
+      "p95": 42.55,
+      "p99": 52.03,
       "count": 103
     }
   },
-  "failed_cases": [],
+  "failed_cases": [
+    {
+      "id": "ho-tool-01",
+      "dataset": "holdout",
+      "type": "tool",
+      "question": "Soạn giúp tôi một email gửi thầy Tiệp xin phép nộp bài muộn môn Full-Stack",
+      "expected_category": "TOOL_ACTION",
+      "expected_tool_intent": "SEND_EMAIL",
+      "predicted_category": "GENERAL_LLM",
+      "predicted_tool_intent": null,
+      "decision_path": "SEMANTIC_CLASSIFIER",
+      "reason_code": "SEMANTIC_MARGIN_0.19_TOP_GENERAL_LLM",
+      "confidence": 0.9124,
+      "latency_ms": 40.236,
+      "passed": false
+    },
+    {
+      "id": "ho-tool-03",
+      "dataset": "holdout",
+      "type": "tool",
+      "question": "Viết email gửi cô Huệ để xin file tài liệu slide bài giảng môn FIT4117",
+      "expected_category": "TOOL_ACTION",
+      "expected_tool_intent": "SEND_EMAIL",
+      "predicted_category": "DOMAIN_DATA",
+      "predicted_tool_intent": null,
+      "decision_path": "STRONG_DOMAIN_FAST_PATH",
+      "reason_code": "COURSE_CODE_FIT4117",
+      "confidence": 1.0,
+      "latency_ms": 0.571,
+      "passed": false
+    },
+    {
+      "id": "ho-tool-07",
+      "dataset": "holdout",
+      "type": "tool",
+      "question": "Soạn thư điện tử gửi ban giám hiệu về việc xin cấp bảng điểm tạm thời",
+      "expected_category": "TOOL_ACTION",
+      "expected_tool_intent": "SEND_EMAIL",
+      "predicted_category": "GENERAL_LLM",
+      "predicted_tool_intent": null,
+      "decision_path": "SEMANTIC_CLASSIFIER",
+      "reason_code": "SEMANTIC_MARGIN_0.15_TOP_GENERAL_LLM",
+      "confidence": 0.9155,
+      "latency_ms": 38.142,
+      "passed": false
+    },
+    {
+      "id": "ho-tool-10",
+      "dataset": "holdout",
+      "type": "tool",
+      "question": "Viết giúp một email trang trọng xin thực tập tại doanh nghiệp đối tác",
+      "expected_category": "TOOL_ACTION",
+      "expected_tool_intent": "SEND_EMAIL",
+      "predicted_category": "GENERAL_LLM",
+      "predicted_tool_intent": null,
+      "decision_path": "SEMANTIC_CLASSIFIER",
+      "reason_code": "SEMANTIC_MARGIN_0.19_TOP_GENERAL_LLM",
+      "confidence": 0.9026,
+      "latency_ms": 52.191,
+      "passed": false
+    },
+    {
+      "id": "ho-tool-13",
+      "dataset": "holdout",
+      "type": "tool",
+      "question": "Soạn thảo email gửi thầy Nhẫn xin phản hồi về đề cương nghiên cứu khoa học",
+      "expected_category": "TOOL_ACTION",
+      "expected_tool_intent": "SEND_EMAIL",
+      "predicted_category": "GENERAL_LLM",
+      "predicted_tool_intent": null,
+      "decision_path": "SEMANTIC_CLASSIFIER",
+      "reason_code": "SEMANTIC_MARGIN_0.14_TOP_GENERAL_LLM",
+      "confidence": 0.8952,
+      "latency_ms": 37.769,
+      "passed": false
+    }
+  ],
   "results": [
     {
       "id": "v2-dir-01",
@@ -155,7 +231,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4201",
       "confidence": 1.0,
-      "latency_ms": 14.541,
+      "latency_ms": 1.989,
       "passed": true
     },
     {
@@ -170,7 +246,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4104",
       "confidence": 1.0,
-      "latency_ms": 1.102,
+      "latency_ms": 0.324,
       "passed": true
     },
     {
@@ -185,7 +261,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4117",
       "confidence": 1.0,
-      "latency_ms": 0.455,
+      "latency_ms": 0.274,
       "passed": true
     },
     {
@@ -200,7 +276,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4113",
       "confidence": 1.0,
-      "latency_ms": 0.77,
+      "latency_ms": 0.23,
       "passed": true
     },
     {
@@ -215,7 +291,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4104",
       "confidence": 1.0,
-      "latency_ms": 0.292,
+      "latency_ms": 0.319,
       "passed": true
     },
     {
@@ -230,7 +306,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4117",
       "confidence": 1.0,
-      "latency_ms": 0.221,
+      "latency_ms": 0.231,
       "passed": true
     },
     {
@@ -245,7 +321,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4113",
       "confidence": 1.0,
-      "latency_ms": 0.241,
+      "latency_ms": 1.125,
       "passed": true
     },
     {
@@ -260,7 +336,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4104",
       "confidence": 1.0,
-      "latency_ms": 0.181,
+      "latency_ms": 0.259,
       "passed": true
     },
     {
@@ -275,7 +351,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4201",
       "confidence": 1.0,
-      "latency_ms": 0.261,
+      "latency_ms": 0.26,
       "passed": true
     },
     {
@@ -290,7 +366,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "ACADEMIC_SCOPE_WITH_TARGET_OR_REGULATION",
       "confidence": 0.98,
-      "latency_ms": 0.371,
+      "latency_ms": 0.491,
       "passed": true
     },
     {
@@ -305,7 +381,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4201",
       "confidence": 1.0,
-      "latency_ms": 0.335,
+      "latency_ms": 0.295,
       "passed": true
     },
     {
@@ -320,7 +396,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4104",
       "confidence": 1.0,
-      "latency_ms": 2.792,
+      "latency_ms": 0.592,
       "passed": true
     },
     {
@@ -335,7 +411,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4117",
       "confidence": 1.0,
-      "latency_ms": 0.358,
+      "latency_ms": 0.302,
       "passed": true
     },
     {
@@ -350,7 +426,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4113",
       "confidence": 1.0,
-      "latency_ms": 0.279,
+      "latency_ms": 0.358,
       "passed": true
     },
     {
@@ -365,7 +441,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4104",
       "confidence": 1.0,
-      "latency_ms": 0.314,
+      "latency_ms": 0.367,
       "passed": true
     },
     {
@@ -380,7 +456,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4113",
       "confidence": 1.0,
-      "latency_ms": 0.657,
+      "latency_ms": 0.365,
       "passed": true
     },
     {
@@ -395,7 +471,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4117",
       "confidence": 1.0,
-      "latency_ms": 0.258,
+      "latency_ms": 0.289,
       "passed": true
     },
     {
@@ -410,7 +486,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4201",
       "confidence": 1.0,
-      "latency_ms": 0.268,
+      "latency_ms": 0.238,
       "passed": true
     },
     {
@@ -425,7 +501,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "ACADEMIC_TARGET_WITH_CUES_credits",
       "confidence": 0.95,
-      "latency_ms": 0.218,
+      "latency_ms": 0.234,
       "passed": true
     },
     {
@@ -440,7 +516,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "ACADEMIC_TARGET_WITH_CUES_lecturer",
       "confidence": 0.95,
-      "latency_ms": 0.265,
+      "latency_ms": 0.314,
       "passed": true
     },
     {
@@ -455,7 +531,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "ACADEMIC_TARGET_WITH_CUES_credits",
       "confidence": 0.95,
-      "latency_ms": 0.293,
+      "latency_ms": 0.355,
       "passed": true
     },
     {
@@ -470,7 +546,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "ACADEMIC_TARGET_WITH_CUES_lecturer",
       "confidence": 0.95,
-      "latency_ms": 0.545,
+      "latency_ms": 0.216,
       "passed": true
     },
     {
@@ -485,7 +561,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "ACADEMIC_SCOPE_WITH_TARGET_OR_REGULATION",
       "confidence": 0.98,
-      "latency_ms": 0.388,
+      "latency_ms": 0.402,
       "passed": true
     },
     {
@@ -500,7 +576,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4201",
       "confidence": 1.0,
-      "latency_ms": 0.228,
+      "latency_ms": 0.194,
       "passed": true
     },
     {
@@ -515,7 +591,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "ACADEMIC_TARGET_WITH_CUES_credits",
       "confidence": 0.95,
-      "latency_ms": 0.198,
+      "latency_ms": 0.222,
       "passed": true
     },
     {
@@ -530,7 +606,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "ACADEMIC_TARGET_WITH_CUES_credits",
       "confidence": 0.95,
-      "latency_ms": 0.186,
+      "latency_ms": 0.217,
       "passed": true
     },
     {
@@ -545,7 +621,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "ACADEMIC_TARGET_WITH_CUES_credits",
       "confidence": 0.95,
-      "latency_ms": 0.841,
+      "latency_ms": 0.28,
       "passed": true
     },
     {
@@ -560,7 +636,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "ACADEMIC_TARGET_WITH_CUES_credits",
       "confidence": 0.95,
-      "latency_ms": 0.192,
+      "latency_ms": 0.215,
       "passed": true
     },
     {
@@ -575,7 +651,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4201",
       "confidence": 1.0,
-      "latency_ms": 0.206,
+      "latency_ms": 0.251,
       "passed": true
     },
     {
@@ -590,7 +666,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4117",
       "confidence": 1.0,
-      "latency_ms": 0.355,
+      "latency_ms": 0.35,
       "passed": true
     },
     {
@@ -605,7 +681,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4104",
       "confidence": 1.0,
-      "latency_ms": 0.265,
+      "latency_ms": 0.327,
       "passed": true
     },
     {
@@ -620,7 +696,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4113",
       "confidence": 1.0,
-      "latency_ms": 0.256,
+      "latency_ms": 0.349,
       "passed": true
     },
     {
@@ -635,7 +711,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4104",
       "confidence": 1.0,
-      "latency_ms": 0.293,
+      "latency_ms": 0.349,
       "passed": true
     },
     {
@@ -650,7 +726,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT7777",
       "confidence": 1.0,
-      "latency_ms": 0.178,
+      "latency_ms": 0.279,
       "passed": true
     },
     {
@@ -665,7 +741,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_SEC9001",
       "confidence": 1.0,
-      "latency_ms": 0.185,
+      "latency_ms": 0.271,
       "passed": true
     },
     {
@@ -680,7 +756,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_CSC1010",
       "confidence": 1.0,
-      "latency_ms": 0.172,
+      "latency_ms": 0.259,
       "passed": true
     },
     {
@@ -695,7 +771,7 @@
       "decision_path": "SEMANTIC_CLASSIFIER",
       "reason_code": "SEMANTIC_MARGIN_0.11_TOP_DOMAIN_DATA",
       "confidence": 0.8685,
-      "latency_ms": 163.07,
+      "latency_ms": 65.654,
       "passed": true
     },
     {
@@ -710,7 +786,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT5555",
       "confidence": 1.0,
-      "latency_ms": 0.393,
+      "latency_ms": 0.418,
       "passed": true
     },
     {
@@ -725,7 +801,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT6666",
       "confidence": 1.0,
-      "latency_ms": 0.242,
+      "latency_ms": 0.312,
       "passed": true
     },
     {
@@ -740,7 +816,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_AI9990",
       "confidence": 1.0,
-      "latency_ms": 0.395,
+      "latency_ms": 0.321,
       "passed": true
     },
     {
@@ -755,7 +831,7 @@
       "decision_path": "STRONG_GENERAL_FAST_PATH",
       "reason_code": "STRONG_GENERAL_FAST_PATH_SIGNAL",
       "confidence": 0.98,
-      "latency_ms": 0.371,
+      "latency_ms": 0.419,
       "passed": true
     },
     {
@@ -770,7 +846,7 @@
       "decision_path": "STRONG_GENERAL_FAST_PATH",
       "reason_code": "STRONG_GENERAL_FAST_PATH_SIGNAL",
       "confidence": 0.98,
-      "latency_ms": 0.392,
+      "latency_ms": 0.352,
       "passed": true
     },
     {
@@ -785,7 +861,7 @@
       "decision_path": "STRONG_GENERAL_FAST_PATH",
       "reason_code": "STRONG_GENERAL_FAST_PATH_SIGNAL",
       "confidence": 0.98,
-      "latency_ms": 0.399,
+      "latency_ms": 0.353,
       "passed": true
     },
     {
@@ -800,7 +876,7 @@
       "decision_path": "STRONG_GENERAL_FAST_PATH",
       "reason_code": "STRONG_GENERAL_FAST_PATH_SIGNAL",
       "confidence": 0.98,
-      "latency_ms": 0.544,
+      "latency_ms": 0.382,
       "passed": true
     },
     {
@@ -815,7 +891,7 @@
       "decision_path": "STRONG_GENERAL_FAST_PATH",
       "reason_code": "STRONG_GENERAL_FAST_PATH_SIGNAL",
       "confidence": 0.98,
-      "latency_ms": 0.376,
+      "latency_ms": 0.396,
       "passed": true
     },
     {
@@ -830,7 +906,7 @@
       "decision_path": "STRONG_TOOL_FAST_PATH",
       "reason_code": "STRONG_TOOL_SET_REMINDER",
       "confidence": 1.0,
-      "latency_ms": 1.085,
+      "latency_ms": 0.579,
       "passed": true
     },
     {
@@ -845,7 +921,7 @@
       "decision_path": "STRONG_TOOL_FAST_PATH",
       "reason_code": "STRONG_TOOL_SET_REMINDER",
       "confidence": 1.0,
-      "latency_ms": 0.233,
+      "latency_ms": 0.514,
       "passed": true
     },
     {
@@ -860,7 +936,7 @@
       "decision_path": "STRONG_TOOL_FAST_PATH",
       "reason_code": "STRONG_TOOL_SET_REMINDER",
       "confidence": 1.0,
-      "latency_ms": 0.151,
+      "latency_ms": 0.387,
       "passed": true
     },
     {
@@ -875,7 +951,7 @@
       "decision_path": "STRONG_TOOL_FAST_PATH",
       "reason_code": "STRONG_TOOL_SEND_EMAIL",
       "confidence": 1.0,
-      "latency_ms": 0.248,
+      "latency_ms": 0.641,
       "passed": true
     },
     {
@@ -890,7 +966,7 @@
       "decision_path": "STRONG_TOOL_FAST_PATH",
       "reason_code": "STRONG_TOOL_SEND_EMAIL",
       "confidence": 1.0,
-      "latency_ms": 0.562,
+      "latency_ms": 0.554,
       "passed": true
     },
     {
@@ -905,7 +981,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4201",
       "confidence": 1.0,
-      "latency_ms": 0.156,
+      "latency_ms": 0.17,
       "passed": true
     },
     {
@@ -920,7 +996,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "MULTI_TURN_TARGET_credits",
       "confidence": 0.95,
-      "latency_ms": 0.768,
+      "latency_ms": 0.201,
       "passed": true
     },
     {
@@ -935,7 +1011,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "MULTI_TURN_TARGET_lecturer",
       "confidence": 0.95,
-      "latency_ms": 0.199,
+      "latency_ms": 0.158,
       "passed": true
     },
     {
@@ -950,7 +1026,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4104",
       "confidence": 1.0,
-      "latency_ms": 0.254,
+      "latency_ms": 0.216,
       "passed": true
     },
     {
@@ -965,7 +1041,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "MULTI_TURN_TARGET_credits",
       "confidence": 0.95,
-      "latency_ms": 0.322,
+      "latency_ms": 0.283,
       "passed": true
     },
     {
@@ -980,7 +1056,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4117",
       "confidence": 1.0,
-      "latency_ms": 0.179,
+      "latency_ms": 0.193,
       "passed": true
     },
     {
@@ -995,7 +1071,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "ACADEMIC_SCOPE_WITH_TARGET_OR_REGULATION",
       "confidence": 0.98,
-      "latency_ms": 0.27,
+      "latency_ms": 0.209,
       "passed": true
     },
     {
@@ -1010,7 +1086,7 @@
       "decision_path": "SEMANTIC_CLASSIFIER",
       "reason_code": "SEMANTIC_MARGIN_0.14_TOP_DOMAIN_DATA",
       "confidence": 0.8908,
-      "latency_ms": 72.83,
+      "latency_ms": 37.252,
       "passed": true
     },
     {
@@ -1025,7 +1101,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "MULTI_TURN_TARGET_assessment",
       "confidence": 0.95,
-      "latency_ms": 0.411,
+      "latency_ms": 0.46,
       "passed": true
     },
     {
@@ -1055,7 +1131,7 @@
       "decision_path": "STRONG_GENERAL_FAST_PATH",
       "reason_code": "STRONG_GENERAL_FAST_PATH_SIGNAL",
       "confidence": 0.98,
-      "latency_ms": 1.01,
+      "latency_ms": 0.372,
       "passed": true
     },
     {
@@ -1070,7 +1146,7 @@
       "decision_path": "STRONG_TOOL_FAST_PATH",
       "reason_code": "STRONG_TOOL_SET_REMINDER",
       "confidence": 1.0,
-      "latency_ms": 0.701,
+      "latency_ms": 0.425,
       "passed": true
     },
     {
@@ -1085,7 +1161,7 @@
       "decision_path": "SEMANTIC_CLASSIFIER",
       "reason_code": "SEMANTIC_MARGIN_0.17_TOP_GENERAL_LLM",
       "confidence": 0.8715,
-      "latency_ms": 101.603,
+      "latency_ms": 43.232,
       "passed": true
     },
     {
@@ -1100,7 +1176,7 @@
       "decision_path": "STRONG_GENERAL_FAST_PATH",
       "reason_code": "STRONG_GENERAL_FAST_PATH_SIGNAL",
       "confidence": 0.98,
-      "latency_ms": 0.862,
+      "latency_ms": 0.615,
       "passed": true
     },
     {
@@ -1115,7 +1191,7 @@
       "decision_path": "SEMANTIC_CLASSIFIER",
       "reason_code": "SEMANTIC_MARGIN_0.11_TOP_GENERAL_LLM",
       "confidence": 0.8417,
-      "latency_ms": 146.679,
+      "latency_ms": 44.252,
       "passed": true
     },
     {
@@ -1130,7 +1206,7 @@
       "decision_path": "STRONG_GENERAL_FAST_PATH",
       "reason_code": "STRONG_GENERAL_FAST_PATH_SIGNAL",
       "confidence": 0.98,
-      "latency_ms": 1.836,
+      "latency_ms": 0.483,
       "passed": true
     },
     {
@@ -1145,7 +1221,7 @@
       "decision_path": "SEMANTIC_CLASSIFIER",
       "reason_code": "SEMANTIC_MARGIN_0.13_TOP_GENERAL_LLM",
       "confidence": 0.8825,
-      "latency_ms": 89.813,
+      "latency_ms": 38.459,
       "passed": true
     },
     {
@@ -1160,7 +1236,7 @@
       "decision_path": "STRONG_GENERAL_FAST_PATH",
       "reason_code": "STRONG_GENERAL_FAST_PATH_SIGNAL",
       "confidence": 0.98,
-      "latency_ms": 0.475,
+      "latency_ms": 0.467,
       "passed": true
     },
     {
@@ -1175,7 +1251,7 @@
       "decision_path": "STRONG_GENERAL_FAST_PATH",
       "reason_code": "STRONG_GENERAL_FAST_PATH_SIGNAL",
       "confidence": 0.98,
-      "latency_ms": 0.537,
+      "latency_ms": 0.361,
       "passed": true
     },
     {
@@ -1190,7 +1266,7 @@
       "decision_path": "STRONG_GENERAL_FAST_PATH",
       "reason_code": "STRONG_GENERAL_FAST_PATH_SIGNAL",
       "confidence": 0.98,
-      "latency_ms": 0.354,
+      "latency_ms": 0.366,
       "passed": true
     },
     {
@@ -1205,7 +1281,7 @@
       "decision_path": "SEMANTIC_CLASSIFIER",
       "reason_code": "SEMANTIC_MARGIN_0.15_TOP_GENERAL_LLM",
       "confidence": 0.8733,
-      "latency_ms": 161.145,
+      "latency_ms": 37.705,
       "passed": true
     },
     {
@@ -1220,7 +1296,7 @@
       "decision_path": "SEMANTIC_CLASSIFIER",
       "reason_code": "SEMANTIC_MARGIN_0.15_TOP_GENERAL_LLM",
       "confidence": 0.8656,
-      "latency_ms": 116.837,
+      "latency_ms": 37.625,
       "passed": true
     },
     {
@@ -1235,7 +1311,7 @@
       "decision_path": "STRONG_GENERAL_FAST_PATH",
       "reason_code": "STRONG_GENERAL_FAST_PATH_SIGNAL",
       "confidence": 0.98,
-      "latency_ms": 1.528,
+      "latency_ms": 0.463,
       "passed": true
     },
     {
@@ -1250,7 +1326,7 @@
       "decision_path": "STRONG_GENERAL_FAST_PATH",
       "reason_code": "STRONG_GENERAL_FAST_PATH_SIGNAL",
       "confidence": 0.98,
-      "latency_ms": 0.846,
+      "latency_ms": 0.278,
       "passed": true
     },
     {
@@ -1265,7 +1341,7 @@
       "decision_path": "SEMANTIC_CLASSIFIER",
       "reason_code": "SEMANTIC_MARGIN_0.08_TOP_GENERAL_LLM",
       "confidence": 0.8492,
-      "latency_ms": 148.64,
+      "latency_ms": 42.802,
       "passed": true
     },
     {
@@ -1280,7 +1356,7 @@
       "decision_path": "SEMANTIC_CLASSIFIER",
       "reason_code": "SEMANTIC_MARGIN_0.15_TOP_GENERAL_LLM",
       "confidence": 0.8692,
-      "latency_ms": 161.145,
+      "latency_ms": 44.225,
       "passed": true
     },
     {
@@ -1295,7 +1371,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT3101",
       "confidence": 1.0,
-      "latency_ms": 0.538,
+      "latency_ms": 0.42,
       "passed": true
     },
     {
@@ -1310,7 +1386,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "ACADEMIC_SCOPE_WITH_TARGET_OR_REGULATION",
       "confidence": 0.98,
-      "latency_ms": 0.221,
+      "latency_ms": 0.276,
       "passed": true
     },
     {
@@ -1325,7 +1401,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "ACADEMIC_SCOPE_WITH_TARGET_OR_REGULATION",
       "confidence": 0.98,
-      "latency_ms": 0.197,
+      "latency_ms": 0.275,
       "passed": true
     },
     {
@@ -1340,7 +1416,7 @@
       "decision_path": "SEMANTIC_CLASSIFIER",
       "reason_code": "SEMANTIC_MARGIN_0.18_TOP_DOMAIN_DATA",
       "confidence": 0.8772,
-      "latency_ms": 86.828,
+      "latency_ms": 36.341,
       "passed": true
     },
     {
@@ -1355,7 +1431,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "ACADEMIC_TARGET_WITH_CUES_credits",
       "confidence": 0.95,
-      "latency_ms": 0.334,
+      "latency_ms": 0.389,
       "passed": true
     },
     {
@@ -1370,7 +1446,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "ACADEMIC_TARGET_WITH_CUES_lecturer",
       "confidence": 0.95,
-      "latency_ms": 0.284,
+      "latency_ms": 0.254,
       "passed": true
     },
     {
@@ -1385,7 +1461,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "ACADEMIC_SCOPE_WITH_TARGET_OR_REGULATION",
       "confidence": 0.98,
-      "latency_ms": 0.311,
+      "latency_ms": 0.325,
       "passed": true
     },
     {
@@ -1400,7 +1476,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "REGULATION_OR_CURRICULUM_SCOPE",
       "confidence": 0.95,
-      "latency_ms": 0.188,
+      "latency_ms": 0.276,
       "passed": true
     },
     {
@@ -1415,7 +1491,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "ACADEMIC_SCOPE_WITH_TARGET_OR_REGULATION",
       "confidence": 0.98,
-      "latency_ms": 0.278,
+      "latency_ms": 0.314,
       "passed": true
     },
     {
@@ -1430,7 +1506,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "ACADEMIC_SCOPE_WITH_TARGET_OR_REGULATION",
       "confidence": 0.98,
-      "latency_ms": 0.27,
+      "latency_ms": 0.321,
       "passed": true
     },
     {
@@ -1445,7 +1521,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_SE2024",
       "confidence": 1.0,
-      "latency_ms": 0.234,
+      "latency_ms": 0.236,
       "passed": true
     },
     {
@@ -1460,7 +1536,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "ACADEMIC_SCOPE_WITH_TARGET_OR_REGULATION",
       "confidence": 0.98,
-      "latency_ms": 0.612,
+      "latency_ms": 0.372,
       "passed": true
     },
     {
@@ -1475,7 +1551,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT3202",
       "confidence": 1.0,
-      "latency_ms": 4.248,
+      "latency_ms": 0.27,
       "passed": true
     },
     {
@@ -1490,7 +1566,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "ACADEMIC_SCOPE_WITH_TARGET_OR_REGULATION",
       "confidence": 0.98,
-      "latency_ms": 0.744,
+      "latency_ms": 0.321,
       "passed": true
     },
     {
@@ -1500,13 +1576,13 @@
       "question": "Soạn giúp tôi một email gửi thầy Tiệp xin phép nộp bài muộn môn Full-Stack",
       "expected_category": "TOOL_ACTION",
       "expected_tool_intent": "SEND_EMAIL",
-      "predicted_category": "TOOL_ACTION",
-      "predicted_tool_intent": "SEND_EMAIL",
-      "decision_path": "STRONG_TOOL_FAST_PATH",
-      "reason_code": "STRONG_TOOL_SEND_EMAIL",
-      "confidence": 1.0,
-      "latency_ms": 0.458,
-      "passed": true
+      "predicted_category": "GENERAL_LLM",
+      "predicted_tool_intent": null,
+      "decision_path": "SEMANTIC_CLASSIFIER",
+      "reason_code": "SEMANTIC_MARGIN_0.19_TOP_GENERAL_LLM",
+      "confidence": 0.9124,
+      "latency_ms": 40.236,
+      "passed": false
     },
     {
       "id": "ho-tool-02",
@@ -1520,7 +1596,7 @@
       "decision_path": "STRONG_TOOL_FAST_PATH",
       "reason_code": "STRONG_TOOL_SEND_EMAIL",
       "confidence": 1.0,
-      "latency_ms": 0.325,
+      "latency_ms": 0.662,
       "passed": true
     },
     {
@@ -1530,13 +1606,13 @@
       "question": "Viết email gửi cô Huệ để xin file tài liệu slide bài giảng môn FIT4117",
       "expected_category": "TOOL_ACTION",
       "expected_tool_intent": "SEND_EMAIL",
-      "predicted_category": "TOOL_ACTION",
-      "predicted_tool_intent": "SEND_EMAIL",
-      "decision_path": "STRONG_TOOL_FAST_PATH",
-      "reason_code": "STRONG_TOOL_SEND_EMAIL",
+      "predicted_category": "DOMAIN_DATA",
+      "predicted_tool_intent": null,
+      "decision_path": "STRONG_DOMAIN_FAST_PATH",
+      "reason_code": "COURSE_CODE_FIT4117",
       "confidence": 1.0,
-      "latency_ms": 0.33,
-      "passed": true
+      "latency_ms": 0.571,
+      "passed": false
     },
     {
       "id": "ho-tool-04",
@@ -1550,7 +1626,7 @@
       "decision_path": "STRONG_TOOL_FAST_PATH",
       "reason_code": "STRONG_TOOL_SET_REMINDER",
       "confidence": 1.0,
-      "latency_ms": 0.257,
+      "latency_ms": 0.447,
       "passed": true
     },
     {
@@ -1565,7 +1641,7 @@
       "decision_path": "SEMANTIC_CLASSIFIER",
       "reason_code": "SEMANTIC_MARGIN_0.21_TOP_TOOL_ACTION",
       "confidence": 0.9141,
-      "latency_ms": 86.64,
+      "latency_ms": 38.37,
       "passed": true
     },
     {
@@ -1580,7 +1656,7 @@
       "decision_path": "STRONG_TOOL_FAST_PATH",
       "reason_code": "STRONG_TOOL_SET_REMINDER",
       "confidence": 1.0,
-      "latency_ms": 0.464,
+      "latency_ms": 0.641,
       "passed": true
     },
     {
@@ -1590,13 +1666,13 @@
       "question": "Soạn thư điện tử gửi ban giám hiệu về việc xin cấp bảng điểm tạm thời",
       "expected_category": "TOOL_ACTION",
       "expected_tool_intent": "SEND_EMAIL",
-      "predicted_category": "TOOL_ACTION",
-      "predicted_tool_intent": "SEND_EMAIL",
-      "decision_path": "STRONG_TOOL_FAST_PATH",
-      "reason_code": "STRONG_TOOL_SEND_EMAIL",
-      "confidence": 1.0,
-      "latency_ms": 0.352,
-      "passed": true
+      "predicted_category": "GENERAL_LLM",
+      "predicted_tool_intent": null,
+      "decision_path": "SEMANTIC_CLASSIFIER",
+      "reason_code": "SEMANTIC_MARGIN_0.15_TOP_GENERAL_LLM",
+      "confidence": 0.9155,
+      "latency_ms": 38.142,
+      "passed": false
     },
     {
       "id": "ho-tool-08",
@@ -1610,7 +1686,7 @@
       "decision_path": "STRONG_TOOL_FAST_PATH",
       "reason_code": "STRONG_TOOL_SET_REMINDER",
       "confidence": 1.0,
-      "latency_ms": 0.306,
+      "latency_ms": 0.522,
       "passed": true
     },
     {
@@ -1625,7 +1701,7 @@
       "decision_path": "STRONG_TOOL_FAST_PATH",
       "reason_code": "STRONG_TOOL_SET_REMINDER",
       "confidence": 1.0,
-      "latency_ms": 0.352,
+      "latency_ms": 0.455,
       "passed": true
     },
     {
@@ -1635,13 +1711,13 @@
       "question": "Viết giúp một email trang trọng xin thực tập tại doanh nghiệp đối tác",
       "expected_category": "TOOL_ACTION",
       "expected_tool_intent": "SEND_EMAIL",
-      "predicted_category": "TOOL_ACTION",
-      "predicted_tool_intent": "SEND_EMAIL",
-      "decision_path": "STRONG_TOOL_FAST_PATH",
-      "reason_code": "STRONG_TOOL_SEND_EMAIL",
-      "confidence": 1.0,
-      "latency_ms": 0.312,
-      "passed": true
+      "predicted_category": "GENERAL_LLM",
+      "predicted_tool_intent": null,
+      "decision_path": "SEMANTIC_CLASSIFIER",
+      "reason_code": "SEMANTIC_MARGIN_0.19_TOP_GENERAL_LLM",
+      "confidence": 0.9026,
+      "latency_ms": 52.191,
+      "passed": false
     },
     {
       "id": "ho-tool-11",
@@ -1655,7 +1731,7 @@
       "decision_path": "STRONG_TOOL_FAST_PATH",
       "reason_code": "STRONG_TOOL_SET_REMINDER",
       "confidence": 1.0,
-      "latency_ms": 0.285,
+      "latency_ms": 0.41,
       "passed": true
     },
     {
@@ -1670,7 +1746,7 @@
       "decision_path": "STRONG_TOOL_FAST_PATH",
       "reason_code": "STRONG_TOOL_SET_REMINDER",
       "confidence": 1.0,
-      "latency_ms": 0.312,
+      "latency_ms": 0.421,
       "passed": true
     },
     {
@@ -1680,13 +1756,13 @@
       "question": "Soạn thảo email gửi thầy Nhẫn xin phản hồi về đề cương nghiên cứu khoa học",
       "expected_category": "TOOL_ACTION",
       "expected_tool_intent": "SEND_EMAIL",
-      "predicted_category": "TOOL_ACTION",
-      "predicted_tool_intent": "SEND_EMAIL",
-      "decision_path": "STRONG_TOOL_FAST_PATH",
-      "reason_code": "STRONG_TOOL_SEND_EMAIL",
-      "confidence": 1.0,
-      "latency_ms": 0.293,
-      "passed": true
+      "predicted_category": "GENERAL_LLM",
+      "predicted_tool_intent": null,
+      "decision_path": "SEMANTIC_CLASSIFIER",
+      "reason_code": "SEMANTIC_MARGIN_0.14_TOP_GENERAL_LLM",
+      "confidence": 0.8952,
+      "latency_ms": 37.769,
+      "passed": false
     }
   ]
 }

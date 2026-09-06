@@ -1,9 +1,9 @@
 # Tài liệu Kỹ thuật & Kinh nghiệm Đánh giá Độ bền vững Hệ thống (Robustness Benchmark V3)
 
-> **Mã Commit Kiểm thử**: `b559599`  
-> **Thời gian sinh tài liệu**: 2026-09-06T15:01:10.608385  
+> **Mã Commit Kiểm thử**: `c57f208`  
+> **Thời gian sinh tài liệu**: 2026-09-06T16:34:00.150760  
 > **Tổng số trường hợp kiểm thử**: `1509`  
-> **Tỷ lệ vượt qua tổng thể (Overall Robustness Pass Rate)**: `94.5%`  
+> **Tỷ lệ vượt qua tổng thể (Overall Robustness Pass Rate)**: `97.35%`  
 
 ---
 
@@ -18,7 +18,7 @@ Khác với các bộ kiểm thử thông thường chỉ tập trung chứng mi
 | Tiêu chí An toàn | Tỷ lệ Vi phạm | Ngưỡng Cho phép | Trạng thái | Ghi chú Kỹ thuật |
 |---|:---:|:---:|:---:|---|
 | **Crash Rate (Tỷ lệ sập hệ thống)** | `0.0%` | 0.0% | ✅ ĐẠT | Không có unhandled exception nào lọt qua bộ lọc |
-| **Unsafe Tool Activation (Kích hoạt công cụ mất an toàn)** | `3.25%` | 0.0% | ❌ VI PHẠM | Câu hỏi phủ định hoặc hỏi thông tin công cụ không vô tình kích hoạt gửi email/nhắc nhở |
+| **Unsafe Tool Activation (Kích hoạt công cụ mất an toàn)** | `0.0%` | 0.0% | ✅ ĐẠT | Câu hỏi phủ định hoặc hỏi thông tin công cụ không vô tình kích hoạt gửi email/nhắc nhở |
 | **Cross-Session Leakage (Rò rỉ đa phiên)** | `0.0%` | 0.0% | ✅ ĐẠT | Trạng thái thực thể và tin nhắn hoàn toàn cô lập theo conversation_id |
 | **Cross-Principal Leakage (Rò rỉ đa người dùng)** | `0.0%` | 0.0% | ✅ ĐẠT | Hồ sơ cá nhân hoàn toàn cô lập theo user_id |
 | **Cache Context Collision (Xung đột ngữ cảnh bộ nhớ đệm)** | `0.0%` | 0.0% | ✅ ĐẠT | Câu hỏi phụ thuộc ngữ cảnh không bao giờ bị trả lời nhầm từ cache phiên khác |
@@ -30,11 +30,11 @@ Khác với các bộ kiểm thử thông thường chỉ tập trung chứng mi
 
 | Tầng Kiểm thử | Tổng số ca | Đạt (Pass) | Không đạt / Gap | Tỷ lệ Đạt | Ý nghĩa Kỹ thuật |
 |---|:---:|:---:|:---:|:---:|---|
-| **Layer 1 - Canonical Regression** | 255 | 255 | 0 | `100.0%` | Đo lường tính ổn định tầng Layer 1 - Canonical Regression |
-| **Layer 2 - Curated Adversarial** | 180 | 164 | 16 | `91.11%` | Đo lường tính ổn định tầng Layer 2 - Curated Adversarial |
-| **Layer 3 - Metamorphic Fuzz** | 300 | 272 | 28 | `90.67%` | Đo lường tính ổn định tầng Layer 3 - Metamorphic Fuzz |
-| **Layer 4 - Property Invariants** | 354 | 345 | 9 | `97.46%` | Đo lường tính ổn định tầng Layer 4 - Property Invariants |
-| **Layer 5 - Stateful Chaos** | 400 | 370 | 30 | `92.5%` | Đo lường tính ổn định tầng Layer 5 - Stateful Chaos |
+| **Layer 1 - Canonical Regression** | 255 | 250 | 5 | `98.04%` | Đo lường tính ổn định tầng Layer 1 - Canonical Regression |
+| **Layer 2 - Curated Adversarial** | 180 | 180 | 0 | `100.0%` | Đo lường tính ổn định tầng Layer 2 - Curated Adversarial |
+| **Layer 3 - Metamorphic Fuzz** | 300 | 265 | 35 | `88.33%` | Đo lường tính ổn định tầng Layer 3 - Metamorphic Fuzz |
+| **Layer 4 - Property Invariants** | 354 | 354 | 0 | `100.0%` | Đo lường tính ổn định tầng Layer 4 - Property Invariants |
+| **Layer 5 - Stateful Chaos** | 400 | 400 | 0 | `100.0%` | Đo lường tính ổn định tầng Layer 5 - Stateful Chaos |
 | **Live LLM Sample** | 20 | 20 | 0 | `100.0%` | Đo lường tính ổn định tầng Live LLM Sample |
 
 ---
@@ -45,9 +45,7 @@ Các lỗi phát hiện được phân loại rõ ràng theo nguyên nhân bản
 
 | Loại Lỗi (FailureType) | Số lượng | Mức độ Nghiêm trọng | Phân tích Nguyên nhân Gốc rễ |
 |---|:---:|:---:|---|
-| `UNSAFE_TOOL_ACTIVATION` | 49 | `CRITICAL` | Phát hiện qua bộ kiểm thử nghịch đảo & biến dị |
-| `ROUTING_FAILURE` | 28 | `MEDIUM` | Phát hiện qua bộ kiểm thử nghịch đảo & biến dị |
-| `MEMORY_POISONING` | 6 | `MEDIUM` | Phát hiện qua bộ kiểm thử nghịch đảo & biến dị |
+| `ROUTING_FAILURE` | 40 | `MEDIUM` | Phát hiện qua bộ kiểm thử nghịch đảo & biến dị |
 
 ---
 

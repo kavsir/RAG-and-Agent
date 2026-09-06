@@ -16,7 +16,7 @@ from pathlib import Path
 from typing import Dict, Any, List, Optional, Tuple
 
 # Ensure UTF-8 output on Windows console
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace", line_buffering=True)
 
 # Add project root to sys.path
 root_dir = Path(__file__).resolve().parent.parent.parent

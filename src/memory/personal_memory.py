@@ -63,6 +63,25 @@ class PersonalMemoryService:
             logger.info("Personal Policy: Rejected entire message due to sensitive topic.")
             return results
 
+        # 1.1 Kiểm tra ngữ nghĩa phát ngôn (Utterance Semantics Layer)
+        from src.semantics import analyze_utterance, Polarity, Modality, SubjectScope
+        sem = analyze_utterance(message)
+        if sem.subject_scope == SubjectScope.THIRD_PARTY:
+            logger.info("Personal Policy: Rejected entire message due to third-party subject scope.")
+            return results
+        if sem.polarity == Polarity.NEGATED:
+            logger.info("Personal Policy: Rejected entire message due to negated polarity.")
+            return results
+        if sem.modality in [Modality.HYPOTHETICAL, Modality.CONDITIONAL, Modality.EXPLANATORY]:
+            logger.info("Personal Policy: Rejected entire message due to hypothetical/conditional/explanatory modality.")
+            return results
+        if sem.is_contradictory:
+            logger.info("Personal Policy: Rejected entire message due to self-contradiction.")
+            return results
+        if sem.prohibition_detected:
+            logger.info("Personal Policy: Rejected entire message due to explicit prohibition.")
+            return results
+
         # 2. Bóc tách các ứng viên sự thật tiềm năng
         candidates = extract_candidate_facts(message)
         if not candidates:

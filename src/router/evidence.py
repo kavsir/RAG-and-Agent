@@ -62,32 +62,50 @@ def extract_evidence(text: str, lower_text: str, analyzed_query: Optional[Dict[s
         lower_text
     ))
 
-    # 4. Bóc tách Ý định Công cụ (Tool Intent Proximity Matching)
+    # 4. Bóc tách Ý định Công cụ (Tool Intent Proximity Matching) & An toàn Ngữ nghĩa (Safety Gate)
+    from src.semantics import analyze_utterance, Polarity, Modality
+    sem = analyze_utterance(text)
+
     # A. Email tool
-    email_negative = any(nk in lower_text for nk in [
-        "email là gì", "giao thức email", "khái niệm email", "smtp là gì",
-        "địa chỉ email là gì", "email của thầy", "email giảng viên", "email liên hệ"
-    ])
+    is_email_unsafe = (
+        sem.polarity == Polarity.NEGATED
+        or sem.prohibition_detected
+        or sem.modality in [Modality.EXPLANATORY, Modality.HYPOTHETICAL]
+        or sem.is_contradictory
+        or (sem.polarity == Polarity.MIXED and any(w in lower_text for w in ["đừng gửi", "không gửi", "chớ gửi", "thôi đừng"]))
+        or any(nk in lower_text for nk in [
+            "email là gì", "giao thức email", "khái niệm email", "smtp là gì",
+            "địa chỉ email là gì", "email của thầy", "email giảng viên", "email liên hệ",
+            "làm thế nào để gửi email", "hướng dẫn gửi email"
+        ])
+    )
     email_action_match = re.search(
         r"\b(soạn|gửi|viết|draft|compose|send)\b.{0,35}\b(email|mail|thư)\b",
         lower_text
     )
-    if email_action_match and not email_negative:
+    if email_action_match and not is_email_unsafe:
         evidence.tool_action = email_action_match.group(1)
         evidence.tool_object = email_action_match.group(2)
         evidence.tool_intent = "SEND_EMAIL"
         evidence.tool_strength = "STRONG"
 
     # B. Reminder tool
-    reminder_negative = any(nk in lower_text for nk in [
-        "nhắc lại khái niệm", "nhắc lại kiến thức", "nhắc lại định nghĩa",
-        "nhắc lại bài cũ", "nhắc nhở là gì"
-    ])
+    is_reminder_unsafe = (
+        sem.polarity == Polarity.NEGATED
+        or sem.prohibition_detected
+        or sem.modality in [Modality.EXPLANATORY, Modality.HYPOTHETICAL]
+        or sem.is_contradictory
+        or any(nk in lower_text for nk in [
+            "nhắc lại khái niệm", "nhắc lại kiến thức", "nhắc lại định nghĩa",
+            "nhắc lại bài cũ", "nhắc nhở là gì", "làm thế nào để nhắc",
+            "hướng dẫn nhắc"
+        ])
+    )
     reminder_action_match = re.search(
         r"\b(nhắc|đặt lịch|lên lịch|hẹn|hẹn giờ|báo|remind|schedule|nhắc nhở)\b.{0,35}\b(tôi|lịch|ôn thi|nộp|deadline|hạn|giờ|ngày|buổi|mai|họp|chiều|sáng|tối)\b",
         lower_text
     )
-    if reminder_action_match and not reminder_negative:
+    if reminder_action_match and not is_reminder_unsafe:
         evidence.tool_action = reminder_action_match.group(1)
         evidence.tool_object = reminder_action_match.group(2)
         evidence.tool_intent = "SET_REMINDER"

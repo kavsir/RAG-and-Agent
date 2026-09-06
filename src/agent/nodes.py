@@ -139,12 +139,16 @@ def query_analysis_node(state: Dict[str, Any]) -> Dict[str, Any]:
         "resolution_source": analyzed.resolution_source,
     }
 
+    from src.semantics import analyze_utterance
+    sem = analyze_utterance(question)
+
     return {
         "rewritten_question": analyzed.rewritten_query,
         "analyzed_query": analyzed.model_dump(),
         "session_context": session_ctx,
         "resolved_entities": resolved_entities,
         "resolution_source": analyzed.resolution_source,
+        "utterance_semantics": sem.model_dump(),
     }
 
 
@@ -398,6 +402,32 @@ def _reminder_job_callback(content: str, job_id: str):
 
 def parse_reminder_node(state: Dict[str, Any]) -> Dict[str, Any]:
     question = state.get("question", "")
+    sem_dict = state.get("utterance_semantics")
+    if sem_dict:
+        from src.semantics.schemas import UtteranceSemantics
+        sem = UtteranceSemantics(**sem_dict)
+    else:
+        from src.semantics import analyze_utterance
+        sem = analyze_utterance(question)
+
+    from src.semantics import authorize_tool_action
+    decision = authorize_tool_action(sem, requested_tool="SET_REMINDER")
+
+    if not decision.authorized:
+        logger.info(f"Action Authorization Gate: Denied SET_REMINDER -> {decision.reason_code}")
+        return {
+            "reminder_request": None,
+            "answer": decision.safe_response or "Yêu cầu đặt lịch nhắc đã bị hủy.",
+            "sources": [],
+        }
+
+    if decision.requires_clarification:
+        logger.info(f"Action Authorization Gate: Clarification for SET_REMINDER -> {decision.reason_code}")
+        return {
+            "reminder_request": None,
+            "answer": decision.clarification_message or "Yêu cầu có thông tin chưa rõ ràng hoặc đã bị hủy. Bạn có muốn đặt lịch nhắc không?",
+            "sources": [],
+        }
 
     scheduled_dt = parse_reminder_datetime(question)
     if not scheduled_dt:
@@ -438,6 +468,56 @@ def parse_reminder_node(state: Dict[str, Any]) -> Dict[str, Any]:
 
 def parse_email_node(state: Dict[str, Any]) -> Dict[str, Any]:
     question = state.get("question", "")
+    sem_dict = state.get("utterance_semantics")
+    if sem_dict:
+        from src.semantics.schemas import UtteranceSemantics
+        sem = UtteranceSemantics(**sem_dict)
+    else:
+        from src.semantics import analyze_utterance
+        sem = analyze_utterance(question)
+
+    from src.semantics import authorize_tool_action, ActionOperation
+    decision = authorize_tool_action(sem, requested_tool="SEND_EMAIL")
+
+    if not decision.authorized:
+        logger.info(f"Action Authorization Gate: Denied SEND_EMAIL -> {decision.reason_code}")
+        return {
+            "answer": decision.safe_response or "Yêu cầu gửi email đã bị hủy.",
+            "email_request": None,
+            "sources": [],
+        }
+
+    if decision.requires_clarification:
+        logger.info(f"Action Authorization Gate: Clarification for SEND_EMAIL -> {decision.reason_code}")
+        return {
+            "answer": decision.clarification_message or "Yêu cầu có thông tin mâu thuẫn hoặc đã bị hủy. Bạn có muốn gửi email không?",
+            "email_request": None,
+            "sources": [],
+        }
+
+    # Nếu chỉ là soạn thảo (DRAFT / COMPOSE_EMAIL) và KHÔNG có side effect gửi thư:
+    if decision.operation == ActionOperation.COMPOSE_EMAIL or not decision.side_effect:
+        logger.info("Action Authorization Gate: COMPOSE_EMAIL authorized (Draft only, no side-effect)")
+        email_match = re.search(r"[\w\.-]+@[\w\.-]+\.\w+", question)
+        recipient = email_match.group(0) if email_match else "(Chưa chỉ định người nhận)"
+        draft_content = f"Kính gửi Thầy/Cô,\n\nEm là sinh viên gửi email về vấn đề: {question}.\n\nTrân trọng,\nSinh viên"
+        answer = (
+            f"📝 **Bản thảo email (Draft - Chưa gửi đi)**:\n"
+            f"- **Người nhận**: {recipient}\n"
+            f"- **Tiêu đề**: Thông báo từ sinh viên ĐNTU\n"
+            f"- **Nội dung dự thảo**:\n{draft_content}\n\n"
+            f"*(Lưu ý: Hệ thống chỉ tạo bản thảo theo yêu cầu và tuyệt đối không tự ý gửi thư đi.)*"
+        )
+        return {
+            "answer": answer,
+            "email_request": {
+                "operation": "COMPOSE_EMAIL",
+                "recipient": recipient,
+                "draft": draft_content,
+                "sent": False,
+            },
+            "sources": [],
+        }
 
     # RÀNG BUỘC SỐ 31: Nếu EMAIL_ENABLED=false thì yêu cầu gửi email phải trả rõ:
     # "Chức năng email hiện chưa được cấu hình." Không crash.
