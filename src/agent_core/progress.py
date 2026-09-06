@@ -20,7 +20,10 @@ class ProgressTracker:
 
     def create_snapshot(self, state: AgentGoalState, last_fingerprint: str = None) -> ProgressSnapshot:
         """Tạo ảnh chụp trạng thái tiến độ hiện tại."""
-        satisfied = [r.requirement_key for r in state.requirements if r.status == EvidenceStatus.SATISFIED]
+        satisfied = [
+            r.requirement_key for r in state.requirements
+            if r.status in (EvidenceStatus.SATISFIED, EvidenceStatus.VERIFIED_VALUE, EvidenceStatus.VERIFIED_NONE)
+        ]
         missing = [
             r.requirement_key for r in state.requirements
             if r.status in (EvidenceStatus.PENDING, EvidenceStatus.MISSING, EvidenceStatus.INSUFFICIENT)

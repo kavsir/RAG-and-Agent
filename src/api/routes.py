@@ -14,7 +14,7 @@ from src.memory.memory_manager import get_memory_manager
 from src.cache.cache_policy import decide_cache_policy, CacheScope
 from src.cache.exact_cache import get_exact_cache
 from src.agent_core.service import get_agent_core_service
-from src.agent_core.schemas import AgentStatus, GoalType
+from src.agent_core.schemas import AgentStatus, GoalType, EvidenceStatus
 from src.api.schemas import (
     ChatRequest,
     ChatResponse,
@@ -73,59 +73,59 @@ def chat_endpoint(request: ChatRequest):
     session_ctx = session_state.to_context_dict() if session_state else {}
     personal_ctx = memory_mgr.get_personal_profile(user_id) if hasattr(memory_mgr, "get_personal_profile") else {}
 
-    from src.router import get_router_service
-    r_dec = get_router_service().classify(query=request.message, analyzed_query=session_ctx)
-
-    if r_dec.category == "GENERAL_LLM":
-        from src.agent.nodes import general_answer_node
-        state_dict = {
-            "question": request.message,
-            "student_profile": personal_ctx,
-            "chat_history": memory_mgr.get_conversation_history(conv_id, k=5),
-        }
-        gen_res = general_answer_node(state_dict)
-        answer = gen_res.get("answer", "")
-        return ChatResponse(
-            answer=answer,
-            category="GENERAL_LLM",
-            sources=[],
+    # 2. Kiểm tra xem phiên này có Goal đang chờ phản hồi làm rõ hay không
+    active_goal = agent_service.get_active_goal(user_id=user_id, conversation_id=conv_id)
+    if active_goal and active_goal.status == AgentStatus.NEEDS_USER_INPUT:
+        logger.info(f"Phát hiện Goal {active_goal.goal_id} đang chờ làm rõ. Tiến hành resume_goal...")
+        goal_state = agent_service.resume_goal(
+            user_id=user_id,
             conversation_id=conv_id,
-            goal_id=None,
-            status="COMPLETED",
-            metadata=ChatMetadata(
-                cache_hit=False,
+            user_response=request.message,
+            goal_id=active_goal.goal_id,
+            session_context=session_ctx,
+        )
+        r_dec = None
+    else:
+        from src.router import get_router_service
+        r_dec = get_router_service().classify(query=request.message, analyzed_query=session_ctx)
+
+        if r_dec.category == "GENERAL_LLM":
+            from src.agent.nodes import general_answer_node
+            state_dict = {
+                "question": request.message,
+                "student_profile": personal_ctx,
+                "chat_history": memory_mgr.get_conversation_history(conv_id, k=5),
+            }
+            gen_res = general_answer_node(state_dict)
+            answer = gen_res.get("answer", "")
+            return ChatResponse(
+                answer=answer,
                 category="GENERAL_LLM",
-                tool_intent=None,
-                cache_scope="CACHEABLE",
-            ),
+                sources=[],
+                conversation_id=conv_id,
+                goal_id=None,
+                status="COMPLETED",
+                metadata=ChatMetadata(
+                    cache_hit=False,
+                    category="GENERAL_LLM",
+                    tool_intent=None,
+                    cache_scope="CACHEABLE",
+                ),
+            )
+
+        logger.info(f"Khởi tạo chu trình xử lý mục tiêu mới cho conv_id={conv_id}...")
+        goal_state = agent_service.process_query(
+            query=request.message,
+            user_id=user_id,
+            conversation_id=conv_id,
+            session_context=session_ctx,
+            personal_context=personal_ctx,
         )
 
     try:
-        # 3. Kiểm tra xem phiên này có Goal đang chờ phản hồi làm rõ hay không
-        active_goal = agent_service.get_active_goal(user_id=user_id, conversation_id=conv_id)
-
-        if active_goal and active_goal.status == AgentStatus.NEEDS_USER_INPUT:
-            logger.info(f"Phát hiện Goal {active_goal.goal_id} đang chờ làm rõ. Tiến hành resume_goal...")
-            goal_state = agent_service.resume_goal(
-                user_id=user_id,
-                conversation_id=conv_id,
-                user_response=request.message,
-                goal_id=active_goal.goal_id,
-                session_context=session_ctx,
-            )
-        else:
-            logger.info(f"Khởi tạo chu trình xử lý mục tiêu mới cho conv_id={conv_id}...")
-            goal_state = agent_service.process_query(
-                query=request.message,
-                user_id=user_id,
-                conversation_id=conv_id,
-                session_context=session_ctx,
-                personal_context=personal_ctx,
-            )
-
         # 4. Xác định danh mục phản hồi
-        category = r_dec.category if r_dec.category == "TOOL_ACTION" else "DOMAIN_DATA"
-        tool_intent = r_dec.tool_intent if category == "TOOL_ACTION" else None
+        category = "TOOL_ACTION" if r_dec and r_dec.category == "TOOL_ACTION" else "DOMAIN_DATA"
+        tool_intent = r_dec.tool_intent if r_dec and category == "TOOL_ACTION" else None
         if any(o in (GoalType.SEND_EMAIL, GoalType.SET_REMINDER) for o in goal_state.objectives):
             category = "TOOL_ACTION"
             tool_intent = "SEND_EMAIL" if GoalType.SEND_EMAIL in goal_state.objectives else "SET_REMINDER"
@@ -135,18 +135,19 @@ def chat_endpoint(request: ChatRequest):
             from src.semantics import analyze_utterance, authorize_tool_action, ActionOperation
             sem = analyze_utterance(request.message)
             decision = authorize_tool_action(sem, requested_tool=tool_intent)
-            if not decision.authorized:
-                answer = decision.safe_response or "Yêu cầu thực thi công cụ không được cấp phép."
-                goal_state.status = AgentStatus.ABSTAINED
-                goal_state.final_answer = answer
-            elif decision.requires_clarification:
+            if decision.requires_clarification:
                 answer = decision.clarification_message or "Yêu cầu có thông tin chưa rõ ràng hoặc mâu thuẫn. Bạn có muốn thực hiện không?"
                 goal_state.status = AgentStatus.NEEDS_USER_INPUT
                 goal_state.clarification_question = answer
+                goal_state.final_answer = answer
+            elif not decision.authorized:
+                answer = decision.safe_response or "Yêu cầu thực thi công cụ không được cấp phép."
+                goal_state.status = AgentStatus.ABSTAINED
+                goal_state.final_answer = answer
             elif tool_intent == "SEND_EMAIL":
                 if decision.operation == ActionOperation.COMPOSE_EMAIL or not decision.side_effect:
-                    email_match = re.search(r"[\w\.-]+@[\w\.-]+\.\w+", request.message)
-                    recipient = email_match.group(0) if email_match else "(Chưa chỉ định người nhận)"
+                    email_matches = re.findall(r"[\w\.-]+@[\w\.-]+\.\w+", request.message)
+                    recipient = email_matches[0] if email_matches else "(Chưa chỉ định người nhận)"
                     answer = (
                         f"📝 **Bản thảo email (Draft - Chưa gửi đi)**:\n"
                         f"- **Người nhận**: {recipient}\n"
@@ -157,17 +158,47 @@ def chat_endpoint(request: ChatRequest):
                     goal_state.status = AgentStatus.COMPLETED
                     goal_state.final_answer = answer
                 else:
-                    from src.tools.email_sender import send_email_direct
-                    email_match = re.search(r"[\w\.-]+@[\w\.-]+\.\w+", request.message)
-                    recipient = email_match.group(0) if email_match else "giangvien@dntu.edu.vn"
-                    send_email_direct(
-                        to=recipient,
-                        subject="Thông báo từ sinh viên ĐNTU",
-                        body=f"Nội dung: {request.message}",
-                    )
-                    answer = f"✅ Đã gửi email thành công tới: {recipient}."
-                    goal_state.status = AgentStatus.COMPLETED
-                    goal_state.final_answer = answer
+                    # 1. Trích xuất email người nhận rõ ràng từ tin nhắn người dùng
+                    explicit_emails = re.findall(r"[\w\.-]+@[\w\.-]+\.\w+", request.message)
+                    valid_recipients = list(dict.fromkeys(explicit_emails))
+
+                    # 2. Nếu người dùng chưa cung cấp email trực tiếp, tìm trong bằng chứng đã thẩm định (verified lecturer_email)
+                    if not valid_recipients:
+                        lecturer_emails = []
+                        for ev in goal_state.evidence:
+                            if ev.status == EvidenceStatus.VERIFIED_VALUE:
+                                found_emails = re.findall(r"[\w\.-]+@[\w\.-]+\.\w+", ev.content)
+                                lecturer_emails.extend(found_emails)
+                        valid_recipients = list(dict.fromkeys(lecturer_emails))
+
+                    if not valid_recipients:
+                        # Unresolved recipient -> DO NOT SEND. Return NEEDS_USER_INPUT
+                        answer = "Bạn muốn gửi email tới địa chỉ nào? Vui lòng cung cấp địa chỉ email người nhận hợp lệ."
+                        goal_state.status = AgentStatus.NEEDS_USER_INPUT
+                        goal_state.clarification_question = answer
+                        goal_state.final_answer = answer
+                    elif len(valid_recipients) > 1:
+                        # Multiple valid recipients -> ASK USER. Never silently choose one.
+                        opts = [f"Gửi tới {r}" for r in valid_recipients]
+                        answer = (
+                            f"Hệ thống tìm thấy nhiều địa chỉ email khả dụng ({', '.join(valid_recipients)}). "
+                            f"Bạn muốn gửi email tới địa chỉ nào?"
+                        )
+                        goal_state.status = AgentStatus.NEEDS_USER_INPUT
+                        goal_state.clarification_question = answer
+                        goal_state.clarification_options = opts
+                        goal_state.final_answer = answer
+                    else:
+                        recipient = valid_recipients[0]
+                        from src.tools.email_sender import send_email_direct
+                        send_email_direct(
+                            to=recipient,
+                            subject="Thông báo từ sinh viên ĐNTU",
+                            body=f"Nội dung: {request.message}",
+                        )
+                        answer = f"✅ Đã gửi email thành công tới: {recipient}."
+                        goal_state.status = AgentStatus.COMPLETED
+                        goal_state.final_answer = answer
             elif tool_intent == "SET_REMINDER":
                 from src.agent.nodes import parse_reminder_datetime
                 from src.scheduler.reminder_scheduler import schedule_reminder

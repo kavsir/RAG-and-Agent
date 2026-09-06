@@ -104,7 +104,7 @@ class ActionExecutor:
                 message="Không tìm thấy requirement mục tiêu.",
             )
 
-        status, item = self.verifier.verify_requirement(target_req, [])
+        status, item = self.verifier.verify_requirement(target_req, [], retrieval_strategy="catalog")
         target_req.status = status
         target_req.attempt_count += 1
 
@@ -205,7 +205,7 @@ class ActionExecutor:
             except Exception:
                 pass
 
-        status, item = self.verifier.verify_requirement(target_req, matching_docs)
+        status, item = self.verifier.verify_requirement(target_req, matching_docs, retrieval_strategy="exact")
         target_req.status = status
         target_req.attempt_count += 1
 
@@ -235,7 +235,7 @@ class ActionExecutor:
             )
 
     def _execute_expanded_retrieval(self, plan: ActionPlan, state: AgentGoalState) -> ActionObservation:
-        """Truy xuất mở rộng qua RAG (tên môn, alias) khi exact retrieval không tìm thấy, bảo vệ không chéo thực thể."""
+        """Truy xuất mở rộng qua Hybrid Search (dense + BM25 + RRF) khi exact retrieval không tìm thấy, bảo vệ nghiêm ngặt không chéo thực thể."""
         target_req = next(
             (r for r in state.requirements if r.entity == plan.entity and r.field == plan.requested_field),
             None
@@ -261,11 +261,13 @@ class ActionExecutor:
         collections_to_search = ["course_detail", "curriculum", "regulation"]
         matching_docs = []
 
+        where_filter = {"course_code": target_req.entity} if target_req.entity and target_req.entity not in ("DNTU", "general") else None
+
         for col_name in collections_to_search:
             try:
                 retriever = get_collection_retriever(col_name)
-                # BM25 search mở rộng
-                docs = retriever.bm25_search(query_str, top_k=5)
+                # Hybrid search: dense + BM25 + RRF
+                docs = retriever.hybrid_search(query_str, top_k=5, where_filter=where_filter)
                 for d in docs:
                     d_code = d.get("metadata", {}).get("course_code")
                     if d_code and target_req.entity and d_code != target_req.entity:
@@ -275,7 +277,7 @@ class ActionExecutor:
             except Exception:
                 pass
 
-        status, item = self.verifier.verify_requirement(target_req, matching_docs)
+        status, item = self.verifier.verify_requirement(target_req, matching_docs, retrieval_strategy="expanded")
         target_req.status = status
         target_req.attempt_count += 1
 
@@ -394,11 +396,14 @@ class ActionExecutor:
                 f"Mã học phần {', '.join(state.entities)} không có trong danh mục chương trình đào tạo "
                 f"hoặc tài liệu chính thức của nhà trường. Vui lòng kiểm tra lại mã môn học."
             )
-        elif reason == "DATA_NOT_AVAILABLE":
+        elif reason in ("DATA_NOT_AVAILABLE", "REQUIREMENT_EXHAUSTED_ABSTAIN"):
             state.stop_reason = StopReason.DATA_NOT_AVAILABLE
             state.final_answer = (
                 "Yêu cầu không thể thực hiện do dữ liệu không được công bố trong các văn bản đào tạo chính thức."
             )
+        elif reason == "NO_PROGRESS_ABSTAIN":
+            state.stop_reason = StopReason.NO_PROGRESS
+            state.final_answer = "Hệ thống dừng tra cứu do không thể tìm thêm bằng chứng hợp lệ."
         else:
             state.stop_reason = StopReason.UNSUPPORTED_CAPABILITY
             state.final_answer = "Hệ thống dừng tra cứu theo chính sách an toàn học vụ."

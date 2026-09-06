@@ -125,10 +125,21 @@ class AgentLoop:
             # 2.3 CHỐNG LẶP HÀNH ĐỘNG (DUPLICATE ACTION PREVENTION)
             if plan.action_type not in (ActionType.FINISH, ActionType.ASK_USER, ActionType.PARTIAL_ANSWER, ActionType.ABSTAIN):
                 if self.tracker.is_duplicate_action(state, plan.fingerprint):
-                    state.status = AgentStatus.PARTIAL
-                    state.stop_reason = StopReason.DUPLICATE_ACTION
-                    state.final_answer = "Hành động tra cứu đã bị trùng lặp và bị chặn lại bởi cơ chế an toàn."
+                    satisfied = [
+                        r for r in state.requirements
+                        if r.status in (EvidenceStatus.SATISFIED, EvidenceStatus.VERIFIED_VALUE, EvidenceStatus.VERIFIED_NONE)
+                    ]
+                    if satisfied:
+                        state.status = AgentStatus.PARTIAL
+                        state.stop_reason = StopReason.DUPLICATE_ACTION
+                        state.final_answer = "Hành động tra cứu đã bị trùng lặp và bị chặn lại bởi cơ chế an toàn."
+                    else:
+                        state.status = AgentStatus.ABSTAINED
+                        state.stop_reason = StopReason.DUPLICATE_ACTION
+                        state.final_answer = "Hành động tra cứu đã bị trùng lặp và bị chặn lại bởi cơ chế an toàn."
                     break
+
+            state.attempted_actions.append(plan.fingerprint)
 
             # 2.4 ACT: Thực thi hành động
             obs_action = self.executor.execute(plan, state)

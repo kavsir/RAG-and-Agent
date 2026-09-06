@@ -148,12 +148,13 @@ class ActionAuthorizationGate:
             email_match = re.search(r"[\w\.-]+@[\w\.-]+\.\w+", raw_text)
             if not email_match:
                 return ActionAuthorizationDecision(
-                    operation=ActionOperation.SEND_EMAIL,
+                    operation=ActionOperation.CLARIFY,
                     authorized=False,
-                    side_effect=True,
-                    reason_code="MISSING_RECIPIENT_EMAIL",
-                    requires_clarification=False,
-                    safe_response="Vui lòng cung cấp địa chỉ email người nhận hợp lệ trong câu hỏi (Ví dụ: 'Gửi email tới giangvien@dainam.edu.vn').",
+                    side_effect=False,
+                    reason_code="UNRESOLVED_RECIPIENT_EMAIL",
+                    requires_clarification=True,
+                    clarification_message="Bạn muốn gửi email tới địa chỉ nào? Vui lòng cung cấp địa chỉ email người nhận hợp lệ.",
+                    safe_response="Bạn muốn gửi email tới địa chỉ nào? Vui lòng cung cấp địa chỉ email người nhận hợp lệ.",
                 )
 
             return ActionAuthorizationDecision(

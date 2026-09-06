@@ -12,11 +12,12 @@ import re
 import json
 import docx
 from pathlib import Path
+from datetime import datetime, timezone
 from typing import Dict, Any
 
 RUNTIME_PATH = Path("runtime/knowledge_environment.json")
-INGESTION_VERSION = "v1.1"
-EXTRACTED_AT = "2026-09-06T10:00:00Z"
+INGESTION_VERSION = "v1.2"
+EXTRACTED_AT = datetime.now(timezone.utc).isoformat()
 
 UNAVAILABLE_FIELDS = {
     "failure_rate": {

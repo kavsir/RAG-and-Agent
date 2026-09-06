@@ -120,6 +120,7 @@ class EvidenceItem(BaseModel):
     chunk_id: Optional[str] = None
     section: Optional[str] = None
     extracted_at: Optional[str] = None
+    retrieval_strategy: Optional[str] = None
 
 
 class ActionFingerprint(BaseModel):

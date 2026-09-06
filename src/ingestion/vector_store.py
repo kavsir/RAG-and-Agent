@@ -32,8 +32,10 @@ def get_embedding_model(model_name: Optional[str] = None) -> SentenceTransformer
     global _embedding_model_singleton
     if _embedding_model_singleton is None:
         name = model_name or settings.EMBEDDING_MODEL
-        logger.info(f"Dang tai embedding model: {name}")
-        _embedding_model_singleton = SentenceTransformer(name)
+        try:
+            _embedding_model_singleton = SentenceTransformer(name, local_files_only=True)
+        except Exception:
+            _embedding_model_singleton = SentenceTransformer(name)
         logger.info("Embedding model san sang.")
     return _embedding_model_singleton
 

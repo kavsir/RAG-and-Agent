@@ -54,3 +54,9 @@ class EmailSender:
         except Exception as e:
             logger.error(f"Loi khi gui email den {to_str}: {e}")
             return {"success": False, "error": str(e)}
+
+
+def send_email_direct(to: Union[str, List[str]], subject: str, body: str) -> Dict[str, Any]:
+    """Hàm tiện ích gửi email trực tiếp qua EmailSender."""
+    sender = EmailSender()
+    return sender.send(to=to, subject=subject, body=body)

@@ -189,8 +189,11 @@ class AgentPlanner:
                 )
 
         # 3. Kiểm tra cơ chế chống lặp NO-PROGRESS
-        if state.no_progress_count >= 1:
-            satisfied = [r for r in state.requirements if r.status == EvidenceStatus.SATISFIED]
+        if state.no_progress_count >= 1 and all(r.attempt_count >= 1 for r in state.requirements if r.status not in (EvidenceStatus.SATISFIED, EvidenceStatus.VERIFIED_VALUE, EvidenceStatus.VERIFIED_NONE)):
+            satisfied = [
+                r for r in state.requirements
+                if r.status in (EvidenceStatus.SATISFIED, EvidenceStatus.VERIFIED_VALUE, EvidenceStatus.VERIFIED_NONE)
+            ]
             if satisfied:
                 fp = ActionFingerprint(action_type=ActionType.PARTIAL_ANSWER, strategy="no_progress_fallback").to_string()
                 return ActionPlan(
@@ -217,9 +220,12 @@ class AgentPlanner:
         if pending_reqs:
             req = pending_reqs[0]
 
-            # Kiểm tra xem yêu cầu này đã vượt quá số lần thử tối đa chưa
+            # Kiểm tra xem yêu cầu này đã vượt quá số lần thử tối đa (2 lần: exact và expanded) chưa
             if req.attempt_count >= self.MAX_ATTEMPTS_PER_REQUIREMENT:
-                satisfied = [r for r in state.requirements if r.status == EvidenceStatus.SATISFIED]
+                satisfied = [
+                    r for r in state.requirements
+                    if r.status in (EvidenceStatus.SATISFIED, EvidenceStatus.VERIFIED_VALUE, EvidenceStatus.VERIFIED_NONE)
+                ]
                 if satisfied:
                     fp = ActionFingerprint(action_type=ActionType.PARTIAL_ANSWER, strategy="exhausted_partial").to_string()
                     return ActionPlan(
@@ -237,41 +243,59 @@ class AgentPlanner:
                         reason_code="REQUIREMENT_EXHAUSTED_ABSTAIN",
                     )
 
-            # Chọn chiến lược truy xuất phù hợp
-            if req.field in ("credits", "course_name") and self.entity_catalog.is_known_code(req.entity):
+            # Lần thử 1 (attempt_count == 0): Exact retrieval hoặc Fast Catalog Lookup
+            if req.attempt_count == 0:
+                if req.field in ("credits", "course_name") and self.entity_catalog.is_known_code(req.entity):
+                    fp = ActionFingerprint(
+                        action_type=ActionType.CATALOG_LOOKUP,
+                        entity=req.entity,
+                        requested_field=req.field,
+                        target_doc_type="curriculum",
+                        strategy="catalog_first",
+                    ).to_string()
+                    return ActionPlan(
+                        action_id=action_id,
+                        action_type=ActionType.CATALOG_LOOKUP,
+                        entity=req.entity,
+                        requested_field=req.field,
+                        target_requirement_key=req.requirement_key,
+                        fingerprint=fp,
+                        reason_code="FAST_CATALOG_LOOKUP",
+                    )
+
                 fp = ActionFingerprint(
-                    action_type=ActionType.CATALOG_LOOKUP,
+                    action_type=ActionType.RETRIEVE_EXACT,
                     entity=req.entity,
                     requested_field=req.field,
-                    target_doc_type="curriculum",
-                    strategy="catalog_first",
+                    target_doc_type=req.accepted_document_types[0] if req.accepted_document_types else "course_outline",
+                    strategy="exact_match",
                 ).to_string()
                 return ActionPlan(
                     action_id=action_id,
-                    action_type=ActionType.CATALOG_LOOKUP,
+                    action_type=ActionType.RETRIEVE_EXACT,
                     entity=req.entity,
                     requested_field=req.field,
                     target_requirement_key=req.requirement_key,
                     fingerprint=fp,
-                    reason_code="FAST_CATALOG_LOOKUP",
+                    reason_code="EXACT_EVIDENCE_RETRIEVAL",
                 )
 
-            # Tra cứu chính xác từ tài liệu docx
+            # Lần thử 2 (attempt_count == 1): Expanded Hybrid retrieval (dense + BM25 + RRF)
             fp = ActionFingerprint(
-                action_type=ActionType.RETRIEVE_EXACT,
+                action_type=ActionType.RETRIEVE_EXPANDED,
                 entity=req.entity,
                 requested_field=req.field,
                 target_doc_type=req.accepted_document_types[0] if req.accepted_document_types else "course_outline",
-                strategy="exact_match",
+                strategy="expanded_hybrid",
             ).to_string()
             return ActionPlan(
                 action_id=action_id,
-                action_type=ActionType.RETRIEVE_EXACT,
+                action_type=ActionType.RETRIEVE_EXPANDED,
                 entity=req.entity,
                 requested_field=req.field,
                 target_requirement_key=req.requirement_key,
                 fingerprint=fp,
-                reason_code="EXACT_EVIDENCE_RETRIEVAL",
+                reason_code="EXPANDED_EVIDENCE_RETRIEVAL",
             )
 
         # 5. Tất cả các yêu cầu đã được đáp ứng (ALL REQUIREMENTS SATISFIED)
