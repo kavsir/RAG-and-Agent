@@ -120,24 +120,24 @@
   },
   "latency": {
     "fast_path": {
-      "mean": 0.2,
-      "median": 0.11,
-      "p95": 0.33,
-      "p99": 0.91,
+      "mean": 0.63,
+      "median": 0.31,
+      "p95": 1.29,
+      "p99": 5.17,
       "count": 92
     },
     "semantic_path": {
-      "mean": 45.5,
-      "median": 44.53,
-      "p95": 55.19,
-      "p99": 58.88,
+      "mean": 121.38,
+      "median": 116.84,
+      "p95": 162.11,
+      "p99": 162.88,
       "count": 11
     },
     "overall": {
-      "mean": 5.04,
-      "median": 0.13,
-      "p95": 44.4,
-      "p99": 50.53,
+      "mean": 13.52,
+      "median": 0.33,
+      "p95": 115.31,
+      "p99": 161.15,
       "count": 103
     }
   },
@@ -155,7 +155,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4201",
       "confidence": 1.0,
-      "latency_ms": 5.603,
+      "latency_ms": 14.541,
       "passed": true
     },
     {
@@ -170,7 +170,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4104",
       "confidence": 1.0,
-      "latency_ms": 0.136,
+      "latency_ms": 1.102,
       "passed": true
     },
     {
@@ -185,7 +185,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4117",
       "confidence": 1.0,
-      "latency_ms": 0.094,
+      "latency_ms": 0.455,
       "passed": true
     },
     {
@@ -200,7 +200,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4113",
       "confidence": 1.0,
-      "latency_ms": 0.088,
+      "latency_ms": 0.77,
       "passed": true
     },
     {
@@ -215,7 +215,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4104",
       "confidence": 1.0,
-      "latency_ms": 0.359,
+      "latency_ms": 0.292,
       "passed": true
     },
     {
@@ -230,7 +230,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4117",
       "confidence": 1.0,
-      "latency_ms": 0.092,
+      "latency_ms": 0.221,
       "passed": true
     },
     {
@@ -245,7 +245,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4113",
       "confidence": 1.0,
-      "latency_ms": 0.072,
+      "latency_ms": 0.241,
       "passed": true
     },
     {
@@ -260,7 +260,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4104",
       "confidence": 1.0,
-      "latency_ms": 0.055,
+      "latency_ms": 0.181,
       "passed": true
     },
     {
@@ -275,7 +275,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4201",
       "confidence": 1.0,
-      "latency_ms": 0.053,
+      "latency_ms": 0.261,
       "passed": true
     },
     {
@@ -290,7 +290,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "ACADEMIC_SCOPE_WITH_TARGET_OR_REGULATION",
       "confidence": 0.98,
-      "latency_ms": 0.159,
+      "latency_ms": 0.371,
       "passed": true
     },
     {
@@ -305,7 +305,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4201",
       "confidence": 1.0,
-      "latency_ms": 0.09,
+      "latency_ms": 0.335,
       "passed": true
     },
     {
@@ -320,7 +320,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4104",
       "confidence": 1.0,
-      "latency_ms": 0.079,
+      "latency_ms": 2.792,
       "passed": true
     },
     {
@@ -335,7 +335,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4117",
       "confidence": 1.0,
-      "latency_ms": 0.102,
+      "latency_ms": 0.358,
       "passed": true
     },
     {
@@ -350,7 +350,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4113",
       "confidence": 1.0,
-      "latency_ms": 0.087,
+      "latency_ms": 0.279,
       "passed": true
     },
     {
@@ -365,7 +365,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4104",
       "confidence": 1.0,
-      "latency_ms": 0.098,
+      "latency_ms": 0.314,
       "passed": true
     },
     {
@@ -380,7 +380,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4113",
       "confidence": 1.0,
-      "latency_ms": 0.106,
+      "latency_ms": 0.657,
       "passed": true
     },
     {
@@ -395,7 +395,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4117",
       "confidence": 1.0,
-      "latency_ms": 0.078,
+      "latency_ms": 0.258,
       "passed": true
     },
     {
@@ -410,7 +410,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4201",
       "confidence": 1.0,
-      "latency_ms": 0.077,
+      "latency_ms": 0.268,
       "passed": true
     },
     {
@@ -425,7 +425,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "ACADEMIC_TARGET_WITH_CUES_credits",
       "confidence": 0.95,
-      "latency_ms": 0.066,
+      "latency_ms": 0.218,
       "passed": true
     },
     {
@@ -440,7 +440,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "ACADEMIC_TARGET_WITH_CUES_lecturer",
       "confidence": 0.95,
-      "latency_ms": 0.085,
+      "latency_ms": 0.265,
       "passed": true
     },
     {
@@ -455,7 +455,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "ACADEMIC_TARGET_WITH_CUES_credits",
       "confidence": 0.95,
-      "latency_ms": 0.08,
+      "latency_ms": 0.293,
       "passed": true
     },
     {
@@ -470,7 +470,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "ACADEMIC_TARGET_WITH_CUES_lecturer",
       "confidence": 0.95,
-      "latency_ms": 0.055,
+      "latency_ms": 0.545,
       "passed": true
     },
     {
@@ -485,7 +485,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "ACADEMIC_SCOPE_WITH_TARGET_OR_REGULATION",
       "confidence": 0.98,
-      "latency_ms": 0.105,
+      "latency_ms": 0.388,
       "passed": true
     },
     {
@@ -500,7 +500,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4201",
       "confidence": 1.0,
-      "latency_ms": 0.058,
+      "latency_ms": 0.228,
       "passed": true
     },
     {
@@ -515,7 +515,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "ACADEMIC_TARGET_WITH_CUES_credits",
       "confidence": 0.95,
-      "latency_ms": 0.062,
+      "latency_ms": 0.198,
       "passed": true
     },
     {
@@ -530,7 +530,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "ACADEMIC_TARGET_WITH_CUES_credits",
       "confidence": 0.95,
-      "latency_ms": 0.057,
+      "latency_ms": 0.186,
       "passed": true
     },
     {
@@ -545,7 +545,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "ACADEMIC_TARGET_WITH_CUES_credits",
       "confidence": 0.95,
-      "latency_ms": 0.071,
+      "latency_ms": 0.841,
       "passed": true
     },
     {
@@ -560,7 +560,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "ACADEMIC_TARGET_WITH_CUES_credits",
       "confidence": 0.95,
-      "latency_ms": 0.054,
+      "latency_ms": 0.192,
       "passed": true
     },
     {
@@ -575,7 +575,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4201",
       "confidence": 1.0,
-      "latency_ms": 0.061,
+      "latency_ms": 0.206,
       "passed": true
     },
     {
@@ -590,7 +590,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4117",
       "confidence": 1.0,
-      "latency_ms": 0.155,
+      "latency_ms": 0.355,
       "passed": true
     },
     {
@@ -605,7 +605,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4104",
       "confidence": 1.0,
-      "latency_ms": 0.1,
+      "latency_ms": 0.265,
       "passed": true
     },
     {
@@ -620,7 +620,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4113",
       "confidence": 1.0,
-      "latency_ms": 0.091,
+      "latency_ms": 0.256,
       "passed": true
     },
     {
@@ -635,7 +635,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4104",
       "confidence": 1.0,
-      "latency_ms": 0.092,
+      "latency_ms": 0.293,
       "passed": true
     },
     {
@@ -650,7 +650,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT7777",
       "confidence": 1.0,
-      "latency_ms": 0.056,
+      "latency_ms": 0.178,
       "passed": true
     },
     {
@@ -665,7 +665,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_SEC9001",
       "confidence": 1.0,
-      "latency_ms": 0.06,
+      "latency_ms": 0.185,
       "passed": true
     },
     {
@@ -680,7 +680,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_CSC1010",
       "confidence": 1.0,
-      "latency_ms": 0.051,
+      "latency_ms": 0.172,
       "passed": true
     },
     {
@@ -695,7 +695,7 @@
       "decision_path": "SEMANTIC_CLASSIFIER",
       "reason_code": "SEMANTIC_MARGIN_0.11_TOP_DOMAIN_DATA",
       "confidence": 0.8685,
-      "latency_ms": 59.8,
+      "latency_ms": 163.07,
       "passed": true
     },
     {
@@ -710,7 +710,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT5555",
       "confidence": 1.0,
-      "latency_ms": 0.193,
+      "latency_ms": 0.393,
       "passed": true
     },
     {
@@ -725,7 +725,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT6666",
       "confidence": 1.0,
-      "latency_ms": 0.124,
+      "latency_ms": 0.242,
       "passed": true
     },
     {
@@ -740,7 +740,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_AI9990",
       "confidence": 1.0,
-      "latency_ms": 0.106,
+      "latency_ms": 0.395,
       "passed": true
     },
     {
@@ -755,7 +755,7 @@
       "decision_path": "STRONG_GENERAL_FAST_PATH",
       "reason_code": "STRONG_GENERAL_FAST_PATH_SIGNAL",
       "confidence": 0.98,
-      "latency_ms": 0.13,
+      "latency_ms": 0.371,
       "passed": true
     },
     {
@@ -770,7 +770,7 @@
       "decision_path": "STRONG_GENERAL_FAST_PATH",
       "reason_code": "STRONG_GENERAL_FAST_PATH_SIGNAL",
       "confidence": 0.98,
-      "latency_ms": 0.114,
+      "latency_ms": 0.392,
       "passed": true
     },
     {
@@ -785,7 +785,7 @@
       "decision_path": "STRONG_GENERAL_FAST_PATH",
       "reason_code": "STRONG_GENERAL_FAST_PATH_SIGNAL",
       "confidence": 0.98,
-      "latency_ms": 0.138,
+      "latency_ms": 0.399,
       "passed": true
     },
     {
@@ -800,7 +800,7 @@
       "decision_path": "STRONG_GENERAL_FAST_PATH",
       "reason_code": "STRONG_GENERAL_FAST_PATH_SIGNAL",
       "confidence": 0.98,
-      "latency_ms": 0.164,
+      "latency_ms": 0.544,
       "passed": true
     },
     {
@@ -815,7 +815,7 @@
       "decision_path": "STRONG_GENERAL_FAST_PATH",
       "reason_code": "STRONG_GENERAL_FAST_PATH_SIGNAL",
       "confidence": 0.98,
-      "latency_ms": 0.139,
+      "latency_ms": 0.376,
       "passed": true
     },
     {
@@ -830,7 +830,7 @@
       "decision_path": "STRONG_TOOL_FAST_PATH",
       "reason_code": "STRONG_TOOL_SET_REMINDER",
       "confidence": 1.0,
-      "latency_ms": 0.445,
+      "latency_ms": 1.085,
       "passed": true
     },
     {
@@ -845,7 +845,7 @@
       "decision_path": "STRONG_TOOL_FAST_PATH",
       "reason_code": "STRONG_TOOL_SET_REMINDER",
       "confidence": 1.0,
-      "latency_ms": 0.143,
+      "latency_ms": 0.233,
       "passed": true
     },
     {
@@ -860,7 +860,7 @@
       "decision_path": "STRONG_TOOL_FAST_PATH",
       "reason_code": "STRONG_TOOL_SET_REMINDER",
       "confidence": 1.0,
-      "latency_ms": 0.091,
+      "latency_ms": 0.151,
       "passed": true
     },
     {
@@ -875,7 +875,7 @@
       "decision_path": "STRONG_TOOL_FAST_PATH",
       "reason_code": "STRONG_TOOL_SEND_EMAIL",
       "confidence": 1.0,
-      "latency_ms": 0.12,
+      "latency_ms": 0.248,
       "passed": true
     },
     {
@@ -890,7 +890,7 @@
       "decision_path": "STRONG_TOOL_FAST_PATH",
       "reason_code": "STRONG_TOOL_SEND_EMAIL",
       "confidence": 1.0,
-      "latency_ms": 0.103,
+      "latency_ms": 0.562,
       "passed": true
     },
     {
@@ -905,7 +905,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4201",
       "confidence": 1.0,
-      "latency_ms": 0.065,
+      "latency_ms": 0.156,
       "passed": true
     },
     {
@@ -920,7 +920,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "MULTI_TURN_TARGET_credits",
       "confidence": 0.95,
-      "latency_ms": 0.173,
+      "latency_ms": 0.768,
       "passed": true
     },
     {
@@ -935,7 +935,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "MULTI_TURN_TARGET_lecturer",
       "confidence": 0.95,
-      "latency_ms": 0.102,
+      "latency_ms": 0.199,
       "passed": true
     },
     {
@@ -950,7 +950,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4104",
       "confidence": 1.0,
-      "latency_ms": 0.085,
+      "latency_ms": 0.254,
       "passed": true
     },
     {
@@ -965,7 +965,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "MULTI_TURN_TARGET_credits",
       "confidence": 0.95,
-      "latency_ms": 0.097,
+      "latency_ms": 0.322,
       "passed": true
     },
     {
@@ -980,7 +980,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4117",
       "confidence": 1.0,
-      "latency_ms": 0.054,
+      "latency_ms": 0.179,
       "passed": true
     },
     {
@@ -995,7 +995,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "ACADEMIC_SCOPE_WITH_TARGET_OR_REGULATION",
       "confidence": 0.98,
-      "latency_ms": 0.108,
+      "latency_ms": 0.27,
       "passed": true
     },
     {
@@ -1010,7 +1010,7 @@
       "decision_path": "SEMANTIC_CLASSIFIER",
       "reason_code": "SEMANTIC_MARGIN_0.14_TOP_DOMAIN_DATA",
       "confidence": 0.8908,
-      "latency_ms": 40.001,
+      "latency_ms": 72.83,
       "passed": true
     },
     {
@@ -1025,7 +1025,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "MULTI_TURN_TARGET_assessment",
       "confidence": 0.95,
-      "latency_ms": 0.211,
+      "latency_ms": 0.411,
       "passed": true
     },
     {
@@ -1040,7 +1040,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT4201",
       "confidence": 1.0,
-      "latency_ms": 0.084,
+      "latency_ms": 0.208,
       "passed": true
     },
     {
@@ -1055,7 +1055,7 @@
       "decision_path": "STRONG_GENERAL_FAST_PATH",
       "reason_code": "STRONG_GENERAL_FAST_PATH_SIGNAL",
       "confidence": 0.98,
-      "latency_ms": 0.253,
+      "latency_ms": 1.01,
       "passed": true
     },
     {
@@ -1070,7 +1070,7 @@
       "decision_path": "STRONG_TOOL_FAST_PATH",
       "reason_code": "STRONG_TOOL_SET_REMINDER",
       "confidence": 1.0,
-      "latency_ms": 0.101,
+      "latency_ms": 0.701,
       "passed": true
     },
     {
@@ -1085,7 +1085,7 @@
       "decision_path": "SEMANTIC_CLASSIFIER",
       "reason_code": "SEMANTIC_MARGIN_0.17_TOP_GENERAL_LLM",
       "confidence": 0.8715,
-      "latency_ms": 38.983,
+      "latency_ms": 101.603,
       "passed": true
     },
     {
@@ -1100,7 +1100,7 @@
       "decision_path": "STRONG_GENERAL_FAST_PATH",
       "reason_code": "STRONG_GENERAL_FAST_PATH_SIGNAL",
       "confidence": 0.98,
-      "latency_ms": 0.294,
+      "latency_ms": 0.862,
       "passed": true
     },
     {
@@ -1115,7 +1115,7 @@
       "decision_path": "SEMANTIC_CLASSIFIER",
       "reason_code": "SEMANTIC_MARGIN_0.11_TOP_GENERAL_LLM",
       "confidence": 0.8417,
-      "latency_ms": 46.34,
+      "latency_ms": 146.679,
       "passed": true
     },
     {
@@ -1130,7 +1130,7 @@
       "decision_path": "STRONG_GENERAL_FAST_PATH",
       "reason_code": "STRONG_GENERAL_FAST_PATH_SIGNAL",
       "confidence": 0.98,
-      "latency_ms": 0.238,
+      "latency_ms": 1.836,
       "passed": true
     },
     {
@@ -1145,7 +1145,7 @@
       "decision_path": "SEMANTIC_CLASSIFIER",
       "reason_code": "SEMANTIC_MARGIN_0.13_TOP_GENERAL_LLM",
       "confidence": 0.8825,
-      "latency_ms": 44.527,
+      "latency_ms": 89.813,
       "passed": true
     },
     {
@@ -1160,7 +1160,7 @@
       "decision_path": "STRONG_GENERAL_FAST_PATH",
       "reason_code": "STRONG_GENERAL_FAST_PATH_SIGNAL",
       "confidence": 0.98,
-      "latency_ms": 0.382,
+      "latency_ms": 0.475,
       "passed": true
     },
     {
@@ -1175,7 +1175,7 @@
       "decision_path": "STRONG_GENERAL_FAST_PATH",
       "reason_code": "STRONG_GENERAL_FAST_PATH_SIGNAL",
       "confidence": 0.98,
-      "latency_ms": 0.192,
+      "latency_ms": 0.537,
       "passed": true
     },
     {
@@ -1190,7 +1190,7 @@
       "decision_path": "STRONG_GENERAL_FAST_PATH",
       "reason_code": "STRONG_GENERAL_FAST_PATH_SIGNAL",
       "confidence": 0.98,
-      "latency_ms": 0.193,
+      "latency_ms": 0.354,
       "passed": true
     },
     {
@@ -1205,7 +1205,7 @@
       "decision_path": "SEMANTIC_CLASSIFIER",
       "reason_code": "SEMANTIC_MARGIN_0.15_TOP_GENERAL_LLM",
       "confidence": 0.8733,
-      "latency_ms": 45.548,
+      "latency_ms": 161.145,
       "passed": true
     },
     {
@@ -1220,7 +1220,7 @@
       "decision_path": "SEMANTIC_CLASSIFIER",
       "reason_code": "SEMANTIC_MARGIN_0.15_TOP_GENERAL_LLM",
       "confidence": 0.8656,
-      "latency_ms": 48.383,
+      "latency_ms": 116.837,
       "passed": true
     },
     {
@@ -1235,7 +1235,7 @@
       "decision_path": "STRONG_GENERAL_FAST_PATH",
       "reason_code": "STRONG_GENERAL_FAST_PATH_SIGNAL",
       "confidence": 0.98,
-      "latency_ms": 0.363,
+      "latency_ms": 1.528,
       "passed": true
     },
     {
@@ -1250,7 +1250,7 @@
       "decision_path": "STRONG_GENERAL_FAST_PATH",
       "reason_code": "STRONG_GENERAL_FAST_PATH_SIGNAL",
       "confidence": 0.98,
-      "latency_ms": 0.298,
+      "latency_ms": 0.846,
       "passed": true
     },
     {
@@ -1265,7 +1265,7 @@
       "decision_path": "SEMANTIC_CLASSIFIER",
       "reason_code": "SEMANTIC_MARGIN_0.08_TOP_GENERAL_LLM",
       "confidence": 0.8492,
-      "latency_ms": 50.573,
+      "latency_ms": 148.64,
       "passed": true
     },
     {
@@ -1280,7 +1280,7 @@
       "decision_path": "SEMANTIC_CLASSIFIER",
       "reason_code": "SEMANTIC_MARGIN_0.15_TOP_GENERAL_LLM",
       "confidence": 0.8692,
-      "latency_ms": 41.783,
+      "latency_ms": 161.145,
       "passed": true
     },
     {
@@ -1295,7 +1295,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT3101",
       "confidence": 1.0,
-      "latency_ms": 0.284,
+      "latency_ms": 0.538,
       "passed": true
     },
     {
@@ -1310,7 +1310,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "ACADEMIC_SCOPE_WITH_TARGET_OR_REGULATION",
       "confidence": 0.98,
-      "latency_ms": 0.091,
+      "latency_ms": 0.221,
       "passed": true
     },
     {
@@ -1325,7 +1325,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "ACADEMIC_SCOPE_WITH_TARGET_OR_REGULATION",
       "confidence": 0.98,
-      "latency_ms": 0.079,
+      "latency_ms": 0.197,
       "passed": true
     },
     {
@@ -1340,7 +1340,7 @@
       "decision_path": "SEMANTIC_CLASSIFIER",
       "reason_code": "SEMANTIC_MARGIN_0.18_TOP_DOMAIN_DATA",
       "confidence": 0.8772,
-      "latency_ms": 43.234,
+      "latency_ms": 86.828,
       "passed": true
     },
     {
@@ -1355,7 +1355,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "ACADEMIC_TARGET_WITH_CUES_credits",
       "confidence": 0.95,
-      "latency_ms": 0.299,
+      "latency_ms": 0.334,
       "passed": true
     },
     {
@@ -1370,7 +1370,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "ACADEMIC_TARGET_WITH_CUES_lecturer",
       "confidence": 0.95,
-      "latency_ms": 0.181,
+      "latency_ms": 0.284,
       "passed": true
     },
     {
@@ -1385,7 +1385,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "ACADEMIC_SCOPE_WITH_TARGET_OR_REGULATION",
       "confidence": 0.98,
-      "latency_ms": 0.235,
+      "latency_ms": 0.311,
       "passed": true
     },
     {
@@ -1400,7 +1400,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "REGULATION_OR_CURRICULUM_SCOPE",
       "confidence": 0.95,
-      "latency_ms": 0.15,
+      "latency_ms": 0.188,
       "passed": true
     },
     {
@@ -1415,7 +1415,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "ACADEMIC_SCOPE_WITH_TARGET_OR_REGULATION",
       "confidence": 0.98,
-      "latency_ms": 0.211,
+      "latency_ms": 0.278,
       "passed": true
     },
     {
@@ -1430,7 +1430,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "ACADEMIC_SCOPE_WITH_TARGET_OR_REGULATION",
       "confidence": 0.98,
-      "latency_ms": 0.23,
+      "latency_ms": 0.27,
       "passed": true
     },
     {
@@ -1445,7 +1445,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_SE2024",
       "confidence": 1.0,
-      "latency_ms": 0.195,
+      "latency_ms": 0.234,
       "passed": true
     },
     {
@@ -1460,7 +1460,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "ACADEMIC_SCOPE_WITH_TARGET_OR_REGULATION",
       "confidence": 0.98,
-      "latency_ms": 0.308,
+      "latency_ms": 0.612,
       "passed": true
     },
     {
@@ -1475,7 +1475,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "COURSE_CODE_FIT3202",
       "confidence": 1.0,
-      "latency_ms": 0.163,
+      "latency_ms": 4.248,
       "passed": true
     },
     {
@@ -1490,7 +1490,7 @@
       "decision_path": "STRONG_DOMAIN_FAST_PATH",
       "reason_code": "ACADEMIC_SCOPE_WITH_TARGET_OR_REGULATION",
       "confidence": 0.98,
-      "latency_ms": 0.237,
+      "latency_ms": 0.744,
       "passed": true
     },
     {
@@ -1505,7 +1505,7 @@
       "decision_path": "STRONG_TOOL_FAST_PATH",
       "reason_code": "STRONG_TOOL_SEND_EMAIL",
       "confidence": 1.0,
-      "latency_ms": 0.216,
+      "latency_ms": 0.458,
       "passed": true
     },
     {
@@ -1520,7 +1520,7 @@
       "decision_path": "STRONG_TOOL_FAST_PATH",
       "reason_code": "STRONG_TOOL_SEND_EMAIL",
       "confidence": 1.0,
-      "latency_ms": 0.206,
+      "latency_ms": 0.325,
       "passed": true
     },
     {
@@ -1535,7 +1535,7 @@
       "decision_path": "STRONG_TOOL_FAST_PATH",
       "reason_code": "STRONG_TOOL_SEND_EMAIL",
       "confidence": 1.0,
-      "latency_ms": 0.211,
+      "latency_ms": 0.33,
       "passed": true
     },
     {
@@ -1550,7 +1550,7 @@
       "decision_path": "STRONG_TOOL_FAST_PATH",
       "reason_code": "STRONG_TOOL_SET_REMINDER",
       "confidence": 1.0,
-      "latency_ms": 0.17,
+      "latency_ms": 0.257,
       "passed": true
     },
     {
@@ -1565,7 +1565,7 @@
       "decision_path": "SEMANTIC_CLASSIFIER",
       "reason_code": "SEMANTIC_MARGIN_0.21_TOP_TOOL_ACTION",
       "confidence": 0.9141,
-      "latency_ms": 41.366,
+      "latency_ms": 86.64,
       "passed": true
     },
     {
@@ -1580,7 +1580,7 @@
       "decision_path": "STRONG_TOOL_FAST_PATH",
       "reason_code": "STRONG_TOOL_SET_REMINDER",
       "confidence": 1.0,
-      "latency_ms": 0.203,
+      "latency_ms": 0.464,
       "passed": true
     },
     {
@@ -1595,7 +1595,7 @@
       "decision_path": "STRONG_TOOL_FAST_PATH",
       "reason_code": "STRONG_TOOL_SEND_EMAIL",
       "confidence": 1.0,
-      "latency_ms": 0.144,
+      "latency_ms": 0.352,
       "passed": true
     },
     {
@@ -1610,7 +1610,7 @@
       "decision_path": "STRONG_TOOL_FAST_PATH",
       "reason_code": "STRONG_TOOL_SET_REMINDER",
       "confidence": 1.0,
-      "latency_ms": 0.106,
+      "latency_ms": 0.306,
       "passed": true
     },
     {
@@ -1625,7 +1625,7 @@
       "decision_path": "STRONG_TOOL_FAST_PATH",
       "reason_code": "STRONG_TOOL_SET_REMINDER",
       "confidence": 1.0,
-      "latency_ms": 0.091,
+      "latency_ms": 0.352,
       "passed": true
     },
     {
@@ -1640,7 +1640,7 @@
       "decision_path": "STRONG_TOOL_FAST_PATH",
       "reason_code": "STRONG_TOOL_SEND_EMAIL",
       "confidence": 1.0,
-      "latency_ms": 0.106,
+      "latency_ms": 0.312,
       "passed": true
     },
     {
@@ -1655,7 +1655,7 @@
       "decision_path": "STRONG_TOOL_FAST_PATH",
       "reason_code": "STRONG_TOOL_SET_REMINDER",
       "confidence": 1.0,
-      "latency_ms": 0.092,
+      "latency_ms": 0.285,
       "passed": true
     },
     {
@@ -1670,7 +1670,7 @@
       "decision_path": "STRONG_TOOL_FAST_PATH",
       "reason_code": "STRONG_TOOL_SET_REMINDER",
       "confidence": 1.0,
-      "latency_ms": 0.144,
+      "latency_ms": 0.312,
       "passed": true
     },
     {
@@ -1685,7 +1685,7 @@
       "decision_path": "STRONG_TOOL_FAST_PATH",
       "reason_code": "STRONG_TOOL_SEND_EMAIL",
       "confidence": 1.0,
-      "latency_ms": 0.207,
+      "latency_ms": 0.293,
       "passed": true
     }
   ]

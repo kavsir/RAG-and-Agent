@@ -48,32 +48,21 @@ workflow.add_node("email", parse_email_node)
 # Node kết thúc & lưu trữ
 workflow.add_node("save_chat", save_chat_node)
 
-# 2. Entry Point
-workflow.set_entry_point("cache")
-
-
-# 3. Điều hướng sau Cache
-def route_from_cache(state: AgentState) -> str:
-    if state.get("cache_hit", False):
-        return "save_chat"
-    return "analysis"
-
-
-workflow.add_conditional_edges(
-    "cache",
-    route_from_cache,
-    {
-        "save_chat": "save_chat",
-        "analysis": "analysis",
-    },
-)
+# 2. Entry Point (Context-Safe: Analysis & Intent First)
+workflow.set_entry_point("analysis")
 
 # Analysis -> Router
 workflow.add_edge("analysis", "router")
 
+# Router -> Cache (Evaluates Cache Policy with full category & personal/session context)
+workflow.add_edge("router", "cache")
 
-# 4. Điều hướng chính sau Router
-def route_after_router(state: AgentState) -> str:
+
+# 3. Điều hướng sau Cache (Hit -> Save Chat | Miss -> Direct to Category Branch)
+def route_after_cache(state: AgentState) -> str:
+    if state.get("cache_hit", False):
+        return "save_chat"
+
     category = state.get("category", "DOMAIN_DATA")
     tool_intent = state.get("tool_intent")
 
@@ -89,9 +78,10 @@ def route_after_router(state: AgentState) -> str:
 
 
 workflow.add_conditional_edges(
-    "router",
-    route_after_router,
+    "cache",
+    route_after_cache,
     {
+        "save_chat": "save_chat",
         "retrieve": "retrieve",
         "general_answer": "general_answer",
         "reminder": "reminder",

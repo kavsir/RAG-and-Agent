@@ -7,6 +7,7 @@ class AgentState(TypedDict):
     question: str
     conversation_id: str
     chat_history: str
+    user_id: Optional[str]
     student_profile: Dict[str, Any]
 
     # Phân tích & Định tuyến
@@ -17,6 +18,9 @@ class AgentState(TypedDict):
     session_context: Optional[Dict[str, Any]]
     resolved_entities: Dict[str, Any]
     resolution_source: str
+
+    # Cache Policy (Context-Safe)
+    cache_policy: Optional[Dict[str, Any]]
 
     # RAG Retrieval & Context
     retrieved_docs: List[Dict[str, Any]]

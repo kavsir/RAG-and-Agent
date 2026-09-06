@@ -24,6 +24,8 @@ class ChatMetadata(BaseModel):
     cache_hit: bool = False
     category: str = "DOMAIN_DATA"
     tool_intent: Optional[str] = None
+    cache_scope: Optional[str] = None
+    profile_digest: Optional[str] = None
 
 
 class ChatResponse(BaseModel):

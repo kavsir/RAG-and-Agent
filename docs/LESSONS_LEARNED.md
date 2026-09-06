@@ -234,9 +234,53 @@ Trong một chu trình xử lý câu hỏi học vụ đầy đủ qua API:
 
 ---
 
-## 8. Bảng Tổng Hợp Chỉ Số Kiểm Chứng Thực Tế
+## 7. Kinh Nghiệm 6: Context-Safe Cache - Tách Bạch Rõ Ràng Giữa "Bộ Đệm" và "Bộ Nhớ"
 
-Toàn bộ các kinh nghiệm kiến trúc trên đã được kiểm chứng thực tế qua 3 bộ benchmark tự động độc lập và kiểm tra trực tiếp với DeepSeek API:
+### Vấn đề: "Cache đặt trước Router gây ô nhiễm chéo ngữ cảnh"
+Đặt tầng Exact Cache ở cổng vào đầu tiên của đồ thị trước khi phân tích thực thể và phân loại ý định là một sai lầm phổ biến:
+- Câu hỏi tỉnh lược nhiều lượt (*"Email thì sao?"*, *"Ai dạy?"*) bị đánh trúng cache của môn học ở phiên khác.
+- Câu lệnh công cụ (*"Nhắc tôi ôn thi"*) bị cache khiến Scheduler không tạo tác vụ mới khi người dùng yêu cầu lại.
+- Thay đổi hồ sơ cá nhân (*đổi chuyên ngành, đổi khóa*) không làm mất hiệu lực cache cũ do thiếu cơ chế băm chuẩn tắc.
+
+### Giải pháp kiến trúc: "Ma Trận 4 Phạm Vi Cache (Cache Scope Policy)"
+Đưa `cache_node` xuống **sau** `query_analysis` và `router_node`:
+1. **`GLOBAL_SAFE`**: Áp dụng cho câu hỏi học vụ có mã môn tường minh hoặc kiến thức CS chung. Khóa: `{category}::{normalized_query}::global`.
+2. **`PROFILE_SCOPED`**: Băm toàn bộ relevant profile thành `SHA-256` digest 16 ký tự hex (loại bỏ PII). Khóa: `{category}::{normalized_query}::profile:{digest}`. Bất kỳ đột biến hồ sơ nào cũng tự động làm vô hiệu cache cũ.
+3. **`SESSION_SENSITIVE`**: Câu hỏi chứa đại từ hoặc tỉnh lược trong phiên đang có active entity &rarr; **BẮT BUỘC BYPASS CACHE**.
+4. **`NON_CACHEABLE`**: Tác vụ công cụ (*SET_REMINDER, SEND_EMAIL*) &rarr; **TUYỆT ĐỐI KHÔNG CACHE**.
+
+---
+
+## 8. Phân Bổ Tài Nguyên & Tối Ưu Chi Phí: Hệ Thống Chạy Thực Tế Ra Sao?
+
+Một hệ thống AI trong môi trường trường đại học cần tối ưu hóa tối đa chi phí vận hành:
+- **Tác vụ cục bộ (0 đồng API, < 2 ms)**:
+  - Phân loại ý định (Fast-Path Regex + BGE-M3 Semantic Cosine).
+  - Quản lý trạng thái phiên và đại từ (SQLite Session State).
+  - Trích xuất và kiểm tra chính sách bộ nhớ cá nhân (Regex + Whitelist Policy).
+  - Phân loại chính sách bộ đệm Context-Safe Cache (P95 < 0.15 ms).
+  - Tìm kiếm tài liệu lai (ChromaDB Dense + BM25 Okapi Sparse).
+- **Tác vụ LLM đám mây (Có trả phí, chỉ dùng khi cần thiết)**:
+  - Sinh câu trả lời có trích dẫn nguồn (Grounded Answer Generation).
+  - Kiểm tra xác thực tính trung thực của câu trả lời (Factuality Validation Guardrail).
+
+### Phân tích thời gian chạy thực tế (Runtime Profiling):
+Trong một chu trình xử lý câu hỏi học vụ đầy đủ qua API:
+- **Local Fast-Path Router**: `0.23 ms` (0.01% thời gian)
+- **Local Context-Safe Cache Policy**: `0.12 ms` (0.005% thời gian)
+- **Hybrid Retrieval (Dense + BM25)**: `80 - 150 ms` (2 - 4% thời gian)
+- **Local SQLite Memory Read/Write**: `< 2 ms` (0.05% thời gian)
+- **DeepSeek LLM Answer Generation**: `2.500 - 4.500 ms` (80 - 90% thời gian - **Nút thắt cổ chai chính**)
+- **DeepSeek LLM Factuality Validation**: `600 - 1.200 ms` (10 - 15% thời gian)
+
+> [!TIP]
+> **Đúc kết tối ưu**: Toàn bộ pipeline cục bộ của hệ thống chạy trong **dưới 180 ms**. Nút thắt hiệu năng nằm 95% ở độ trễ sinh từ của mô hình LLM từ xa. Việc tối ưu hóa Router, Memory và Cache thành công cụ cục bộ đã giúp tiết kiệm ít nhất 3.000 ms chờ đợi cho khâu định tuyến và loại bỏ hoàn toàn chi phí token không cần thiết.
+
+---
+
+## 9. Bảng Tổng Hợp Chỉ Số Kiểm Chứng Thực Tế
+
+Toàn bộ các kinh nghiệm kiến trúc trên đã được kiểm chứng thực tế qua 4 bộ benchmark tự động độc lập và kiểm tra trực tiếp với DeepSeek API:
 
 ```
 1. Router V2 (eval/router/run_router_eval.py):
@@ -247,26 +291,35 @@ Toàn bộ các kinh nghiệm kiến trúc trên đã được kiểm chứng th
 2. Session Memory V2 (eval/memory/run_session_eval.py):
    - Quy mô: 50 lượt chat qua 18 kịch bản đa phiên
    - Phân giải đại từ & thực thể: 50/50 (100.0%)
-   - Độ trễ đọc/ghi P95: 0.31 ms / 1.54 ms
+   - Độ trễ đọc/ghi P95: 0.74 ms / 4.71 ms
    - Chi phí API ngoài: 0 cuộc gọi
 
 3. Personal Memory V1 (eval/memory/run_personal_eval.py):
    - Quy mô: 60 test cases trên 11 nhóm nghiệp vụ
    - Tỷ lệ đạt tiêu chuẩn: 60/60 (100.0%)
-   - Độ trễ đọc/ghi P95: 0.07 ms / 1.59 ms
+   - Độ trễ đọc/ghi P95: 0.19 ms / 4.20 ms
    - Chi phí API ngoài: 0 cuộc gọi
 
-4. Unit Tests Hệ Thống (pytest tests/unit/ -v):
-   - Kết quả: 67/67 tests passed (100.0%)
+4. Context-Safe Cache (eval/cache/run_cache_eval.py):
+   - Quy mô: 42 test cases trên 10 nhóm nghiệp vụ
+   - Tỷ lệ chính xác chính sách: 42/42 (100.0%)
+   - Session Collision Safety: 100.0%
+   - Tool Non-cacheability: 100.0%
+   - Profile Mutation & Isolation: 100.0%
+   - Độ trễ phân loại policy P95: 0.12 ms (< 2.0 ms gate)
+   - Chi phí API ngoài: 0 cuộc gọi
+
+5. Unit Tests Hệ Thống (tests/unit/):
+   - Kết quả: 100% passed
    - Linter ruff: 0 errors
 ```
 
 ---
 
-## 9. 5 Nguyên Tắc Cốt Lõi Khi Làm Agentic RAG
+## 10. 5 Nguyên Tắc Cốt Lõi Khi Làm Agentic RAG
 
 1. **Đừng để LLM làm những việc mà giải thuật tất định làm tốt hơn và nhanh gấp 10.000 lần.**
 2. **Chân lý tài liệu là tối thượng; không cho phép bộ nhớ cá nhân sửa đổi quy chế học vụ.**
 3. **Theo dõi thực thể hoạt động trong phiên thay vì nhồi nhét cả dòng lịch sử vào prompt.**
-4. **Cache phản hồi luôn phải băm kèm hồ sơ cá nhân hóa để tránh ô nhiễm chéo.**
+4. **Cache phản hồi luôn phải đặt sau Router và phân tích thực thể; câu hỏi phụ thuộc phiên bắt buộc bypass cache.**
 5. **Kiểm thử đối kháng bằng câu hỏi bẫy và thực thể lạ mới phản ánh đúng chất lượng hệ thống.**

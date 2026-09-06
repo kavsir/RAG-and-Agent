@@ -12,6 +12,7 @@ from typing import Dict, Any, Optional
 from src.config.settings import settings
 from src.llm.client import invoke_llm
 from src.cache.exact_cache import get_exact_cache
+from src.cache.cache_policy import decide_cache_policy, compute_profile_digest
 from src.memory.memory_manager import get_memory_manager
 from src.rag.query_analyzer import analyze_query, AnalyzedQuery
 from src.rag.hybrid_retriever import retrieve_candidates
@@ -29,39 +30,80 @@ _email_sender = EmailSender()
 
 
 def _compute_profile_fingerprint(profile: Optional[Dict[str, Any]]) -> Optional[str]:
-    """Tính toán fingerprint an toàn của các thuộc tính hồ sơ ảnh hưởng đến câu trả lời."""
-    if not profile:
-        return None
-    parts = []
-    for k in sorted(["response_style", "preferred_language", "major", "cohort"]):
-        if profile.get(k):
-            parts.append(f"{k}:{profile[k]}")
-    return "|".join(parts) if parts else None
+    """Compatibility alias cho compute_profile_digest."""
+    return compute_profile_digest(profile)
 
 
 # ==============================================================================
-# 1. CACHE NODE
+# 1. CACHE NODE (CONTEXT-SAFE: EVALUATES POLICY AFTER QUERY ANALYSIS & ROUTER)
 # ==============================================================================
 def cache_node(state: Dict[str, Any]) -> Dict[str, Any]:
     question = state.get("question", "").strip()
-    profile = state.get("student_profile", {})
-    fingerprint = _compute_profile_fingerprint(profile)
+    category = state.get("category")
+    tool_intent = state.get("tool_intent")
+    analyzed_query = state.get("analyzed_query")
+    session_context = state.get("session_context")
+    user_id = state.get("user_id")
+    profile = state.get("student_profile")
+
+    # Nếu category chưa có (do gọi rời rạc ngoài graph), phân loại nhanh bằng Router local
+    if not category:
+        router_svc = get_router_service()
+        classification = router_svc.classify_intent(question)
+        category = classification.category
+        if tool_intent is None:
+            tool_intent = classification.tool_intent
+
+    # Hydrate student profile nếu chưa có và có user_id
+    if profile is None and user_id:
+        try:
+            memory_mgr = get_memory_manager()
+            profile = memory_mgr.get_relevant_profile_context(
+                query=question,
+                category=category,
+                user_id=user_id,
+            )
+        except Exception as e:
+            logger.warning(f"Error fetching relevant profile in cache_node: {e}")
+            profile = {}
+    elif profile is None:
+        profile = {}
+
+    decision = decide_cache_policy(
+        query=question,
+        category=category,
+        tool_intent=tool_intent,
+        analyzed_query=analyzed_query,
+        session_context=session_context,
+        relevant_profile=profile,
+    )
+
     cache = get_exact_cache()
-    cached_entry = cache.get(question, profile_fingerprint=fingerprint)
+    if decision.cacheable and decision.cache_key:
+        cached_entry = cache.get(decision.cache_key)
+        if cached_entry:
+            logger.info(
+                f"Exact Cache HIT [{decision.scope}]: '{question[:50]}' "
+                f"(key={decision.cache_key})"
+            )
+            return {
+                "cache_hit": True,
+                "cache_policy": decision.model_dump(),
+                "student_profile": profile,
+                "answer": cached_entry["answer"],
+                "category": cached_entry.get("category", category),
+                "tool_intent": cached_entry.get("tool_intent", tool_intent),
+                "sources": cached_entry.get("sources", []),
+                "retry_count": 0,
+            }
 
-    if cached_entry:
-        logger.info(f"Exact Cache HIT cho cau hoi: '{question[:50]}' (fingerprint={fingerprint})")
-        return {
-            "cache_hit": True,
-            "answer": cached_entry["answer"],
-            "category": cached_entry.get("category", "DOMAIN_DATA"),
-            "tool_intent": cached_entry.get("tool_intent"),
-            "sources": cached_entry.get("sources", []),
-            "retry_count": 0,
-        }
-
-    logger.debug(f"Cache MISS (fingerprint={fingerprint})")
-    return {"cache_hit": False, "retry_count": 0}
+    logger.debug(f"Cache MISS [{decision.scope}]: '{question[:50]}' (reason={decision.reason_code})")
+    return {
+        "cache_hit": False,
+        "cache_policy": decision.model_dump(),
+        "student_profile": profile,
+        "retry_count": 0,
+    }
 
 
 # ==============================================================================
@@ -438,21 +480,66 @@ def save_chat_node(state: Dict[str, Any]) -> Dict[str, Any]:
     cache_hit = state.get("cache_hit", False)
     conv_id = state.get("conversation_id")
     analyzed = state.get("analyzed_query")
+    session_ctx = state.get("session_context")
+    user_id = state.get("user_id")
+    profile = state.get("student_profile")
+    if profile is None and user_id:
+        try:
+            memory_mgr = get_memory_manager()
+            profile = memory_mgr.get_relevant_profile_context(
+                query=question,
+                category=category,
+                user_id=user_id,
+            )
+        except Exception as e:
+            logger.warning(f"Error fetching relevant profile in save_chat_node: {e}")
+            profile = {}
+    elif profile is None:
+        profile = {}
 
-    # Lưu Exact Cache nếu chưa có và không phải câu từ chối
-    profile = state.get("student_profile", {})
-    fingerprint = _compute_profile_fingerprint(profile)
+    cache_policy_dict = state.get("cache_policy")
 
-    if not cache_hit and answer and "chưa tìm thấy đủ dữ liệu" not in answer.lower():
+    # Xác định cache policy nếu chưa có trong state
+    if cache_policy_dict:
+        cacheable = cache_policy_dict.get("cacheable", False)
+        cache_key = cache_policy_dict.get("cache_key")
+        metadata = cache_policy_dict.get("metadata", {})
+    else:
+        decision = decide_cache_policy(
+            query=question,
+            category=category,
+            tool_intent=tool_intent,
+            analyzed_query=analyzed,
+            session_context=session_ctx,
+            relevant_profile=profile,
+        )
+        cacheable = decision.cacheable
+        cache_key = decision.cache_key
+        metadata = decision.metadata
+
+    # Chỉ lưu vào Exact Cache khi:
+    # 1. Không phải cache hit
+    # 2. Câu trả lời không rỗng
+    # 3. Cache policy cho phép (cacheable == True)
+    # 4. Không phải câu từ chối hoặc lỗi
+    if (
+        not cache_hit
+        and cacheable
+        and cache_key
+        and answer
+        and "chưa tìm thấy đủ dữ liệu" not in answer.lower()
+        and "thất bại" not in answer.lower()
+    ):
         cache = get_exact_cache()
         cache.set(
-            key=question,
+            key=cache_key,
             answer=answer,
             category=category,
             sources=sources,
             tool_intent=tool_intent,
-            profile_fingerprint=fingerprint,
+            metadata=metadata,
         )
+        logger.info(f"Saved to Exact Cache: key={cache_key}")
 
     # Lưu vào Memory Manager theo đúng conversation_id
     memory = get_memory_manager()

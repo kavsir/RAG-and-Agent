@@ -1,0 +1,472 @@
+{
+  "timestamp": "2026-09-06 14:17:59",
+  "total_cases": 42,
+  "passed_cases": 42,
+  "accuracy_pct": 100.0,
+  "latency_p50_us": 34.75,
+  "latency_p95_us": 121.53999999999989,
+  "latency_p95_ms": 0.1215399999999999,
+  "latency_p99_us": 1479.485999999994,
+  "invariants": {
+    "global_safe_cache_accuracy": 1.0,
+    "profile_isolation_accuracy": 1.0,
+    "profile_mutation_safety": 1.0,
+    "session_collision_safety": 1.0,
+    "entity_switch_safety": 1.0,
+    "tool_non_cacheability": 1.0,
+    "cache_payload_integrity": 1.0,
+    "zero_external_api_calls": true,
+    "overhead_p95_under_2ms": true
+  },
+  "verdict": "ACCEPTED",
+  "groups": {
+    "GLOBAL_SAFE_DOMAIN": {
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "cases": [
+        {
+          "id": "CACHE-GSD-01",
+          "query": "Môn FIT4201 có bao nhiêu tín chỉ?",
+          "status": "PASS",
+          "actual_scope": "GLOBAL_SAFE",
+          "actual_cacheable": true,
+          "actual_key": "DOMAIN_DATA::môn fit4201 có bao nhiêu tín chỉ?::global",
+          "latency_us": 2137.7
+        },
+        {
+          "id": "CACHE-GSD-02",
+          "query": "Học phần FIT3101 gồm những nội dung gì?",
+          "status": "PASS",
+          "actual_scope": "GLOBAL_SAFE",
+          "actual_cacheable": true,
+          "actual_key": "DOMAIN_DATA::học phần fit3101 gồm những nội dung gì?::global",
+          "latency_us": 74.6
+        },
+        {
+          "id": "CACHE-GSD-03",
+          "query": "Quy định chuẩn đầu ra ngoại ngữ của trường Đại học Đại Nam như thế nào?",
+          "status": "PASS",
+          "actual_scope": "GLOBAL_SAFE",
+          "actual_cacheable": true,
+          "actual_key": "DOMAIN_DATA::quy định chuẩn đầu ra ngoại ngữ của trường đại học đại nam như thế nào?::global",
+          "latency_us": 68.7
+        },
+        {
+          "id": "CACHE-GSD-04",
+          "query": "Điều kiện để sinh viên được xét làm khóa luận tốt nghiệp là gì?",
+          "status": "PASS",
+          "actual_scope": "GLOBAL_SAFE",
+          "actual_cacheable": true,
+          "actual_key": "DOMAIN_DATA::điều kiện để sinh viên được xét làm khóa luận tốt nghiệp là gì?::global",
+          "latency_us": 59.3
+        },
+        {
+          "id": "CACHE-GSD-05",
+          "query": "Môn Cơ sở dữ liệu FIT2102 thi theo hình thức nào?",
+          "status": "PASS",
+          "actual_scope": "GLOBAL_SAFE",
+          "actual_cacheable": true,
+          "actual_key": "DOMAIN_DATA::môn cơ sở dữ liệu fit2102 thi theo hình thức nào?::global",
+          "latency_us": 52.5
+        }
+      ]
+    },
+    "GLOBAL_SAFE_GENERAL": {
+      "total": 4,
+      "passed": 4,
+      "failed": 0,
+      "cases": [
+        {
+          "id": "CACHE-GSG-01",
+          "query": "Thuật toán Dijkstra hoạt động như thế nào?",
+          "status": "PASS",
+          "actual_scope": "GLOBAL_SAFE",
+          "actual_cacheable": true,
+          "actual_key": "GENERAL_LLM::thuật toán dijkstra hoạt động như thế nào?::global",
+          "latency_us": 39.9
+        },
+        {
+          "id": "CACHE-GSG-02",
+          "query": "So sánh sự khác biệt giữa giao thức TCP và UDP",
+          "status": "PASS",
+          "actual_scope": "GLOBAL_SAFE",
+          "actual_cacheable": true,
+          "actual_key": "GENERAL_LLM::so sánh sự khác biệt giữa giao thức tcp và udp::global",
+          "latency_us": 68.5
+        },
+        {
+          "id": "CACHE-GSG-03",
+          "query": "Giải thích khái niệm ACID trong hệ quản trị cơ sở dữ liệu quan hệ",
+          "status": "PASS",
+          "actual_scope": "GLOBAL_SAFE",
+          "actual_cacheable": true,
+          "actual_key": "GENERAL_LLM::giải thích khái niệm acid trong hệ quản trị cơ sở dữ liệu quan hệ::global",
+          "latency_us": 62.6
+        },
+        {
+          "id": "CACHE-GSG-04",
+          "query": "RESTful API là gì và các nguyên tắc thiết kế cơ bản",
+          "status": "PASS",
+          "actual_scope": "GLOBAL_SAFE",
+          "actual_cacheable": true,
+          "actual_key": "GENERAL_LLM::restful api là gì và các nguyên tắc thiết kế cơ bản::global",
+          "latency_us": 47.1
+        }
+      ]
+    },
+    "PROFILE_SCOPED_PLANNING": {
+      "total": 4,
+      "passed": 4,
+      "failed": 0,
+      "cases": [
+        {
+          "id": "CACHE-PSP-01",
+          "query": "Tư vấn cho tôi các môn nên đăng ký trong học kỳ tới",
+          "status": "PASS",
+          "actual_scope": "PROFILE_SCOPED",
+          "actual_cacheable": true,
+          "actual_key": "DOMAIN_DATA::tư vấn cho tôi các môn nên đăng ký trong học kỳ tới::profile:05e99590586998de",
+          "latency_us": 532.3
+        },
+        {
+          "id": "CACHE-PSP-02",
+          "query": "Với chuyên ngành của tôi thì nên chọn học phần nào ở kỳ sau?",
+          "status": "PASS",
+          "actual_scope": "PROFILE_SCOPED",
+          "actual_cacheable": true,
+          "actual_key": "DOMAIN_DATA::với chuyên ngành của tôi thì nên chọn học phần nào ở kỳ sau?::profile:0e968e9436181e25",
+          "latency_us": 122.9
+        },
+        {
+          "id": "CACHE-PSP-03",
+          "query": "Kế hoạch thực tập doanh nghiệp cho khóa tôi như thế nào?",
+          "status": "PASS",
+          "actual_scope": "PROFILE_SCOPED",
+          "actual_cacheable": true,
+          "actual_key": "DOMAIN_DATA::kế hoạch thực tập doanh nghiệp cho khóa tôi như thế nào?::profile:645b75d07bfe7138",
+          "latency_us": 88.8
+        },
+        {
+          "id": "CACHE-PSP-04",
+          "query": "Hướng dẫn đăng ký đồ án tốt nghiệp cho tôi",
+          "status": "PASS",
+          "actual_scope": "PROFILE_SCOPED",
+          "actual_cacheable": true,
+          "actual_key": "DOMAIN_DATA::hướng dẫn đăng ký đồ án tốt nghiệp cho tôi::profile:8c870a2eaa763166",
+          "latency_us": 95.7
+        }
+      ]
+    },
+    "PROFILE_MUTATION_SAFETY": {
+      "total": 4,
+      "passed": 4,
+      "failed": 0,
+      "cases": [
+        {
+          "id": "CACHE-PMS-01",
+          "query": "Lộ trình học tập cá nhân",
+          "status": "PASS",
+          "actual_scope": "PROFILE_SCOPED",
+          "actual_cacheable": true,
+          "actual_key": "DOMAIN_DATA::lộ trình học tập cá nhân::profile:c1890ef9eb514b4d",
+          "latency_us": 65.6
+        },
+        {
+          "id": "CACHE-PMS-02",
+          "query": "Lộ trình học tập cá nhân",
+          "status": "PASS",
+          "actual_scope": "PROFILE_SCOPED",
+          "actual_cacheable": true,
+          "actual_key": "DOMAIN_DATA::lộ trình học tập cá nhân::profile:6dcb42df1513e743",
+          "latency_us": 55.5
+        },
+        {
+          "id": "CACHE-PMS-03",
+          "query": "Lộ trình học tập cá nhân",
+          "status": "PASS",
+          "actual_scope": "PROFILE_SCOPED",
+          "actual_cacheable": true,
+          "actual_key": "DOMAIN_DATA::lộ trình học tập cá nhân::profile:9753562cae017036",
+          "latency_us": 54.7
+        },
+        {
+          "id": "CACHE-PMS-04",
+          "query": "Lộ trình học tập cá nhân",
+          "status": "PASS",
+          "actual_scope": "PROFILE_SCOPED",
+          "actual_cacheable": true,
+          "actual_key": "DOMAIN_DATA::lộ trình học tập cá nhân::profile:35558a3037d345d5",
+          "latency_us": 59.9
+        }
+      ]
+    },
+    "PROFILE_ISOLATION": {
+      "total": 3,
+      "passed": 3,
+      "failed": 0,
+      "cases": [
+        {
+          "id": "CACHE-PIS-01",
+          "query": "Xin chào, tôi là ai?",
+          "status": "PASS",
+          "actual_scope": "PROFILE_SCOPED",
+          "actual_cacheable": true,
+          "actual_key": "GENERAL_LLM::xin chào, tôi là ai?::profile:b517dbbbe16a13a9",
+          "latency_us": 62.8
+        },
+        {
+          "id": "CACHE-PIS-02",
+          "query": "Xin chào, tôi là ai?",
+          "status": "PASS",
+          "actual_scope": "PROFILE_SCOPED",
+          "actual_cacheable": true,
+          "actual_key": "GENERAL_LLM::xin chào, tôi là ai?::profile:e395bbe3ff1f9872",
+          "latency_us": 50.6
+        },
+        {
+          "id": "CACHE-PIS-03",
+          "query": "Xin chào, tôi là ai?",
+          "status": "PASS",
+          "actual_scope": "GLOBAL_SAFE",
+          "actual_cacheable": true,
+          "actual_key": "GENERAL_LLM::xin chào, tôi là ai?::global",
+          "latency_us": 31.2
+        }
+      ]
+    },
+    "SESSION_SENSITIVE_PRONOUN": {
+      "total": 4,
+      "passed": 4,
+      "failed": 0,
+      "cases": [
+        {
+          "id": "CACHE-SSP-01",
+          "query": "Môn đó có bao nhiêu tín chỉ?",
+          "status": "PASS",
+          "actual_scope": "SESSION_SENSITIVE",
+          "actual_cacheable": false,
+          "actual_key": null,
+          "latency_us": 20.1
+        },
+        {
+          "id": "CACHE-SSP-02",
+          "query": "Học phần này thi tự luận hay trắc nghiệm?",
+          "status": "PASS",
+          "actual_scope": "SESSION_SENSITIVE",
+          "actual_cacheable": false,
+          "actual_key": null,
+          "latency_us": 14.4
+        },
+        {
+          "id": "CACHE-SSP-03",
+          "query": "Thầy đó dạy vào ca mấy?",
+          "status": "PASS",
+          "actual_scope": "SESSION_SENSITIVE",
+          "actual_cacheable": false,
+          "actual_key": null,
+          "latency_us": 11.5
+        },
+        {
+          "id": "CACHE-SSP-04",
+          "query": "Môn đấy có yêu cầu môn tiên quyết nào không?",
+          "status": "PASS",
+          "actual_scope": "SESSION_SENSITIVE",
+          "actual_cacheable": false,
+          "actual_key": null,
+          "latency_us": 14.5
+        }
+      ]
+    },
+    "SESSION_SENSITIVE_FOLLOWUP": {
+      "total": 4,
+      "passed": 4,
+      "failed": 0,
+      "cases": [
+        {
+          "id": "CACHE-SSF-01",
+          "query": "Email thì sao?",
+          "status": "PASS",
+          "actual_scope": "SESSION_SENSITIVE",
+          "actual_cacheable": false,
+          "actual_key": null,
+          "latency_us": 22.5
+        },
+        {
+          "id": "CACHE-SSF-02",
+          "query": "Ai dạy?",
+          "status": "PASS",
+          "actual_scope": "SESSION_SENSITIVE",
+          "actual_cacheable": false,
+          "actual_key": null,
+          "latency_us": 11.8
+        },
+        {
+          "id": "CACHE-SSF-03",
+          "query": "Bao nhiêu tín chỉ?",
+          "status": "PASS",
+          "actual_scope": "SESSION_SENSITIVE",
+          "actual_cacheable": false,
+          "actual_key": null,
+          "latency_us": 11.4
+        },
+        {
+          "id": "CACHE-SSF-04",
+          "query": "Có thực hành không?",
+          "status": "PASS",
+          "actual_scope": "SESSION_SENSITIVE",
+          "actual_cacheable": false,
+          "actual_key": null,
+          "latency_us": 12.1
+        }
+      ]
+    },
+    "SESSION_COLLISION_SAFETY": {
+      "total": 4,
+      "passed": 4,
+      "failed": 0,
+      "cases": [
+        {
+          "id": "CACHE-SCS-01",
+          "query": "Email thì sao?",
+          "status": "PASS",
+          "actual_scope": "SESSION_SENSITIVE",
+          "actual_cacheable": false,
+          "actual_key": null,
+          "latency_us": 11.9
+        },
+        {
+          "id": "CACHE-SCS-02",
+          "query": "Email thì sao?",
+          "status": "PASS",
+          "actual_scope": "SESSION_SENSITIVE",
+          "actual_cacheable": false,
+          "actual_key": null,
+          "latency_us": 11.9
+        },
+        {
+          "id": "CACHE-SCS-03",
+          "query": "Ai dạy môn này?",
+          "status": "PASS",
+          "actual_scope": "SESSION_SENSITIVE",
+          "actual_cacheable": false,
+          "actual_key": null,
+          "latency_us": 10.4
+        },
+        {
+          "id": "CACHE-SCS-04",
+          "query": "Ai dạy môn này?",
+          "status": "PASS",
+          "actual_scope": "SESSION_SENSITIVE",
+          "actual_cacheable": false,
+          "actual_key": null,
+          "latency_us": 11.1
+        }
+      ]
+    },
+    "ENTITY_SWITCH_SAFETY": {
+      "total": 4,
+      "passed": 4,
+      "failed": 0,
+      "cases": [
+        {
+          "id": "CACHE-ESS-01",
+          "query": "Môn FIT4201 có mấy tín chỉ?",
+          "status": "PASS",
+          "actual_scope": "GLOBAL_SAFE",
+          "actual_cacheable": true,
+          "actual_key": "DOMAIN_DATA::môn fit4201 có mấy tín chỉ?::global",
+          "latency_us": 39.1
+        },
+        {
+          "id": "CACHE-ESS-02",
+          "query": "Ai dạy?",
+          "status": "PASS",
+          "actual_scope": "SESSION_SENSITIVE",
+          "actual_cacheable": false,
+          "actual_key": null,
+          "latency_us": 13.1
+        },
+        {
+          "id": "CACHE-ESS-03",
+          "query": "Thế còn môn FIT3101 thì sao?",
+          "status": "PASS",
+          "actual_scope": "GLOBAL_SAFE",
+          "actual_cacheable": true,
+          "actual_key": "DOMAIN_DATA::thế còn môn fit3101 thì sao?::global",
+          "latency_us": 38.3
+        },
+        {
+          "id": "CACHE-ESS-04",
+          "query": "Ai dạy?",
+          "status": "PASS",
+          "actual_scope": "SESSION_SENSITIVE",
+          "actual_cacheable": false,
+          "actual_key": null,
+          "latency_us": 10.3
+        }
+      ]
+    },
+    "TOOL_ACTION_NON_CACHEABLE": {
+      "total": 6,
+      "passed": 6,
+      "failed": 0,
+      "cases": [
+        {
+          "id": "CACHE-TAN-01",
+          "query": "Nhắc tôi ôn thi cuối kỳ lúc 8h sáng mai",
+          "status": "PASS",
+          "actual_scope": "NON_CACHEABLE",
+          "actual_cacheable": false,
+          "actual_key": null,
+          "latency_us": 12.1
+        },
+        {
+          "id": "CACHE-TAN-02",
+          "query": "Đặt lịch nhắc nộp bài tập lớn vào 17h chiều thứ 6",
+          "status": "PASS",
+          "actual_scope": "NON_CACHEABLE",
+          "actual_cacheable": false,
+          "actual_key": null,
+          "latency_us": 11.0
+        },
+        {
+          "id": "CACHE-TAN-03",
+          "query": "Gửi email cho giảng viên tieppv@dainam.edu.vn",
+          "status": "PASS",
+          "actual_scope": "NON_CACHEABLE",
+          "actual_cacheable": false,
+          "actual_key": null,
+          "latency_us": 9.2
+        },
+        {
+          "id": "CACHE-TAN-04",
+          "query": "Gửi email báo cáo bài tập cho cô giáo",
+          "status": "PASS",
+          "actual_scope": "NON_CACHEABLE",
+          "actual_cacheable": false,
+          "actual_key": null,
+          "latency_us": 9.0
+        },
+        {
+          "id": "CACHE-TAN-05",
+          "query": "Hẹn giờ nhắc tôi tham gia buổi hội thảo nghiên cứu khoa học",
+          "status": "PASS",
+          "actual_scope": "NON_CACHEABLE",
+          "actual_cacheable": false,
+          "actual_key": null,
+          "latency_us": 8.9
+        },
+        {
+          "id": "CACHE-TAN-06",
+          "query": "Gửi mail phản hồi cho phòng đào tạo",
+          "status": "PASS",
+          "actual_scope": "NON_CACHEABLE",
+          "actual_cacheable": false,
+          "actual_key": null,
+          "latency_us": 9.2
+        }
+      ]
+    }
+  }
+}

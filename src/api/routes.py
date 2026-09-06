@@ -63,14 +63,7 @@ def chat_endpoint(request: ChatRequest):
     # 1. Trích xuất sự thật cá nhân tiềm năng từ tin nhắn người dùng (0 external calls)
     memory_mgr.process_personal_memory(user_id=user_id, message=request.message)
 
-    # 2. Lấy ngữ cảnh cá nhân hóa tối thiểu (không tiêm thừa thãi)
-    relevant_profile = memory_mgr.get_relevant_profile_context(
-        query=request.message,
-        category="DOMAIN_DATA",
-        user_id=user_id,
-    )
-
-    # 3. Lấy lịch sử phiên và trạng thái thực thể của đúng phiên
+    # 2. Lấy lịch sử phiên và trạng thái thực thể của đúng phiên
     history_text = memory_mgr.get_conversation_history(conversation_id=conv_id, k=5)
     session_state = memory_mgr.get_session_state(conv_id)
 
@@ -78,7 +71,8 @@ def chat_endpoint(request: ChatRequest):
         "question": request.message,
         "conversation_id": conv_id,
         "chat_history": history_text,
-        "student_profile": relevant_profile,
+        "user_id": user_id,
+        "student_profile": {},
         "rewritten_question": "",
         "category": "DOMAIN_DATA",
         "tool_intent": None,
@@ -86,6 +80,7 @@ def chat_endpoint(request: ChatRequest):
         "session_context": session_state.to_context_dict(),
         "resolved_entities": {},
         "resolution_source": "NONE",
+        "cache_policy": None,
         "retrieved_docs": [],
         "context": "",
         "sources": [],
@@ -105,6 +100,7 @@ def chat_endpoint(request: ChatRequest):
         sources_raw = final_state.get("sources", [])
         cache_hit = final_state.get("cache_hit", False)
         tool_intent = final_state.get("tool_intent")
+        cache_policy = final_state.get("cache_policy") or {}
 
         # Nếu câu trả lời là từ chối do thiếu dữ liệu, đảm bảo danh sách nguồn rỗng
         if "chưa tìm thấy đủ dữ liệu" in answer.lower():
@@ -134,6 +130,8 @@ def chat_endpoint(request: ChatRequest):
                 cache_hit=cache_hit,
                 category=category,
                 tool_intent=tool_intent,
+                cache_scope=cache_policy.get("scope"),
+                profile_digest=cache_policy.get("profile_digest"),
             ),
         )
     except Exception as e:

@@ -1,0 +1,693 @@
+[
+  {
+    "id": "CACHE-GSD-01",
+    "group": "GLOBAL_SAFE_DOMAIN",
+    "query": "Môn FIT4201 có bao nhiêu tín chỉ?",
+    "category": "DOMAIN_DATA",
+    "tool_intent": null,
+    "analyzed_query": {
+      "course_code": "FIT4201",
+      "explicit_course_code": "FIT4201",
+      "resolution_source": "EXPLICIT"
+    },
+    "session_context": null,
+    "relevant_profile": {},
+    "expected_scope": "GLOBAL_SAFE",
+    "expected_cacheable": true,
+    "expected_reason": "GLOBAL_DETERMINISTIC"
+  },
+  {
+    "id": "CACHE-GSD-02",
+    "group": "GLOBAL_SAFE_DOMAIN",
+    "query": "Học phần FIT3101 gồm những nội dung gì?",
+    "category": "DOMAIN_DATA",
+    "tool_intent": null,
+    "analyzed_query": {
+      "course_code": "FIT3101",
+      "explicit_course_code": "FIT3101",
+      "resolution_source": "EXPLICIT"
+    },
+    "session_context": null,
+    "relevant_profile": {},
+    "expected_scope": "GLOBAL_SAFE",
+    "expected_cacheable": true,
+    "expected_reason": "GLOBAL_DETERMINISTIC"
+  },
+  {
+    "id": "CACHE-GSD-03",
+    "group": "GLOBAL_SAFE_DOMAIN",
+    "query": "Quy định chuẩn đầu ra ngoại ngữ của trường Đại học Đại Nam như thế nào?",
+    "category": "DOMAIN_DATA",
+    "tool_intent": null,
+    "analyzed_query": {
+      "course_code": "",
+      "explicit_course_code": null,
+      "resolution_source": "NONE"
+    },
+    "session_context": null,
+    "relevant_profile": {},
+    "expected_scope": "GLOBAL_SAFE",
+    "expected_cacheable": true,
+    "expected_reason": "GLOBAL_DETERMINISTIC"
+  },
+  {
+    "id": "CACHE-GSD-04",
+    "group": "GLOBAL_SAFE_DOMAIN",
+    "query": "Điều kiện để sinh viên được xét làm khóa luận tốt nghiệp là gì?",
+    "category": "DOMAIN_DATA",
+    "tool_intent": null,
+    "analyzed_query": {
+      "course_code": "",
+      "explicit_course_code": null,
+      "resolution_source": "NONE"
+    },
+    "session_context": null,
+    "relevant_profile": {},
+    "expected_scope": "GLOBAL_SAFE",
+    "expected_cacheable": true,
+    "expected_reason": "GLOBAL_DETERMINISTIC"
+  },
+  {
+    "id": "CACHE-GSD-05",
+    "group": "GLOBAL_SAFE_DOMAIN",
+    "query": "Môn Cơ sở dữ liệu FIT2102 thi theo hình thức nào?",
+    "category": "DOMAIN_DATA",
+    "tool_intent": null,
+    "analyzed_query": {
+      "course_code": "FIT2102",
+      "explicit_course_code": "FIT2102",
+      "resolution_source": "EXPLICIT"
+    },
+    "session_context": null,
+    "relevant_profile": {},
+    "expected_scope": "GLOBAL_SAFE",
+    "expected_cacheable": true,
+    "expected_reason": "GLOBAL_DETERMINISTIC"
+  },
+  {
+    "id": "CACHE-GSG-01",
+    "group": "GLOBAL_SAFE_GENERAL",
+    "query": "Thuật toán Dijkstra hoạt động như thế nào?",
+    "category": "GENERAL_LLM",
+    "tool_intent": null,
+    "analyzed_query": {},
+    "session_context": null,
+    "relevant_profile": {},
+    "expected_scope": "GLOBAL_SAFE",
+    "expected_cacheable": true,
+    "expected_reason": "GLOBAL_DETERMINISTIC"
+  },
+  {
+    "id": "CACHE-GSG-02",
+    "group": "GLOBAL_SAFE_GENERAL",
+    "query": "So sánh sự khác biệt giữa giao thức TCP và UDP",
+    "category": "GENERAL_LLM",
+    "tool_intent": null,
+    "analyzed_query": {},
+    "session_context": null,
+    "relevant_profile": {},
+    "expected_scope": "GLOBAL_SAFE",
+    "expected_cacheable": true,
+    "expected_reason": "GLOBAL_DETERMINISTIC"
+  },
+  {
+    "id": "CACHE-GSG-03",
+    "group": "GLOBAL_SAFE_GENERAL",
+    "query": "Giải thích khái niệm ACID trong hệ quản trị cơ sở dữ liệu quan hệ",
+    "category": "GENERAL_LLM",
+    "tool_intent": null,
+    "analyzed_query": {},
+    "session_context": null,
+    "relevant_profile": {},
+    "expected_scope": "GLOBAL_SAFE",
+    "expected_cacheable": true,
+    "expected_reason": "GLOBAL_DETERMINISTIC"
+  },
+  {
+    "id": "CACHE-GSG-04",
+    "group": "GLOBAL_SAFE_GENERAL",
+    "query": "RESTful API là gì và các nguyên tắc thiết kế cơ bản",
+    "category": "GENERAL_LLM",
+    "tool_intent": null,
+    "analyzed_query": {},
+    "session_context": null,
+    "relevant_profile": {},
+    "expected_scope": "GLOBAL_SAFE",
+    "expected_cacheable": true,
+    "expected_reason": "GLOBAL_DETERMINISTIC"
+  },
+  {
+    "id": "CACHE-PSP-01",
+    "group": "PROFILE_SCOPED_PLANNING",
+    "query": "Tư vấn cho tôi các môn nên đăng ký trong học kỳ tới",
+    "category": "DOMAIN_DATA",
+    "tool_intent": null,
+    "analyzed_query": {},
+    "session_context": null,
+    "relevant_profile": {
+      "preferred_name": "Tuấn",
+      "major": "Công nghệ thông tin",
+      "cohort": "K18"
+    },
+    "expected_scope": "PROFILE_SCOPED",
+    "expected_cacheable": true,
+    "expected_reason": "PROFILE_PERSONALIZED"
+  },
+  {
+    "id": "CACHE-PSP-02",
+    "group": "PROFILE_SCOPED_PLANNING",
+    "query": "Với chuyên ngành của tôi thì nên chọn học phần nào ở kỳ sau?",
+    "category": "DOMAIN_DATA",
+    "tool_intent": null,
+    "analyzed_query": {},
+    "session_context": null,
+    "relevant_profile": {
+      "major": "Khoa học máy tính",
+      "cohort": "K19"
+    },
+    "expected_scope": "PROFILE_SCOPED",
+    "expected_cacheable": true,
+    "expected_reason": "PROFILE_PERSONALIZED"
+  },
+  {
+    "id": "CACHE-PSP-03",
+    "group": "PROFILE_SCOPED_PLANNING",
+    "query": "Kế hoạch thực tập doanh nghiệp cho khóa tôi như thế nào?",
+    "category": "DOMAIN_DATA",
+    "tool_intent": null,
+    "analyzed_query": {},
+    "session_context": null,
+    "relevant_profile": {
+      "cohort": "K17",
+      "major": "Kỹ thuật phần mềm"
+    },
+    "expected_scope": "PROFILE_SCOPED",
+    "expected_cacheable": true,
+    "expected_reason": "PROFILE_PERSONALIZED"
+  },
+  {
+    "id": "CACHE-PSP-04",
+    "group": "PROFILE_SCOPED_PLANNING",
+    "query": "Hướng dẫn đăng ký đồ án tốt nghiệp cho tôi",
+    "category": "DOMAIN_DATA",
+    "tool_intent": null,
+    "analyzed_query": {},
+    "session_context": null,
+    "relevant_profile": {
+      "preferred_name": "Linh",
+      "current_semester": "Học kỳ 8"
+    },
+    "expected_scope": "PROFILE_SCOPED",
+    "expected_cacheable": true,
+    "expected_reason": "PROFILE_PERSONALIZED"
+  },
+  {
+    "id": "CACHE-PMS-01",
+    "group": "PROFILE_MUTATION_SAFETY",
+    "query": "Lộ trình học tập cá nhân",
+    "category": "DOMAIN_DATA",
+    "tool_intent": null,
+    "analyzed_query": {},
+    "session_context": null,
+    "relevant_profile": {
+      "preferred_name": "Tuấn",
+      "cohort": "K18"
+    },
+    "expected_scope": "PROFILE_SCOPED",
+    "expected_cacheable": true,
+    "expected_reason": "PROFILE_PERSONALIZED"
+  },
+  {
+    "id": "CACHE-PMS-02",
+    "group": "PROFILE_MUTATION_SAFETY",
+    "query": "Lộ trình học tập cá nhân",
+    "category": "DOMAIN_DATA",
+    "tool_intent": null,
+    "analyzed_query": {},
+    "session_context": null,
+    "relevant_profile": {
+      "preferred_name": "Phong",
+      "cohort": "K18"
+    },
+    "expected_scope": "PROFILE_SCOPED",
+    "expected_cacheable": true,
+    "expected_reason": "PROFILE_PERSONALIZED"
+  },
+  {
+    "id": "CACHE-PMS-03",
+    "group": "PROFILE_MUTATION_SAFETY",
+    "query": "Lộ trình học tập cá nhân",
+    "category": "DOMAIN_DATA",
+    "tool_intent": null,
+    "analyzed_query": {},
+    "session_context": null,
+    "relevant_profile": {
+      "preferred_name": "Tuấn",
+      "cohort": "K19"
+    },
+    "expected_scope": "PROFILE_SCOPED",
+    "expected_cacheable": true,
+    "expected_reason": "PROFILE_PERSONALIZED"
+  },
+  {
+    "id": "CACHE-PMS-04",
+    "group": "PROFILE_MUTATION_SAFETY",
+    "query": "Lộ trình học tập cá nhân",
+    "category": "DOMAIN_DATA",
+    "tool_intent": null,
+    "analyzed_query": {},
+    "session_context": null,
+    "relevant_profile": {
+      "preferred_name": "Tuấn",
+      "cohort": "K18",
+      "response_style": "Chi tiết học thuật"
+    },
+    "expected_scope": "PROFILE_SCOPED",
+    "expected_cacheable": true,
+    "expected_reason": "PROFILE_PERSONALIZED"
+  },
+  {
+    "id": "CACHE-PIS-01",
+    "group": "PROFILE_ISOLATION",
+    "query": "Xin chào, tôi là ai?",
+    "category": "GENERAL_LLM",
+    "tool_intent": null,
+    "analyzed_query": {},
+    "session_context": null,
+    "relevant_profile": {
+      "preferred_name": "Nguyễn Văn An"
+    },
+    "expected_scope": "PROFILE_SCOPED",
+    "expected_cacheable": true,
+    "expected_reason": "PROFILE_PERSONALIZED"
+  },
+  {
+    "id": "CACHE-PIS-02",
+    "group": "PROFILE_ISOLATION",
+    "query": "Xin chào, tôi là ai?",
+    "category": "GENERAL_LLM",
+    "tool_intent": null,
+    "analyzed_query": {},
+    "session_context": null,
+    "relevant_profile": {
+      "preferred_name": "Trần Thị Bình"
+    },
+    "expected_scope": "PROFILE_SCOPED",
+    "expected_cacheable": true,
+    "expected_reason": "PROFILE_PERSONALIZED"
+  },
+  {
+    "id": "CACHE-PIS-03",
+    "group": "PROFILE_ISOLATION",
+    "query": "Xin chào, tôi là ai?",
+    "category": "GENERAL_LLM",
+    "tool_intent": null,
+    "analyzed_query": {},
+    "session_context": null,
+    "relevant_profile": {},
+    "expected_scope": "GLOBAL_SAFE",
+    "expected_cacheable": true,
+    "expected_reason": "GLOBAL_DETERMINISTIC"
+  },
+  {
+    "id": "CACHE-SSP-01",
+    "group": "SESSION_SENSITIVE_PRONOUN",
+    "query": "Môn đó có bao nhiêu tín chỉ?",
+    "category": "DOMAIN_DATA",
+    "tool_intent": null,
+    "analyzed_query": {
+      "course_code": "FIT4201",
+      "resolution_source": "SESSION"
+    },
+    "session_context": {
+      "active_course_code": "FIT4201"
+    },
+    "relevant_profile": {},
+    "expected_scope": "SESSION_SENSITIVE",
+    "expected_cacheable": false,
+    "expected_reason": "SESSION_DEPENDENT_REFERENCE"
+  },
+  {
+    "id": "CACHE-SSP-02",
+    "group": "SESSION_SENSITIVE_PRONOUN",
+    "query": "Học phần này thi tự luận hay trắc nghiệm?",
+    "category": "DOMAIN_DATA",
+    "tool_intent": null,
+    "analyzed_query": {
+      "course_code": "FIT3101",
+      "resolution_source": "SESSION"
+    },
+    "session_context": {
+      "active_course_code": "FIT3101"
+    },
+    "relevant_profile": {},
+    "expected_scope": "SESSION_SENSITIVE",
+    "expected_cacheable": false,
+    "expected_reason": "SESSION_DEPENDENT_REFERENCE"
+  },
+  {
+    "id": "CACHE-SSP-03",
+    "group": "SESSION_SENSITIVE_PRONOUN",
+    "query": "Thầy đó dạy vào ca mấy?",
+    "category": "DOMAIN_DATA",
+    "tool_intent": null,
+    "analyzed_query": {
+      "resolution_source": "SESSION"
+    },
+    "session_context": {
+      "active_course_code": "FIT2102"
+    },
+    "relevant_profile": {},
+    "expected_scope": "SESSION_SENSITIVE",
+    "expected_cacheable": false,
+    "expected_reason": "SESSION_DEPENDENT_REFERENCE"
+  },
+  {
+    "id": "CACHE-SSP-04",
+    "group": "SESSION_SENSITIVE_PRONOUN",
+    "query": "Môn đấy có yêu cầu môn tiên quyết nào không?",
+    "category": "DOMAIN_DATA",
+    "tool_intent": null,
+    "analyzed_query": {
+      "course_code": "FIT4201",
+      "resolution_source": "RESOLVED"
+    },
+    "session_context": {
+      "active_course_code": "FIT4201"
+    },
+    "relevant_profile": {},
+    "expected_scope": "SESSION_SENSITIVE",
+    "expected_cacheable": false,
+    "expected_reason": "SESSION_DEPENDENT_REFERENCE"
+  },
+  {
+    "id": "CACHE-SSF-01",
+    "group": "SESSION_SENSITIVE_FOLLOWUP",
+    "query": "Email thì sao?",
+    "category": "DOMAIN_DATA",
+    "tool_intent": null,
+    "analyzed_query": {
+      "explicit_course_code": null,
+      "resolved_course_code": "FIT4201",
+      "targets": [
+        "email"
+      ]
+    },
+    "session_context": {
+      "active_course_code": "FIT4201"
+    },
+    "relevant_profile": {},
+    "expected_scope": "SESSION_SENSITIVE",
+    "expected_cacheable": false,
+    "expected_reason": "SESSION_DEPENDENT_REFERENCE"
+  },
+  {
+    "id": "CACHE-SSF-02",
+    "group": "SESSION_SENSITIVE_FOLLOWUP",
+    "query": "Ai dạy?",
+    "category": "DOMAIN_DATA",
+    "tool_intent": null,
+    "analyzed_query": {
+      "explicit_course_code": null,
+      "resolved_course_code": "FIT3101",
+      "targets": [
+        "lecturer"
+      ]
+    },
+    "session_context": {
+      "active_course_code": "FIT3101"
+    },
+    "relevant_profile": {},
+    "expected_scope": "SESSION_SENSITIVE",
+    "expected_cacheable": false,
+    "expected_reason": "SESSION_DEPENDENT_REFERENCE"
+  },
+  {
+    "id": "CACHE-SSF-03",
+    "group": "SESSION_SENSITIVE_FOLLOWUP",
+    "query": "Bao nhiêu tín chỉ?",
+    "category": "DOMAIN_DATA",
+    "tool_intent": null,
+    "analyzed_query": {
+      "explicit_course_code": null,
+      "resolved_course_code": "FIT2102",
+      "targets": [
+        "credits"
+      ]
+    },
+    "session_context": {
+      "active_course_code": "FIT2102"
+    },
+    "relevant_profile": {},
+    "expected_scope": "SESSION_SENSITIVE",
+    "expected_cacheable": false,
+    "expected_reason": "SESSION_DEPENDENT_REFERENCE"
+  },
+  {
+    "id": "CACHE-SSF-04",
+    "group": "SESSION_SENSITIVE_FOLLOWUP",
+    "query": "Có thực hành không?",
+    "category": "DOMAIN_DATA",
+    "tool_intent": null,
+    "analyzed_query": {
+      "explicit_course_code": null,
+      "resolved_course_code": "FIT4201",
+      "targets": [
+        "practice"
+      ]
+    },
+    "session_context": {
+      "active_course_code": "FIT4201"
+    },
+    "relevant_profile": {},
+    "expected_scope": "SESSION_SENSITIVE",
+    "expected_cacheable": false,
+    "expected_reason": "SESSION_DEPENDENT_REFERENCE"
+  },
+  {
+    "id": "CACHE-SCS-01",
+    "group": "SESSION_COLLISION_SAFETY",
+    "query": "Email thì sao?",
+    "category": "DOMAIN_DATA",
+    "tool_intent": null,
+    "analyzed_query": {
+      "explicit_course_code": null,
+      "resolved_course_code": "FIT4201"
+    },
+    "session_context": {
+      "active_course_code": "FIT4201",
+      "session_id": "sess-alpha"
+    },
+    "relevant_profile": {},
+    "expected_scope": "SESSION_SENSITIVE",
+    "expected_cacheable": false,
+    "expected_reason": "SESSION_DEPENDENT_REFERENCE"
+  },
+  {
+    "id": "CACHE-SCS-02",
+    "group": "SESSION_COLLISION_SAFETY",
+    "query": "Email thì sao?",
+    "category": "DOMAIN_DATA",
+    "tool_intent": null,
+    "analyzed_query": {
+      "explicit_course_code": null,
+      "resolved_course_code": "FIT3101"
+    },
+    "session_context": {
+      "active_course_code": "FIT3101",
+      "session_id": "sess-beta"
+    },
+    "relevant_profile": {},
+    "expected_scope": "SESSION_SENSITIVE",
+    "expected_cacheable": false,
+    "expected_reason": "SESSION_DEPENDENT_REFERENCE"
+  },
+  {
+    "id": "CACHE-SCS-03",
+    "group": "SESSION_COLLISION_SAFETY",
+    "query": "Ai dạy môn này?",
+    "category": "DOMAIN_DATA",
+    "tool_intent": null,
+    "analyzed_query": {
+      "explicit_course_code": null,
+      "resolved_course_code": "FIT4201"
+    },
+    "session_context": {
+      "active_course_code": "FIT4201",
+      "session_id": "sess-gamma"
+    },
+    "relevant_profile": {},
+    "expected_scope": "SESSION_SENSITIVE",
+    "expected_cacheable": false,
+    "expected_reason": "SESSION_DEPENDENT_REFERENCE"
+  },
+  {
+    "id": "CACHE-SCS-04",
+    "group": "SESSION_COLLISION_SAFETY",
+    "query": "Ai dạy môn này?",
+    "category": "DOMAIN_DATA",
+    "tool_intent": null,
+    "analyzed_query": {
+      "explicit_course_code": null,
+      "resolved_course_code": "FIT2102"
+    },
+    "session_context": {
+      "active_course_code": "FIT2102",
+      "session_id": "sess-delta"
+    },
+    "relevant_profile": {},
+    "expected_scope": "SESSION_SENSITIVE",
+    "expected_cacheable": false,
+    "expected_reason": "SESSION_DEPENDENT_REFERENCE"
+  },
+  {
+    "id": "CACHE-ESS-01",
+    "group": "ENTITY_SWITCH_SAFETY",
+    "query": "Môn FIT4201 có mấy tín chỉ?",
+    "category": "DOMAIN_DATA",
+    "tool_intent": null,
+    "analyzed_query": {
+      "explicit_course_code": "FIT4201",
+      "course_code": "FIT4201"
+    },
+    "session_context": {
+      "active_course_code": "FIT4201"
+    },
+    "relevant_profile": {},
+    "expected_scope": "GLOBAL_SAFE",
+    "expected_cacheable": true,
+    "expected_reason": "GLOBAL_DETERMINISTIC"
+  },
+  {
+    "id": "CACHE-ESS-02",
+    "group": "ENTITY_SWITCH_SAFETY",
+    "query": "Ai dạy?",
+    "category": "DOMAIN_DATA",
+    "tool_intent": null,
+    "analyzed_query": {
+      "explicit_course_code": null,
+      "resolved_course_code": "FIT4201"
+    },
+    "session_context": {
+      "active_course_code": "FIT4201"
+    },
+    "relevant_profile": {},
+    "expected_scope": "SESSION_SENSITIVE",
+    "expected_cacheable": false,
+    "expected_reason": "SESSION_DEPENDENT_REFERENCE"
+  },
+  {
+    "id": "CACHE-ESS-03",
+    "group": "ENTITY_SWITCH_SAFETY",
+    "query": "Thế còn môn FIT3101 thì sao?",
+    "category": "DOMAIN_DATA",
+    "tool_intent": null,
+    "analyzed_query": {
+      "explicit_course_code": "FIT3101",
+      "course_code": "FIT3101"
+    },
+    "session_context": {
+      "active_course_code": "FIT3101"
+    },
+    "relevant_profile": {},
+    "expected_scope": "GLOBAL_SAFE",
+    "expected_cacheable": true,
+    "expected_reason": "GLOBAL_DETERMINISTIC"
+  },
+  {
+    "id": "CACHE-ESS-04",
+    "group": "ENTITY_SWITCH_SAFETY",
+    "query": "Ai dạy?",
+    "category": "DOMAIN_DATA",
+    "tool_intent": null,
+    "analyzed_query": {
+      "explicit_course_code": null,
+      "resolved_course_code": "FIT3101"
+    },
+    "session_context": {
+      "active_course_code": "FIT3101"
+    },
+    "relevant_profile": {},
+    "expected_scope": "SESSION_SENSITIVE",
+    "expected_cacheable": false,
+    "expected_reason": "SESSION_DEPENDENT_REFERENCE"
+  },
+  {
+    "id": "CACHE-TAN-01",
+    "group": "TOOL_ACTION_NON_CACHEABLE",
+    "query": "Nhắc tôi ôn thi cuối kỳ lúc 8h sáng mai",
+    "category": "TOOL_ACTION",
+    "tool_intent": "SET_REMINDER",
+    "analyzed_query": {},
+    "session_context": null,
+    "relevant_profile": {},
+    "expected_scope": "NON_CACHEABLE",
+    "expected_cacheable": false,
+    "expected_reason": "TOOL_ACTION_MUTABLE"
+  },
+  {
+    "id": "CACHE-TAN-02",
+    "group": "TOOL_ACTION_NON_CACHEABLE",
+    "query": "Đặt lịch nhắc nộp bài tập lớn vào 17h chiều thứ 6",
+    "category": "TOOL_ACTION",
+    "tool_intent": "SET_REMINDER",
+    "analyzed_query": {},
+    "session_context": null,
+    "relevant_profile": {},
+    "expected_scope": "NON_CACHEABLE",
+    "expected_cacheable": false,
+    "expected_reason": "TOOL_ACTION_MUTABLE"
+  },
+  {
+    "id": "CACHE-TAN-03",
+    "group": "TOOL_ACTION_NON_CACHEABLE",
+    "query": "Gửi email cho giảng viên tieppv@dainam.edu.vn",
+    "category": "TOOL_ACTION",
+    "tool_intent": "SEND_EMAIL",
+    "analyzed_query": {},
+    "session_context": null,
+    "relevant_profile": {},
+    "expected_scope": "NON_CACHEABLE",
+    "expected_cacheable": false,
+    "expected_reason": "TOOL_ACTION_MUTABLE"
+  },
+  {
+    "id": "CACHE-TAN-04",
+    "group": "TOOL_ACTION_NON_CACHEABLE",
+    "query": "Gửi email báo cáo bài tập cho cô giáo",
+    "category": "TOOL_ACTION",
+    "tool_intent": "SEND_EMAIL",
+    "analyzed_query": {},
+    "session_context": null,
+    "relevant_profile": {},
+    "expected_scope": "NON_CACHEABLE",
+    "expected_cacheable": false,
+    "expected_reason": "TOOL_ACTION_MUTABLE"
+  },
+  {
+    "id": "CACHE-TAN-05",
+    "group": "TOOL_ACTION_NON_CACHEABLE",
+    "query": "Hẹn giờ nhắc tôi tham gia buổi hội thảo nghiên cứu khoa học",
+    "category": "TOOL_ACTION",
+    "tool_intent": "SET_REMINDER",
+    "analyzed_query": {},
+    "session_context": null,
+    "relevant_profile": {},
+    "expected_scope": "NON_CACHEABLE",
+    "expected_cacheable": false,
+    "expected_reason": "TOOL_ACTION_MUTABLE"
+  },
+  {
+    "id": "CACHE-TAN-06",
+    "group": "TOOL_ACTION_NON_CACHEABLE",
+    "query": "Gửi mail phản hồi cho phòng đào tạo",
+    "category": "TOOL_ACTION",
+    "tool_intent": "SEND_EMAIL",
+    "analyzed_query": {},
+    "session_context": null,
+    "relevant_profile": {},
+    "expected_scope": "NON_CACHEABLE",
+    "expected_cacheable": false,
+    "expected_reason": "TOOL_ACTION_MUTABLE"
+  }
+]
