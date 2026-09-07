@@ -241,6 +241,7 @@ class AgentGoalState(BaseModel):
     alternative_proposed: bool = False
     alternative_authorized: bool = False
     alternative_proposal_text: Optional[str] = None
+    alternative_execution_attempts_before_authorization: int = 0
 
     # Đầu ra cuối cùng
     final_answer: Optional[str] = None

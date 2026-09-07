@@ -83,9 +83,9 @@ class EvidenceVerifier:
                 if m_code:
                     doc_course = m_code.group(1).upper()
 
-            if entity and entity not in ("DNTU", "general") and doc_course:
-                if entity.strip().upper() != str(doc_course).strip().upper():
-                    # Cross-entity evidence leakage prevented!
+            if doc_course:
+                if not entity or entity in ("DNTU", "general") or entity.strip().upper() != str(doc_course).strip().upper():
+                    # Cross-entity evidence leakage prevented! Course syllabus cannot satisfy generic DNTU or different courses.
                     continue
 
             filtered_docs.append(doc)
@@ -237,7 +237,8 @@ class EvidenceVerifier:
                     if not any(e.lower().startswith(p + "@") for p in unrelated_prefixes)
                 ]
                 if valid_emails:
-                    return EvidenceStatus.VERIFIED_VALUE, valid_emails[0]
+                    unique_emails = list(dict.fromkeys(valid_emails))
+                    return EvidenceStatus.VERIFIED_VALUE, ", ".join(unique_emails)
 
             return EvidenceStatus.INSUFFICIENT, None
 
@@ -373,44 +374,105 @@ class EvidenceVerifier:
             return EvidenceStatus.INSUFFICIENT, None
 
         # 11. REGULATION / GRADUATION / WARNING / ATTENDANCE / GRADING SCALE
-        elif field == "graduation_requirements":
-            if any(w in lower_text for w in ["điều kiện xét tốt nghiệp", "xét tốt nghiệp", "tích lũy đủ", "chuẩn đầu ra ngoại ngữ", "chứng chỉ tin học"]):
-                return (
-                    EvidenceStatus.VERIFIED_VALUE,
-                    "Điều kiện tốt nghiệp: Tích lũy đủ số tín chỉ quy định, đạt chuẩn đầu ra ngoại ngữ, tin học và GPA >= 2.0 theo QĐ 1419/QĐ-ĐNT-ĐT.",
-                )
+        elif field == "academic_warning":
+            if not any(w in lower_text for w in ["cảnh báo học vụ", "cảnh báo học tập", "buộc thôi học"]):
+                return EvidenceStatus.INSUFFICIENT, None
+            # First try extracting the complete faithful sentence containing warning criteria
+            m_sent = re.search(
+                r"([^\.\n]*?(?:cảnh\s+báo\s+học\s+tập|cảnh\s+báo\s+học\s+vụ)[^\.\n]*?(?:dưới|<|\d+[,\.]\d+|\d+%\s*khối\s*lượng|\d+\s*tín\s*chỉ|\d+\s*lần)[^\.\n]*)",
+                text,
+                re.IGNORECASE,
+            )
+            if m_sent:
+                val = m_sent.group(1).strip()
+                return EvidenceStatus.VERIFIED_VALUE, f"Cảnh báo học tập: {val}"
+
+            extracted_facts = []
+            m_dtb = re.findall(
+                r"(?:điểm\s+trung\s+bình[^\n\.;]{0,60}?(?:dưới|<|nhỏ\s+hơn|đạt\s+từ)\s*(\d+[,\.]\d+)[^\n\.;]{0,80}?(?:học\s+kỳ|năm\s+thứ|sau|năm\s+học)?[^\n\.;]*)",
+                lower_text,
+            )
+            if m_dtb:
+                extracted_facts.extend([f.strip() for f in m_dtb[:2]])
+            m_credits = re.findall(
+                r"(?:tín\s+chỉ[^\n\.;]{0,50}?(?:vượt\s+quá|quá|nợ|nợ\s+đọng)[^\n\.;]{0,30}?(\d+(?:%|\s*tín\s+chỉ))[^\n\.;]*)",
+                lower_text,
+            )
+            if m_credits:
+                extracted_facts.extend([f.strip() for f in m_credits[:2]])
+            m_count = re.findall(
+                r"(?:vượt\s+quá\s+(\d+)\s*lần\s*cảnh\s*báo[^\n\.;]*)",
+                lower_text,
+            )
+            if m_count:
+                extracted_facts.extend([f.strip() for f in m_count[:1]])
+            if extracted_facts:
+                val = "; ".join(dict.fromkeys(extracted_facts))
+                return EvidenceStatus.VERIFIED_VALUE, f"Cảnh báo học tập: {val}"
             return EvidenceStatus.INSUFFICIENT, None
 
-        elif field == "academic_warning":
-            if any(w in lower_text for w in ["cảnh báo học vụ", "buộc thôi học", "điểm trung bình học kỳ"]):
-                return (
-                    EvidenceStatus.VERIFIED_VALUE,
-                    "Cảnh báo học vụ: Sinh viên bị cảnh báo khi ĐTBHK < 1.00 (học kỳ đầu) hoặc < 1.20 (các học kỳ tiếp theo) theo QĐ 1419/QĐ-ĐNT-ĐT.",
-                )
+        elif field == "graduation_requirements":
+            if not any(w in lower_text for w in ["tốt nghiệp", "xét tốt nghiệp", "công nhận tốt nghiệp"]):
+                return EvidenceStatus.INSUFFICIENT, None
+            conditions = []
+            if re.search(r"tích\s+lũy\s+đủ[^\n\.;]{0,80}?(?:học\s+phần|tín\s+chỉ|khối\s+lượng)", lower_text):
+                m_tc = re.search(r"(tích\s+lũy\s+đủ[^\n\.;]{0,80}?(?:học\s+phần|tín\s+chỉ|khối\s+lượng)[^\n\.;]*)", text, re.IGNORECASE)
+                if m_tc:
+                    conditions.append(m_tc.group(1).strip())
+            if re.search(r"(?:chuẩn\s+đầu\s+ra|chuẩn\s+năng\s+lực|năng\s+lực)\s+(?:ngoại\s+ngữ|tin\s+học)", lower_text):
+                m_lang = re.search(r"((?:đạt\s+)?(?:chuẩn\s+năng\s+lực|chuẩn\s+đầu\s+ra|năng\s+lực)\s+(?:ngoại\s+ngữ|tin\s+học)[^\n\.;]*)", text, re.IGNORECASE)
+                if m_lang:
+                    conditions.append(m_lang.group(1).strip())
+            if re.search(r"chứng\s+chỉ\s+(?:giáo\s+dục\s+quốc\s+phòng|tin\s+học|tiếng\s+anh)", lower_text):
+                m_cert = re.search(r"((?:có\s+)?chứng\s+chỉ\s+[^\n\.;]*)", text, re.IGNORECASE)
+                if m_cert:
+                    conditions.append(m_cert.group(1).strip())
+            if re.search(r"điểm\s+trung\s+bình\s+tích\s+lũy[^\n\.;]{0,50}?(?:đạt|từ|>=|trung\s+bình)", lower_text):
+                m_gpa = re.search(r"(điểm\s+trung\s+bình\s+tích\s+lũy[^\n\.;]{0,60}?(?:đạt\s+từ|từ|>=|\d+[,\.]\d+)[^\n\.;]*)", text, re.IGNORECASE)
+                if m_gpa:
+                    conditions.append(m_gpa.group(1).strip())
+            if not conditions:
+                m_full = re.search(r"(sinh\s+viên\s+được\s+(?:xét\s+và\s+)?công\s+nhận\s+tốt\s+nghiệp[^\.\n]*?(?:khi\s+có\s+đủ|điều\s+kiện)[^\.\n]*)", text, re.IGNORECASE)
+                if m_full and any(k in lower_text for k in ["tích lũy", "chuẩn đầu ra", "chứng chỉ", "điểm trung bình"]):
+                    conditions.append(m_full.group(1).strip())
+            if conditions:
+                return EvidenceStatus.VERIFIED_VALUE, f"Điều kiện tốt nghiệp: {'; '.join(dict.fromkeys(conditions))}"
             return EvidenceStatus.INSUFFICIENT, None
 
         elif field == "attendance_rules":
-            if any(w in lower_text for w in ["vắng", "chuyên cần", "nghỉ học", "20%"]):
-                return (
-                    EvidenceStatus.VERIFIED_VALUE,
-                    "Quy định điểm danh: Sinh viên vắng quá 20% tổng số tiết sẽ không đủ điều kiện dự thi kết thúc học phần.",
-                )
+            m_pct = re.findall(
+                r"([^\.\n]*?(?:vắng|nghỉ|tham\s+dự|chuyên\s+cần|điểm\s+danh)[^\.\n]*?\d+\s*%[^\.\n]*)",
+                text,
+                re.IGNORECASE,
+            )
+            if m_pct:
+                valid_rules = [r.strip() for r in m_pct if any(k in r.lower() for k in ["20%", "80%", "10%", "tiết", "buổi", "cấm thi", "học lại"])]
+                if valid_rules:
+                    return EvidenceStatus.VERIFIED_VALUE, f"Quy định điểm danh: {'; '.join(dict.fromkeys(valid_rules[:2]))}"
             return EvidenceStatus.INSUFFICIENT, None
 
         elif field == "grading_scale":
-            if any(w in lower_text for w in ["thang điểm", "quy đổi điểm", "điểm chữ"]):
-                return (
-                    EvidenceStatus.VERIFIED_VALUE,
-                    "Thang điểm đánh giá: Thang điểm 10 quy đổi sang thang điểm chữ (A, B, C, D, F) và thang điểm 4 theo QĐ 1419/QĐ-ĐNT-ĐT.",
-                )
+            m_scales = []
+            m_convert = re.search(r"([^\.\n]*?(?:thang\s+điểm\s+10|thang\s+điểm\s+chữ|thang\s+điểm\s+4|quy\s+đổi)[^\.\n]*?(?:thang\s+điểm|điểm\s+chữ|a,\s*b|a\s*b\s*c)[^\.\n]*)", text, re.IGNORECASE)
+            if m_convert:
+                m_scales.append(m_convert.group(1).strip())
+            m_letters = re.search(r"([^\.\n]*?(?:điểm\s+chữ|thang\s+điểm)[^\.\n]*?\b(?:a|b|c|d|f|p)\b[^\.\n]*)", text, re.IGNORECASE)
+            if m_letters and any(kw in m_letters.group(1).lower() for kw in ["thang điểm", "quy đổi", "xếp loại"]):
+                m_scales.append(m_letters.group(1).strip())
+            m_formula = re.search(r"([^\.\n]*?điểm\s+học\s+phần\s*=\s*[^\.\n]*)", text, re.IGNORECASE)
+            if m_formula:
+                m_scales.append(m_formula.group(1).strip())
+            if m_scales:
+                return EvidenceStatus.VERIFIED_VALUE, f"Thang điểm đánh giá: {'; '.join(dict.fromkeys(m_scales[:2]))}"
             return EvidenceStatus.INSUFFICIENT, None
 
         elif field in ("training_rules", "regulation"):
-            if any(w in lower_text for w in ["1419", "quy chế đào tạo", "quy định đào tạo đại học chính quy"]):
-                return (
-                    EvidenceStatus.VERIFIED_VALUE,
-                    "Quy chế đào tạo trình độ đại học chính quy ĐNTU (Quyết định 1419/QĐ-ĐNT-ĐT).",
-                )
+            m_qd = re.search(r"((?:quyết\s+định|thông\s+tư|nghị\s+định)\s+số\s+[\w\d\/\.\-]+[^\.\n]*)", text, re.IGNORECASE)
+            if m_qd:
+                return EvidenceStatus.VERIFIED_VALUE, m_qd.group(1).strip()
+            m_title = re.search(r"(quy\s+chế\s+đào\s+tạo\s+trình\s+độ\s+đại\s+học[^\.\n]*)", text, re.IGNORECASE)
+            if m_title and any(w in lower_text for w in ["ban hành", "trường đại học", "quy định về"]):
+                return EvidenceStatus.VERIFIED_VALUE, m_title.group(1).strip()
             return EvidenceStatus.INSUFFICIENT, None
 
         return EvidenceStatus.INSUFFICIENT, None

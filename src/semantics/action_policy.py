@@ -145,8 +145,37 @@ class ActionAuthorizationGate:
         # 7. XỬ LÝ GỬI EMAIL THỰC TẾ (SEND_EMAIL SIDE EFFECT)
         if target_op == ActionOperation.SEND_EMAIL and semantics.polarity == Polarity.AFFIRMATIVE:
             # Kiểm tra xem có email người nhận hợp lệ không
-            email_match = re.search(r"[\w\.-]+@[\w\.-]+\.\w+", raw_text)
-            if not email_match:
+            explicit_emails = list(dict.fromkeys(re.findall(r"[\w\.-]+@[\w\.-]+\.\w+", raw_text)))
+            if len(explicit_emails) > 1:
+                return ActionAuthorizationDecision(
+                    operation=ActionOperation.CLARIFY,
+                    authorized=False,
+                    side_effect=False,
+                    reason_code="MULTIPLE_RECIPIENTS_FOUND",
+                    requires_clarification=True,
+                    clarification_message=f"Hệ thống tìm thấy nhiều địa chỉ email khả dụng ({', '.join(explicit_emails)}). Bạn muốn gửi email tới địa chỉ nào?",
+                    safe_response=f"Hệ thống tìm thấy nhiều địa chỉ email khả dụng ({', '.join(explicit_emails)}). Bạn muốn gửi email tới địa chỉ nào?",
+                )
+
+            recipient = None
+            if len(explicit_emails) == 1:
+                recipient = explicit_emails[0]
+            elif context and context.get("available_recipients"):
+                rec_list = context["available_recipients"]
+                if len(rec_list) == 1:
+                    recipient = rec_list[0]
+                elif len(rec_list) > 1:
+                    return ActionAuthorizationDecision(
+                        operation=ActionOperation.CLARIFY,
+                        authorized=False,
+                        side_effect=False,
+                        reason_code="MULTIPLE_RECIPIENTS_FOUND",
+                        requires_clarification=True,
+                        clarification_message=f"Hệ thống tìm thấy nhiều địa chỉ email khả dụng ({', '.join(rec_list)}). Bạn muốn gửi email tới địa chỉ nào?",
+                        safe_response=f"Hệ thống tìm thấy nhiều địa chỉ email khả dụng ({', '.join(rec_list)}). Bạn muốn gửi email tới địa chỉ nào?",
+                    )
+
+            if not recipient:
                 return ActionAuthorizationDecision(
                     operation=ActionOperation.CLARIFY,
                     authorized=False,
@@ -163,7 +192,7 @@ class ActionAuthorizationGate:
                 side_effect=True,
                 reason_code="AUTHORIZED_SEND_EMAIL",
                 requires_clarification=False,
-                metadata={"recipient": email_match.group(0)},
+                metadata={"recipient": recipient},
             )
 
         # 8. XỬ LÝ ĐẶT LỊCH NHẮC THỰC TẾ (SET_REMINDER SIDE EFFECT)

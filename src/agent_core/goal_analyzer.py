@@ -267,7 +267,7 @@ class GoalAnalyzer:
         # Dữ liệu KHÔNG TỒN TẠI trong môi trường học vụ (đánh dấu tường minh)
         if any(w in lower_text for w in ["tỷ lệ trượt", "rớt môn", "trượt môn", "bao nhiêu đứa trượt", "tỷ lệ đỗ", "tỷ lệ rớt", "tỷ lệ qua môn"]) or ("qua môn" in lower_text and "dễ" not in lower_text):
             fields.append("failure_rate")
-        if any(w in lower_text for w in ["khó hơn", "độ khó", "khó nhất", "dễ hơn", "khó hay dễ", "môn nào khó", "có khó không", "dễ qua môn", "dễ qua", "dễ đạt", "điểm a"]):
+        if any(w in lower_text for w in ["khó hơn", "độ khó", "khó nhất", "dễ hơn", "khó hay dễ", "môn nào khó", "có khó không", "dễ qua môn", "dễ qua", "dễ đạt", "điểm a", "nhàn hơn", "học nhàn", "nhàn nhất", "học nhàn hơn", "nhàn"]):
             fields.append("difficulty")
         if any(w in lower_text for w in ["review", "đánh giá của sinh viên", "sinh viên nói gì", "chấm điểm thầy", "sinh viên review", "chấm gắt", "chấm điểm có gắt không", "chấm có gắt không", "chấm gắt không"]):
             fields.append("student_rating")

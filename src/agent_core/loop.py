@@ -139,6 +139,14 @@ class AgentLoop:
                         state.final_answer = "Hành động tra cứu đã bị trùng lặp và bị chặn lại bởi cơ chế an toàn."
                     break
 
+            # 2.3.1 PHÒNG VỆ THỰC THI GIẢI PHÁP THAY THẾ CHƯA ĐƯỢC CẤP PHÉP (UNAUTHORIZED GOAL EXECUTION GUARD)
+            if state.alternative_proposed and not state.alternative_authorized:
+                if plan.action_type not in (ActionType.ASK_USER, ActionType.ABSTAIN, ActionType.FINISH):
+                    state.alternative_execution_attempts_before_authorization += 1
+                    state.status = AgentStatus.NEEDS_USER_INPUT
+                    state.stop_reason = StopReason.USER_INPUT_REQUIRED
+                    break
+
             state.attempted_actions.append(plan.fingerprint)
 
             # 2.4 ACT: Thực thi hành động

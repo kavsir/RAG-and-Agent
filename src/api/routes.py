@@ -134,7 +134,24 @@ def chat_endpoint(request: ChatRequest):
         if category == "TOOL_ACTION" and tool_intent:
             from src.semantics import analyze_utterance, authorize_tool_action, ActionOperation
             sem = analyze_utterance(request.message)
-            decision = authorize_tool_action(sem, requested_tool=tool_intent)
+
+            # Thu thập email người nhận chính thống từ bằng chứng đã được thẩm định
+            context_recipients = []
+            target_entity = goal_state.entities[0] if goal_state.entities else None
+            for ev in goal_state.evidence:
+                if (
+                    ev.status == EvidenceStatus.VERIFIED_VALUE
+                    and ev.field == "lecturer_email"
+                    and ev.is_authoritative is True
+                    and (not target_entity or ev.entity == target_entity)
+                ):
+                    found_emails = re.findall(r"[\w\.-]+@[\w\.-]+\.\w+", ev.content)
+                    context_recipients.extend(found_emails)
+            context_recipients = list(dict.fromkeys(context_recipients))
+
+            action_context = {"available_recipients": context_recipients}
+            decision = authorize_tool_action(sem, requested_tool=tool_intent, context=action_context)
+
             if decision.requires_clarification:
                 answer = decision.clarification_message or "Yêu cầu có thông tin chưa rõ ràng hoặc mâu thuẫn. Bạn có muốn thực hiện không?"
                 goal_state.status = AgentStatus.NEEDS_USER_INPUT
@@ -158,38 +175,13 @@ def chat_endpoint(request: ChatRequest):
                     goal_state.status = AgentStatus.COMPLETED
                     goal_state.final_answer = answer
                 else:
-                    # 1. Trích xuất email người nhận rõ ràng từ tin nhắn người dùng
-                    explicit_emails = re.findall(r"[\w\.-]+@[\w\.-]+\.\w+", request.message)
-                    valid_recipients = list(dict.fromkeys(explicit_emails))
-
-                    # 2. Nếu người dùng chưa cung cấp email trực tiếp, tìm trong bằng chứng đã thẩm định (verified lecturer_email)
-                    if not valid_recipients:
-                        lecturer_emails = []
-                        for ev in goal_state.evidence:
-                            if ev.status == EvidenceStatus.VERIFIED_VALUE:
-                                found_emails = re.findall(r"[\w\.-]+@[\w\.-]+\.\w+", ev.content)
-                                lecturer_emails.extend(found_emails)
-                        valid_recipients = list(dict.fromkeys(lecturer_emails))
-
-                    if not valid_recipients:
-                        # Unresolved recipient -> DO NOT SEND. Return NEEDS_USER_INPUT
+                    recipient = decision.metadata.get("recipient") if decision.metadata else None
+                    if not recipient:
                         answer = "Bạn muốn gửi email tới địa chỉ nào? Vui lòng cung cấp địa chỉ email người nhận hợp lệ."
                         goal_state.status = AgentStatus.NEEDS_USER_INPUT
                         goal_state.clarification_question = answer
                         goal_state.final_answer = answer
-                    elif len(valid_recipients) > 1:
-                        # Multiple valid recipients -> ASK USER. Never silently choose one.
-                        opts = [f"Gửi tới {r}" for r in valid_recipients]
-                        answer = (
-                            f"Hệ thống tìm thấy nhiều địa chỉ email khả dụng ({', '.join(valid_recipients)}). "
-                            f"Bạn muốn gửi email tới địa chỉ nào?"
-                        )
-                        goal_state.status = AgentStatus.NEEDS_USER_INPUT
-                        goal_state.clarification_question = answer
-                        goal_state.clarification_options = opts
-                        goal_state.final_answer = answer
                     else:
-                        recipient = valid_recipients[0]
                         from src.tools.email_sender import send_email_direct
                         send_email_direct(
                             to=recipient,
