@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-09-07 16:39:22",
+  "timestamp": "2026-09-07 17:17:43",
   "provenance": {
-    "git_sha": "36e7b4426431da6a827743615f958aef1f1737bc",
-    "working_tree_clean": false,
+    "git_sha": "6cbbc8a8d924f9512be7aca0af8def5d6c9a9735",
+    "working_tree_clean": true,
     "runner_command": "python -m eval.agent_core.run_p1_2_1_eval",
-    "timestamp": "2026-09-07 16:39:22",
+    "timestamp": "2026-09-07 17:17:43",
     "produced_in_this_run": true,
     "datasets": {
       "canonical_suite": {
@@ -18,7 +18,7 @@
     }
   },
   "verdict": "AGENT_CORE_V1_FULLY_ACCEPTED",
-  "elapsed_seconds": 195.0918526000005,
+  "elapsed_seconds": 193.0617356999992,
   "layer_1_canonical": {
     "total_cases": 182,
     "passed_cases": 178,
@@ -141,28 +141,28 @@
       "total": 103,
       "correct": 103,
       "accuracy": 100.0,
-      "elapsed_seconds": 47.74754549999852
+      "elapsed_seconds": 40.80948999999964
     },
     "Personal Memory V1 Suite": {
       "status": "PASSED",
       "total": 60,
       "correct": 60,
       "accuracy": 100.0,
-      "elapsed_seconds": 22.582415999999284
+      "elapsed_seconds": 22.206674200000634
     },
     "Session Memory V2 Suite": {
       "status": "PASSED",
       "total": 50,
       "correct": 50,
       "accuracy": 100.0,
-      "elapsed_seconds": 34.35546439999962
+      "elapsed_seconds": 30.734332500000164
     },
     "Utterance Semantics & Safety": {
       "status": "PASSED",
       "total": 375,
       "correct": 375,
       "accuracy": 100.0,
-      "elapsed_seconds": 47.90854829999989
+      "elapsed_seconds": 42.51791090000006
     }
   }
 }

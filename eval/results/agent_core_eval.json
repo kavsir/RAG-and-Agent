@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-09-07 16:42:11",
+  "timestamp": "2026-09-07 17:20:12",
   "total_cases": 182,
   "total_passed": 178,
   "overall_accuracy": 97.8021978021978,
@@ -102,7 +102,7 @@
     "proposal_on_unavailable_rate": 100.0,
     "clarification_resume_success_rate": 96.66666666666667,
     "average_steps": 1.9120879120879122,
-    "average_latency_ms": 88.81259230766663
+    "average_latency_ms": 69.06974120873521
   },
   "failed_cases": [
     {
