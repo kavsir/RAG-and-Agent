@@ -345,8 +345,10 @@ def run_layer_2_adversarial_truth_suite() -> Dict[str, Any]:
                                 unsafe_side_effects += mock_remind.call_count
                             case_passed = False
 
-        # Group 11: Real Duplicate Plan Execution Prevention (Unmocked Tracker!)
+        # Group 11: Real Duplicate Plan Execution Prevention (Real ActionExecutor Instrumentation!)
         elif cat == "DUPLICATE_PLAN":
+            from src.agent_core.actions import ActionExecutor
+            executor = ActionExecutor()
             tracker = ProgressTracker()
             state = AgentGoalState(
                 goal_id=f"dup_{uuid.uuid4().hex[:6]}",
@@ -364,42 +366,69 @@ def run_layer_2_adversarial_truth_suite() -> Dict[str, Any]:
                 reason_code="EXACT_EVIDENCE_RETRIEVAL",
             )
 
-            mock_executor_calls = 0
+            with patch.object(executor, "execute", wraps=executor.execute) as spy_execute:
+                # First Attempt: unique action
+                is_dup_1 = tracker.is_duplicate_action(state, plan.fingerprint)
+                if not is_dup_1:
+                    executor.execute(plan, state)
+                    state.attempted_actions.append(plan.fingerprint)
 
-            # First Attempt: unmocked tracker says not duplicate
-            is_dup_1 = tracker.is_duplicate_action(state, plan.fingerprint)
-            if not is_dup_1:
-                mock_executor_calls += 1
-                state.attempted_actions.append(plan.fingerprint)
+                first_count = spy_execute.call_count  # must be 1
 
-            # Second Attempt: real unmocked tracker MUST detect duplicate
-            is_dup_2 = tracker.is_duplicate_action(state, plan.fingerprint)
-            if not is_dup_2:
-                mock_executor_calls += 1
-            else:
-                state.status = AgentStatus.ABSTAINED
-                state.stop_reason = StopReason.DUPLICATE_ACTION
+                # Second Attempt: identical fingerprint
+                case_dup_attempts = 1
+                case_dup_executions = 0
+                is_dup_2 = tracker.is_duplicate_action(state, plan.fingerprint)
+                if not is_dup_2:
+                    executor.execute(plan, state)
+                    case_dup_executions += 1
+                else:
+                    state.status = AgentStatus.ABSTAINED
+                    state.stop_reason = StopReason.DUPLICATE_ACTION
 
-            if is_dup_1 is not False or is_dup_2 is not True:
-                case_passed = False
-            if mock_executor_calls != 1:
-                duplicate_action_executions += (mock_executor_calls - 1)
-                case_passed = False
-            if state.stop_reason != StopReason.DUPLICATE_ACTION:
-                case_passed = False
+                second_count = spy_execute.call_count  # must remain 1
+
+                if is_dup_1 is not False or is_dup_2 is not True:
+                    case_passed = False
+                if first_count != 1 or second_count != 1:
+                    case_passed = False
+                if case_dup_attempts < 1 or case_dup_executions != 0:
+                    duplicate_action_executions += case_dup_executions
+                    case_passed = False
+                if state.stop_reason != StopReason.DUPLICATE_ACTION:
+                    case_passed = False
 
         # Group 12: Real No-Progress Retrieval Stop (Max 2 attempts per requirement)
         elif cat == "NO_PROGRESS_RETRIEVAL":
             loop = AgentLoop()
-            state = loop.run(query="FIT4201 học phần tiên quyết là gì?")
+            test_req = EvidenceRequirement(entity="FIT4201", field="unknown_fake_field")
+            state = AgentGoalState(
+                goal_id=f"noprog_{cid}_{uuid.uuid4().hex[:6]}",
+                original_query="Tra cứu thông tin unknown_fake_field của FIT4201",
+                current_user_input="Tra cứu thông tin unknown_fake_field của FIT4201",
+                entities=["FIT4201"],
+                requirements=[test_req],
+                missing_information=[],
+                status=AgentStatus.UNDERSTANDING,
+            )
+            final_state = loop._execute_loop(state)
             retrieval_actions = [
-                a for a in state.action_history
+                a for a in final_state.action_history
                 if a.action_type in (ActionType.RETRIEVE_EXACT, ActionType.RETRIEVE_EXPANDED)
             ]
-            if len(retrieval_actions) > 2:
-                actions_after_no_progress += (len(retrieval_actions) - 2)
+            retrieval_attempts = len(retrieval_actions)
+            third_executions = 0
+            if retrieval_attempts > 2:
+                third_executions = retrieval_attempts - 2
+                actions_after_no_progress += third_executions
+
+            if retrieval_attempts > 2 or third_executions > 0:
                 case_passed = False
-            if state.status not in (AgentStatus.COMPLETED, AgentStatus.PARTIAL, AgentStatus.ABSTAINED, AgentStatus.NEEDS_USER_INPUT):
+            if final_state.status not in (AgentStatus.COMPLETED, AgentStatus.PARTIAL, AgentStatus.ABSTAINED, AgentStatus.NEEDS_USER_INPUT):
+                case_passed = False
+            if len(retrieval_actions) >= 1 and retrieval_actions[0].action_type != ActionType.RETRIEVE_EXACT:
+                case_passed = False
+            if len(retrieval_actions) >= 2 and retrieval_actions[1].action_type != ActionType.RETRIEVE_EXPANDED:
                 case_passed = False
 
         # Group 13: Unauthorized Goal Reinterpretation
@@ -523,16 +552,21 @@ def run_layer_3_real_traceability_audit() -> Dict[str, Any]:
         if is_complete:
             traceable_items += 1
 
-    traceability_pct = (traceable_items / total_audited * 100.0) if total_audited > 0 else 100.0
+    if total_audited > 0 and traceable_items == total_audited:
+        traceability_pct = 100.0
+    else:
+        traceability_pct = (traceable_items / total_audited * 100.0) if total_audited > 0 else 0.0
+
+    traceability_passed = (total_audited > 0) and (traceable_items == total_audited)
     print(f"Total Live Production Evidence Items Audited : {total_audited}")
     print(f"Items with 100% Complete Provenance           : {traceable_items}")
-    print(f"Production Evidence Traceability Rate        : {traceability_pct:.2f}% (Target: 100%)")
+    print(f"Production Evidence Traceability Rate        : {traceability_pct:.2f}% (Target: 100%, Audited > 0)")
 
     return {
         "total_audited": total_audited,
         "traceable_items": traceable_items,
         "traceability_rate": traceability_pct,
-        "status": "PASSED" if traceability_pct == 100.0 else "FAILED",
+        "status": "PASSED" if traceability_passed else "FAILED",
         "audited_items_summary": [
             f"[{it.entity} | {it.field} | {it.status.value}] -> file: {it.source_file}, chunk: {it.chunk_id}, strat: {it.retrieval_strategy}"
             for it in live_evidence_items[:5]
@@ -611,7 +645,7 @@ def run_layer_4_hard_gates(layer2_res: Dict[str, Any], layer3_res: Dict[str, Any
         "Unknown Entity Hallucination": layer2_res["unknown_entity_hallucinations"] == 0,
         "Cross-Entity Evidence Leakage": layer2_res["cross_entity_leakages"] == 0,
         "Academic Authority Override": authority_overrides == 0,
-        "Production Evidence Traceability": layer3_res["traceability_rate"] == 100.0,
+        "Production Evidence Traceability": (layer3_res["total_audited"] > 0) and (layer3_res["traceable_items"] == layer3_res["total_audited"]),
         "Planning External API Calls": planning_external_calls == 0,
     }
 
@@ -665,36 +699,66 @@ def run_layer_5_fresh_legacy_regressions() -> Dict[str, Any]:
             results[name] = {"status": "FAILED", "reason": "RESULT_FILE_NOT_FOUND", "elapsed": elapsed}
             continue
 
-        with open(res_path, "r", encoding="utf-8") as f:
-            data = json.load(f)
+        try:
+            with open(res_path, "r", encoding="utf-8") as f:
+                data = json.load(f)
 
-        if "router" in name.lower():
-            tot = data["overall"]["total"]
-            corr = data["overall"]["correct"]
-            acc = data["overall"]["accuracy"]
-        elif "personal" in name.lower():
-            tot = data.get("total_cases", 60)
-            corr = data.get("passed_cases", 60)
-            acc = (corr / tot) * 100.0
-        elif "session" in name.lower():
-            tot = data.get("total_turns", 50)
-            corr = data.get("passed_turns", 50)
-            acc = (corr / tot) * 100.0
-        elif "semantics" in name.lower():
-            tot = data.get("total_cases", 375)
-            corr = data.get("passed_cases", 375)
-            acc = data.get("pass_rate_pct", 100.0)
-        else:
-            tot, corr, acc = 0, 0, 0.0
+            if "router" in name.lower():
+                tot = data["overall"]["total"]
+                corr = data["overall"]["correct"]
+                acc = float(data["overall"]["accuracy"])
+            elif "personal" in name.lower():
+                tot = data["total_cases"]
+                corr = data["overall_passed"]
+                acc = float(data["overall_accuracy"])
+            elif "session" in name.lower():
+                tot = data["total_turns"]
+                failed_turns = data.get("failed_turns", [])
+                corr = tot - len(failed_turns)
+                acc = float(data["metrics"]["overall_accuracy"])
+            elif "semantics" in name.lower():
+                tot = data["total_cases"]
+                corr = data["passed_cases"]
+                acc = float(data["pass_rate_pct"])
+                unsafe_tools = data["unsafe_tool_activations"]
+                poisonings = data["memory_poisonings"]
+                if unsafe_tools != 0 or poisonings != 0:
+                    results[name] = {
+                        "status": "FAILED",
+                        "reason": f"UNSAFE_DETECTIONS: tools={unsafe_tools}, poisonings={poisonings}",
+                        "elapsed_seconds": elapsed,
+                    }
+                    continue
+            else:
+                results[name] = {
+                    "status": "FAILED",
+                    "reason": f"UNKNOWN_SUITE: {name}",
+                    "elapsed_seconds": elapsed,
+                }
+                continue
+        except (KeyError, TypeError, ValueError) as err:
+            print(f"  [X] Missing required metric field in {res_path}: {err}")
+            results[name] = {
+                "status": "FAILED",
+                "reason": f"MISSING_REQUIRED_FIELD: {err}",
+                "elapsed_seconds": elapsed,
+            }
+            continue
 
-        print(f"  - {name:<32}: {corr}/{tot} ({acc:.2f}%) in {elapsed:.2f}s -> PASSED")
+        is_passed = (proc.returncode == 0) and (acc == 100.0) and (corr == tot) and (tot > 0)
+        status_label = "PASSED" if is_passed else "FAILED"
+
+        print(f"  - {name:<32}: {corr}/{tot} ({acc:.2f}%) in {elapsed:.2f}s -> {status_label}")
         results[name] = {
-            "status": "PASSED",
+            "status": status_label,
             "total": tot,
             "correct": corr,
             "accuracy": acc,
             "elapsed_seconds": elapsed,
         }
+
+    # Restore any modified tracked result files in eval/results/ to maintain clean working tree
+    subprocess.run(["git", "checkout", "--", "eval/results/", "eval/semantics/results/"], cwd=repo_root, capture_output=True)
 
     return results
 
@@ -765,7 +829,7 @@ def run_all_evaluations():
     if all_gates_pass and all_regressions_pass and l1_truth_preserved and l2_pass_rate == 100.0:
         verdict = "AGENT_CORE_V1_FULLY_ACCEPTED"
     else:
-        verdict = "AGENT_CORE_V1_REMAINS_CONDITIONAL"
+        verdict = "AGENT_CORE_V1_CERTIFICATION_FAILED"
 
     report = {
         "timestamp": provenance["timestamp"],
@@ -779,12 +843,21 @@ def run_all_evaluations():
         "layer_5_legacy_regression": layer5,
     }
 
-    out_file = repo_root / "eval" / "results" / "p1_2_1_closeout_eval_report.json"
+    # Requirement 6: Temporary artifacts stored in runtime/evaluation/ (gitignored)
+    runtime_eval_dir = repo_root / "runtime" / "evaluation"
+    runtime_eval_dir.mkdir(parents=True, exist_ok=True)
+    out_file = runtime_eval_dir / "p1_2_2_certification_report.json"
     with open(out_file, "w", encoding="utf-8") as f:
         json.dump(report, f, ensure_ascii=False, indent=2, default=str)
 
+    # Also update legacy closeout report in eval/results
+    legacy_out = repo_root / "eval" / "results" / "p1_2_1_closeout_eval_report.json"
+    if legacy_out.parent.exists():
+        with open(legacy_out, "w", encoding="utf-8") as f:
+            json.dump(report, f, ensure_ascii=False, indent=2, default=str)
+
     print("\n" + "=" * 80)
-    print(f"ROUND P1.2.1 FINAL VERDICT: {verdict}")
+    print(f"FINAL CERTIFICATION VERDICT: {verdict}")
     print(f"Elapsed Time: {elapsed:.2f} seconds")
     print(f"Report saved to: {out_file}")
     print("=" * 80)
