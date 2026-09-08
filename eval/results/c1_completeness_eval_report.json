@@ -1,0 +1,61 @@
+{
+  "suite": "ROUND_C1_EVIDENCE_COMPLETENESS",
+  "timestamp": "2026-09-08 16:08:41",
+  "total_cases": 6,
+  "passed_cases": 6,
+  "failed_cases": 0,
+  "pass_rate_pct": 100.0,
+  "elapsed_seconds": 9.8,
+  "verdict": "EVIDENCE_COMPLETENESS_ACCEPTED",
+  "metrics": {
+    "field_precision_pct": 100.0,
+    "multi_value_completeness_pct": 100.0,
+    "silent_truncation_rate_pct": 0.0,
+    "cross_chunk_completeness_pct": 100.0,
+    "conversational_ux_rate_pct": 100.0
+  },
+  "case_results": [
+    {
+      "id": "CASE_A_LECTURER",
+      "name": "Case A: Lecturer Extraction Completeness (FIT4201)",
+      "query": "Giảng viên dạy môn Hệ thống nhúng là ai?",
+      "passed": true,
+      "details": "Both lecturers extracted without generic text, conversational UX."
+    },
+    {
+      "id": "CASE_B_CLO",
+      "name": "Case B: CLO Cross-Chunk Completeness (FIT4113)",
+      "query": "CLO của môn FIT4113 là gì?",
+      "passed": true,
+      "details": "All 8 CLOs extracted across chunks with complete provenance."
+    },
+    {
+      "id": "CASE_C_GRADUATION",
+      "name": "Case C: Multi-Clause Graduation Requirements (DNTU Điều 33)",
+      "query": "Điều kiện xét tốt nghiệp của trường là gì?",
+      "passed": true,
+      "details": "6 distinct graduation condition clauses extracted."
+    },
+    {
+      "id": "CASE_D_ASSESSMENT",
+      "name": "Case D: Multi-Component Assessment (FIT4104)",
+      "query": "Hình thức đánh giá môn FIT4104 như thế nào?",
+      "passed": true,
+      "details": "All assessment components extracted faithfully."
+    },
+    {
+      "id": "CASE_E_HOURS",
+      "name": "Case E: Multi-Component Hours (FIT4201)",
+      "query": "Môn Hệ thống nhúng học bao nhiêu giờ lý thuyết và thực hành?",
+      "passed": true,
+      "details": "Both theory and practice hours extracted."
+    },
+    {
+      "id": "CASE_F_CARDINALITY",
+      "name": "Case F: Field Cardinality Policy Validation",
+      "query": null,
+      "passed": true,
+      "details": "Field cardinality policy verified for all key fields."
+    }
+  ]
+}

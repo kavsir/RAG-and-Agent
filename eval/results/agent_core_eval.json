@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-09-07 17:20:12",
+  "timestamp": "2026-09-08 16:03:19",
   "total_cases": 182,
-  "total_passed": 178,
-  "overall_accuracy": 97.8021978021978,
+  "total_passed": 171,
+  "overall_accuracy": 93.95604395604396,
   "all_hard_gates_passed": true,
   "group_stats": {
     "A": {
       "name": "CLEAR_GOAL",
       "total": 20,
-      "passed": 18
+      "passed": 17
     },
     "B": {
       "name": "MISSING_INTENT",
@@ -38,12 +38,12 @@
     "G": {
       "name": "MULTI_FIELD",
       "total": 12,
-      "passed": 11
+      "passed": 10
     },
     "H": {
       "name": "MULTI_ENTITY",
       "total": 12,
-      "passed": 12
+      "passed": 10
     },
     "I": {
       "name": "PARTIAL_EVIDENCE",
@@ -63,7 +63,7 @@
     "L": {
       "name": "APPROVED_ALTERNATIVE",
       "total": 10,
-      "passed": 10
+      "passed": 9
     },
     "M": {
       "name": "REJECTED_ALTERNATIVE",
@@ -73,7 +73,7 @@
     "N": {
       "name": "CLARIFICATION_RESUME",
       "total": 12,
-      "passed": 11
+      "passed": 10
     },
     "O": {
       "name": "MALFORMED_QUERY",
@@ -83,7 +83,7 @@
     "P": {
       "name": "MULTI_INTENT",
       "total": 10,
-      "passed": 10
+      "passed": 9
     }
   },
   "hard_gates": {
@@ -97,12 +97,12 @@
     "external_api_calls": 0
   },
   "quality_metrics": {
-    "clear_goal_completion_rate": 90.0,
+    "clear_goal_completion_rate": 85.0,
     "missing_slot_identification_accuracy": 100.0,
     "proposal_on_unavailable_rate": 100.0,
-    "clarification_resume_success_rate": 96.66666666666667,
-    "average_steps": 1.9120879120879122,
-    "average_latency_ms": 69.06974120873521
+    "clarification_resume_success_rate": 90.0,
+    "average_steps": 1.9175824175824177,
+    "average_latency_ms": 159.04730384615684
   },
   "failed_cases": [
     {
@@ -112,10 +112,26 @@
       "user_response": null,
       "status": "COMPLETED",
       "stop_reason": "GOAL_COMPLETED",
-      "final_answer": "- **FIT4104 (hình thức đánh giá)**: Chuyên cần: 10%, Giữa kỳ: 15% + 15% (30%), Thi cuối kỳ: 60%",
+      "final_answer": "Hình thức đánh giá môn Dự án thiết kế, lập trình Full-Stack (FIT4104): Chuyên cần: 10%, Giữa kỳ: 15% + 15% (30%), Thi cuối kỳ: 60%.",
       "clarification_question": null,
       "reasons": [
         "Missing check term: '50%'"
+      ]
+    },
+    {
+      "id": "AC-A13",
+      "group": "A",
+      "query": "Ai dạy môn này?",
+      "user_response": null,
+      "status": "ABSTAINED",
+      "stop_reason": "NO_PROGRESS",
+      "final_answer": "Hệ thống dừng tra cứu do không thể tìm thêm bằng chứng hợp lệ.",
+      "clarification_question": null,
+      "reasons": [
+        "Status mismatch: expected COMPLETED, got ABSTAINED",
+        "StopReason mismatch: expected GOAL_COMPLETED, got NO_PROGRESS",
+        "Missing check term: 'FIT4104'",
+        "Missing check term: 'giảng viên'"
       ]
     },
     {
@@ -125,7 +141,7 @@
       "user_response": null,
       "status": "COMPLETED",
       "stop_reason": "GOAL_COMPLETED",
-      "final_answer": "- **FIT4117 (kế hoạch giảng dạy)**: Kỳ 1 theo khung CTĐT",
+      "final_answer": "Kế hoạch giảng dạy môn Quản trị dự án công nghệ thông tin (FIT4117): Kỳ 1 theo khung CTĐT.",
       "clarification_question": null,
       "reasons": [
         "Missing check term: 'học kỳ'"
@@ -138,10 +154,90 @@
       "user_response": null,
       "status": "COMPLETED",
       "stop_reason": "GOAL_COMPLETED",
-      "final_answer": "- **FIT4104 (số tín chỉ)**: 3 tín chỉ\n- **FIT4104 (hình thức đánh giá)**: Chuyên cần: 10%, Giữa kỳ: 15% + 15% (30%), Thi cuối kỳ: 60%",
+      "final_answer": "Số tín chỉ môn Dự án thiết kế, lập trình Full-Stack (FIT4104): 3 tín chỉ.\nHình thức đánh giá môn Dự án thiết kế, lập trình Full-Stack (FIT4104): Chuyên cần: 10%, Giữa kỳ: 15% + 15% (30%), Thi cuối kỳ: 60%.",
       "clarification_question": null,
       "reasons": [
         "Missing check term: '50%'"
+      ]
+    },
+    {
+      "id": "AC-G06",
+      "group": "G",
+      "query": "Môn FIT4104 giảng viên phụ trách và mục tiêu môn học là gì?",
+      "user_response": null,
+      "status": "ABSTAINED",
+      "stop_reason": "DATA_NOT_AVAILABLE",
+      "final_answer": "Yêu cầu không thể thực hiện do dữ liệu không được công bố trong các văn bản đào tạo chính thức.",
+      "clarification_question": null,
+      "reasons": [
+        "Status mismatch: expected COMPLETED, got ABSTAINED",
+        "StopReason mismatch: expected GOAL_COMPLETED, got DATA_NOT_AVAILABLE",
+        "Missing check term: 'FIT4104'",
+        "Missing check term: 'giảng viên'",
+        "Missing check term: 'mục tiêu'"
+      ]
+    },
+    {
+      "id": "AC-H03",
+      "group": "H",
+      "query": "So sánh giảng viên phụ trách giữa FIT4104 và FIT4113",
+      "user_response": null,
+      "status": "ABSTAINED",
+      "stop_reason": "DATA_NOT_AVAILABLE",
+      "final_answer": "Yêu cầu không thể thực hiện do dữ liệu không được công bố trong các văn bản đào tạo chính thức.",
+      "clarification_question": null,
+      "reasons": [
+        "Status mismatch: expected COMPLETED, got ABSTAINED",
+        "StopReason mismatch: expected GOAL_COMPLETED, got DATA_NOT_AVAILABLE",
+        "Missing check term: 'FIT4104'",
+        "Missing check term: 'FIT4113'",
+        "Missing check term: 'giảng viên'"
+      ]
+    },
+    {
+      "id": "AC-H10",
+      "group": "H",
+      "query": "FIT4104 và FIT4201 có cùng giảng viên phụ trách không?",
+      "user_response": null,
+      "status": "ABSTAINED",
+      "stop_reason": "DATA_NOT_AVAILABLE",
+      "final_answer": "Yêu cầu không thể thực hiện do dữ liệu không được công bố trong các văn bản đào tạo chính thức.",
+      "clarification_question": null,
+      "reasons": [
+        "Status mismatch: expected COMPLETED, got ABSTAINED",
+        "StopReason mismatch: expected GOAL_COMPLETED, got DATA_NOT_AVAILABLE",
+        "Missing check term: 'FIT4104'",
+        "Missing check term: 'FIT4201'",
+        "Missing check term: 'giảng viên'"
+      ]
+    },
+    {
+      "id": "AC-L06",
+      "group": "L",
+      "query": "Thầy dạy FIT4104 chấm gắt không?",
+      "user_response": "Đồng ý xem cấu trúc điểm",
+      "status": "ABSTAINED",
+      "stop_reason": "DATA_NOT_AVAILABLE",
+      "final_answer": "Yêu cầu không thể thực hiện do dữ liệu không được công bố trong các văn bản đào tạo chính thức.",
+      "clarification_question": "Tài liệu chính thức không lưu trữ review hay đánh giá của sinh viên khoá trước và cách chấm điểm của thầy. Mình có thể cung cấp mục tiêu môn học, chuẩn đầu ra (CLO) và tiêu chí đánh giá để bạn nắm rõ kỳ vọng. Bạn có muốn xem không?",
+      "reasons": [
+        "Status mismatch: expected COMPLETED, got ABSTAINED",
+        "StopReason mismatch: expected GOAL_COMPLETED, got DATA_NOT_AVAILABLE",
+        "Missing check term: 'FIT4104'"
+      ]
+    },
+    {
+      "id": "AC-N02",
+      "group": "N",
+      "query": "FIT4201 với FIT4104 thì sao?",
+      "user_response": "Ai là giảng viên dạy hai môn này?",
+      "status": "PARTIAL",
+      "stop_reason": "PARTIAL_EVIDENCE",
+      "final_answer": "Thông tin đã xác thực từ tài liệu chính quy:\n- Giảng viên môn Hệ thống nhúng (FIT4201): TS. Trần Đăng Công, ThS. Nguyễn Văn Nhân.\n\nCác thông tin chưa được công bố trong tài liệu chính thức:\n- FIT4104 - giảng viên: Không có dữ liệu công bố chính thức.",
+      "clarification_question": "Bạn muốn mình so sánh FIT4201 và FIT4104 theo tiêu chí nào (các thông tin như số tín chỉ, giảng viên, chuẩn đầu ra (CLO), hình thức đánh giá hay thứ tự nên học)?",
+      "reasons": [
+        "Status mismatch: expected COMPLETED, got PARTIAL",
+        "StopReason mismatch: expected GOAL_COMPLETED, got PARTIAL_EVIDENCE"
       ]
     },
     {
@@ -151,10 +247,26 @@
       "user_response": "Môn FIT4104",
       "status": "COMPLETED",
       "stop_reason": "GOAL_COMPLETED",
-      "final_answer": "- **FIT4104 (hình thức đánh giá)**: Chuyên cần: 10%, Giữa kỳ: 15% + 15% (30%), Thi cuối kỳ: 60%",
+      "final_answer": "Hình thức đánh giá môn Dự án thiết kế, lập trình Full-Stack (FIT4104): Chuyên cần: 10%, Giữa kỳ: 15% + 15% (30%), Thi cuối kỳ: 60%.",
       "clarification_question": "Bạn đang hỏi về môn học / học phần nào? Bạn có thể cung cấp mã môn học hoặc mã học phần (ví dụ FIT4201) để mình tra cứu chính xác nhé.",
       "reasons": [
         "Missing check term: '50%'"
+      ]
+    },
+    {
+      "id": "AC-P02",
+      "group": "P",
+      "query": "Môn FIT4104 ai dạy và gửi mail cho tôi đề cương",
+      "user_response": null,
+      "status": "ABSTAINED",
+      "stop_reason": "NO_PROGRESS",
+      "final_answer": "Hệ thống dừng tra cứu do không thể tìm thêm bằng chứng hợp lệ.",
+      "clarification_question": null,
+      "reasons": [
+        "Status mismatch: expected COMPLETED, got ABSTAINED",
+        "StopReason mismatch: expected GOAL_COMPLETED, got NO_PROGRESS",
+        "Missing check term: 'FIT4104'",
+        "Missing check term: 'giảng viên'"
       ]
     }
   ]

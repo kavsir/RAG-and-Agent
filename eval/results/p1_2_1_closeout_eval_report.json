@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-09-07 17:17:43",
+  "timestamp": "2026-09-08 15:59:42",
   "provenance": {
-    "git_sha": "6cbbc8a8d924f9512be7aca0af8def5d6c9a9735",
-    "working_tree_clean": true,
+    "git_sha": "56a12c3a589e1f420c528dbc2e353234f3832b69",
+    "working_tree_clean": false,
     "runner_command": "python -m eval.agent_core.run_p1_2_1_eval",
-    "timestamp": "2026-09-07 17:17:43",
+    "timestamp": "2026-09-08 15:59:42",
     "produced_in_this_run": true,
     "datasets": {
       "canonical_suite": {
@@ -17,17 +17,24 @@
       }
     }
   },
-  "verdict": "AGENT_CORE_V1_FULLY_ACCEPTED",
-  "elapsed_seconds": 193.0617356999992,
+  "verdict": "AGENT_CORE_V1_CERTIFICATION_FAILED",
+  "elapsed_seconds": 238.97335650000014,
   "layer_1_canonical": {
     "total_cases": 182,
-    "passed_cases": 178,
-    "accuracy": 97.8021978021978,
+    "passed_cases": 171,
+    "accuracy": 93.95604395604396,
     "discrepancies": [
       "AC-A06",
+      "AC-A13",
       "AC-A19",
       "AC-G02",
-      "AC-N05"
+      "AC-G06",
+      "AC-H03",
+      "AC-H10",
+      "AC-L06",
+      "AC-N02",
+      "AC-N05",
+      "AC-P02"
     ],
     "all_hard_gates_passed": true
   },
@@ -45,36 +52,36 @@
     "cross_entity_leakages": 0,
     "unauthorized_goal_executions": 0,
     "synthetic_evidence_items": [
-      "entity='FIT4201' field='assessment' document_type='course_outline' content='Thi cuối kỳ: 60%' source='chunk_P12-ADV-04' metadata={} is_authoritative=True relevance_score=1.0 status=<EvidenceStatus.VERIFIED_VALUE: 'VERIFIED_VALUE'> source_file='doc_FIT4201.docx' chunk_id='chunk_P12-ADV-04' section='' extracted_at=None retrieval_strategy='exact'",
-      "entity='FIT4104' field='assessment' document_type='course_outline' content='Chuyên cần: 15%' source='chunk_P12-ADV-05' metadata={} is_authoritative=True relevance_score=1.0 status=<EvidenceStatus.VERIFIED_VALUE: 'VERIFIED_VALUE'> source_file='doc_FIT4104.docx' chunk_id='chunk_P12-ADV-05' section='' extracted_at=None retrieval_strategy='exact'",
-      "entity='FIT4117' field='assessment' document_type='course_outline' content='Giữa kỳ: 30%' source='chunk_P12-ADV-06' metadata={} is_authoritative=True relevance_score=1.0 status=<EvidenceStatus.VERIFIED_VALUE: 'VERIFIED_VALUE'> source_file='doc_FIT4117.docx' chunk_id='chunk_P12-ADV-06' section='' extracted_at=None retrieval_strategy='exact'",
-      "entity='FIT4201' field='lecturer' document_type='course_outline' content='TS. Trần Quý Nam' source='chunk_P12-ADV-10' metadata={} is_authoritative=True relevance_score=1.0 status=<EvidenceStatus.VERIFIED_VALUE: 'VERIFIED_VALUE'> source_file='doc_FIT4201.docx' chunk_id='chunk_P12-ADV-10' section='' extracted_at=None retrieval_strategy='exact'",
-      "entity='FIT4104' field='lecturer' document_type='course_outline' content='ThS. Phạm Văn Tiệp' source='chunk_P12-ADV-11' metadata={} is_authoritative=True relevance_score=1.0 status=<EvidenceStatus.VERIFIED_VALUE: 'VERIFIED_VALUE'> source_file='doc_FIT4104.docx' chunk_id='chunk_P12-ADV-11' section='' extracted_at=None retrieval_strategy='exact'",
-      "entity='FIT4113' field='lecturer' document_type='course_outline' content='TS. Trần Đăng Công' source='chunk_P12-ADV-12' metadata={} is_authoritative=True relevance_score=1.0 status=<EvidenceStatus.VERIFIED_VALUE: 'VERIFIED_VALUE'> source_file='doc_FIT4113.docx' chunk_id='chunk_P12-ADV-12' section='' extracted_at=None retrieval_strategy='exact'",
-      "entity='FIT4201' field='hours' document_type='course_outline' content='15 giờ lý thuyết' source='chunk_P12-ADV-16' metadata={} is_authoritative=True relevance_score=1.0 status=<EvidenceStatus.VERIFIED_VALUE: 'VERIFIED_VALUE'> source_file='doc_FIT4201.docx' chunk_id='chunk_P12-ADV-16' section='' extracted_at=None retrieval_strategy='exact'",
-      "entity='FIT4104' field='hours' document_type='course_outline' content='45 giờ lý thuyết' source='chunk_P12-ADV-17' metadata={} is_authoritative=True relevance_score=1.0 status=<EvidenceStatus.VERIFIED_VALUE: 'VERIFIED_VALUE'> source_file='doc_FIT4104.docx' chunk_id='chunk_P12-ADV-17' section='' extracted_at=None retrieval_strategy='exact'",
-      "entity='FIT4113' field='hours' document_type='course_outline' content='30 giờ lý thuyết' source='chunk_P12-ADV-18' metadata={} is_authoritative=True relevance_score=1.0 status=<EvidenceStatus.VERIFIED_VALUE: 'VERIFIED_VALUE'> source_file='doc_FIT4113.docx' chunk_id='chunk_P12-ADV-18' section='' extracted_at=None retrieval_strategy='exact'",
-      "entity='FIT4201' field='hours' document_type='course_outline' content='30 giờ thực hành' source='chunk_P12-ADV-19' metadata={} is_authoritative=True relevance_score=1.0 status=<EvidenceStatus.VERIFIED_VALUE: 'VERIFIED_VALUE'> source_file='doc_FIT4201.docx' chunk_id='chunk_P12-ADV-19' section='' extracted_at=None retrieval_strategy='exact'",
-      "entity='FIT4104' field='hours' document_type='course_outline' content='60 giờ thực hành' source='chunk_P12-ADV-20' metadata={} is_authoritative=True relevance_score=1.0 status=<EvidenceStatus.VERIFIED_VALUE: 'VERIFIED_VALUE'> source_file='doc_FIT4104.docx' chunk_id='chunk_P12-ADV-20' section='' extracted_at=None retrieval_strategy='exact'",
-      "entity='FIT4117' field='hours' document_type='course_outline' content='45 giờ thực hành' source='chunk_P12-ADV-21' metadata={} is_authoritative=True relevance_score=1.0 status=<EvidenceStatus.VERIFIED_VALUE: 'VERIFIED_VALUE'> source_file='doc_FIT4117.docx' chunk_id='chunk_P12-ADV-21' section='' extracted_at=None retrieval_strategy='exact'",
-      "entity='DNTU' field='academic_warning' document_type='regulation' content='Cảnh báo học tập: Cuối mỗi học kỳ, sinh viên bị cảnh báo học tập nếu điểm trung bình học kỳ đạt dưới 0,8 đối với học kỳ đầu của khóa học, dưới 1,0 đối với các học kỳ tiếp theo' source='chunk_P121-REG-POS-01' metadata={} is_authoritative=True relevance_score=1.0 status=<EvidenceStatus.VERIFIED_VALUE: 'VERIFIED_VALUE'> source_file='QuyetDinhChung.docx' chunk_id='chunk_P121-REG-POS-01' section='' extracted_at=None retrieval_strategy='exact'",
-      "entity='DNTU' field='graduation_requirements' document_type='regulation' content='Điều kiện tốt nghiệp: tích lũy đủ học phần, số tín chỉ và hoàn thành các nội dung bắt buộc; đạt chuẩn năng lực ngoại ngữ đầu ra theo Quy định của Trường; điểm trung bình tích lũy của toàn khóa học đạt từ trung bình trở lên' source='chunk_P121-REG-POS-02' metadata={} is_authoritative=True relevance_score=1.0 status=<EvidenceStatus.VERIFIED_VALUE: 'VERIFIED_VALUE'> source_file='QuyetDinhChung.docx' chunk_id='chunk_P121-REG-POS-02' section='' extracted_at=None retrieval_strategy='exact'",
-      "entity='DNTU' field='attendance_rules' document_type='regulation' content='Quy định điểm danh: Sinh viên nghỉ quá 20% số tiết đối với nội dung/học phần lý thuyết; không tham dự đủ 100% số tiết đối với học phần thực hành sẽ không đủ điều kiện dự thi và phải học lại' source='chunk_P121-REG-POS-03' metadata={} is_authoritative=True relevance_score=1.0 status=<EvidenceStatus.VERIFIED_VALUE: 'VERIFIED_VALUE'> source_file='QuyetDinhChung.docx' chunk_id='chunk_P121-REG-POS-03' section='' extracted_at=None retrieval_strategy='exact'",
-      "entity='DNTU' field='grading_scale' document_type='regulation' content='Thang điểm đánh giá: Điểm học phần được đánh giá theo thang điểm 10 quy đổi sang thang điểm chữ (A, B, C, D, F) và thang điểm 4' source='chunk_P121-REG-POS-04' metadata={} is_authoritative=True relevance_score=1.0 status=<EvidenceStatus.VERIFIED_VALUE: 'VERIFIED_VALUE'> source_file='QuyetDinhChung.docx' chunk_id='chunk_P121-REG-POS-04' section='' extracted_at=None retrieval_strategy='exact'",
-      "entity='DNTU' field='regulation' document_type='regulation' content='Quyết định số 1535/QĐ-TTg ngày 14/11/2007 của Thủ tướng Chính phủ về việc thành lập Trường Đại học Đại Nam' source='chunk_P121-REG-POS-05' metadata={} is_authoritative=True relevance_score=1.0 status=<EvidenceStatus.VERIFIED_VALUE: 'VERIFIED_VALUE'> source_file='QuyetDinhChung.docx' chunk_id='chunk_P121-REG-POS-05' section='' extracted_at=None retrieval_strategy='exact'"
+      "entity='FIT4201' field='assessment' document_type='course_outline' content='Thi cuối kỳ: 60%' source='chunk_P12-ADV-04' metadata={'supporting_chunks': ['chunk_P12-ADV-04']} is_authoritative=True relevance_score=1.0 status=<EvidenceStatus.VERIFIED_VALUE: 'VERIFIED_VALUE'> source_file='doc_FIT4201.docx' chunk_id='chunk_P12-ADV-04' section='' extracted_at=None retrieval_strategy='exact'",
+      "entity='FIT4104' field='assessment' document_type='course_outline' content='Chuyên cần: 15%' source='chunk_P12-ADV-05' metadata={'supporting_chunks': ['chunk_P12-ADV-05']} is_authoritative=True relevance_score=1.0 status=<EvidenceStatus.VERIFIED_VALUE: 'VERIFIED_VALUE'> source_file='doc_FIT4104.docx' chunk_id='chunk_P12-ADV-05' section='' extracted_at=None retrieval_strategy='exact'",
+      "entity='FIT4117' field='assessment' document_type='course_outline' content='Giữa kỳ: 30%' source='chunk_P12-ADV-06' metadata={'supporting_chunks': ['chunk_P12-ADV-06']} is_authoritative=True relevance_score=1.0 status=<EvidenceStatus.VERIFIED_VALUE: 'VERIFIED_VALUE'> source_file='doc_FIT4117.docx' chunk_id='chunk_P12-ADV-06' section='' extracted_at=None retrieval_strategy='exact'",
+      "entity='FIT4201' field='lecturer' document_type='course_outline' content='TS. Trần Quý Nam' source='chunk_P12-ADV-10' metadata={'supporting_chunks': ['chunk_P12-ADV-10']} is_authoritative=True relevance_score=1.0 status=<EvidenceStatus.VERIFIED_VALUE: 'VERIFIED_VALUE'> source_file='doc_FIT4201.docx' chunk_id='chunk_P12-ADV-10' section='' extracted_at=None retrieval_strategy='exact'",
+      "entity='FIT4104' field='lecturer' document_type='course_outline' content='ThS. Phạm Văn Tiệp' source='chunk_P12-ADV-11' metadata={'supporting_chunks': ['chunk_P12-ADV-11']} is_authoritative=True relevance_score=1.0 status=<EvidenceStatus.VERIFIED_VALUE: 'VERIFIED_VALUE'> source_file='doc_FIT4104.docx' chunk_id='chunk_P12-ADV-11' section='' extracted_at=None retrieval_strategy='exact'",
+      "entity='FIT4113' field='lecturer' document_type='course_outline' content='TS. Trần Đăng Công' source='chunk_P12-ADV-12' metadata={'supporting_chunks': ['chunk_P12-ADV-12']} is_authoritative=True relevance_score=1.0 status=<EvidenceStatus.VERIFIED_VALUE: 'VERIFIED_VALUE'> source_file='doc_FIT4113.docx' chunk_id='chunk_P12-ADV-12' section='' extracted_at=None retrieval_strategy='exact'",
+      "entity='FIT4201' field='hours' document_type='course_outline' content='15 giờ lý thuyết' source='chunk_P12-ADV-16' metadata={'supporting_chunks': ['chunk_P12-ADV-16']} is_authoritative=True relevance_score=1.0 status=<EvidenceStatus.VERIFIED_VALUE: 'VERIFIED_VALUE'> source_file='doc_FIT4201.docx' chunk_id='chunk_P12-ADV-16' section='' extracted_at=None retrieval_strategy='exact'",
+      "entity='FIT4104' field='hours' document_type='course_outline' content='45 giờ lý thuyết' source='chunk_P12-ADV-17' metadata={'supporting_chunks': ['chunk_P12-ADV-17']} is_authoritative=True relevance_score=1.0 status=<EvidenceStatus.VERIFIED_VALUE: 'VERIFIED_VALUE'> source_file='doc_FIT4104.docx' chunk_id='chunk_P12-ADV-17' section='' extracted_at=None retrieval_strategy='exact'",
+      "entity='FIT4113' field='hours' document_type='course_outline' content='30 giờ lý thuyết' source='chunk_P12-ADV-18' metadata={'supporting_chunks': ['chunk_P12-ADV-18']} is_authoritative=True relevance_score=1.0 status=<EvidenceStatus.VERIFIED_VALUE: 'VERIFIED_VALUE'> source_file='doc_FIT4113.docx' chunk_id='chunk_P12-ADV-18' section='' extracted_at=None retrieval_strategy='exact'",
+      "entity='FIT4201' field='hours' document_type='course_outline' content='30 giờ thực hành' source='chunk_P12-ADV-19' metadata={'supporting_chunks': ['chunk_P12-ADV-19']} is_authoritative=True relevance_score=1.0 status=<EvidenceStatus.VERIFIED_VALUE: 'VERIFIED_VALUE'> source_file='doc_FIT4201.docx' chunk_id='chunk_P12-ADV-19' section='' extracted_at=None retrieval_strategy='exact'",
+      "entity='FIT4104' field='hours' document_type='course_outline' content='60 giờ thực hành' source='chunk_P12-ADV-20' metadata={'supporting_chunks': ['chunk_P12-ADV-20']} is_authoritative=True relevance_score=1.0 status=<EvidenceStatus.VERIFIED_VALUE: 'VERIFIED_VALUE'> source_file='doc_FIT4104.docx' chunk_id='chunk_P12-ADV-20' section='' extracted_at=None retrieval_strategy='exact'",
+      "entity='FIT4117' field='hours' document_type='course_outline' content='45 giờ thực hành' source='chunk_P12-ADV-21' metadata={'supporting_chunks': ['chunk_P12-ADV-21']} is_authoritative=True relevance_score=1.0 status=<EvidenceStatus.VERIFIED_VALUE: 'VERIFIED_VALUE'> source_file='doc_FIT4117.docx' chunk_id='chunk_P12-ADV-21' section='' extracted_at=None retrieval_strategy='exact'",
+      "entity='DNTU' field='academic_warning' document_type='regulation' content='Cảnh báo học tập: Cuối mỗi học kỳ, sinh viên bị cảnh báo học tập nếu điểm trung bình học kỳ đạt dưới 0,8 đối với học kỳ đầu của khóa học, dưới 1,0 đối với các học kỳ tiếp theo' source='chunk_P121-REG-POS-01' metadata={'supporting_chunks': ['chunk_P121-REG-POS-01']} is_authoritative=True relevance_score=1.0 status=<EvidenceStatus.VERIFIED_VALUE: 'VERIFIED_VALUE'> source_file='QuyetDinhChung.docx' chunk_id='chunk_P121-REG-POS-01' section='' extracted_at=None retrieval_strategy='exact'",
+      "entity='DNTU' field='graduation_requirements' document_type='regulation' content='Điều kiện tốt nghiệp: tích lũy đủ học phần, số tín chỉ và hoàn thành các nội dung bắt buộc; đạt chuẩn năng lực ngoại ngữ đầu ra theo Quy định của Trường; điểm trung bình tích lũy của toàn khóa học đạt từ trung bình trở lên' source='chunk_P121-REG-POS-02' metadata={'supporting_chunks': ['chunk_P121-REG-POS-02']} is_authoritative=True relevance_score=1.0 status=<EvidenceStatus.VERIFIED_VALUE: 'VERIFIED_VALUE'> source_file='QuyetDinhChung.docx' chunk_id='chunk_P121-REG-POS-02' section='' extracted_at=None retrieval_strategy='exact'",
+      "entity='DNTU' field='attendance_rules' document_type='regulation' content='Quy định điểm danh: Sinh viên nghỉ quá 20% số tiết đối với nội dung/học phần lý thuyết; không tham dự đủ 100% số tiết đối với học phần thực hành sẽ không đủ điều kiện dự thi và phải học lại' source='chunk_P121-REG-POS-03' metadata={'supporting_chunks': ['chunk_P121-REG-POS-03']} is_authoritative=True relevance_score=1.0 status=<EvidenceStatus.VERIFIED_VALUE: 'VERIFIED_VALUE'> source_file='QuyetDinhChung.docx' chunk_id='chunk_P121-REG-POS-03' section='' extracted_at=None retrieval_strategy='exact'",
+      "entity='DNTU' field='grading_scale' document_type='regulation' content='Thang điểm đánh giá: Điểm học phần được đánh giá theo thang điểm 10 quy đổi sang thang điểm chữ (A, B, C, D, F) và thang điểm 4' source='chunk_P121-REG-POS-04' metadata={'supporting_chunks': ['chunk_P121-REG-POS-04']} is_authoritative=True relevance_score=1.0 status=<EvidenceStatus.VERIFIED_VALUE: 'VERIFIED_VALUE'> source_file='QuyetDinhChung.docx' chunk_id='chunk_P121-REG-POS-04' section='' extracted_at=None retrieval_strategy='exact'",
+      "entity='DNTU' field='regulation' document_type='regulation' content='Quyết định số 1535/QĐ-TTg ngày 14/11/2007 của Thủ tướng Chính phủ về việc thành lập Trường Đại học Đại Nam' source='chunk_P121-REG-POS-05' metadata={'supporting_chunks': ['chunk_P121-REG-POS-05']} is_authoritative=True relevance_score=1.0 status=<EvidenceStatus.VERIFIED_VALUE: 'VERIFIED_VALUE'> source_file='QuyetDinhChung.docx' chunk_id='chunk_P121-REG-POS-05' section='' extracted_at=None retrieval_strategy='exact'"
     ]
   },
   "layer_3_traceability": {
-    "total_audited": 7,
-    "traceable_items": 7,
+    "total_audited": 6,
+    "traceable_items": 6,
     "traceability_rate": 100.0,
     "status": "PASSED",
     "audited_items_summary": [
       "[FIT4201 | credits | VERIFIED_VALUE] -> file: CTDTK_NKHMT_K19.docx, chunk: FIT4201_curriculum_catalog, strat: catalog",
-      "[FIT4104 | lecturer | VERIFIED_VALUE] -> file: FIT4104 - Dự án thiết kế, lập trình Full-Stack.docx, chunk: FIT4104 - Dự án thiết kế, lập trình Full-Stack_chunk0, strat: exact",
       "[FIT4104 | lecturer_email | VERIFIED_VALUE] -> file: FIT4104 - Dự án thiết kế, lập trình Full-Stack.docx, chunk: FIT4104 - Dự án thiết kế, lập trình Full-Stack_chunk1, strat: exact",
       "[FIT4201 | assessment | VERIFIED_VALUE] -> file: FIT4201- Hệ thống nhúng.docx, chunk: FIT4201- Hệ thống nhúng_chunk0, strat: exact",
-      "[FIT4201 | prerequisites | VERIFIED_NONE] -> file: FIT4201- Hệ thống nhúng.docx, chunk: FIT4201- Hệ thống nhúng_chunk0, strat: exact"
+      "[FIT4201 | prerequisites | VERIFIED_NONE] -> file: FIT4201- Hệ thống nhúng.docx, chunk: FIT4201- Hệ thống nhúng_chunk0, strat: exact",
+      "[FIT4201 | hours | VERIFIED_VALUE] -> file: FIT4201- Hệ thống nhúng.docx, chunk: FIT4201- Hệ thống nhúng_chunk0, strat: exact"
     ]
   },
   "layer_4_hard_gates": {
@@ -137,32 +144,24 @@
   },
   "layer_5_legacy_regression": {
     "Router V2 Full Suite": {
-      "status": "PASSED",
-      "total": 103,
-      "correct": 103,
-      "accuracy": 100.0,
-      "elapsed_seconds": 40.80948999999964
+      "status": "FAILED",
+      "returncode": 3221226505,
+      "elapsed": 43.50250029999961
     },
     "Personal Memory V1 Suite": {
-      "status": "PASSED",
-      "total": 60,
-      "correct": 60,
-      "accuracy": 100.0,
-      "elapsed_seconds": 22.206674200000634
+      "status": "FAILED",
+      "returncode": 1,
+      "elapsed": 34.805524100000184
     },
     "Session Memory V2 Suite": {
-      "status": "PASSED",
-      "total": 50,
-      "correct": 50,
-      "accuracy": 100.0,
-      "elapsed_seconds": 30.734332500000164
+      "status": "FAILED",
+      "returncode": 1,
+      "elapsed": 45.65008549999993
     },
     "Utterance Semantics & Safety": {
-      "status": "PASSED",
-      "total": 375,
-      "correct": 375,
-      "accuracy": 100.0,
-      "elapsed_seconds": 42.51791090000006
+      "status": "FAILED",
+      "returncode": 1,
+      "elapsed": 42.830788700000085
     }
   }
 }

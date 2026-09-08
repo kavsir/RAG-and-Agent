@@ -11,6 +11,7 @@ Executes atomic, verifiable, and idempotent actions:
 - FINISH
 Reuses existing RAG infrastructure with 0 second-retrieval architectures and 0 external LLM calls.
 """
+import re
 from typing import Optional
 
 from src.agent_core.schemas import (
@@ -22,6 +23,7 @@ from src.agent_core.schemas import (
     StopReason,
     EvidenceStatus,
     QuestionType,
+    EvidenceRequirement,
 )
 from src.agent_core.entity_catalog import get_entity_catalog, EntityCatalog
 from src.agent_core.environment_catalog import get_knowledge_environment_catalog, KnowledgeEnvironmentCatalog
@@ -44,6 +46,48 @@ FIELD_NAMES_VN = {
     "academic_warning": "cảnh báo học vụ",
     "training_rules": "quy chế đào tạo",
 }
+
+
+def format_requirement_answer(r: EvidenceRequirement, catalog: Optional[EntityCatalog] = None) -> str:
+    """Định dạng kết quả trả lời học vụ tự nhiên, hội thoại, thân thiện với người dùng."""
+    f_vn = FIELD_NAMES_VN.get(r.field, r.field)
+    c_info = catalog.get_course_info(r.entity) if catalog and r.entity and r.entity not in ("DNTU", "general") else None
+    c_name = c_info.get("canonical_name", "") if c_info else ""
+    subject_str = f"{c_name} ({r.entity})" if c_name else r.entity
+
+    if r.field == "lecturer":
+        return f"Giảng viên môn {subject_str}: {r.extracted_value}."
+    elif r.field == "lecturer_email":
+        return f"Email giảng viên môn {subject_str}: {r.extracted_value}."
+    elif r.field == "credits":
+        return f"Số tín chỉ môn {subject_str}: {r.extracted_value}."
+    elif r.field == "clo":
+        return f"Chuẩn đầu ra (CLO) môn {subject_str}:\n{r.extracted_value}"
+    elif r.field == "assessment":
+        return f"Hình thức đánh giá môn {subject_str}: {r.extracted_value}."
+    elif r.field == "hours":
+        return f"Thời lượng học phần {subject_str}: {r.extracted_value}."
+    elif r.field == "department":
+        return f"Khoa / Đơn vị phụ trách môn {subject_str}: {r.extracted_value}."
+    elif r.field == "english_name":
+        return f"Tên tiếng Anh môn {subject_str}: {r.extracted_value}."
+    elif r.field in ("course_plan", "semester"):
+        return f"Kế hoạch giảng dạy môn {subject_str}: {r.extracted_value}."
+    elif r.field == "prerequisites":
+        return f"Môn tiên quyết của {subject_str}: {r.extracted_value}."
+    elif r.field == "graduation_requirements":
+        return f"Điều kiện xét tốt nghiệp ({r.entity}):\n{r.extracted_value}"
+    elif r.field == "academic_warning":
+        return f"Quy định cảnh báo học tập ({r.entity}):\n{r.extracted_value}"
+    elif r.field == "attendance_rules":
+        return f"Quy định chuyên cần, điểm danh ({r.entity}): {r.extracted_value}."
+    elif r.field == "grading_scale":
+        return f"Thang điểm đánh giá ({r.entity}): {r.extracted_value}."
+    elif r.field in ("training_rules", "regulation"):
+        return f"Quy chế đào tạo ({r.entity}): {r.extracted_value}."
+    else:
+        return f"Thông tin {f_vn} môn {subject_str}: {r.extracted_value}."
+
 
 
 class ActionExecutor:
@@ -166,9 +210,13 @@ class ActionExecutor:
                 retriever = get_collection_retriever(col_name)
                 # 1. Exact metadata query trực tiếp trên Chroma Persistent Collection
                 if where_filter and retriever.collection:
-                    res = retriever.collection.get(where=where_filter, limit=10)
+                    res = retriever.collection.get(where=where_filter, limit=100)
                     if res and res.get("documents"):
-                        for cid, meta, text in zip(res["ids"], res["metadatas"], res["documents"]):
+                        paired = sorted(
+                            zip(res["ids"], res["metadatas"], res["documents"]),
+                            key=lambda x: int(re.search(r"chunk(\d+)", str(x[0])).group(1)) if re.search(r"chunk(\d+)", str(x[0])) else 999
+                        )
+                        for cid, meta, text in paired:
                             matching_docs.append({
                                 "id": cid,
                                 "chunk_id": cid,
@@ -179,20 +227,13 @@ class ActionExecutor:
                                 "source_file": (meta or {}).get("source_file", ""),
                                 "section": (meta or {}).get("section", ""),
                             })
-                elif not where_filter and col_name == "regulation" and retriever.collection:
-                    res = retriever.collection.get(limit=10)
-                    if res and res.get("documents"):
-                        for cid, meta, text in zip(res["ids"], res["metadatas"], res["documents"]):
-                            matching_docs.append({
-                                "id": cid,
-                                "chunk_id": cid,
-                                "text": text,
-                                "content": text,
-                                "metadata": meta or {},
-                                "document_type": "regulation",
-                                "source_file": (meta or {}).get("source_file", ""),
-                                "section": (meta or {}).get("section", ""),
-                            })
+                elif not where_filter and col_name == "regulation" and retriever.bm25_index:
+                    f_vn = FIELD_NAMES_VN.get(target_req.field, "")
+                    query_str = f"{target_req.field} {f_vn}"
+                    b_docs = retriever.bm25_search(query_str, top_k=5)
+                    for d in b_docs:
+                        d["content"] = d.get("text", "")
+                        matching_docs.append(d)
 
                 # 2. Nếu chưa có docs, truy xuất qua BM25
                 if not matching_docs and retriever.bm25_index:
@@ -364,8 +405,7 @@ class ActionExecutor:
 
         lines = ["Thông tin đã xác thực từ tài liệu chính quy:"]
         for r in sat_reqs:
-            f_vn = FIELD_NAMES_VN.get(r.field, r.field)
-            lines.append(f"- **{r.entity} ({f_vn})**: {r.extracted_value}")
+            lines.append(f"- {format_requirement_answer(r, self.entity_catalog)}")
 
         if unsat_reqs:
             lines.append("\nCác thông tin chưa được công bố trong tài liệu chính thức:")
@@ -422,8 +462,7 @@ class ActionExecutor:
         lines = []
         for r in state.requirements:
             if r.status in valid_statuses:
-                f_vn = FIELD_NAMES_VN.get(r.field, r.field)
-                lines.append(f"- **{r.entity} ({f_vn})**: {r.extracted_value}")
+                lines.append(format_requirement_answer(r, self.entity_catalog))
 
         if not lines:
             lines.append("Đã hoàn tất quy trình tra cứu dữ liệu học vụ.")

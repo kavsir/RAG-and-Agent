@@ -7,6 +7,13 @@ Enforces zero chain-of-thought text fields and complete evidence provenance.
 from enum import Enum
 from typing import Dict, Any, List, Optional
 from pydantic import BaseModel, Field
+from src.agent_core.cardinality import FieldCardinality, get_field_cardinality, FIELD_CARDINALITY_POLICY
+
+__all__ = [
+    "FieldCardinality",
+    "get_field_cardinality",
+    "FIELD_CARDINALITY_POLICY",
+]
 
 
 class GoalType(str, Enum):

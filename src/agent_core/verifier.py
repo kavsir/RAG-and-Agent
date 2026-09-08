@@ -93,20 +93,155 @@ class EvidenceVerifier:
         if not filtered_docs:
             return EvidenceStatus.MISSING, None
 
-        # 1. Với các trường thường bị ngắt đoạn qua ranh giới chunk (assessment, hours, clo),
-        # nếu có nhiều chunk của cùng thực thể, thử trích xuất trên văn bản hợp nhất trước.
-        if field in ("assessment", "hours", "clo") and len(filtered_docs) > 1:
+        # 1. Trích xuất tích hợp đa chunk cho các trường đa giá trị / đa thành phần / đa điều khoản
+        if field in ("clo", "objectives"):
+            extracted_clos: Dict[int, str] = {}
+            supporting_chunks: List[str] = []
+            first_doc = filtered_docs[0]
+            for doc in filtered_docs:
+                t = doc.get("content") or doc.get("text", "")
+                cid = str(doc.get("chunk_id") or doc.get("id") or "unknown")
+                clos = re.findall(r"(CLO\s*(\d+)[:\s\n\-]+[^\n]+)", t, re.IGNORECASE)
+                chunk_had = False
+                for full_clo, num_str in clos:
+                    num = int(num_str)
+                    clean_c = full_clo.strip().rstrip(".,")
+                    if len(clean_c.split()) >= 3:
+                        if num not in extracted_clos or len(clean_c) > len(extracted_clos[num]):
+                            extracted_clos[num] = clean_c
+                            chunk_had = True
+                if chunk_had and cid not in supporting_chunks:
+                    supporting_chunks.append(cid)
+
+            if extracted_clos:
+                sorted_clos = [extracted_clos[k] for k in sorted(extracted_clos.keys())]
+                val = "; ".join(sorted_clos)
+                doc_type = first_doc.get("document_type") or first_doc.get("metadata", {}).get("document_type", "course_detail")
+                source_file = (
+                    first_doc.get("source_file")
+                    or first_doc.get("metadata", {}).get("source_file")
+                    or first_doc.get("filename")
+                    or str(supporting_chunks[0])
+                )
+                item = EvidenceItem(
+                    entity=entity,
+                    field=field,
+                    document_type=doc_type,
+                    content=val,
+                    source=supporting_chunks[0],
+                    source_file=source_file,
+                    chunk_id=supporting_chunks[0],
+                    section=first_doc.get("section", ""),
+                    status=EvidenceStatus.VERIFIED_VALUE,
+                    is_authoritative=True,
+                    retrieval_strategy=retrieval_strategy,
+                    metadata={"supporting_chunks": supporting_chunks},
+                )
+                return EvidenceStatus.VERIFIED_VALUE, item
+
+        if field == "lecturer":
+            extracted_lecturers: List[str] = []
+            supporting_chunks: List[str] = []
+            first_doc = filtered_docs[0]
+            for doc in filtered_docs:
+                t = doc.get("content") or doc.get("text", "")
+                cid = str(doc.get("chunk_id") or doc.get("id") or "unknown")
+                status, lecs_str = self._extract_field_value("lecturer", t, entity, doc.get("document_type", "course_detail"))
+                if status == EvidenceStatus.VERIFIED_VALUE and lecs_str:
+                    for lec in [x.strip() for x in lecs_str.split(",") if x.strip()]:
+                        if lec not in extracted_lecturers:
+                            extracted_lecturers.append(lec)
+                    if cid not in supporting_chunks:
+                        supporting_chunks.append(cid)
+
+            if extracted_lecturers:
+                val = ", ".join(extracted_lecturers)
+                doc_type = first_doc.get("document_type") or first_doc.get("metadata", {}).get("document_type", "course_detail")
+                source_file = (
+                    first_doc.get("source_file")
+                    or first_doc.get("metadata", {}).get("source_file")
+                    or first_doc.get("filename")
+                    or str(supporting_chunks[0])
+                )
+                item = EvidenceItem(
+                    entity=entity,
+                    field=field,
+                    document_type=doc_type,
+                    content=val,
+                    source=supporting_chunks[0],
+                    source_file=source_file,
+                    chunk_id=supporting_chunks[0],
+                    section=first_doc.get("section", ""),
+                    status=EvidenceStatus.VERIFIED_VALUE,
+                    is_authoritative=True,
+                    retrieval_strategy=retrieval_strategy,
+                    metadata={"supporting_chunks": supporting_chunks},
+                )
+                return EvidenceStatus.VERIFIED_VALUE, item
+
+        if field == "graduation_requirements":
+            extracted_conds: List[str] = []
+            supporting_chunks: List[str] = []
+            first_doc = filtered_docs[0]
+            for doc in filtered_docs:
+                t = doc.get("content") or doc.get("text", "")
+                cid = str(doc.get("chunk_id") or doc.get("id") or "unknown")
+                status, cond_str = self._extract_field_value("graduation_requirements", t, entity, doc.get("document_type", "regulation"))
+                if status == EvidenceStatus.VERIFIED_VALUE and cond_str:
+                    raw_cond = cond_str.replace("Điều kiện tốt nghiệp:", "").strip()
+                    for c in [x.strip() for x in raw_cond.split(";") if x.strip()]:
+                        if c not in extracted_conds:
+                            extracted_conds.append(c)
+                    if cid not in supporting_chunks:
+                        supporting_chunks.append(cid)
+                    if len(extracted_conds) >= 4:
+                        break
+
+            if extracted_conds:
+                val = f"Điều kiện tốt nghiệp: {'; '.join(extracted_conds)}"
+                doc_type = first_doc.get("document_type") or first_doc.get("metadata", {}).get("document_type", "regulation")
+                source_file = (
+                    first_doc.get("source_file")
+                    or first_doc.get("metadata", {}).get("source_file")
+                    or first_doc.get("filename")
+                    or str(supporting_chunks[0])
+                )
+                item = EvidenceItem(
+                    entity=entity,
+                    field=field,
+                    document_type=doc_type,
+                    content=val,
+                    source=supporting_chunks[0],
+                    source_file=source_file,
+                    chunk_id=supporting_chunks[0],
+                    section=first_doc.get("section", ""),
+                    status=EvidenceStatus.VERIFIED_VALUE,
+                    is_authoritative=True,
+                    retrieval_strategy=retrieval_strategy,
+                    metadata={"supporting_chunks": supporting_chunks},
+                )
+                return EvidenceStatus.VERIFIED_VALUE, item
+
+        # 2. Với các trường thường bị ngắt đoạn qua ranh giới chunk (assessment, hours),
+        # nếu có nhiều chunk của cùng thực thể, thử trích xuất trên văn bản hợp nhất.
+        if field in ("assessment", "hours") and len(filtered_docs) > 1:
             combined_text = "\n".join(d.get("content") or d.get("text", "") for d in filtered_docs)
             status, val = self._extract_field_value(field, combined_text, entity, filtered_docs[0].get("document_type", "course_detail"))
             if status in (EvidenceStatus.VERIFIED_VALUE, EvidenceStatus.VERIFIED_NONE) and val is not None:
                 first_doc = filtered_docs[0]
                 doc_type = first_doc.get("document_type") or first_doc.get("metadata", {}).get("document_type", "course_detail")
-                doc_id = first_doc.get("chunk_id") or first_doc.get("id") or first_doc.get("file_path", "unknown")
+                supporting = [
+                    str(d.get("chunk_id") or d.get("id"))
+                    for d in filtered_docs
+                    if any(k in (d.get("content") or d.get("text", "")).lower() for k in ["đánh giá", "chuyên cần", "giữa kỳ", "cuối kỳ", "trọng số", "giờ"])
+                ]
+                if not supporting:
+                    supporting = [str(first_doc.get("chunk_id") or first_doc.get("id"))]
+                doc_id = supporting[0]
                 source_file = (
                     first_doc.get("source_file")
                     or first_doc.get("metadata", {}).get("source_file")
                     or first_doc.get("filename")
-                    or first_doc.get("metadata", {}).get("filename")
                     or str(doc_id)
                 )
                 section = "Đánh giá học phần" if field == "assessment" else (first_doc.get("section") or "")
@@ -122,13 +257,14 @@ class EvidenceVerifier:
                     status=status,
                     is_authoritative=True,
                     retrieval_strategy=retrieval_strategy,
+                    metadata={"supporting_chunks": supporting},
                 )
                 return status, item
 
-        # 2. Trích xuất từng tài liệu độc lập
+        # 3. Trích xuất từng tài liệu độc lập
         for doc in filtered_docs:
             doc_type = doc.get("document_type") or doc.get("metadata", {}).get("document_type", "course_detail")
-            doc_id = doc.get("chunk_id") or doc.get("id") or doc.get("file_path", "unknown")
+            doc_id = str(doc.get("chunk_id") or doc.get("id") or doc.get("file_path", "unknown"))
             source_file = (
                 doc.get("source_file")
                 or doc.get("metadata", {}).get("source_file")
@@ -153,11 +289,13 @@ class EvidenceVerifier:
                     status=status,
                     is_authoritative=True,
                     retrieval_strategy=retrieval_strategy,
+                    metadata={"supporting_chunks": [str(doc_id)]},
                 )
                 return status, item
 
         # Có tài liệu nhưng không chứa thông tin trường yêu cầu -> INSUFFICIENT
         return EvidenceStatus.INSUFFICIENT, None
+
 
     def _extract_field_value(
         self, field: str, text: str, entity: str = "", doc_type: str = ""
@@ -209,19 +347,96 @@ class EvidenceVerifier:
 
         # 3. LECTURER
         elif field == "lecturer":
-            m = re.search(
-                r"(?:giảng\s+viên\s+phụ\s+trách|cán\s+bộ\s+giảng\s+dạy|giảng\s+viên\s+giảng\s+dạy|giảng\s+viên)[:\s\n\-]+(?:học\s+phần[:\s\n\-]*)?((?:tiến\s+sĩ|thạc\s+sĩ|ts\.?|ths\.?|pgs\.?|gs\.?)?[\s\n\-]*[A-ZÀ-Ỵ][a-zà-ỵ]+(?:\s+[A-ZÀ-Ỵ][a-zà-ỵ]+){1,4})",
+            BLACKLIST_WORDS = {
+                "thông tin", "giảng viên", "học phần", "cán bộ", "người dạy",
+                "đơn vị", "chức danh", "học vị", "email", "khoa", "trường",
+                "đại học", "môn học", "đề cương", "nội dung", "mục tiêu",
+                "chuẩn đầu", "nhiệm vụ", "học kỳ", "năm học", "thuộc khối",
+                "ngành đào tạo", "chính quy", "tiên quyết", "song hành",
+                "học trước", "bài tập", "thực hành", "lý thuyết", "trọng số", "tỷ lệ"
+            }
+
+            def clean_title_and_name(name: str, title: str = "") -> str:
+                name = name.strip().rstrip(".,")
+                title = title.strip().rstrip(".,")
+                if title:
+                    t_lower = title.lower()
+                    if "tiến sĩ" in t_lower or "ts" in t_lower:
+                        prefix = "TS."
+                    elif "thạc sĩ" in t_lower or "ths" in t_lower:
+                        prefix = "ThS."
+                    elif "phó giáo sư" in t_lower or "pgs" in t_lower:
+                        prefix = "PGS."
+                    elif "giáo sư" in t_lower or "gs" in t_lower:
+                        prefix = "GS."
+                    else:
+                        prefix = title
+                    return f"{prefix} {name}"
+                return name
+
+            def is_valid_name(name: str) -> bool:
+                if not name:
+                    return False
+                n_lower = name.lower()
+                if any(bw in n_lower for bw in BLACKLIST_WORDS):
+                    return False
+                tokens = name.split()
+                if len(tokens) < 2 or len(tokens) > 5:
+                    return False
+                if not all(t[0].isupper() for t in tokens if t):
+                    return False
+                return True
+
+            found_lecturers = []
+
+            # Pattern A: "- Họ và tên: <Name>" followed optionally by "- Học hàm, học vị: <Title>"
+            p_hovaten = re.finditer(
+                r"(?:[-*•]\s*)?(?:họ\s+và\s+tên|cán\s+bộ)[:\s\n\-]+([A-ZÀ-ỴĐ][a-zà-ỵđ]+(?:\s+[A-ZÀ-ỴĐ][a-zà-ỵđ]+){1,4})"
+                r"(?:[^\n]*\n[^\n]*?(?:học\s+hàm[,\s]+học\s+vị|trình\s+độ)[:\s\n\-]+([^\n\.,]+))?",
                 text,
                 re.IGNORECASE,
             )
-            if m:
-                lecturer_name = m.group(1).strip()
-                return EvidenceStatus.VERIFIED_VALUE, lecturer_name
+            for m in p_hovaten:
+                name = m.group(1).strip()
+                title = m.group(2).strip() if m.group(2) else ""
+                if is_valid_name(name):
+                    found_lecturers.append(clean_title_and_name(name, title))
 
-            # Direct academic title matching with names
-            m_title = re.search(r"\b((?:TS\.?|ThS\.?|PGS\.?|GS\.?)\s+[A-ZÀ-Ỵ][a-zà-ỵ]+(?:\s+[A-ZÀ-Ỵ][a-zà-ỵ]+){1,4})\b", text)
-            if m_title and any(w in lower_text for w in ["giảng viên", "phụ trách", "thầy", "cô", "cán bộ"]):
-                return EvidenceStatus.VERIFIED_VALUE, m_title.group(1).strip()
+            # Pattern B: "- <Name>, <Title>"
+            p_name_title = re.finditer(
+                r"(?:[-*•]\s*)?([A-ZÀ-ỴĐ][a-zà-ỵđ]+(?:\s+[A-ZÀ-ỴĐ][a-zà-ỵđ]+){1,4})[,\s\-]+(Tiến\s+sĩ|Thạc\s+sĩ|TS\.?|ThS\.?|PGS\.?|GS\.?|Phó\s+Giáo\s+sư|Giáo\s+sư)\b",
+                text,
+            )
+            for m in p_name_title:
+                name = m.group(1).strip()
+                title = m.group(2).strip()
+                if is_valid_name(name):
+                    found_lecturers.append(clean_title_and_name(name, title))
+
+            # Pattern C: "<Title> <Name>"
+            p_title_name = re.finditer(
+                r"\b(Tiến\s+sĩ|Thạc\s+sĩ|TS\.?|ThS\.?|PGS\.?|GS\.?|Phó\s+Giáo\s+sư|Giáo\s+sư)\s+([A-ZÀ-ỴĐ][a-zà-ỵđ]+(?:\s+[A-ZÀ-ỴĐ][a-zà-ỵđ]+){1,4})\b",
+                text,
+            )
+            for m in p_title_name:
+                title = m.group(1).strip()
+                name = m.group(2).strip()
+                if is_valid_name(name):
+                    found_lecturers.append(clean_title_and_name(name, title))
+
+            # Pattern D: Under lecturer header: "Giảng viên phụ trách học phần:\n- <Name>"
+            p_under_header = re.finditer(
+                r"(?:giảng\s+viên\s+phụ\s+trách|giảng\s+viên\s+giảng\s+dạy|cán\s+bộ\s+giảng\s+dạy)[:\s\n\-]+(?:học\s+phần[:\s\n\-]*)?(?:[-*•]\s*)?([A-ZÀ-ỴĐ][a-zà-ỵđ]+(?:\s+[A-ZÀ-ỴĐ][a-zà-ỵđ]+){1,4})",
+                text,
+            )
+            for m in p_under_header:
+                name = m.group(1).strip()
+                if is_valid_name(name):
+                    found_lecturers.append(clean_title_and_name(name))
+
+            unique_lecturers = list(dict.fromkeys(found_lecturers))
+            if unique_lecturers:
+                return EvidenceStatus.VERIFIED_VALUE, ", ".join(unique_lecturers)
 
             return EvidenceStatus.INSUFFICIENT, None
 
@@ -304,11 +519,18 @@ class EvidenceVerifier:
 
         # 6. CLO / OBJECTIVES
         elif field in ("clo", "objectives"):
-            # Only accept actual CLO items with descriptive text
-            clos = re.findall(r"(CLO\s*\d+[:\s\n\-]+[^\n\.]+)", text, re.IGNORECASE)
-            valid_clos = [c.strip() for c in clos if len(c.strip().split()) >= 4]
-            if valid_clos:
-                return EvidenceStatus.VERIFIED_VALUE, "; ".join(valid_clos[:3])
+            clos = re.findall(r"(CLO\s*(\d+)[:\s\n\-]+[^\n]+)", text, re.IGNORECASE)
+            extracted_clos = {}
+            for full_clo, num_str in clos:
+                num = int(num_str)
+                clean_clo = full_clo.strip().rstrip(".,")
+                if len(clean_clo.split()) >= 3:
+                    if num not in extracted_clos or len(clean_clo) > len(extracted_clos[num]):
+                        extracted_clos[num] = clean_clo
+
+            if extracted_clos:
+                sorted_clos = [extracted_clos[k] for k in sorted(extracted_clos.keys())]
+                return EvidenceStatus.VERIFIED_VALUE, "; ".join(sorted_clos)
 
             if field == "objectives":
                 m_obj = re.search(r"(?:mục\s+tiêu[^\n\:]*[:\s\n\-]+)([^\n\.]+)", text, re.IGNORECASE)
@@ -415,26 +637,50 @@ class EvidenceVerifier:
             if not any(w in lower_text for w in ["tốt nghiệp", "xét tốt nghiệp", "công nhận tốt nghiệp"]):
                 return EvidenceStatus.INSUFFICIENT, None
             conditions = []
-            if re.search(r"tích\s+lũy\s+đủ[^\n\.;]{0,80}?(?:học\s+phần|tín\s+chỉ|khối\s+lượng)", lower_text):
-                m_tc = re.search(r"(tích\s+lũy\s+đủ[^\n\.;]{0,80}?(?:học\s+phần|tín\s+chỉ|khối\s+lượng)[^\n\.;]*)", text, re.IGNORECASE)
-                if m_tc:
-                    conditions.append(m_tc.group(1).strip())
-            if re.search(r"(?:chuẩn\s+đầu\s+ra|chuẩn\s+năng\s+lực|năng\s+lực)\s+(?:ngoại\s+ngữ|tin\s+học)", lower_text):
-                m_lang = re.search(r"((?:đạt\s+)?(?:chuẩn\s+năng\s+lực|chuẩn\s+đầu\s+ra|năng\s+lực)\s+(?:ngoại\s+ngữ|tin\s+học)[^\n\.;]*)", text, re.IGNORECASE)
-                if m_lang:
-                    conditions.append(m_lang.group(1).strip())
-            if re.search(r"chứng\s+chỉ\s+(?:giáo\s+dục\s+quốc\s+phòng|tin\s+học|tiếng\s+anh)", lower_text):
-                m_cert = re.search(r"((?:có\s+)?chứng\s+chỉ\s+[^\n\.;]*)", text, re.IGNORECASE)
-                if m_cert:
-                    conditions.append(m_cert.group(1).strip())
-            if re.search(r"điểm\s+trung\s+bình\s+tích\s+lũy[^\n\.;]{0,50}?(?:đạt|từ|>=|trung\s+bình)", lower_text):
-                m_gpa = re.search(r"(điểm\s+trung\s+bình\s+tích\s+lũy[^\n\.;]{0,60}?(?:đạt\s+từ|từ|>=|\d+[,\.]\d+)[^\n\.;]*)", text, re.IGNORECASE)
-                if m_gpa:
-                    conditions.append(m_gpa.group(1).strip())
+            # Ưu tiên trích xuất chính xác khối điều kiện xét tốt nghiệp (Khoản 2 Điều 33)
+            m_block = re.search(
+                r"(?:điều\s+kiện\s+sau|điều\s+kiện\s+tốt\s+nghiệp)[:\s\n]+((?:[a-h]\.[^\n]+\n?)+)",
+                text,
+                re.IGNORECASE,
+            )
+            if m_block:
+                items = re.findall(r"([a-h]\.\s*[^\n]+)", m_block.group(1))
+                for it in items:
+                    clean_it = it.strip().rstrip(";")
+                    if len(clean_it.split()) >= 4:
+                        conditions.append(clean_it)
+
+            if not conditions:
+                if any(k in lower_text for k in ["điều kiện", "công nhận tốt nghiệp", "xét tốt nghiệp"]):
+                    lettered_items = re.findall(r"([a-h]\.\s*[^\n]+)", text)
+                    for item in lettered_items:
+                        clean_item = item.strip().rstrip(";")
+                        if len(clean_item.split()) >= 4 and any(w in clean_item.lower() for w in ["tích lũy", "chuẩn đầu ra", "chứng chỉ", "điểm trung bình", "kỷ luật", "học phí", "đơn"]):
+                            conditions.append(clean_item)
+
+            if not conditions:
+                if re.search(r"tích\s+lũy\s+đủ[^\n\.;]{0,80}?(?:học\s+phần|tín\s+chỉ|khối\s+lượng)", lower_text):
+                    m_tc = re.search(r"(tích\s+lũy\s+đủ[^\n\.;]{0,80}?(?:học\s+phần|tín\s+chỉ|khối\s+lượng)[^\n\.;]*)", text, re.IGNORECASE)
+                    if m_tc:
+                        conditions.append(m_tc.group(1).strip())
+                if re.search(r"(?:chuẩn\s+đầu\s+ra|chuẩn\s+năng\s+lực|năng\s+lực)\s+(?:ngoại\s+ngữ|tin\s+học)", lower_text):
+                    m_lang = re.search(r"((?:đạt\s+)?(?:chuẩn\s+năng\s+lực|chuẩn\s+đầu\s+ra|năng\s+lực)\s+(?:ngoại\s+ngữ|tin\s+học)[^\n\.;]*)", text, re.IGNORECASE)
+                    if m_lang:
+                        conditions.append(m_lang.group(1).strip())
+                if re.search(r"chứng\s+chỉ\s+(?:giáo\s+dục\s+quốc\s+phòng|tin\s+học|tiếng\s+anh)", lower_text):
+                    m_cert = re.search(r"((?:có\s+)?chứng\s+chỉ\s+[^\n\.;]*)", text, re.IGNORECASE)
+                    if m_cert:
+                        conditions.append(m_cert.group(1).strip())
+                if re.search(r"điểm\s+trung\s+bình\s+tích\s+lũy[^\n\.;]{0,50}?(?:đạt|từ|>=|trung\s+bình)", lower_text):
+                    m_gpa = re.search(r"(điểm\s+trung\s+bình\s+tích\s+lũy[^\n\.;]{0,60}?(?:đạt\s+từ|từ|>=|\d+[,\.]\d+)[^\n\.;]*)", text, re.IGNORECASE)
+                    if m_gpa:
+                        conditions.append(m_gpa.group(1).strip())
+
             if not conditions:
                 m_full = re.search(r"(sinh\s+viên\s+được\s+(?:xét\s+và\s+)?công\s+nhận\s+tốt\s+nghiệp[^\.\n]*?(?:khi\s+có\s+đủ|điều\s+kiện)[^\.\n]*)", text, re.IGNORECASE)
                 if m_full and any(k in lower_text for k in ["tích lũy", "chuẩn đầu ra", "chứng chỉ", "điểm trung bình"]):
                     conditions.append(m_full.group(1).strip())
+
             if conditions:
                 return EvidenceStatus.VERIFIED_VALUE, f"Điều kiện tốt nghiệp: {'; '.join(dict.fromkeys(conditions))}"
             return EvidenceStatus.INSUFFICIENT, None
