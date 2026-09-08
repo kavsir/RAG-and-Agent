@@ -57,6 +57,7 @@ class AgentLoop:
         personal_context: Optional[Dict[str, Any]] = None,
         router_hint: Optional[Dict[str, Any]] = None,
         goal_id: Optional[str] = None,
+        event_sink: Optional[Any] = None,
     ) -> AgentGoalState:
         """Thực thi một chu trình hoàn chỉnh từ câu hỏi ban đầu của người dùng."""
         gid = goal_id or f"goal-{uuid.uuid4().hex[:8]}"
@@ -64,6 +65,9 @@ class AgentLoop:
         # =====================================================================
         # 1. UNDERSTAND: Phân tích mục tiêu thực sự của người dùng
         # =====================================================================
+        if event_sink:
+            event_sink.emit_phase("UNDERSTAND", "Đang hiểu yêu cầu của bạn...")
+
         goal_spec = self.goal_analyzer.analyze(
             query=query,
             session_context=session_context,
@@ -96,6 +100,7 @@ class AgentLoop:
             session_context=session_context,
             personal_context=personal_context,
             router_hint=router_hint,
+            event_sink=event_sink,
         )
 
     def _execute_loop(
@@ -104,12 +109,15 @@ class AgentLoop:
         session_context: Optional[Dict[str, Any]] = None,
         personal_context: Optional[Dict[str, Any]] = None,
         router_hint: Optional[Dict[str, Any]] = None,
+        event_sink: Optional[Any] = None,
     ) -> AgentGoalState:
         """Vòng lặp có chặn (Bounded Loop) tuân thủ 3 cơ chế chống lặp."""
         while state.iteration < self.MAX_TOTAL_ITERATIONS:
             state.iteration += 1
 
             # 2.1 OBSERVE: Quan sát môi trường
+            if event_sink:
+                event_sink.emit_phase("OBSERVE", "Đang kiểm tra ngữ cảnh và dữ liệu...")
             self.observer.observe(
                 current_input=state.current_user_input,
                 state=state,
@@ -119,6 +127,8 @@ class AgentLoop:
             )
 
             # 2.2 PLAN: Lập kế hoạch hành động tiếp theo
+            if event_sink:
+                event_sink.emit_phase("PLAN", "Đang xác định cách xử lý phù hợp...")
             plan = self.planner.plan_next_action(state)
             state.planned_action = plan
 
@@ -150,7 +160,17 @@ class AgentLoop:
             state.attempted_actions.append(plan.fingerprint)
 
             # 2.4 ACT: Thực thi hành động
-            obs_action = self.executor.execute(plan, state)
+            if event_sink:
+                act_label = "Đang tìm thông tin học vụ..."
+                if plan.entity and plan.entity not in ("DNTU", "general"):
+                    act_label = f"Đang tra cứu {plan.entity}..."
+                elif plan.requested_field:
+                    from src.agent_core.actions import FIELD_NAMES_VN
+                    f_vn = FIELD_NAMES_VN.get(plan.requested_field, plan.requested_field)
+                    act_label = f"Đang tra cứu thông tin {f_vn}..."
+                event_sink.emit_phase("ACT", act_label)
+
+            obs_action = self.executor.execute(plan, state, event_sink=event_sink)
             state.action_history.append(obs_action)
 
             # 2.5 KIỂM TRA TIẾN TRÌNH (NO-PROGRESS DETECTION)
@@ -198,6 +218,9 @@ class AgentLoop:
             state.stop_reason = StopReason.MAX_ITERATIONS
             state.final_answer = "Đã đạt giới hạn số vòng lặp tối đa mà không thể thu thập đủ bằng chứng."
 
+        if event_sink and state.status not in (AgentStatus.NEEDS_USER_INPUT, AgentStatus.ABSTAINED):
+            event_sink.emit_phase("PREPARE_ANSWER", "Đang chuẩn bị câu trả lời...")
+
         return state
 
     def resume_with_user_response(
@@ -205,6 +228,7 @@ class AgentLoop:
         state: AgentGoalState,
         user_response: str,
         session_context: Optional[Dict[str, Any]] = None,
+        event_sink: Optional[Any] = None,
     ) -> AgentGoalState:
         """
         Khôi phục vòng lặp tác tử khi nhận được câu trả lời từ người dùng (Human-in-the-loop).
@@ -215,6 +239,9 @@ class AgentLoop:
         state.current_user_input = raw_resp
         state.status = AgentStatus.REPLANNING
         state.clarification_required = False
+
+        if event_sink:
+            event_sink.emit_phase("UNDERSTAND", "Đang hiểu phản hồi làm rõ của bạn...")
 
         # TH1: Xử lý phản hồi đề xuất giải pháp thay thế (USER-APPROVED ALTERNATIVE)
         if state.clarification_type == QuestionType.MISSING_DATA_ALTERNATIVE:
@@ -243,7 +270,7 @@ class AgentLoop:
                 state.missing_information = []
                 if GoalType.COMPARE_COURSES not in state.objectives:
                     state.objectives.append(GoalType.COMPARE_COURSES)
-                return self._execute_loop(state, session_context=session_context)
+                return self._execute_loop(state, session_context=session_context, event_sink=event_sink)
             else:
                 state.alternative_authorized = False
                 state.status = AgentStatus.ABSTAINED
@@ -285,7 +312,7 @@ class AgentLoop:
                 )
             ]
             state.missing_information = []
-            return self._execute_loop(state, session_context=session_context)
+            return self._execute_loop(state, session_context=session_context, event_sink=event_sink)
 
         # TH3: Xử lý bổ sung thực thể bị thiếu (MISSING ENTITY)
         if state.clarification_type == QuestionType.MISSING_ENTITY:
@@ -308,7 +335,7 @@ class AgentLoop:
                             )
                         )
                 state.missing_information = []
-                return self._execute_loop(state, session_context=session_context)
+                return self._execute_loop(state, session_context=session_context, event_sink=event_sink)
             else:
                 state.final_answer = "Không nhận diện được mã môn học trong phản hồi của bạn. Vui lòng thử lại."
                 state.status = AgentStatus.NEEDS_USER_INPUT
@@ -348,10 +375,10 @@ class AgentLoop:
                         )
                         state.requirements.append(req)
             state.missing_information = []
-            return self._execute_loop(state, session_context=session_context)
+            return self._execute_loop(state, session_context=session_context, event_sink=event_sink)
 
         # Mặc định tiếp tục vòng lặp
-        return self._execute_loop(state, session_context=session_context)
+        return self._execute_loop(state, session_context=session_context, event_sink=event_sink)
 
 
 # Singleton Instance

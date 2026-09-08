@@ -38,12 +38,15 @@ class AgentCoreService:
         personal_context: Optional[Dict[str, Any]] = None,
         router_hint: Optional[Dict[str, Any]] = None,
         goal_id: Optional[str] = None,
+        event_sink: Optional[Any] = None,
     ) -> AgentGoalState:
         """
         Process a user query through the Agent Core execution loop.
         Persists active goals awaiting user input to SQLite.
         """
         gid = goal_id or f"goal-{uuid.uuid4().hex[:8]}"
+        if event_sink and hasattr(event_sink, "set_goal_id"):
+            event_sink.set_goal_id(gid)
 
         result = self.loop.run(
             query=query,
@@ -51,6 +54,7 @@ class AgentCoreService:
             personal_context=personal_context,
             router_hint=router_hint,
             goal_id=gid,
+            event_sink=event_sink,
         )
         result.user_id = user_id
         result.conversation_id = conversation_id
@@ -66,6 +70,7 @@ class AgentCoreService:
         user_response: str,
         goal_id: Optional[str] = None,
         session_context: Optional[Dict[str, Any]] = None,
+        event_sink: Optional[Any] = None,
     ) -> AgentGoalState:
         """
         Resume an existing goal paused for user clarification or proposal confirmation.
@@ -89,10 +94,14 @@ class AgentCoreService:
                     final_answer="Không tìm thấy mục tiêu đang chờ làm rõ trong phiên hội thoại này.",
                 )
 
+        if event_sink and hasattr(event_sink, "set_goal_id") and state:
+            event_sink.set_goal_id(state.goal_id)
+
         result = self.loop.resume_with_user_response(
             state=state,
             user_response=user_response,
             session_context=session_context,
+            event_sink=event_sink,
         )
         result.user_id = user_id
         result.conversation_id = conversation_id

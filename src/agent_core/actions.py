@@ -12,7 +12,7 @@ Executes atomic, verifiable, and idempotent actions:
 Reuses existing RAG infrastructure with 0 second-retrieval architectures and 0 external LLM calls.
 """
 import re
-from typing import Optional
+from typing import Optional, Any
 
 from src.agent_core.schemas import (
     ActionPlan,
@@ -103,26 +103,26 @@ class ActionExecutor:
         self.env_catalog = env_catalog or get_knowledge_environment_catalog()
         self.verifier = verifier or get_evidence_verifier()
 
-    def execute(self, plan: ActionPlan, state: AgentGoalState) -> ActionObservation:
+    def execute(self, plan: ActionPlan, state: AgentGoalState, event_sink: Optional[Any] = None) -> ActionObservation:
         """Thực thi một kế hoạch hành động đã được lập."""
         a_type = plan.action_type
 
         if a_type == ActionType.CATALOG_LOOKUP:
-            return self._execute_catalog_lookup(plan, state)
+            return self._execute_catalog_lookup(plan, state, event_sink=event_sink)
         elif a_type == ActionType.RETRIEVE_EXACT:
-            return self._execute_exact_retrieval(plan, state)
+            return self._execute_exact_retrieval(plan, state, event_sink=event_sink)
         elif a_type == ActionType.RETRIEVE_EXPANDED:
-            return self._execute_expanded_retrieval(plan, state)
+            return self._execute_expanded_retrieval(plan, state, event_sink=event_sink)
         elif a_type == ActionType.COMPARE_EVIDENCE:
-            return self._execute_compare_evidence(plan, state)
+            return self._execute_compare_evidence(plan, state, event_sink=event_sink)
         elif a_type == ActionType.ASK_USER:
-            return self._execute_ask_user(plan, state)
+            return self._execute_ask_user(plan, state, event_sink=event_sink)
         elif a_type == ActionType.PARTIAL_ANSWER:
-            return self._execute_partial_answer(plan, state)
+            return self._execute_partial_answer(plan, state, event_sink=event_sink)
         elif a_type == ActionType.ABSTAIN:
-            return self._execute_abstain(plan, state)
+            return self._execute_abstain(plan, state, event_sink=event_sink)
         elif a_type == ActionType.FINISH:
-            return self._execute_finish(plan, state)
+            return self._execute_finish(plan, state, event_sink=event_sink)
         else:
             return ActionObservation(
                 action_id=plan.action_id,
@@ -131,7 +131,7 @@ class ActionExecutor:
                 message=f"Hành động chưa được hỗ trợ: {a_type}",
             )
 
-    def _execute_catalog_lookup(self, plan: ActionPlan, state: AgentGoalState) -> ActionObservation:
+    def _execute_catalog_lookup(self, plan: ActionPlan, state: AgentGoalState, event_sink: Optional[Any] = None) -> ActionObservation:
         """Tra cứu nhanh danh mục chính thống từ metadata/manifests có nguồn gốc provenance."""
         target_req = next(
             (r for r in state.requirements if r.entity == plan.entity and r.field == plan.requested_field),
@@ -147,6 +147,9 @@ class ActionExecutor:
                 success=False,
                 message="Không tìm thấy requirement mục tiêu.",
             )
+
+        if event_sink:
+            event_sink.emit_phase("VERIFY", "Đang xác minh bằng chứng...")
 
         status, item = self.verifier.verify_requirement(target_req, [], retrieval_strategy="catalog")
         target_req.status = status
@@ -173,7 +176,7 @@ class ActionExecutor:
             message=f"Catalog lookup không thỏa mãn {target_req.requirement_key}",
         )
 
-    def _execute_exact_retrieval(self, plan: ActionPlan, state: AgentGoalState) -> ActionObservation:
+    def _execute_exact_retrieval(self, plan: ActionPlan, state: AgentGoalState, event_sink: Optional[Any] = None) -> ActionObservation:
         """Truy xuất chính xác qua RAG sử dụng metadata filtering theo course_code và document_type."""
         target_req = next(
             (r for r in state.requirements if r.entity == plan.entity and r.field == plan.requested_field),
@@ -246,6 +249,9 @@ class ActionExecutor:
             except Exception:
                 pass
 
+        if event_sink:
+            event_sink.emit_phase("VERIFY", "Đang xác minh bằng chứng...")
+
         status, item = self.verifier.verify_requirement(target_req, matching_docs, retrieval_strategy="exact")
         target_req.status = status
         target_req.attempt_count += 1
@@ -275,7 +281,7 @@ class ActionExecutor:
                 message=f"Exact retrieval không tìm thấy thông tin hợp lệ cho {target_req.requirement_key}",
             )
 
-    def _execute_expanded_retrieval(self, plan: ActionPlan, state: AgentGoalState) -> ActionObservation:
+    def _execute_expanded_retrieval(self, plan: ActionPlan, state: AgentGoalState, event_sink: Optional[Any] = None) -> ActionObservation:
         """Truy xuất mở rộng qua Hybrid Search (dense + BM25 + RRF) khi exact retrieval không tìm thấy, bảo vệ nghiêm ngặt không chéo thực thể."""
         target_req = next(
             (r for r in state.requirements if r.entity == plan.entity and r.field == plan.requested_field),
@@ -318,6 +324,9 @@ class ActionExecutor:
             except Exception:
                 pass
 
+        if event_sink:
+            event_sink.emit_phase("VERIFY", "Đang xác minh bằng chứng...")
+
         status, item = self.verifier.verify_requirement(target_req, matching_docs, retrieval_strategy="expanded")
         target_req.status = status
         target_req.attempt_count += 1
@@ -347,7 +356,7 @@ class ActionExecutor:
                 message=f"Expanded retrieval không tìm thấy thông tin hợp lệ cho {target_req.requirement_key}",
             )
 
-    def _execute_compare_evidence(self, plan: ActionPlan, state: AgentGoalState) -> ActionObservation:
+    def _execute_compare_evidence(self, plan: ActionPlan, state: AgentGoalState, event_sink: Optional[Any] = None) -> ActionObservation:
         """Tổng hợp so sánh đa thực thể dựa trên các bằng chứng đã thẩm định."""
         valid_statuses = (EvidenceStatus.SATISFIED, EvidenceStatus.VERIFIED_VALUE, EvidenceStatus.VERIFIED_NONE)
         fields = list(set(r.field for r in state.requirements if r.status in valid_statuses))
@@ -372,7 +381,7 @@ class ActionExecutor:
             message="Đã tổng hợp bảng so sánh đa thực thể thành công.",
         )
 
-    def _execute_ask_user(self, plan: ActionPlan, state: AgentGoalState) -> ActionObservation:
+    def _execute_ask_user(self, plan: ActionPlan, state: AgentGoalState, event_sink: Optional[Any] = None) -> ActionObservation:
         """Đưa Agent vào trạng thái tương tác để thu thập thêm thông tin từ người dùng."""
         payload = plan.ask_user_payload or {}
         state.status = AgentStatus.NEEDS_USER_INPUT
@@ -397,7 +406,7 @@ class ActionExecutor:
             message=f"Đã gửi yêu cầu làm rõ đến người dùng: {state.clarification_question}",
         )
 
-    def _execute_partial_answer(self, plan: ActionPlan, state: AgentGoalState) -> ActionObservation:
+    def _execute_partial_answer(self, plan: ActionPlan, state: AgentGoalState, event_sink: Optional[Any] = None) -> ActionObservation:
         """Sinh câu trả lời từng phần: nêu rõ phần đã xác minh và phần dữ liệu chưa có."""
         valid_statuses = (EvidenceStatus.SATISFIED, EvidenceStatus.VERIFIED_VALUE, EvidenceStatus.VERIFIED_NONE)
         sat_reqs = [r for r in state.requirements if r.status in valid_statuses]
@@ -425,7 +434,7 @@ class ActionExecutor:
             message="Đã sinh câu trả lời từng phần (Partial Answer).",
         )
 
-    def _execute_abstain(self, plan: ActionPlan, state: AgentGoalState) -> ActionObservation:
+    def _execute_abstain(self, plan: ActionPlan, state: AgentGoalState, event_sink: Optional[Any] = None) -> ActionObservation:
         """Từ chối trả lời an toàn khi gặp mã môn không tồn tại hoặc dữ liệu ngoài phạm vi."""
         reason = plan.reason_code
         state.status = AgentStatus.ABSTAINED
@@ -456,7 +465,7 @@ class ActionExecutor:
             message=f"Đã từ chối an toàn: {state.final_answer}",
         )
 
-    def _execute_finish(self, plan: ActionPlan, state: AgentGoalState) -> ActionObservation:
+    def _execute_finish(self, plan: ActionPlan, state: AgentGoalState, event_sink: Optional[Any] = None) -> ActionObservation:
         """Hoàn tất mục tiêu và kết xuất câu trả lời đầy đủ kèm nguồn thẩm định."""
         valid_statuses = (EvidenceStatus.SATISFIED, EvidenceStatus.VERIFIED_VALUE, EvidenceStatus.VERIFIED_NONE)
         lines = []

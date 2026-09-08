@@ -428,3 +428,183 @@ body {
   text-align: center;
   margin-top: 8px;
 }
+
+/* ==========================================================================
+   Streaming & Visible Thinking UX Styles
+   ========================================================================== */
+
+.thinking-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  font-size: 13px;
+  transition: all 0.2s ease;
+}
+
+.thinking-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  cursor: default;
+}
+
+.thinking-title-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: #1e3a8a;
+}
+
+.thinking-sparkle {
+  color: #3b82f6;
+  display: inline-block;
+  animation: pulse-sparkle 1.8s infinite ease-in-out;
+}
+
+@keyframes pulse-sparkle {
+  0%, 100% { opacity: 0.6; transform: scale(0.95); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+
+.thinking-timer {
+  font-size: 11px;
+  color: #64748b;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  background: #f1f5f9;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.thinking-toggle {
+  background: transparent;
+  border: none;
+  color: #2563eb;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.thinking-toggle:hover {
+  background: #eff6ff;
+  text-decoration: underline;
+}
+
+.thinking-body {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px dashed #e2e8f0;
+}
+
+.thinking-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.timeline-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #475569;
+  transition: color 0.2s;
+}
+
+.timeline-item.done {
+  color: #166534;
+}
+
+.timeline-item.active {
+  color: #1d4ed8;
+  font-weight: 500;
+}
+
+.timeline-item.pending {
+  color: #94a3b8;
+}
+
+.step-icon {
+  width: 16px;
+  height: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.timeline-item.active .step-icon {
+  display: inline-block;
+  animation: spin 1.2s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Answer text area inside bubble */
+.answer-content {
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Streaming cursor */
+.typing-cursor {
+  display: inline-block;
+  width: 7px;
+  height: 14px;
+  background-color: #2563eb;
+  margin-left: 2px;
+  vertical-align: middle;
+  animation: blink 0.8s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Stop button */
+.btn-send.btn-stop {
+  background-color: #ef4444;
+}
+
+.btn-send.btn-stop:hover {
+  background-color: #dc2626;
+}
+
+/* Clarification choices */
+.clarification-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.clarification-chip {
+  background-color: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1d4ed8;
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.clarification-chip:hover {
+  background-color: #dbeafe;
+  border-color: #3b82f6;
+}
+
