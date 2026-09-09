@@ -72,6 +72,7 @@ class SemanticGoalInterpreter:
         query: str,
         session_context: Optional[Dict[str, Any]] = None,
         utterance_semantics: Optional[Dict[str, Any]] = None,
+        profile_context: Optional[Dict[str, Any]] = None,
     ) -> GoalFrame:
         """
         Thực thi toàn bộ 8 bước của pipeline UNDERSTAND để sinh ra GoalFrame có kiểu.
@@ -110,8 +111,7 @@ class SemanticGoalInterpreter:
         has_pronoun = any(re.search(pat, clean_lower) for pat in pronoun_patterns)
 
         previous_entity_cues = [
-            r"\bmôn\s+(đó|kia|ấy|vừa\s+rồi|vừa\s+nói|trước|vừa\s+nêu)\b",
-            r"\bhọc\s+phần\s+(đó|kia|ấy|trước|vừa\s+rồi|vừa\s+nói)\b",
+            r"\b(môn\s+(đó|kia|ấy|vừa\s+nói|vừa\s+hỏi|trên))\b",
             r"\bcái\s+(đó|kia)\b",
         ]
         has_previous_entity_cue = any(re.search(pat, clean_lower) for pat in previous_entity_cues)
@@ -126,7 +126,7 @@ class SemanticGoalInterpreter:
 
         # 3.0 Nhận diện tín hiệu đối tượng học vụ có kiểu (Round A1: Curriculum, Cohort, Major, Semester, Regulation)
         clean_unaccented = strip_accents(clean_lower)
-        profile_data = (session_context.get("personal_context") if session_context else None) or StudentMemory().get_profile()
+        profile_data = profile_context or (session_context.get("personal_context") if session_context else None) or StudentMemory().get_profile()
 
         is_curriculum_phrase = bool(
             re.search(r"\b(chương trình đào tạo|ctđt|ctdt|khung chương trình|chương trình học|lộ trình học)\b", clean_lower)
@@ -173,7 +173,7 @@ class SemanticGoalInterpreter:
         is_curriculum_query = (
             is_curriculum_phrase
             or (has_cohort_in_query and (any(w in clean_lower for w in cohort_cues) or any(w in clean_unaccented for w in cohort_cues)))
-            or (has_semester_in_query and (any(w in clean_lower for w in semester_cues) or any(w in clean_unaccented for w in semester_cues)))
+            or (has_semester_in_query and (session_last_intent == GoalIntent.CURRICULUM_OVERVIEW.value or any(w in clean_lower for w in ["thì sao", "còn", "học"]) or any(w in clean_lower for w in semester_cues) or any(w in clean_unaccented for w in semester_cues)))
             or has_course_placement_cue
             or (has_total_credits_cue and (is_curriculum_phrase or has_cohort_in_query or "chương trình" in clean_lower or "ngành" in clean_lower or session_last_intent == GoalIntent.CURRICULUM_OVERVIEW.value))
             or (has_explicit_major and (has_major_cues or session_last_intent == GoalIntent.CURRICULUM_OVERVIEW.value or is_curriculum_phrase or any(w in clean_lower for w in ["học", "chương trình", "môn", "kế hoạch", "tín chỉ", "những gì", "thì sao"])))

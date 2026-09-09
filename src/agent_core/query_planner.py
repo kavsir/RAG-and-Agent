@@ -101,11 +101,12 @@ class AcademicQueryPlanner:
         self,
         goal_frame: GoalFrame,
         student_profile: Optional[Dict[str, Any]] = None,
+        profile_context: Optional[Dict[str, Any]] = None,
     ) -> AcademicQueryPlan:
         """
         Tạo kế hoạch truy vấn tri thức học vụ từ GoalFrame.
         """
-        profile = student_profile or {}
+        profile = profile_context or student_profile or {}
         default_cohort = profile.get("cohort", "K19")
         default_major = profile.get("major", "Khoa học máy tính")
 

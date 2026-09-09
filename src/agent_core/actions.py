@@ -182,7 +182,7 @@ class ActionExecutor:
                 source_file=prov.get("source_file"),
                 section=prov.get("source_section"),
                 chunk_id=prov.get("source_chunk_id"),
-                metadata={"data": res["data"], "operation": res["operation"], "provenance": prov},
+                metadata={"data": res["data"], "operation": res["operation"], "provenance": prov, "source_hash": prov.get("source_hash")},
                 is_authoritative=True,
                 status=EvidenceStatus.VERIFIED_VALUE,
                 relevance_score=1.0,
