@@ -1,0 +1,300 @@
+[
+  {
+    "id": "holdout_01",
+    "query": "môn nhúng có gì hay?",
+    "expected_intent": "COURSE_OVERVIEW",
+    "expected_entities": [
+      "FIT4201"
+    ],
+    "expected_scope": "SUMMARY"
+  },
+  {
+    "id": "holdout_02",
+    "query": "kể sơ môn cloud xem",
+    "expected_intent": "COURSE_OVERVIEW",
+    "expected_entities": [
+      "FIT4113"
+    ],
+    "expected_scope": "SUMMARY"
+  },
+  {
+    "id": "holdout_03",
+    "query": "môn vừa nói ai dạy vậy",
+    "context": {
+      "last_academic_entity": "FIT4201",
+      "last_intent": "COURSE_OVERVIEW"
+    },
+    "expected_intent": "COURSE_FIELD_LOOKUP",
+    "expected_entities": [
+      "FIT4201"
+    ],
+    "expected_fields": [
+      "lecturer"
+    ],
+    "expected_referents": [
+      "PREVIOUS_ENTITY"
+    ]
+  },
+  {
+    "id": "holdout_04",
+    "query": "đầu ra môn đó thế nào",
+    "context": {
+      "last_academic_entity": "FIT4113",
+      "last_intent": "COURSE_OVERVIEW"
+    },
+    "expected_intent": "COURSE_FIELD_LOOKUP",
+    "expected_entities": [
+      "FIT4113"
+    ],
+    "expected_fields": [
+      "clo"
+    ],
+    "expected_referents": [
+      "PREVIOUS_ENTITY"
+    ]
+  },
+  {
+    "id": "holdout_05",
+    "query": "cái này có làm lab nhiều không",
+    "context": {
+      "last_academic_entity": "FIT4201",
+      "last_intent": "COURSE_OVERVIEW"
+    },
+    "expected_intent": "COURSE_FIELD_LOOKUP",
+    "expected_entities": [
+      "FIT4201"
+    ],
+    "expected_fields": [
+      "hours"
+    ],
+    "expected_constraints": [
+      "PRACTICAL_WORKLOAD"
+    ],
+    "expected_referents": [
+      "PRONOUN"
+    ]
+  },
+  {
+    "id": "holdout_06",
+    "query": "học phần trước thi kiểu nào",
+    "context": {
+      "last_academic_entity": "FIT4117",
+      "last_intent": "COURSE_OVERVIEW"
+    },
+    "expected_intent": "COURSE_FIELD_LOOKUP",
+    "expected_entities": [
+      "FIT4117"
+    ],
+    "expected_fields": [
+      "assessment"
+    ],
+    "expected_referents": [
+      "PREVIOUS_ENTITY"
+    ]
+  },
+  {
+    "id": "holdout_07",
+    "query": "môn kia còn bao nhiêu tín",
+    "context": {
+      "last_academic_entity": "FIT4104",
+      "last_intent": "COURSE_OVERVIEW"
+    },
+    "expected_intent": "COURSE_FIELD_LOOKUP",
+    "expected_entities": [
+      "FIT4104"
+    ],
+    "expected_fields": [
+      "credits"
+    ],
+    "expected_referents": [
+      "PREVIOUS_ENTITY"
+    ]
+  },
+  {
+    "id": "holdout_08",
+    "query": "cho xem hết thông tin môn vừa rồi",
+    "context": {
+      "last_academic_entity": "FIT4201",
+      "last_intent": "COURSE_FIELD_LOOKUP"
+    },
+    "expected_intent": "COURSE_FULL_DETAILS",
+    "expected_entities": [
+      "FIT4201"
+    ],
+    "expected_scope": "ALL_AVAILABLE",
+    "expected_referents": [
+      "PREVIOUS_ENTITY"
+    ]
+  },
+  {
+    "id": "holdout_09",
+    "query": "nó cần học môn nào trước không",
+    "context": {
+      "last_academic_entity": "FIT4113",
+      "last_intent": "COURSE_OVERVIEW"
+    },
+    "expected_intent": "COURSE_FIELD_LOOKUP",
+    "expected_entities": [
+      "FIT4113"
+    ],
+    "expected_fields": [
+      "prerequisites"
+    ],
+    "expected_referents": [
+      "PRONOUN"
+    ]
+  },
+  {
+    "id": "holdout_10",
+    "query": "cloud với nhúng môn nào phải thực hành nhiều hơn",
+    "expected_intent": "COURSE_COMPARISON",
+    "expected_entities": [
+      "FIT4113",
+      "FIT4201"
+    ],
+    "expected_fields": [
+      "hours"
+    ],
+    "expected_constraints": [
+      "PRACTICAL_COMPONENT"
+    ],
+    "expected_comparison": "GREATER_THAN"
+  },
+  {
+    "id": "holdout_11",
+    "query": "trong CLO cloud cái nào có AWS",
+    "expected_intent": "COURSE_FIELD_LOOKUP",
+    "expected_entities": [
+      "FIT4113"
+    ],
+    "expected_fields": [
+      "clo"
+    ],
+    "expected_constraints": [
+      "CONTAINS_CONCEPT(\"AWS\")"
+    ],
+    "expected_scope": "FILTERED_SET",
+    "expected_aggregation": "LIST"
+  },
+  {
+    "id": "holdout_12",
+    "query": "đếm giúp mình mấy CLO nói về AWS",
+    "context": {
+      "last_academic_entity": "FIT4113",
+      "last_intent": "COURSE_FIELD_LOOKUP",
+      "last_fields": [
+        "clo"
+      ]
+    },
+    "expected_intent": "COURSE_FIELD_LOOKUP",
+    "expected_entities": [
+      "FIT4113"
+    ],
+    "expected_fields": [
+      "clo"
+    ],
+    "expected_constraints": [
+      "CONTAINS_CONCEPT(\"AWS\")"
+    ],
+    "expected_scope": "FILTERED_SET",
+    "expected_aggregation": "COUNT"
+  },
+  {
+    "id": "holdout_13",
+    "query": "mon nhung hoc gi vay",
+    "expected_intent": "COURSE_OVERVIEW",
+    "expected_entities": [
+      "FIT4201"
+    ],
+    "expected_scope": "SUMMARY"
+  },
+  {
+    "id": "holdout_14",
+    "query": "ai dung lop FIT4201",
+    "expected_intent": "COURSE_FIELD_LOOKUP",
+    "expected_entities": [
+      "FIT4201"
+    ],
+    "expected_fields": [
+      "lecturer"
+    ]
+  },
+  {
+    "id": "holdout_15",
+    "query": "FIT4113 may tin chi",
+    "expected_intent": "COURSE_FIELD_LOOKUP",
+    "expected_entities": [
+      "FIT4113"
+    ],
+    "expected_fields": [
+      "credits"
+    ]
+  },
+  {
+    "id": "holdout_16",
+    "query": "mon nay co kho qua khong?",
+    "context": {
+      "last_academic_entity": "FIT4201",
+      "last_intent": "COURSE_OVERVIEW"
+    },
+    "expected_intent": "COURSE_FIELD_LOOKUP",
+    "expected_entities": [
+      "FIT4201"
+    ],
+    "expected_missing_slots": [
+      "data"
+    ]
+  },
+  {
+    "id": "holdout_17",
+    "query": "hoc phan cloud co nhieu gio thuc hanh khong",
+    "expected_intent": "COURSE_FIELD_LOOKUP",
+    "expected_entities": [
+      "FIT4113"
+    ],
+    "expected_fields": [
+      "hours"
+    ],
+    "expected_constraints": [
+      "PRACTICAL_WORKLOAD"
+    ]
+  },
+  {
+    "id": "holdout_18",
+    "query": "kể sơ qua môn fullstack coi",
+    "expected_intent": "COURSE_OVERVIEW",
+    "expected_entities": [
+      "FIT4104"
+    ],
+    "expected_scope": "SUMMARY"
+  },
+  {
+    "id": "holdout_19",
+    "query": "thầy nào phụ trách môn quản trị dự án vậy ad",
+    "expected_intent": "COURSE_FIELD_LOOKUP",
+    "expected_entities": [
+      "FIT4117"
+    ],
+    "expected_fields": [
+      "lecturer"
+    ]
+  },
+  {
+    "id": "holdout_20",
+    "query": "môn này thi trắc nghiệm hay tự luận?",
+    "context": {
+      "last_academic_entity": "FIT4113",
+      "last_intent": "COURSE_OVERVIEW"
+    },
+    "expected_intent": "COURSE_FIELD_LOOKUP",
+    "expected_entities": [
+      "FIT4113"
+    ],
+    "expected_fields": [
+      "assessment"
+    ],
+    "expected_referents": [
+      "PRONOUN"
+    ]
+  }
+]

@@ -1,0 +1,281 @@
+[
+  {
+    "id": "seen_01",
+    "query": "cho mình biết về môn FIT4201",
+    "expected_intent": "COURSE_OVERVIEW",
+    "expected_entities": [
+      "FIT4201"
+    ],
+    "expected_scope": "SUMMARY"
+  },
+  {
+    "id": "seen_02",
+    "query": "giới thiệu giúp mình môn học FIT4113",
+    "expected_intent": "COURSE_OVERVIEW",
+    "expected_entities": [
+      "FIT4113"
+    ],
+    "expected_scope": "SUMMARY"
+  },
+  {
+    "id": "seen_03",
+    "query": "môn hệ thống nhúng học những gì vậy?",
+    "expected_intent": "COURSE_OVERVIEW",
+    "expected_entities": [
+      "FIT4201"
+    ],
+    "expected_scope": "SUMMARY"
+  },
+  {
+    "id": "seen_04",
+    "query": "thông tin tổng quan học phần FIT4104",
+    "expected_intent": "COURSE_OVERVIEW",
+    "expected_entities": [
+      "FIT4104"
+    ],
+    "expected_scope": "SUMMARY"
+  },
+  {
+    "id": "seen_05",
+    "query": "cho mình xem tổng quan môn FIT4117",
+    "expected_intent": "COURSE_OVERVIEW",
+    "expected_entities": [
+      "FIT4117"
+    ],
+    "expected_scope": "SUMMARY"
+  },
+  {
+    "id": "seen_06",
+    "query": "chi tiết tổng thể môn FIT4201",
+    "expected_intent": "COURSE_FULL_DETAILS",
+    "expected_entities": [
+      "FIT4201"
+    ],
+    "expected_scope": "ALL_AVAILABLE"
+  },
+  {
+    "id": "seen_07",
+    "query": "tất cả thông tin về môn FIT4113",
+    "expected_intent": "COURSE_FULL_DETAILS",
+    "expected_entities": [
+      "FIT4113"
+    ],
+    "expected_scope": "ALL_AVAILABLE"
+  },
+  {
+    "id": "seen_08",
+    "query": "cho mình biết hết về học phần FIT4104",
+    "expected_intent": "COURSE_FULL_DETAILS",
+    "expected_entities": [
+      "FIT4104"
+    ],
+    "expected_scope": "ALL_AVAILABLE"
+  },
+  {
+    "id": "seen_09",
+    "query": "toàn bộ chi tiết học phần FIT4117",
+    "expected_intent": "COURSE_FULL_DETAILS",
+    "expected_entities": [
+      "FIT4117"
+    ],
+    "expected_scope": "ALL_AVAILABLE"
+  },
+  {
+    "id": "seen_10",
+    "query": "FIT4201 có bao nhiêu tín chỉ?",
+    "expected_intent": "COURSE_FIELD_LOOKUP",
+    "expected_entities": [
+      "FIT4201"
+    ],
+    "expected_fields": [
+      "credits"
+    ],
+    "expected_scope": "SINGLE_FIELD"
+  },
+  {
+    "id": "seen_11",
+    "query": "ai dạy môn FIT4113?",
+    "expected_intent": "COURSE_FIELD_LOOKUP",
+    "expected_entities": [
+      "FIT4113"
+    ],
+    "expected_fields": [
+      "lecturer"
+    ],
+    "expected_scope": "SINGLE_FIELD"
+  },
+  {
+    "id": "seen_12",
+    "query": "email của giảng viên dạy FIT4201 là gì?",
+    "expected_intent": "COURSE_FIELD_LOOKUP",
+    "expected_entities": [
+      "FIT4201"
+    ],
+    "expected_fields": [
+      "lecturer_email"
+    ],
+    "expected_scope": "SINGLE_FIELD"
+  },
+  {
+    "id": "seen_13",
+    "query": "môn FIT4104 có điều kiện tiên quyết không?",
+    "expected_intent": "COURSE_FIELD_LOOKUP",
+    "expected_entities": [
+      "FIT4104"
+    ],
+    "expected_fields": [
+      "prerequisites"
+    ],
+    "expected_scope": "SINGLE_FIELD"
+  },
+  {
+    "id": "seen_14",
+    "query": "hình thức đánh giá của FIT4117 thế nào?",
+    "expected_intent": "COURSE_FIELD_LOOKUP",
+    "expected_entities": [
+      "FIT4117"
+    ],
+    "expected_fields": [
+      "assessment"
+    ],
+    "expected_scope": "SINGLE_FIELD"
+  },
+  {
+    "id": "seen_15",
+    "query": "chuẩn đầu ra CLO của FIT4201 gồm những gì?",
+    "expected_intent": "COURSE_FIELD_LOOKUP",
+    "expected_entities": [
+      "FIT4201"
+    ],
+    "expected_fields": [
+      "clo"
+    ],
+    "expected_scope": "SINGLE_FIELD"
+  },
+  {
+    "id": "seen_16",
+    "query": "FIT4113 có bao nhiêu giờ lý thuyết và thực hành?",
+    "expected_intent": "COURSE_FIELD_LOOKUP",
+    "expected_entities": [
+      "FIT4113"
+    ],
+    "expected_fields": [
+      "hours"
+    ],
+    "expected_scope": "SINGLE_FIELD"
+  },
+  {
+    "id": "seen_17",
+    "query": "so sánh môn FIT4113 và FIT4201 về số tín chỉ",
+    "expected_intent": "COURSE_COMPARISON",
+    "expected_entities": [
+      "FIT4113",
+      "FIT4201"
+    ],
+    "expected_fields": [
+      "credits"
+    ]
+  },
+  {
+    "id": "seen_18",
+    "query": "so sánh môn FIT4113 với FIT4201 xem môn nào thực hành nhiều hơn",
+    "expected_intent": "COURSE_COMPARISON",
+    "expected_entities": [
+      "FIT4113",
+      "FIT4201"
+    ],
+    "expected_fields": [
+      "hours"
+    ],
+    "expected_constraints": [
+      "PRACTICAL_COMPONENT"
+    ],
+    "expected_comparison": "GREATER_THAN"
+  },
+  {
+    "id": "seen_19",
+    "query": "quy định cảnh báo học vụ của trường như thế nào?",
+    "expected_intent": "REGULATION_LOOKUP",
+    "expected_fields": [
+      "academic_warning"
+    ]
+  },
+  {
+    "id": "seen_20",
+    "query": "điều kiện xét tốt nghiệp đại học gồm những gì?",
+    "expected_intent": "REGULATION_LOOKUP",
+    "expected_fields": [
+      "graduation_requirements"
+    ]
+  },
+  {
+    "id": "seen_21",
+    "query": "hãy gửi email cho giảng viên FIT4201",
+    "expected_intent": "TOOL_ACTION",
+    "expected_entities": [
+      "FIT4201"
+    ],
+    "expected_tool_action": "SEND_EMAIL"
+  },
+  {
+    "id": "seen_22",
+    "query": "đặt lịch nhắc tôi xem lại đề cương FIT4113 vào ngày mai",
+    "expected_intent": "TOOL_ACTION",
+    "expected_entities": [
+      "FIT4113"
+    ],
+    "expected_tool_action": "SET_REMINDER"
+  },
+  {
+    "id": "seen_23",
+    "query": "CLO nào của FIT4113 liên quan AWS?",
+    "expected_intent": "COURSE_FIELD_LOOKUP",
+    "expected_entities": [
+      "FIT4113"
+    ],
+    "expected_fields": [
+      "clo"
+    ],
+    "expected_constraints": [
+      "CONTAINS_CONCEPT(\"AWS\")"
+    ],
+    "expected_scope": "FILTERED_SET",
+    "expected_aggregation": "LIST"
+  },
+  {
+    "id": "seen_24",
+    "query": "FIT4113 có bao nhiêu CLO liên quan AWS?",
+    "expected_intent": "COURSE_FIELD_LOOKUP",
+    "expected_entities": [
+      "FIT4113"
+    ],
+    "expected_fields": [
+      "clo"
+    ],
+    "expected_constraints": [
+      "CONTAINS_CONCEPT(\"AWS\")"
+    ],
+    "expected_aggregation": "COUNT"
+  },
+  {
+    "id": "seen_25",
+    "query": "nó có nặng thực hành không?",
+    "context": {
+      "last_academic_entity": "FIT4201",
+      "last_intent": "COURSE_OVERVIEW"
+    },
+    "expected_intent": "COURSE_FIELD_LOOKUP",
+    "expected_entities": [
+      "FIT4201"
+    ],
+    "expected_fields": [
+      "hours"
+    ],
+    "expected_constraints": [
+      "PRACTICAL_WORKLOAD"
+    ],
+    "expected_referents": [
+      "PRONOUN"
+    ]
+  }
+]

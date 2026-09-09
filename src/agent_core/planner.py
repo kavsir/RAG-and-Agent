@@ -282,8 +282,25 @@ class AgentPlanner:
                         reason_code="REQUIREMENT_EXHAUSTED_ABSTAIN",
                     )
 
-            # Lần thử 1 (attempt_count == 0): Exact retrieval hoặc Fast Catalog Lookup
+            # Lần thử 1 (attempt_count == 0): Structured Query, Fast Catalog Lookup hoặc Exact retrieval
             if req.attempt_count == 0:
+                if req.data_capability == "STRUCTURED_CURRICULUM" or (state.query_plan and state.query_plan.data_capability == "STRUCTURED_CURRICULUM"):
+                    fp = ActionFingerprint(
+                        action_type=ActionType.EXECUTE_STRUCTURED_QUERY,
+                        entity=req.entity,
+                        requested_field=req.field,
+                        strategy="structured_academic_store",
+                    ).to_string()
+                    return ActionPlan(
+                        action_id=action_id,
+                        action_type=ActionType.EXECUTE_STRUCTURED_QUERY,
+                        entity=req.entity,
+                        requested_field=req.field,
+                        target_requirement_key=req.requirement_key,
+                        fingerprint=fp,
+                        reason_code="STRUCTURED_ACADEMIC_STORE_QUERY",
+                    )
+
                 if req.field in ("credits", "course_name") and self.entity_catalog.is_known_code(req.entity):
                     fp = ActionFingerprint(
                         action_type=ActionType.CATALOG_LOOKUP,

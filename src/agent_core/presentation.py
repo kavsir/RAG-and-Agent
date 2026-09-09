@@ -223,3 +223,96 @@ def format_course_card(
 
     return "\n".join(sections).strip()
 
+
+def format_total_credits(data: Any) -> str:
+    """Định dạng tổng số tín chỉ của chương trình đào tạo."""
+    if not isinstance(data, dict):
+        return f"📌 **Tổng số tín chỉ:** {data}"
+    cohort = data.get("cohort", "K19")
+    major = data.get("major", "Khoa học máy tính")
+    total = data.get("total_credits", 0)
+    semesters = data.get("semesters", [])
+
+    lines = [
+        f"🎓 **Tổng số tín chỉ CTĐT Khóa {cohort} - Ngành {major}:** **{total}** tín chỉ.\n",
+        "| Học kỳ | Số tín chỉ | Số học phần |",
+        "| :---: | :---: | :---: |",
+    ]
+    for s in semesters:
+        sem_num = s.get("semester", 0)
+        sem_label = f"Học kỳ {sem_num}" if sem_num > 0 else "Đại cương / Toàn trường"
+        creds = s.get("semester_credits", 0)
+        cnt = s.get("course_count", 0)
+        lines.append(f"| {sem_label} | {creds} | {cnt} |")
+
+    return "\n".join(lines)
+
+
+def format_semester_courses(semester: Any, courses: Any, cohort: str = "K19", major: str = "Khoa học máy tính") -> str:
+    """Định dạng danh sách môn học theo học kỳ thành bảng Markdown sạch sẽ."""
+    if not isinstance(courses, list) or not courses:
+        return f"📚 Hiện chưa có dữ liệu danh sách môn học cho Học kỳ {semester} (Khóa {cohort} - Ngành {major})."
+
+    total_sem_credits = sum(c.get("credits", 0) for c in courses)
+    lines = [
+        f"📚 **Kế hoạch học tập Học kỳ {semester} (Khóa {cohort} - Ngành {major}):**\n",
+        f"*(Tổng số tín chỉ trong kỳ: **{total_sem_credits}** tín chỉ)*\n",
+        "| Mã HP | Tên học phần | Số tín chỉ | Tính chất |",
+        "| :---: | :--- | :---: | :--- |",
+    ]
+    for c in courses:
+        code = c.get("course_code", "")
+        name = c.get("course_name", "")
+        creds = c.get("credits", 0)
+        c_type = c.get("course_type", "COMPULSORY")
+        type_vn = "Bắt buộc" if c_type == "COMPULSORY" else ("Tự chọn" if c_type == "ELECTIVE" else ("Tốt nghiệp" if c_type == "GRADUATION" else "Đại cương"))
+        lines.append(f"| `{code}` | **{name}** | {creds} | {type_vn} |")
+
+    return "\n".join(lines)
+
+
+def format_course_placement(data: Any, cohort: str = "K19", major: str = "Khoa học máy tính") -> str:
+    """Định dạng vị trí học kỳ của môn học trong CTĐT."""
+    if not isinstance(data, dict):
+        return f"📍 Thông tin vị trí môn học: {data}"
+
+    code = data.get("course_code", "")
+    name = data.get("course_name", "")
+    sem = data.get("semester")
+    creds = data.get("credits", 0)
+
+    if sem and sem > 0:
+        return (
+            f"📍 **Vị trí học kỳ của môn học:**\n\n"
+            f"- **Học phần:** `{code}` - **{name}**\n"
+            f"- **Chương trình:** Khóa **{cohort}** - Ngành **{major}**\n"
+            f"- **Học kỳ bố trí:** **Học kỳ {sem}** ({creds} tín chỉ)."
+        )
+    return (
+        f"📍 Môn học `{code}` - **{name}** ({creds} tín chỉ) thuộc nhóm học phần đại cương "
+        f"hoặc tự chọn theo kế hoạch của CTĐT Khóa {cohort} - Ngành {major}."
+    )
+
+
+def format_curriculum_overview(courses: Any, cohort: str = "K19", major: str = "Khoa học máy tính") -> str:
+    """Định dạng tổng quan danh sách môn học của CTĐT."""
+    if not isinstance(courses, list) or not courses:
+        return f"📋 Chưa có dữ liệu CTĐT cho Khóa {cohort} - Ngành {major}."
+
+    total_credits = sum(c.get("credits", 0) for c in courses if c.get("course_type") != "ELECTIVE")
+    lines = [
+        f"📋 **Tổng quan Chương trình Đào tạo Khóa {cohort} - Ngành {major}:**\n",
+        f"- **Tổng số học phần:** {len(courses)} môn\n"
+        f"- **Tổng số tín chỉ:** **{total_credits}** tín chỉ\n",
+        "| Học kỳ | Mã HP | Tên môn học | Tín chỉ |",
+        "| :---: | :---: | :--- | :---: |",
+    ]
+    for c in courses[:25]:
+        sem = f"Kỳ {c.get('semester', 0)}" if c.get('semester', 0) > 0 else "Đại cương"
+        lines.append(f"| {sem} | `{c.get('course_code')}` | {c.get('course_name')} | {c.get('credits')} |")
+
+    if len(courses) > 25:
+        lines.append(f"\n*(Hiển thị 25/{len(courses)} học phần. Bạn có thể hỏi chi tiết từng kỳ, ví dụ: 'Kỳ 5 học những môn gì?')*")
+
+    return "\n".join(lines)
+

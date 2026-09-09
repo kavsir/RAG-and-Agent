@@ -47,6 +47,7 @@ class SessionState(BaseModel):
     last_intent: Optional[str] = None
     last_scope: Optional[str] = None
     last_requested_fields: List[str] = Field(default_factory=list)
+    last_constraints: List[str] = Field(default_factory=list)
     last_completed_goal_id: Optional[str] = None
 
     updated_at: datetime.datetime = Field(default_factory=lambda: datetime.datetime.now(datetime.timezone.utc))
@@ -68,6 +69,7 @@ class SessionState(BaseModel):
             "last_intent": self.last_intent,
             "last_scope": self.last_scope,
             "last_requested_fields": self.last_requested_fields,
+            "last_constraints": self.last_constraints,
             "last_completed_goal_id": self.last_completed_goal_id,
             "unresolved_reference": self.unresolved_reference,
             "last_source_ids": self.last_source_ids,

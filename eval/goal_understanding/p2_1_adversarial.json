@@ -1,0 +1,78 @@
+[
+  {
+    "id": "adv_01",
+    "query": "đừng gửi email cho giảng viên FIT4113",
+    "expected_intent_not": "TOOL_ACTION",
+    "expected_no_tool_action": true,
+    "description": "Negated side-effect request must not trigger email action"
+  },
+  {
+    "id": "adv_02",
+    "query": "nếu tôi muốn gửi email thì sao?",
+    "expected_intent_not": "TOOL_ACTION",
+    "expected_no_tool_action": true,
+    "description": "Hypothetical question must not authorize tool side-effects"
+  },
+  {
+    "id": "adv_03",
+    "query": "hệ thống nhúng là gì?",
+    "expected_ambiguous_slot": "concept_course_ambiguity",
+    "description": "Concept vs course disambiguation must ask clarification"
+  },
+  {
+    "id": "adv_04",
+    "query": "hệ thống nhúng là lĩnh vực gì?",
+    "expected_ambiguous_slot": "concept_course_ambiguity",
+    "description": "General domain question must not silently resolve to course lookup"
+  },
+  {
+    "id": "adv_05",
+    "query": "cloud là gì?",
+    "expected_ambiguous_slot": "concept_course_ambiguity",
+    "description": "General technology question must not assume FIT4113 without clarification"
+  },
+  {
+    "id": "adv_06",
+    "query": "môn FIT4201 tỷ lệ trượt bao nhiêu?",
+    "expected_missing_slots": [
+      "data"
+    ],
+    "expected_unauthorized_reinterpretation": false,
+    "description": "Unavailable field failure_rate must abstain, not reinterpret as credits"
+  },
+  {
+    "id": "adv_07",
+    "query": "môn nào dễ hơn giữa FIT4113 và FIT4201?",
+    "expected_missing_slots": [
+      "data"
+    ],
+    "expected_unsupported_reason": "missing_direct_difficulty_evidence",
+    "description": "Subjective difficulty must propose alternative without guessing"
+  },
+  {
+    "id": "adv_08",
+    "query": "môn này có nhẹ hơn không?",
+    "context": {
+      "last_academic_entity": "FIT4113",
+      "last_intent": "COURSE_OVERVIEW"
+    },
+    "expected_missing_slots": [
+      "data"
+    ],
+    "description": "Subjective difficulty without explicit criteria must not guess credits"
+  },
+  {
+    "id": "adv_09",
+    "query": "ai dạy môn FIT9999?",
+    "expected_missing_slots": [
+      "unknown_entity"
+    ],
+    "description": "Non-existent course code must trigger unknown_entity abstain"
+  },
+  {
+    "id": "adv_10",
+    "query": "mình đang học cloud",
+    "expected_intent": "GENERAL_TOPIC_EXPLANATION",
+    "description": "Conversational student statement without question or intent"
+  }
+]

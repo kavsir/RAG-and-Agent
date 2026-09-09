@@ -1,0 +1,18 @@
+{
+  "seen_intent_acc": 1.0,
+  "seen_entity_acc": 1.0,
+  "holdout_intent_acc": 1.0,
+  "holdout_entity_acc": 1.0,
+  "holdout_field_acc": 1.0,
+  "constraint_preservation": 1.0,
+  "aggregation_accuracy": 1.0,
+  "referent_accuracy": 1.0,
+  "unnecessary_clarification_rate": 0.0,
+  "wrong_confident_intent": 0,
+  "wrong_confident_entity": 0,
+  "unauthorized_reinterpretation": 0,
+  "multiturn_accuracy": 1.0,
+  "llm_fallback_rate": 0.0,
+  "latency_p50_ms": 40.54365000047255,
+  "latency_p95_ms": 89.87413501163248
+}

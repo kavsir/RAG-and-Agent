@@ -13,9 +13,61 @@ __all__ = [
     "FieldCardinality",
     "get_field_cardinality",
     "FIELD_CARDINALITY_POLICY",
+    "EntityType",
+    "AcademicEntity",
+    "AcademicOperation",
+    "AcademicQueryPlan",
     "GoalIntent",
     "GoalScope",
+    "AggregationType",
+    "ReferentType",
+    "ComparisonType",
+    "GoalFrame",
+    "validate_goal_frame",
 ]
+
+
+class EntityType(str, Enum):
+    COURSE = "COURSE"
+    COHORT = "COHORT"
+    MAJOR = "MAJOR"
+    SEMESTER = "SEMESTER"
+    CURRICULUM = "CURRICULUM"
+    REGULATION = "REGULATION"
+    PERSON = "PERSON"
+    GENERAL_TOPIC = "GENERAL_TOPIC"
+
+
+class AcademicEntity(BaseModel):
+    """Thực thể học vụ có kiểu (Round A1)."""
+    type: EntityType
+    value: str
+    canonical_id: Optional[str] = None
+    confidence: float = 1.0
+    resolution_source: str = "explicit"
+
+
+class AcademicOperation(str, Enum):
+    LIST_COURSES = "LIST_COURSES"
+    GET_SEMESTER_COURSES = "GET_SEMESTER_COURSES"
+    FIND_COURSE_SEMESTER = "FIND_COURSE_SEMESTER"
+    GET_TOTAL_CREDITS = "GET_TOTAL_CREDITS"
+    LOOKUP_FIELD = "LOOKUP_FIELD"
+    REGULATION_LOOKUP = "REGULATION_LOOKUP"
+    COMPARE_COURSES = "COMPARE_COURSES"
+    TOOL_EXECUTION = "TOOL_EXECUTION"
+
+
+class AcademicQueryPlan(BaseModel):
+    """Kế hoạch truy vấn tri thức học vụ có kiểu (Round A1)."""
+    plan_id: str
+    subject_type: EntityType
+    operation: str
+    filters: Dict[str, Any] = Field(default_factory=dict)
+    projection: List[str] = Field(default_factory=list)
+    data_capability: str
+    accepted_sources: List[str] = Field(default_factory=list)
+    evidence_requirements: List[Any] = Field(default_factory=list)
 
 
 class GoalIntent(str, Enum):
@@ -23,6 +75,7 @@ class GoalIntent(str, Enum):
     COURSE_FULL_DETAILS = "COURSE_FULL_DETAILS"
     COURSE_FIELD_LOOKUP = "COURSE_FIELD_LOOKUP"
     COURSE_COMPARISON = "COURSE_COMPARISON"
+    CURRICULUM_OVERVIEW = "CURRICULUM_OVERVIEW"
     REGULATION_LOOKUP = "REGULATION_LOOKUP"
     GENERAL_TOPIC_EXPLANATION = "GENERAL_TOPIC_EXPLANATION"
     TOOL_ACTION = "TOOL_ACTION"
@@ -33,6 +86,111 @@ class GoalScope(str, Enum):
     SINGLE_FIELD = "SINGLE_FIELD"
     SUMMARY = "SUMMARY"
     ALL_AVAILABLE = "ALL_AVAILABLE"
+    FILTERED_SET = "FILTERED_SET"
+
+
+class AggregationType(str, Enum):
+    NONE = "NONE"
+    COUNT = "COUNT"
+    LIST = "LIST"
+    MAX = "MAX"
+    MIN = "MIN"
+    COMPARE = "COMPARE"
+
+
+class ReferentType(str, Enum):
+    EXPLICIT = "EXPLICIT"
+    PREVIOUS_ENTITY = "PREVIOUS_ENTITY"
+    PREVIOUS_INTENT = "PREVIOUS_INTENT"
+    PRONOUN = "PRONOUN"
+    NONE = "NONE"
+
+
+class ComparisonType(str, Enum):
+    NONE = "NONE"
+    GREATER_THAN = "GREATER_THAN"
+    LESS_THAN = "LESS_THAN"
+    EQUAL = "EQUAL"
+    COMPARE = "COMPARE"
+
+
+class GoalFrame(BaseModel):
+    """
+    Typed Semantic Goal Frame biểu diễn ý định và cấu trúc mục tiêu của người dùng (Round P2.1 & A1).
+    TUYỆT ĐỐI KHÔNG lưu chain_of_thought hay reasoning_text tự do.
+    """
+    intent: GoalIntent = GoalIntent.UNKNOWN
+    subjects: List[AcademicEntity] = Field(default_factory=list)
+    subject_type: Optional[EntityType] = None
+    operation: Optional[str] = None
+    entities: List[str] = Field(default_factory=list)
+    referents: List[ReferentType] = Field(default_factory=list)
+    requested_fields: List[str] = Field(default_factory=list)
+    scope: GoalScope = GoalScope.SINGLE_FIELD
+    constraints: List[str] = Field(default_factory=list)
+    aggregation: AggregationType = AggregationType.NONE
+    comparison: ComparisonType = ComparisonType.NONE
+    tool_action: Optional[str] = None
+    confidence: float = 1.0
+    confidence_margin: float = 1.0
+    missing_slots: List[str] = Field(default_factory=list)
+    resolution_sources: Dict[str, str] = Field(default_factory=dict)
+    unsupported_reason: Optional[str] = None
+    suggested_alternative: Optional[str] = None
+
+
+def validate_goal_frame(frame: GoalFrame) -> List[str]:
+    """
+    Kiểm tra tính nhất quán nội tại của GoalFrame trước khi chuyển sang Planner.
+    Đảm bảo Planner không bao giờ nhận một GoalFrame mâu thuẫn nội tại.
+    Trả về danh sách các lỗi không nhất quán nếu có.
+    """
+    errors: List[str] = []
+
+    # 0. Kiểm tra ngưỡng tin cậy (Confidence bounds)
+    if not (0.0 <= frame.confidence <= 1.0):
+        errors.append("Confidence must be between 0.0 and 1.0.")
+    if frame.confidence_margin < 0.0:
+        errors.append("Confidence margin cannot be negative.")
+
+    # 1. Kiểm tra mâu thuẫn đối với so sánh
+    if frame.intent == GoalIntent.COURSE_COMPARISON:
+        if len(frame.entities) < 2 and not frame.missing_slots:
+            errors.append("COURSE_COMPARISON requires at least 2 entities or an unresolved missing entity slot.")
+        if frame.aggregation == AggregationType.NONE:
+            frame.aggregation = AggregationType.COMPARE
+
+    # 2. Kiểm tra Tool Action
+    if frame.intent == GoalIntent.TOOL_ACTION:
+        if not frame.tool_action:
+            errors.append("TOOL_ACTION intent requires a defined tool_action.")
+
+    # 3. Kiểm tra Filtered Set
+    if frame.scope == GoalScope.FILTERED_SET:
+        if not frame.constraints and not frame.requested_fields:
+            errors.append("FILTERED_SET requires either explicit constraints or requested fields.")
+
+    # 4. Kiểm tra Aggregation COUNT/LIST
+    if frame.aggregation in (AggregationType.COUNT, AggregationType.LIST):
+        if not frame.requested_fields and not frame.constraints:
+            errors.append(f"Aggregation {frame.aggregation.value} requires target field or constraint.")
+
+    # 5. Kiểm tra tính nhất quán kiểu mục tiêu học vụ (Round A1 Invariants)
+    import re
+    # CURRICULUM_GOAL_WITH_COURSE_ONLY_PLAN: mục tiêu curriculum không được chứa course entity làm đối tượng chính duy nhất
+    if frame.intent == GoalIntent.CURRICULUM_OVERVIEW or frame.subject_type in (EntityType.CURRICULUM, EntityType.COHORT):
+        if frame.operation != "FIND_COURSE_SEMESTER":
+            has_course_subject = any(s.type == EntityType.COURSE for s in frame.subjects)
+            has_curriculum_or_cohort = any(s.type in (EntityType.CURRICULUM, EntityType.COHORT, EntityType.MAJOR, EntityType.SEMESTER) for s in frame.subjects)
+            if has_course_subject and not has_curriculum_or_cohort:
+                errors.append("CURRICULUM_GOAL_WITH_COURSE_ONLY_PLAN: Curriculum goal cannot contain only course entity.")
+
+    # COHORT_AS_COURSE_CODE: giá trị khóa học/khóa tuyển sinh không được là mã môn học
+    for s in frame.subjects:
+        if s.type == EntityType.COHORT and re.match(r"^[A-Za-z]{2,4}\d{4}$", s.value):
+            errors.append(f"COHORT_AS_COURSE_CODE: Cohort value '{s.value}' cannot be a course code.")
+
+    return errors
 
 
 class GoalType(str, Enum):
@@ -97,6 +255,7 @@ class ActionType(str, Enum):
     CATALOG_LOOKUP = "CATALOG_LOOKUP"
     RETRIEVE_EXACT = "RETRIEVE_EXACT"
     RETRIEVE_EXPANDED = "RETRIEVE_EXPANDED"
+    EXECUTE_STRUCTURED_QUERY = "EXECUTE_STRUCTURED_QUERY"
     COMPARE_EVIDENCE = "COMPARE_EVIDENCE"
     ASK_USER = "ASK_USER"
     PARTIAL_ANSWER = "PARTIAL_ANSWER"
@@ -114,10 +273,13 @@ class QuestionType(str, Enum):
 
 
 class EvidenceRequirement(BaseModel):
-    """Đặc tả bằng chứng cần thu thập cho một thực thể học vụ cụ thể."""
-    entity: str
-    field: str
+    """Đặc tả bằng chứng cần thu thập cho một thực thể học vụ cụ thể (Round A1 Type-Aware)."""
+    entity: str = ""
+    subject_type: EntityType = EntityType.COURSE
+    subject_id: str = ""
+    field: str = ""
     accepted_document_types: List[str] = Field(default_factory=list)
+    data_capability: Optional[str] = None
     filters: Dict[str, Any] = Field(default_factory=dict)
     status: EvidenceStatus = EvidenceStatus.PENDING
     extracted_value: Optional[Any] = None
@@ -126,9 +288,17 @@ class EvidenceRequirement(BaseModel):
     confidence: float = 0.0
     attempt_count: int = 0
 
+    def __init__(self, **data):
+        super().__init__(**data)
+        if not self.entity and self.subject_id:
+            self.entity = self.subject_id
+        elif not self.subject_id and self.entity:
+            self.subject_id = self.entity
+
     @property
     def requirement_key(self) -> str:
-        return f"{self.entity}.{self.field}"
+        s_id = self.subject_id or self.entity
+        return f"{self.subject_type.value}:{s_id}.{self.field}"
 
 
 class EvidenceItem(BaseModel):
@@ -176,6 +346,7 @@ class ActionPlan(BaseModel):
     fingerprint: str
     reason_code: str
     ask_user_payload: Optional[Dict[str, Any]] = None
+    target_requirement_key: Optional[str] = None
 
 
 class ActionObservation(BaseModel):
@@ -207,7 +378,16 @@ class GoalSpec(BaseModel):
     scope: GoalScope = GoalScope.SINGLE_FIELD
     objectives: List[GoalType] = Field(default_factory=list)
     entities: List[str] = Field(default_factory=list)
+    referents: List[ReferentType] = Field(default_factory=list)
     requested_fields: List[str] = Field(default_factory=list)
+    constraints: List[str] = Field(default_factory=list)
+    aggregation: AggregationType = AggregationType.NONE
+    comparison: ComparisonType = ComparisonType.NONE
+    goal_frame: Optional[GoalFrame] = None
+    subjects: List[AcademicEntity] = Field(default_factory=list)
+    subject_type: Optional[EntityType] = None
+    operation: Optional[str] = None
+    query_plan: Optional[AcademicQueryPlan] = None
     is_multi_entity: bool = False
     is_multi_intent: bool = False
     unsupported_intents: List[str] = Field(default_factory=list)
@@ -215,6 +395,8 @@ class GoalSpec(BaseModel):
     missing_slot: Optional[str] = None  # "intent" | "entity" | "data" | "entity_conflict"
     clarification_prompt: Optional[str] = None
     clarification_options: List[str] = Field(default_factory=list)
+    unsupported_reason: Optional[str] = None
+    suggested_alternative: Optional[str] = None
 
 
 class AgentObservation(BaseModel):
@@ -247,6 +429,14 @@ class AgentGoalState(BaseModel):
     scope: GoalScope = GoalScope.SINGLE_FIELD
     objectives: List[GoalType] = Field(default_factory=list)
     entities: List[str] = Field(default_factory=list)
+    constraints: List[str] = Field(default_factory=list)
+    aggregation: AggregationType = AggregationType.NONE
+    comparison: ComparisonType = ComparisonType.NONE
+    goal_frame: Optional[GoalFrame] = None
+    subjects: List[AcademicEntity] = Field(default_factory=list)
+    subject_type: Optional[EntityType] = None
+    operation: Optional[str] = None
+    query_plan: Optional[AcademicQueryPlan] = None
     requirements: List[EvidenceRequirement] = Field(default_factory=list)
     evidence: List[EvidenceItem] = Field(default_factory=list)
     missing_information: List[str] = Field(default_factory=list)

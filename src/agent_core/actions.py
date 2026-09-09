@@ -12,6 +12,7 @@ Executes atomic, verifiable, and idempotent actions:
 Reuses existing RAG infrastructure with 0 second-retrieval architectures and 0 external LLM calls.
 """
 import re
+import json
 from typing import Optional, Any
 
 from src.agent_core.schemas import (
@@ -24,6 +25,7 @@ from src.agent_core.schemas import (
     EvidenceStatus,
     QuestionType,
     EvidenceRequirement,
+    EvidenceItem,
 )
 from src.agent_core.entity_catalog import get_entity_catalog, EntityCatalog
 from src.agent_core.environment_catalog import get_knowledge_environment_catalog, KnowledgeEnvironmentCatalog
@@ -51,6 +53,21 @@ FIELD_NAMES_VN = {
 def format_requirement_answer(r: EvidenceRequirement, catalog: Optional[EntityCatalog] = None) -> str:
     """Định dạng kết quả trả lời học vụ tự nhiên, hội thoại, có cấu trúc thẩm mỹ cho người dùng."""
     from src.agent_core import presentation
+    from src.agent_core.schemas import EntityType
+
+    if r.data_capability == "STRUCTURED_CURRICULUM" or r.subject_type in (EntityType.CURRICULUM, EntityType.COHORT, EntityType.MAJOR, EntityType.SEMESTER):
+        cohort = r.filters.get("cohort", "K19") if r.filters else "K19"
+        major = r.filters.get("major", "Khoa học máy tính") if r.filters else "Khoa học máy tính"
+        if r.field in ("GET_TOTAL_CREDITS", "total_credits"):
+            return presentation.format_total_credits(r.extracted_value)
+        elif r.field in ("GET_SEMESTER_COURSES", "courses"):
+            sem = r.filters.get("semester", 1) if r.filters else 1
+            return presentation.format_semester_courses(sem, r.extracted_value, cohort, major)
+        elif r.field in ("FIND_COURSE_SEMESTER", "semester"):
+            return presentation.format_course_placement(r.extracted_value, cohort, major)
+        elif r.field in ("LIST_COURSES", "curriculum"):
+            return presentation.format_curriculum_overview(r.extracted_value, cohort, major)
+
     f_vn = FIELD_NAMES_VN.get(r.field, r.field)
     c_info = catalog.get_course_info(r.entity) if catalog and r.entity and r.entity not in ("DNTU", "general") else None
     c_name = c_info.get("canonical_name", "") if c_info else ""
@@ -93,7 +110,9 @@ class ActionExecutor:
         """Thực thi một kế hoạch hành động đã được lập."""
         a_type = plan.action_type
 
-        if a_type == ActionType.CATALOG_LOOKUP:
+        if a_type == ActionType.EXECUTE_STRUCTURED_QUERY:
+            return self._execute_structured_query(plan, state, event_sink=event_sink)
+        elif a_type == ActionType.CATALOG_LOOKUP:
             return self._execute_catalog_lookup(plan, state, event_sink=event_sink)
         elif a_type == ActionType.RETRIEVE_EXACT:
             return self._execute_exact_retrieval(plan, state, event_sink=event_sink)
@@ -116,6 +135,82 @@ class ActionExecutor:
                 success=False,
                 message=f"Hành động chưa được hỗ trợ: {a_type}",
             )
+
+    def _execute_structured_query(self, plan: ActionPlan, state: AgentGoalState, event_sink: Optional[Any] = None) -> ActionObservation:
+        """Thực thi truy vấn tri thức học vụ có cấu trúc (SQLite Structured Academic Store) với đầy đủ provenance."""
+        from src.agent_core.academic_store import get_academic_store
+        store = get_academic_store()
+
+        target_req = next(
+            (r for r in state.requirements if r.requirement_key == plan.target_requirement_key or (r.entity == plan.entity and r.field == plan.requested_field)),
+            None
+        )
+        if not target_req and state.requirements:
+            target_req = state.requirements[0]
+
+        if event_sink:
+            event_sink.emit_phase("VERIFY", "Đang truy vấn kho dữ liệu CTĐT có cấu trúc...")
+
+        # Lấy hoặc dựng AcademicQueryPlan
+        query_plan = state.query_plan
+        if not query_plan:
+            from src.agent_core.schemas import AcademicQueryPlan, EntityType
+            filters = target_req.filters if target_req else {}
+            query_plan = AcademicQueryPlan(
+                plan_id=f"plan_{plan.action_id}",
+                subject_type=target_req.subject_type if target_req else EntityType.CURRICULUM,
+                operation=target_req.field if target_req else "LIST_COURSES",
+                filters=filters,
+                data_capability="STRUCTURED_CURRICULUM",
+                accepted_sources=["curriculum"],
+            )
+
+        res = store.execute_query(query_plan)
+        if target_req:
+            target_req.attempt_count += 1
+
+        if res.get("status") == "success" and res.get("data") is not None:
+            prov = res.get("source_provenance", {})
+            raw_content = json.dumps(res["data"], ensure_ascii=False) if isinstance(res["data"], (dict, list)) else str(res["data"])
+
+            item = EvidenceItem(
+                entity=target_req.entity if target_req else (plan.entity or "curriculum"),
+                field=target_req.field if target_req else (plan.requested_field or "curriculum"),
+                document_type="curriculum",
+                content=raw_content,
+                source=prov.get("source_file") or "academic_store.sqlite3",
+                source_file=prov.get("source_file"),
+                section=prov.get("source_section"),
+                chunk_id=prov.get("source_chunk_id"),
+                metadata={"data": res["data"], "operation": res["operation"], "provenance": prov},
+                is_authoritative=True,
+                status=EvidenceStatus.VERIFIED_VALUE,
+                relevance_score=1.0,
+            )
+            if target_req:
+                target_req.status = EvidenceStatus.VERIFIED_VALUE
+                target_req.extracted_value = res["data"]
+                target_req.source_doc_id = prov.get("source_file")
+            state.evidence.append(item)
+
+            return ActionObservation(
+                action_id=plan.action_id,
+                action_type=plan.action_type,
+                success=True,
+                new_evidence_count=1,
+                requirements_satisfied=[target_req.requirement_key] if target_req else [],
+                evidence_items=[item],
+                message=f"Đã truy vấn thành công kho CTĐT ({res.get('record_count', 1)} bản ghi)",
+            )
+
+        if target_req:
+            target_req.status = EvidenceStatus.NOT_AVAILABLE
+        return ActionObservation(
+            action_id=plan.action_id,
+            action_type=plan.action_type,
+            success=False,
+            message="Không tìm thấy dữ liệu phù hợp trong kho CTĐT.",
+        )
 
     def _execute_catalog_lookup(self, plan: ActionPlan, state: AgentGoalState, event_sink: Optional[Any] = None) -> ActionObservation:
         """Tra cứu nhanh danh mục chính thống từ metadata/manifests có nguồn gốc provenance."""

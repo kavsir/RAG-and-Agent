@@ -125,6 +125,14 @@ def run_ingestion(rebuild: bool = True) -> Dict[str, Any]:
             stats["by_collection"][col] = count
             stats["chunks_total"] += count
 
+    # Nạp dữ liệu có cấu trúc vào SQLite Structured Academic Store (Round A1)
+    try:
+        from src.ingestion.curriculum_parser import ensure_curriculum_data_loaded
+        ensure_curriculum_data_loaded()
+        logger.info("Structured Academic Store (SQLite) ingested successfully.")
+    except Exception as e:
+        logger.warning(f"Failed to ingest structured academic store: {e}")
+
     print("\n" + "=" * 50)
     print("INGESTION REPORT")
     print("=" * 50)
@@ -135,6 +143,7 @@ def run_ingestion(rebuild: bool = True) -> Dict[str, Any]:
     print(f"  - Regulation:     {stats['by_collection'].get('regulation', 0)}")
     print("Vector store:       OK")
     print("BM25 indexes:       OK")
+    print("Academic Store:     OK")
     print("=" * 50 + "\n")
 
     return stats

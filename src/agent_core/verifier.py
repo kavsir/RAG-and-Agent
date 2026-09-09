@@ -41,6 +41,41 @@ class EvidenceVerifier:
         if self.env_catalog.is_field_unavailable(field):
             return EvidenceStatus.NOT_AVAILABLE, None
 
+        # 1b. Kiểm tra truy vấn có cấu trúc CTĐT (Round A1)
+        if requirement.data_capability == "STRUCTURED_CURRICULUM":
+            from src.agent_core.academic_store import get_academic_store
+            from src.agent_core.schemas import AcademicQueryPlan
+            store = get_academic_store()
+            q_plan = AcademicQueryPlan(
+                plan_id=f"verify_{requirement.entity}",
+                subject_type=requirement.subject_type,
+                operation=requirement.field,
+                filters=requirement.filters or {},
+                data_capability="STRUCTURED_CURRICULUM",
+                accepted_sources=["curriculum"],
+            )
+            res = store.execute_query(q_plan)
+            if res.get("status") == "success" and res.get("data") is not None:
+                prov = res.get("source_provenance", {})
+                import json
+                raw_c = json.dumps(res["data"], ensure_ascii=False) if isinstance(res["data"], (dict, list)) else str(res["data"])
+                item = EvidenceItem(
+                    entity=entity,
+                    field=field,
+                    document_type="curriculum",
+                    content=raw_c,
+                    source=prov.get("source_file", "academic_store.sqlite3"),
+                    source_file=prov.get("source_file"),
+                    section=prov.get("source_section"),
+                    chunk_id=prov.get("source_chunk_id"),
+                    metadata={"data": res["data"], "operation": res["operation"], "provenance": prov},
+                    is_authoritative=True,
+                    status=EvidenceStatus.VERIFIED_VALUE,
+                    retrieval_strategy="structured_academic_store",
+                )
+                return EvidenceStatus.VERIFIED_VALUE, item
+            return EvidenceStatus.MISSING, None
+
         # 2. Nếu không có tài liệu truy xuất, kiểm tra xem catalog có provenance chính thống không
         if not retrieved_docs:
             if field == "credits" and entity and entity not in ("DNTU", "general"):

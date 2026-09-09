@@ -98,7 +98,11 @@ ABBREVIATIONS: Dict[str, str] = {
 def expand_abbreviations(text: str) -> str:
     """Mở rộng các từ viết tắt phổ biến của sinh viên CNTT."""
     result = text
+    # Tránh nhầm lẫn giữa đại từ nghi vấn "ai" (ai dạy, ai đứng lớp) và từ viết tắt "AI" (Trí tuệ nhân tạo)
+    is_who_pronoun = bool(re.search(r"\bai\s+(?:dạy|đứng\s+lớp|hướng\s+dẫn|phụ\s+trách|chấm|là|coi|nào)\b", text, re.IGNORECASE))
     for pattern, replacement in ABBREVIATIONS.items():
+        if pattern == r"\bai\b" and is_who_pronoun:
+            continue
         result = re.sub(pattern, replacement, result, flags=re.IGNORECASE)
     return result
 

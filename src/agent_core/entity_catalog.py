@@ -144,6 +144,9 @@ class EntityCatalog:
 
         # 2. Tìm theo tên gọi / bí danh (alias)
         sorted_aliases = sorted(self.alias_to_code.keys(), key=len, reverse=True)
+        from src.agent_core.course_resolver import strip_accents
+        unacc_text = strip_accents(text_lower)
+
         for alias in sorted_aliases:
             if len(alias) < 3:
                 continue
@@ -152,6 +155,17 @@ class EntityCatalog:
                 target_code = self.alias_to_code[alias]
                 if target_code not in extracted:
                     extracted.append(target_code)
+            else:
+                unacc_alias = strip_accents(alias)
+                if len(unacc_alias) >= 4:
+                    if unacc_alias == "nhung":
+                        pattern_unacc = r"\b(?:mon|lop|he\s+thong|hoc\s+phan|lap\s+trinh)\s+nhung\b"
+                    else:
+                        pattern_unacc = rf"\b{re.escape(unacc_alias)}\b"
+                    if re.search(pattern_unacc, unacc_text):
+                        target_code = self.alias_to_code[alias]
+                        if target_code not in extracted:
+                            extracted.append(target_code)
 
         return extracted
 

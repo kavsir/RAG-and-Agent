@@ -1,0 +1,155 @@
+[
+  {
+    "id": "A1-CURR-01",
+    "query": "chương trình đào tạo K19 học những môn gì",
+    "expected_intent": "CURRICULUM_OVERVIEW",
+    "expected_subject_type": "CURRICULUM",
+    "expected_operation": "LIST_COURSES",
+    "expected_capability": "STRUCTURED_CURRICULUM",
+    "expected_cohort": "K19",
+    "expected_major": "Khoa học máy tính"
+  },
+  {
+    "id": "A1-CURR-02",
+    "query": "kỳ 5 học những môn gì",
+    "expected_intent": "CURRICULUM_OVERVIEW",
+    "expected_subject_type": "CURRICULUM",
+    "expected_operation": "GET_SEMESTER_COURSES",
+    "expected_capability": "STRUCTURED_CURRICULUM",
+    "expected_semester": 5
+  },
+  {
+    "id": "A1-CURR-03",
+    "query": "FIT4113 nằm ở kỳ mấy",
+    "expected_intent": "CURRICULUM_OVERVIEW",
+    "expected_subject_type": "CURRICULUM",
+    "expected_operation": "FIND_COURSE_SEMESTER",
+    "expected_capability": "STRUCTURED_CURRICULUM",
+    "expected_course_code": "FIT4113"
+  },
+  {
+    "id": "A1-CURR-04",
+    "query": "chương trình K19 bao nhiêu tín chỉ",
+    "expected_intent": "CURRICULUM_OVERVIEW",
+    "expected_subject_type": "CURRICULUM",
+    "expected_operation": "GET_TOTAL_CREDITS",
+    "expected_capability": "STRUCTURED_CURRICULUM",
+    "expected_cohort": "K19"
+  },
+  {
+    "id": "A1-CURR-05",
+    "query": "K19 ngành CNTT học gì",
+    "expected_intent": "CURRICULUM_OVERVIEW",
+    "expected_subject_type": "CURRICULUM",
+    "expected_operation": "LIST_COURSES",
+    "expected_capability": "STRUCTURED_CURRICULUM",
+    "expected_cohort": "K19",
+    "expected_major": "Công nghệ thông tin"
+  },
+  {
+    "id": "A1-CURR-06",
+    "query": "kỳ 1 có những môn nào",
+    "expected_intent": "CURRICULUM_OVERVIEW",
+    "expected_subject_type": "CURRICULUM",
+    "expected_operation": "GET_SEMESTER_COURSES",
+    "expected_capability": "STRUCTURED_CURRICULUM",
+    "expected_semester": 1
+  },
+  {
+    "id": "A1-CURR-07",
+    "query": "môn hệ thống nhúng học ở kỳ nào",
+    "expected_intent": "CURRICULUM_OVERVIEW",
+    "expected_subject_type": "CURRICULUM",
+    "expected_operation": "FIND_COURSE_SEMESTER",
+    "expected_capability": "STRUCTURED_CURRICULUM",
+    "expected_course_code": "FIT4113"
+  },
+  {
+    "id": "A1-CURR-08",
+    "query": "tổng tín chỉ chương trình đào tạo là bao nhiêu",
+    "expected_intent": "CURRICULUM_OVERVIEW",
+    "expected_subject_type": "CURRICULUM",
+    "expected_operation": "GET_TOTAL_CREDITS",
+    "expected_capability": "STRUCTURED_CURRICULUM"
+  },
+  {
+    "id": "A1-CURR-09",
+    "query": "học kỳ 6 ngành công nghệ thông tin học những gì",
+    "expected_intent": "CURRICULUM_OVERVIEW",
+    "expected_subject_type": "CURRICULUM",
+    "expected_operation": "GET_SEMESTER_COURSES",
+    "expected_capability": "STRUCTURED_CURRICULUM",
+    "expected_semester": 6,
+    "expected_major": "Công nghệ thông tin"
+  },
+  {
+    "id": "A1-CURR-10",
+    "query": "chương trình đào tạo ngành hệ thống thông tin",
+    "expected_intent": "CURRICULUM_OVERVIEW",
+    "expected_subject_type": "CURRICULUM",
+    "expected_operation": "LIST_COURSES",
+    "expected_capability": "STRUCTURED_CURRICULUM",
+    "expected_major": "Hệ thống thông tin"
+  },
+  {
+    "id": "A1-COURSE-01",
+    "query": "CLO của môn FIT4113",
+    "expected_intent": "COURSE_FIELD_LOOKUP",
+    "expected_subject_type": "COURSE",
+    "expected_operation": "LOOKUP_FIELD",
+    "expected_capability": "COURSE_DETAIL_RAG",
+    "expected_course_code": "FIT4113"
+  },
+  {
+    "id": "A1-COURSE-02",
+    "query": "ai dạy môn FIT4201",
+    "expected_intent": "COURSE_FIELD_LOOKUP",
+    "expected_subject_type": "COURSE",
+    "expected_operation": "LOOKUP_FIELD",
+    "expected_capability": "COURSE_DETAIL_RAG",
+    "expected_course_code": "FIT4201"
+  },
+  {
+    "id": "A1-REG-01",
+    "query": "điều kiện xét tốt nghiệp của trường là gì",
+    "expected_intent": "REGULATION_LOOKUP",
+    "expected_subject_type": "REGULATION",
+    "expected_operation": "REGULATION_LOOKUP",
+    "expected_capability": "REGULATION_RAG"
+  },
+  {
+    "id": "A1-REG-02",
+    "query": "quy chế cảnh báo học vụ",
+    "expected_intent": "REGULATION_LOOKUP",
+    "expected_subject_type": "REGULATION",
+    "expected_operation": "REGULATION_LOOKUP",
+    "expected_capability": "REGULATION_RAG"
+  },
+  {
+    "id": "A1-TRANS-01",
+    "turn_1_query": "môn FIT4113 học những gì",
+    "turn_2_query": "chương trình đào tạo có những môn nào",
+    "expected_intent": "CURRICULUM_OVERVIEW",
+    "expected_subject_type": "CURRICULUM",
+    "expected_operation": "LIST_COURSES",
+    "stale_course_forbidden": "FIT4113"
+  },
+  {
+    "id": "A1-TRANS-02",
+    "turn_1_query": "chương trình đào tạo K19 học gì",
+    "turn_2_query": "còn ngành CNTT thì sao",
+    "expected_intent": "CURRICULUM_OVERVIEW",
+    "expected_subject_type": "CURRICULUM",
+    "expected_operation": "LIST_COURSES",
+    "expected_major": "Công nghệ thông tin"
+  },
+  {
+    "id": "A1-TRANS-03",
+    "turn_1_query": "giảng viên môn FIT4113 là ai",
+    "turn_2_query": "môn này học ở kỳ mấy",
+    "expected_intent": "CURRICULUM_OVERVIEW",
+    "expected_subject_type": "CURRICULUM",
+    "expected_operation": "FIND_COURSE_SEMESTER",
+    "expected_course_code": "FIT4113"
+  }
+]

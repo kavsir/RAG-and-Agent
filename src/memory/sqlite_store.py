@@ -120,6 +120,7 @@ class SQLiteSessionStore(SessionStore, PersonalStore):
                 ("last_intent", "TEXT"),
                 ("last_scope", "TEXT"),
                 ("last_requested_fields_json", "TEXT"),
+                ("last_constraints_json", "TEXT"),
                 ("last_completed_goal_id", "TEXT"),
             ]:
                 if col_name not in st_cols:
@@ -275,6 +276,15 @@ class SQLiteSessionStore(SessionStore, PersonalStore):
             if not last_requested_fields:
                 last_requested_fields = active_entities.get("last_requested_fields", [])
 
+            last_constraints = []
+            if "last_constraints_json" in row_keys and row["last_constraints_json"]:
+                try:
+                    last_constraints = json.loads(row["last_constraints_json"])
+                except Exception:
+                    last_constraints = []
+            if not last_constraints:
+                last_constraints = active_entities.get("last_constraints", [])
+
             return SessionState(
                 conversation_id=row["conversation_id"],
                 active_course_code=row["active_course_code"],
@@ -289,6 +299,7 @@ class SQLiteSessionStore(SessionStore, PersonalStore):
                 last_intent=last_intent,
                 last_scope=last_scope,
                 last_requested_fields=last_requested_fields,
+                last_constraints=last_constraints,
                 last_completed_goal_id=last_completed_goal_id,
                 updated_at=datetime.datetime.fromisoformat(row["updated_at"]),
             )
@@ -304,11 +315,13 @@ class SQLiteSessionStore(SessionStore, PersonalStore):
         state.active_entities["last_intent"] = state.last_intent
         state.active_entities["last_scope"] = state.last_scope
         state.active_entities["last_requested_fields"] = state.last_requested_fields
+        state.active_entities["last_constraints"] = state.last_constraints
         state.active_entities["last_completed_goal_id"] = state.last_completed_goal_id
 
         entities_json = json.dumps(state.active_entities, ensure_ascii=False)
         sources_json = json.dumps(state.last_source_ids, ensure_ascii=False)
         req_fields_json = json.dumps(state.last_requested_fields, ensure_ascii=False)
+        constraints_json = json.dumps(state.last_constraints, ensure_ascii=False)
 
         with self._get_connection() as conn:
             conn.execute("""
@@ -316,8 +329,8 @@ class SQLiteSessionStore(SessionStore, PersonalStore):
                 (conversation_id, active_course_code, active_course_name, active_entity_type,
                  active_entities_json, active_target, last_source_ids_json, unresolved_reference,
                  last_academic_entity, last_entity_type, last_intent, last_scope,
-                 last_requested_fields_json, last_completed_goal_id, updated_at)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                 last_requested_fields_json, last_constraints_json, last_completed_goal_id, updated_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ON CONFLICT(conversation_id) DO UPDATE SET
                     active_course_code = excluded.active_course_code,
                     active_course_name = excluded.active_course_name,
@@ -331,6 +344,7 @@ class SQLiteSessionStore(SessionStore, PersonalStore):
                     last_intent = excluded.last_intent,
                     last_scope = excluded.last_scope,
                     last_requested_fields_json = excluded.last_requested_fields_json,
+                    last_constraints_json = excluded.last_constraints_json,
                     last_completed_goal_id = excluded.last_completed_goal_id,
                     updated_at = excluded.updated_at;
             """, (
@@ -347,6 +361,7 @@ class SQLiteSessionStore(SessionStore, PersonalStore):
                 state.last_intent,
                 state.last_scope,
                 req_fields_json,
+                constraints_json,
                 state.last_completed_goal_id,
                 now_iso,
             ))
@@ -442,6 +457,7 @@ class SQLiteSessionStore(SessionStore, PersonalStore):
                     last_intent = NULL,
                     last_scope = NULL,
                     last_requested_fields_json = '[]',
+                    last_constraints_json = '[]',
                     last_completed_goal_id = NULL,
                     updated_at = ?
                 WHERE conversation_id = ?;

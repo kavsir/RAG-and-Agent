@@ -141,6 +141,7 @@ class SessionMemoryService:
         last_intent: Optional[str] = None,
         last_scope: Optional[str] = None,
         last_requested_fields: Optional[List[str]] = None,
+        last_constraints: Optional[List[str]] = None,
         last_completed_goal_id: Optional[str] = None,
         **kwargs: Any,
     ) -> SessionState:
@@ -226,6 +227,8 @@ class SessionMemoryService:
             state.last_scope = last_scope
         if last_requested_fields is not None:
             state.last_requested_fields = last_requested_fields
+        if last_constraints is not None:
+            state.last_constraints = last_constraints
         if last_completed_goal_id is not None:
             state.last_completed_goal_id = last_completed_goal_id
 

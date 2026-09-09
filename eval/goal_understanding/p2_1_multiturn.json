@@ -1,0 +1,150 @@
+[
+  {
+    "scenario": "Scenario A - Cross-Turn Entity Switch & Field Inheritance",
+    "turns": [
+      {
+        "turn": 1,
+        "query": "kể mình nghe về môn nhúng",
+        "expected_intent": "COURSE_OVERVIEW",
+        "expected_entities": [
+          "FIT4201"
+        ],
+        "expected_scope": "SUMMARY"
+      },
+      {
+        "turn": 2,
+        "query": "ai dạy vậy?",
+        "expected_intent": "COURSE_FIELD_LOOKUP",
+        "expected_entities": [
+          "FIT4201"
+        ],
+        "expected_fields": [
+          "lecturer"
+        ],
+        "expected_referents": [
+          "PRONOUN",
+          "PREVIOUS_ENTITY"
+        ]
+      },
+      {
+        "turn": 3,
+        "query": "còn cloud?",
+        "expected_intent": "COURSE_FIELD_LOOKUP",
+        "expected_entities": [
+          "FIT4113"
+        ],
+        "expected_fields": [
+          "lecturer"
+        ],
+        "expected_referents": [
+          "PREVIOUS_INTENT"
+        ]
+      },
+      {
+        "turn": 4,
+        "query": "đầu ra nữa",
+        "expected_intent": "COURSE_FIELD_LOOKUP",
+        "expected_entities": [
+          "FIT4113"
+        ],
+        "expected_fields": [
+          "clo"
+        ],
+        "expected_referents": [
+          "PREVIOUS_ENTITY"
+        ]
+      }
+    ]
+  },
+  {
+    "scenario": "Scenario B - Overview to Full Details to Constrained Workload",
+    "turns": [
+      {
+        "turn": 1,
+        "query": "cho mình xem FIT4113",
+        "expected_intent": "COURSE_OVERVIEW",
+        "expected_entities": [
+          "FIT4113"
+        ],
+        "expected_scope": "SUMMARY"
+      },
+      {
+        "turn": 2,
+        "query": "nói kỹ hết đi",
+        "expected_intent": "COURSE_FULL_DETAILS",
+        "expected_entities": [
+          "FIT4113"
+        ],
+        "expected_scope": "ALL_AVAILABLE",
+        "expected_referents": [
+          "PREVIOUS_ENTITY"
+        ]
+      },
+      {
+        "turn": 3,
+        "query": "môn này có nặng thực hành không?",
+        "expected_intent": "COURSE_FIELD_LOOKUP",
+        "expected_entities": [
+          "FIT4113"
+        ],
+        "expected_fields": [
+          "hours"
+        ],
+        "expected_constraints": [
+          "PRACTICAL_WORKLOAD"
+        ],
+        "expected_referents": [
+          "PRONOUN"
+        ]
+      }
+    ]
+  },
+  {
+    "scenario": "Scenario C - Filtered Concept Constraints to Aggregation",
+    "turns": [
+      {
+        "turn": 1,
+        "query": "CLO cloud",
+        "expected_intent": "COURSE_FIELD_LOOKUP",
+        "expected_entities": [
+          "FIT4113"
+        ],
+        "expected_fields": [
+          "clo"
+        ]
+      },
+      {
+        "turn": 2,
+        "query": "cái nào liên quan AWS?",
+        "expected_intent": "COURSE_FIELD_LOOKUP",
+        "expected_entities": [
+          "FIT4113"
+        ],
+        "expected_fields": [
+          "clo"
+        ],
+        "expected_constraints": [
+          "CONTAINS_CONCEPT(\"AWS\")"
+        ],
+        "expected_scope": "FILTERED_SET",
+        "expected_aggregation": "LIST"
+      },
+      {
+        "turn": 3,
+        "query": "có mấy cái?",
+        "expected_intent": "COURSE_FIELD_LOOKUP",
+        "expected_entities": [
+          "FIT4113"
+        ],
+        "expected_fields": [
+          "clo"
+        ],
+        "expected_constraints": [
+          "CONTAINS_CONCEPT(\"AWS\")"
+        ],
+        "expected_scope": "FILTERED_SET",
+        "expected_aggregation": "COUNT"
+      }
+    ]
+  }
+]

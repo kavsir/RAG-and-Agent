@@ -87,11 +87,16 @@ class AgentLoop:
             current_user_input=query,
             objectives=goal_spec.objectives,
             entities=goal_spec.entities,
+            subjects=goal_spec.subjects,
+            subject_type=goal_spec.subject_type,
+            operation=goal_spec.operation,
+            query_plan=goal_spec.query_plan,
             requirements=requirements,
             missing_information=missing_info,
             status=AgentStatus.UNDERSTANDING,
             intent=goal_spec.intent,
             scope=goal_spec.scope,
+            goal_frame=goal_spec.goal_frame,
         )
 
         # =====================================================================
