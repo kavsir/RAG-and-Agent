@@ -70,6 +70,7 @@ class AgentCoreService:
         user_response: str,
         goal_id: Optional[str] = None,
         session_context: Optional[Dict[str, Any]] = None,
+        personal_context: Optional[Dict[str, Any]] = None,
         event_sink: Optional[Any] = None,
     ) -> AgentGoalState:
         """

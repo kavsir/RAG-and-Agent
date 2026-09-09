@@ -274,6 +274,23 @@ def general_answer_node(state: Dict[str, Any]) -> Dict[str, Any]:
     return {"answer": answer, "sources": []}
 
 
+def stream_general_answer_node(state: Dict[str, Any]):
+    """Stream token trực tiếp từ LLM provider cho các câu hỏi phổ quát / lập trình."""
+    from src.llm.client import stream_llm
+    question = state.get("question", "")
+    profile = state.get("student_profile", {})
+    history = state.get("chat_history", "")
+
+    prompt = GENERAL_ANSWER_PROMPT.format(
+        student_profile=json.dumps(profile, ensure_ascii=False) if profile else "Chưa có",
+        chat_history=history if history else "Cuộc trò chuyện mới",
+        question=question,
+    )
+
+    for delta in stream_llm(prompt, temperature=0.3):
+        yield delta
+
+
 # ==============================================================================
 # 9. VALIDATION NODE
 # ==============================================================================

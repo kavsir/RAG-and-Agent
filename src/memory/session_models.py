@@ -40,16 +40,35 @@ class SessionState(BaseModel):
     active_target: Optional[str] = None  # "credits" | "lecturer" | "clo" | "assessment" | ...
     last_source_ids: List[str] = Field(default_factory=list)
     unresolved_reference: bool = False
+
+    # ROUND P2: Conversational Subject State (Discourse State)
+    last_academic_entity: Optional[str] = None
+    last_entity_type: Optional[str] = None
+    last_intent: Optional[str] = None
+    last_scope: Optional[str] = None
+    last_requested_fields: List[str] = Field(default_factory=list)
+    last_completed_goal_id: Optional[str] = None
+
     updated_at: datetime.datetime = Field(default_factory=lambda: datetime.datetime.now(datetime.timezone.utc))
 
     def to_context_dict(self) -> Dict[str, Any]:
-        """Chuyển đổi sang dict ngữ cảnh truyền cho Query Analyzer và Router."""
+        """Chuyển đổi sang dict ngữ cảnh truyền cho Query Analyzer, Goal Analyzer và Router."""
+        entity = self.last_academic_entity or self.active_course_code
         return {
             "conversation_id": self.conversation_id,
-            "course_code": self.active_course_code,
+            "course_code": entity,
+            "active_course_code": entity,
+            "active_course": entity,
+            "active_entity": entity,
             "course_name": self.active_course_name,
-            "entity_type": self.active_entity_type,
+            "entity_type": self.last_entity_type or self.active_entity_type or "course",
             "active_target": self.active_target,
+            "last_academic_entity": entity,
+            "last_entity_type": self.last_entity_type or self.active_entity_type or "course",
+            "last_intent": self.last_intent,
+            "last_scope": self.last_scope,
+            "last_requested_fields": self.last_requested_fields,
+            "last_completed_goal_id": self.last_completed_goal_id,
             "unresolved_reference": self.unresolved_reference,
             "last_source_ids": self.last_source_ids,
         }

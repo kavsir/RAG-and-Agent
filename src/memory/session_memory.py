@@ -74,7 +74,8 @@ class SessionMemoryService:
         pronoun_patterns = [
             r"\bmôn đó\b", r"\bmôn này\b", r"\bmôn đấy\b", r"\bhọc phần đó\b",
             r"\bhọc phần này\b", r"\bmôn trên\b", r"\bhọc phần trên\b",
-            r"\b(nó|môn đó|học phần đó)\b", r"\bkỳ đó\b"
+            r"\b(nó|môn đó|học phần đó)\b", r"\bkỳ đó\b",
+            r"\bmôn vừa rồi\b", r"\bmôn học đó\b", r"\bmôn học này\b", r"\bmôn ấy\b"
         ]
         has_pronoun = any(re.search(p, q_lower) for p in pronoun_patterns)
 
@@ -95,7 +96,8 @@ class SessionMemoryService:
 
         if has_pronoun or has_implicit_cue:
             state = self.get_session_state(conversation_id)
-            if state.active_course_code:
+            active_entity = state.active_course_code or state.last_academic_entity
+            if active_entity:
                 # Kế thừa mục tiêu (target carry-over)
                 resolved_target = None
                 if ("email" in q_lower or "mail" in q_lower) and state.active_target == "lecturer":
@@ -115,9 +117,9 @@ class SessionMemoryService:
 
                 logger.info(
                     f"Session Memory Resolved: conv_id={conversation_id}, "
-                    f"code={state.active_course_code}, target={resolved_target} (source=SESSION)"
+                    f"code={active_entity}, target={resolved_target} (source=SESSION)"
                 )
-                return state.active_course_code, resolved_target, "SESSION", False
+                return active_entity, resolved_target, "SESSION", False
             elif has_pronoun:
                 # Có đại từ nhưng phiên chưa có thực thể nào
                 logger.warning(
@@ -134,11 +136,18 @@ class SessionMemoryService:
         ai_message: str,
         analyzed_query: Optional[Any] = None,
         sources: Optional[List[Any]] = None,
+        last_academic_entity: Optional[str] = None,
+        last_entity_type: Optional[str] = None,
+        last_intent: Optional[str] = None,
+        last_scope: Optional[str] = None,
+        last_requested_fields: Optional[List[str]] = None,
+        last_completed_goal_id: Optional[str] = None,
+        **kwargs: Any,
     ) -> SessionState:
         """
         Cập nhật toàn bộ một lượt hội thoại:
         - Lưu tin nhắn người dùng và câu trả lời AI
-        - Cập nhật trạng thái thực thể SessionState tất định
+        - Cập nhật trạng thái thực thể SessionState tất định và Discourse State
         """
         # 1. Lưu tin nhắn vào lịch sử
         self.store.append_message(conversation_id, "user", user_message)
@@ -157,7 +166,22 @@ class SessionMemoryService:
                 )
             state.active_course_code = new_code
             state.active_entity_type = "course"
+            state.last_academic_entity = new_code
+            state.last_entity_type = "course"
             state.unresolved_reference = False
+        elif not state.active_course_code:
+            try:
+                from src.agent_core.course_resolver import get_course_resolver, ResolutionStatus
+                c_res = get_course_resolver().resolve(user_message)
+                if c_res.status == ResolutionStatus.RESOLVED and c_res.course_code:
+                    state.active_course_code = c_res.course_code
+                    state.active_course_name = c_res.canonical_name
+                    state.active_entity_type = "course"
+                    state.last_academic_entity = c_res.course_code
+                    state.last_entity_type = "course"
+                    state.unresolved_reference = False
+            except Exception:
+                pass
 
         if analyzed_query:
             # Lấy thông tin từ analyzed_query (dict hoặc model)
@@ -171,6 +195,39 @@ class SessionMemoryService:
             if targets:
                 # Lưu target mới nhất
                 state.active_target = targets[0]
+
+            if aq_dict.get("last_academic_entity"):
+                state.last_academic_entity = aq_dict["last_academic_entity"]
+            if aq_dict.get("last_intent"):
+                state.last_intent = aq_dict["last_intent"]
+            if aq_dict.get("last_scope"):
+                state.last_scope = aq_dict["last_scope"]
+            if aq_dict.get("last_requested_fields"):
+                state.last_requested_fields = aq_dict["last_requested_fields"]
+            if aq_dict.get("last_completed_goal_id"):
+                state.last_completed_goal_id = aq_dict["last_completed_goal_id"]
+
+        # Cập nhật Discourse State từ explicit arguments
+        if last_academic_entity:
+            state.last_academic_entity = last_academic_entity
+            state.active_course_code = last_academic_entity
+        elif state.active_course_code:
+            state.last_academic_entity = state.active_course_code
+
+        if last_entity_type:
+            state.last_entity_type = last_entity_type
+            state.active_entity_type = last_entity_type
+        elif state.active_entity_type:
+            state.last_entity_type = state.active_entity_type
+
+        if last_intent is not None:
+            state.last_intent = last_intent
+        if last_scope is not None:
+            state.last_scope = last_scope
+        if last_requested_fields is not None:
+            state.last_requested_fields = last_requested_fields
+        if last_completed_goal_id is not None:
+            state.last_completed_goal_id = last_completed_goal_id
 
         if sources:
             source_ids = []

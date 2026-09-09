@@ -8,6 +8,7 @@ from pydantic import BaseModel, Field
 class ChatRequest(BaseModel):
     message: str = Field(..., min_length=1, description="Câu hỏi hoặc yêu cầu của người dùng")
     conversation_id: Optional[str] = Field(None, description="ID phiên trò chuyện")
+    session_id: Optional[str] = Field(None, description="Alias cho conversation_id")
 
 
 class SourceItem(BaseModel):

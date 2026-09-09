@@ -49,44 +49,30 @@ FIELD_NAMES_VN = {
 
 
 def format_requirement_answer(r: EvidenceRequirement, catalog: Optional[EntityCatalog] = None) -> str:
-    """Định dạng kết quả trả lời học vụ tự nhiên, hội thoại, thân thiện với người dùng."""
+    """Định dạng kết quả trả lời học vụ tự nhiên, hội thoại, có cấu trúc thẩm mỹ cho người dùng."""
+    from src.agent_core import presentation
     f_vn = FIELD_NAMES_VN.get(r.field, r.field)
     c_info = catalog.get_course_info(r.entity) if catalog and r.entity and r.entity not in ("DNTU", "general") else None
     c_name = c_info.get("canonical_name", "") if c_info else ""
-    subject_str = f"{c_name} ({r.entity})" if c_name else r.entity
 
-    if r.field == "lecturer":
-        return f"Giảng viên môn {subject_str}: {r.extracted_value}."
+    if r.field == "credits":
+        return presentation.format_credits(r.entity, c_name, r.extracted_value)
+    elif r.field == "lecturer":
+        return presentation.format_lecturer(r.entity, c_name, r.extracted_value)
     elif r.field == "lecturer_email":
-        return f"Email giảng viên môn {subject_str}: {r.extracted_value}."
-    elif r.field == "credits":
-        return f"Số tín chỉ môn {subject_str}: {r.extracted_value}."
+        return presentation.format_lecturer_email(r.entity, c_name, r.extracted_value)
     elif r.field == "clo":
-        return f"Chuẩn đầu ra (CLO) môn {subject_str}:\n{r.extracted_value}"
+        return presentation.format_clo(r.entity, c_name, r.extracted_value)
     elif r.field == "assessment":
-        return f"Hình thức đánh giá môn {subject_str}: {r.extracted_value}."
-    elif r.field == "hours":
-        return f"Thời lượng học phần {subject_str}: {r.extracted_value}."
-    elif r.field == "department":
-        return f"Khoa / Đơn vị phụ trách môn {subject_str}: {r.extracted_value}."
-    elif r.field == "english_name":
-        return f"Tên tiếng Anh môn {subject_str}: {r.extracted_value}."
-    elif r.field in ("course_plan", "semester"):
-        return f"Kế hoạch giảng dạy môn {subject_str}: {r.extracted_value}."
+        return presentation.format_assessment(r.entity, c_name, r.extracted_value)
     elif r.field == "prerequisites":
-        return f"Môn tiên quyết của {subject_str}: {r.extracted_value}."
+        return presentation.format_prerequisites(r.entity, c_name, r.extracted_value)
     elif r.field == "graduation_requirements":
-        return f"Điều kiện xét tốt nghiệp ({r.entity}):\n{r.extracted_value}"
+        return presentation.format_graduation(r.entity, r.extracted_value)
     elif r.field == "academic_warning":
-        return f"Quy định cảnh báo học tập ({r.entity}):\n{r.extracted_value}"
-    elif r.field == "attendance_rules":
-        return f"Quy định chuyên cần, điểm danh ({r.entity}): {r.extracted_value}."
-    elif r.field == "grading_scale":
-        return f"Thang điểm đánh giá ({r.entity}): {r.extracted_value}."
-    elif r.field in ("training_rules", "regulation"):
-        return f"Quy chế đào tạo ({r.entity}): {r.extracted_value}."
+        return presentation.format_academic_warning(r.entity, r.extracted_value)
     else:
-        return f"Thông tin {f_vn} môn {subject_str}: {r.extracted_value}."
+        return presentation.format_generic(f_vn, r.entity, c_name, r.extracted_value)
 
 
 
@@ -256,19 +242,43 @@ class ActionExecutor:
         target_req.status = status
         target_req.attempt_count += 1
 
+        sat_keys = []
+        new_ev_items = []
         if status in (EvidenceStatus.SATISFIED, EvidenceStatus.VERIFIED_VALUE, EvidenceStatus.VERIFIED_NONE) and item:
             target_req.extracted_value = item.content
             target_req.source_doc_id = item.source
             state.evidence.append(item)
+            sat_keys.append(target_req.requirement_key)
+            new_ev_items.append(item)
+
+        # Batch verify: Thẩm định các requirement khác cùng thực thể từ matching_docs đã tải
+        if matching_docs:
+            for other_req in state.requirements:
+                if (
+                    other_req.requirement_key != target_req.requirement_key
+                    and other_req.entity == target_req.entity
+                    and other_req.status == EvidenceStatus.PENDING
+                ):
+                    o_status, o_item = self.verifier.verify_requirement(other_req, matching_docs, retrieval_strategy="exact")
+                    other_req.attempt_count += 1
+                    if o_status in (EvidenceStatus.SATISFIED, EvidenceStatus.VERIFIED_VALUE, EvidenceStatus.VERIFIED_NONE) and o_item:
+                        other_req.status = o_status
+                        other_req.extracted_value = o_item.content
+                        other_req.source_doc_id = o_item.source
+                        state.evidence.append(o_item)
+                        sat_keys.append(other_req.requirement_key)
+                        new_ev_items.append(o_item)
+
+        if sat_keys:
             return ActionObservation(
                 action_id=plan.action_id,
                 action_type=plan.action_type,
                 success=True,
                 documents_found=len(matching_docs),
-                new_evidence_count=1,
-                requirements_satisfied=[target_req.requirement_key],
-                evidence_items=[item],
-                message=f"Đã thu thập bằng chứng cho {target_req.requirement_key}: {item.content}",
+                new_evidence_count=len(new_ev_items),
+                requirements_satisfied=sat_keys,
+                evidence_items=new_ev_items,
+                message=f"Đã thu thập bằng chứng cho {', '.join(sat_keys)}",
             )
         else:
             return ActionObservation(
@@ -408,21 +418,38 @@ class ActionExecutor:
 
     def _execute_partial_answer(self, plan: ActionPlan, state: AgentGoalState, event_sink: Optional[Any] = None) -> ActionObservation:
         """Sinh câu trả lời từng phần: nêu rõ phần đã xác minh và phần dữ liệu chưa có."""
-        valid_statuses = (EvidenceStatus.SATISFIED, EvidenceStatus.VERIFIED_VALUE, EvidenceStatus.VERIFIED_NONE)
-        sat_reqs = [r for r in state.requirements if r.status in valid_statuses]
-        unsat_reqs = [r for r in state.requirements if r.status not in valid_statuses]
+        from src.agent_core.schemas import GoalIntent, GoalScope
+        from src.agent_core import presentation
 
-        lines = ["Thông tin đã xác thực từ tài liệu chính quy:"]
-        for r in sat_reqs:
-            lines.append(f"- {format_requirement_answer(r, self.entity_catalog)}")
+        if (
+            (state.intent in (GoalIntent.COURSE_OVERVIEW, GoalIntent.COURSE_FULL_DETAILS)
+             or state.scope in (GoalScope.SUMMARY, GoalScope.ALL_AVAILABLE))
+            and state.entities
+            and len(state.requirements) > 1
+        ):
+            state.final_answer = presentation.format_course_card(
+                entity=state.entities[0],
+                course_name="",
+                requirements=state.requirements,
+                catalog=self.entity_catalog,
+            )
+        else:
+            valid_statuses = (EvidenceStatus.SATISFIED, EvidenceStatus.VERIFIED_VALUE, EvidenceStatus.VERIFIED_NONE)
+            sat_reqs = [r for r in state.requirements if r.status in valid_statuses]
+            unsat_reqs = [r for r in state.requirements if r.status not in valid_statuses]
 
-        if unsat_reqs:
-            lines.append("\nCác thông tin chưa được công bố trong tài liệu chính thức:")
-            for r in unsat_reqs:
-                f_vn = FIELD_NAMES_VN.get(r.field, r.field)
-                lines.append(f"- {r.entity} - {f_vn}: Không có dữ liệu công bố chính thức.")
+            lines = ["Thông tin đã xác thực từ tài liệu chính quy:"]
+            for r in sat_reqs:
+                lines.append(f"- {format_requirement_answer(r, self.entity_catalog)}")
 
-        state.final_answer = "\n".join(lines)
+            if unsat_reqs:
+                lines.append("\nCác thông tin chưa được công bố trong tài liệu chính thức:")
+                for r in unsat_reqs:
+                    f_vn = FIELD_NAMES_VN.get(r.field, r.field)
+                    lines.append(f"- {r.entity} - {f_vn}: Không có dữ liệu công bố chính thức.")
+
+            state.final_answer = "\n".join(lines)
+
         state.status = AgentStatus.PARTIAL
         state.stop_reason = StopReason.PARTIAL_EVIDENCE
 
@@ -467,16 +494,33 @@ class ActionExecutor:
 
     def _execute_finish(self, plan: ActionPlan, state: AgentGoalState, event_sink: Optional[Any] = None) -> ActionObservation:
         """Hoàn tất mục tiêu và kết xuất câu trả lời đầy đủ kèm nguồn thẩm định."""
-        valid_statuses = (EvidenceStatus.SATISFIED, EvidenceStatus.VERIFIED_VALUE, EvidenceStatus.VERIFIED_NONE)
-        lines = []
-        for r in state.requirements:
-            if r.status in valid_statuses:
-                lines.append(format_requirement_answer(r, self.entity_catalog))
+        from src.agent_core.schemas import GoalIntent, GoalScope
+        from src.agent_core import presentation
 
-        if not lines:
-            lines.append("Đã hoàn tất quy trình tra cứu dữ liệu học vụ.")
+        if (
+            (state.intent in (GoalIntent.COURSE_OVERVIEW, GoalIntent.COURSE_FULL_DETAILS)
+             or state.scope in (GoalScope.SUMMARY, GoalScope.ALL_AVAILABLE))
+            and state.entities
+            and len(state.requirements) > 1
+        ):
+            state.final_answer = presentation.format_course_card(
+                entity=state.entities[0],
+                course_name="",
+                requirements=state.requirements,
+                catalog=self.entity_catalog,
+            )
+        else:
+            valid_statuses = (EvidenceStatus.SATISFIED, EvidenceStatus.VERIFIED_VALUE, EvidenceStatus.VERIFIED_NONE)
+            lines = []
+            for r in state.requirements:
+                if r.status in valid_statuses:
+                    lines.append(format_requirement_answer(r, self.entity_catalog))
 
-        state.final_answer = "\n".join(lines)
+            if not lines:
+                lines.append("Đã hoàn tất quy trình tra cứu dữ liệu học vụ.")
+
+            state.final_answer = "\n".join(lines)
+
         state.status = AgentStatus.COMPLETED
         state.stop_reason = StopReason.GOAL_COMPLETED
 

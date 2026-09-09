@@ -92,6 +92,45 @@ class AgentPlanner:
                 }
             )
 
+        # 2.2.1 XÁC NHẬN THỰC THỂ MÔN HỌC (ENTITY CONFIRMATION)
+        if "entity_confirmation" in state.missing_information:
+            from src.agent_core.course_resolver import get_course_resolver
+            res = get_course_resolver().resolve(state.original_query)
+            fp = ActionFingerprint(action_type=ActionType.ASK_USER, strategy="entity_confirmation").to_string()
+            question = res.clarification_question or "Bạn có phải đang hỏi môn học này không?"
+            options = res.clarification_options or ["Đúng", "Không phải"]
+            return ActionPlan(
+                action_id=action_id,
+                action_type=ActionType.ASK_USER,
+                fingerprint=fp,
+                reason_code="ENTITY_CONFIRMATION",
+                ask_user_payload={
+                    "question_type": QuestionType.MISSING_ENTITY.value,
+                    "clarification_question": question,
+                    "options": options,
+                }
+            )
+
+        # 2.2.2 KHỬ MƠ HỒ GIỮA KHÁI NIỆM VÀ TÊN MÔN HỌC (CONCEPT VS COURSE AMBIGUITY)
+        if "concept_course_ambiguity" in state.missing_information:
+            code = state.entities[0] if state.entities else "FIT4201"
+            c_info = self.entity_catalog.get_course_info(code)
+            c_name = c_info.get("canonical_name", code) if c_info else code
+            fp = ActionFingerprint(action_type=ActionType.ASK_USER, strategy="concept_course_ambiguity").to_string()
+            question = f"Bạn muốn xem thông tin học phần **{c_name}** ({code}), hay muốn mình giải thích kiến thức tổng quát về {c_name.lower()}?"
+            options = [f"Xem thông tin học phần {code}", f"Giải thích khái niệm {c_name.lower()}"]
+            return ActionPlan(
+                action_id=action_id,
+                action_type=ActionType.ASK_USER,
+                fingerprint=fp,
+                reason_code="CONCEPT_COURSE_AMBIGUITY",
+                ask_user_payload={
+                    "question_type": QuestionType.MISSING_INTENT.value,
+                    "clarification_question": question,
+                    "options": options,
+                }
+            )
+
         # 2.3 THIẾU THỰC THỂ (MISSING ENTITY)
         if "entity" in state.missing_information:
             fp = ActionFingerprint(action_type=ActionType.ASK_USER, strategy="missing_entity").to_string()
@@ -103,10 +142,10 @@ class AgentPlanner:
                 ask_user_payload={
                     "question_type": QuestionType.MISSING_ENTITY.value,
                     "clarification_question": (
-                        "Bạn đang hỏi về môn học / học phần nào? Bạn có thể cung cấp mã môn học "
-                        "hoặc mã học phần (ví dụ FIT4201) để mình tra cứu chính xác nhé."
+                        "Bạn đang hỏi về môn học / học phần nào? Vui lòng cung cấp tên môn học "
+                        "hoặc mã học phần để mình tra cứu chính xác nhé."
                     ),
-                    "options": ["FIT4201 - Hệ thống nhúng", "FIT4104 - Dự án Full-Stack", "FIT4117 - Quản trị dự án"],
+                    "options": [],
                 }
             )
 

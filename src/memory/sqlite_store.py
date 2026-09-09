@@ -111,6 +111,23 @@ class SQLiteSessionStore(SessionStore, PersonalStore):
             if "user_id" not in cols:
                 conn.execute("ALTER TABLE sessions ADD COLUMN user_id TEXT DEFAULT 'local-user';")
 
+            # Đảm bảo bảng session_states có các cột Discourse State (Round P2)
+            cur_st = conn.execute("PRAGMA table_info(session_states);")
+            st_cols = [row["name"] for row in cur_st.fetchall()]
+            for col_name, col_type in [
+                ("last_academic_entity", "TEXT"),
+                ("last_entity_type", "TEXT"),
+                ("last_intent", "TEXT"),
+                ("last_scope", "TEXT"),
+                ("last_requested_fields_json", "TEXT"),
+                ("last_completed_goal_id", "TEXT"),
+            ]:
+                if col_name not in st_cols:
+                    try:
+                        conn.execute(f"ALTER TABLE session_states ADD COLUMN {col_name} {col_type};")
+                    except Exception:
+                        pass
+
             # Bảng lưu trữ sự thật cá nhân bền vững
             conn.execute("""
                 CREATE TABLE IF NOT EXISTS personal_facts (
@@ -241,6 +258,23 @@ class SQLiteSessionStore(SessionStore, PersonalStore):
                 except Exception:
                     last_sources = []
 
+            # ROUND P2: Load Conversational Subject State
+            row_keys = row.keys()
+            last_academic_entity = row["last_academic_entity"] if "last_academic_entity" in row_keys and row["last_academic_entity"] else active_entities.get("last_academic_entity")
+            last_entity_type = row["last_entity_type"] if "last_entity_type" in row_keys and row["last_entity_type"] else active_entities.get("last_entity_type")
+            last_intent = row["last_intent"] if "last_intent" in row_keys and row["last_intent"] else active_entities.get("last_intent")
+            last_scope = row["last_scope"] if "last_scope" in row_keys and row["last_scope"] else active_entities.get("last_scope")
+            last_completed_goal_id = row["last_completed_goal_id"] if "last_completed_goal_id" in row_keys and row["last_completed_goal_id"] else active_entities.get("last_completed_goal_id")
+
+            last_requested_fields = []
+            if "last_requested_fields_json" in row_keys and row["last_requested_fields_json"]:
+                try:
+                    last_requested_fields = json.loads(row["last_requested_fields_json"])
+                except Exception:
+                    last_requested_fields = []
+            if not last_requested_fields:
+                last_requested_fields = active_entities.get("last_requested_fields", [])
+
             return SessionState(
                 conversation_id=row["conversation_id"],
                 active_course_code=row["active_course_code"],
@@ -250,6 +284,12 @@ class SQLiteSessionStore(SessionStore, PersonalStore):
                 active_target=row["active_target"],
                 last_source_ids=last_sources,
                 unresolved_reference=bool(row["unresolved_reference"]),
+                last_academic_entity=last_academic_entity,
+                last_entity_type=last_entity_type,
+                last_intent=last_intent,
+                last_scope=last_scope,
+                last_requested_fields=last_requested_fields,
+                last_completed_goal_id=last_completed_goal_id,
                 updated_at=datetime.datetime.fromisoformat(row["updated_at"]),
             )
 
@@ -257,15 +297,27 @@ class SQLiteSessionStore(SessionStore, PersonalStore):
         """Cập nhật trạng thái thực thể có cấu trúc của phiên."""
         self.create_session(state.conversation_id)
         now_iso = datetime.datetime.now(datetime.timezone.utc).isoformat()
+
+        # Synchronize discourse state into active_entities dict for redundancy
+        state.active_entities["last_academic_entity"] = state.last_academic_entity or state.active_course_code
+        state.active_entities["last_entity_type"] = state.last_entity_type or state.active_entity_type
+        state.active_entities["last_intent"] = state.last_intent
+        state.active_entities["last_scope"] = state.last_scope
+        state.active_entities["last_requested_fields"] = state.last_requested_fields
+        state.active_entities["last_completed_goal_id"] = state.last_completed_goal_id
+
         entities_json = json.dumps(state.active_entities, ensure_ascii=False)
         sources_json = json.dumps(state.last_source_ids, ensure_ascii=False)
+        req_fields_json = json.dumps(state.last_requested_fields, ensure_ascii=False)
 
         with self._get_connection() as conn:
             conn.execute("""
                 INSERT INTO session_states
                 (conversation_id, active_course_code, active_course_name, active_entity_type,
-                 active_entities_json, active_target, last_source_ids_json, unresolved_reference, updated_at)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                 active_entities_json, active_target, last_source_ids_json, unresolved_reference,
+                 last_academic_entity, last_entity_type, last_intent, last_scope,
+                 last_requested_fields_json, last_completed_goal_id, updated_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ON CONFLICT(conversation_id) DO UPDATE SET
                     active_course_code = excluded.active_course_code,
                     active_course_name = excluded.active_course_name,
@@ -274,16 +326,28 @@ class SQLiteSessionStore(SessionStore, PersonalStore):
                     active_target = excluded.active_target,
                     last_source_ids_json = excluded.last_source_ids_json,
                     unresolved_reference = excluded.unresolved_reference,
+                    last_academic_entity = excluded.last_academic_entity,
+                    last_entity_type = excluded.last_entity_type,
+                    last_intent = excluded.last_intent,
+                    last_scope = excluded.last_scope,
+                    last_requested_fields_json = excluded.last_requested_fields_json,
+                    last_completed_goal_id = excluded.last_completed_goal_id,
                     updated_at = excluded.updated_at;
             """, (
                 state.conversation_id,
-                state.active_course_code,
+                state.active_course_code or state.last_academic_entity,
                 state.active_course_name,
-                state.active_entity_type,
+                state.active_entity_type or state.last_entity_type,
                 entities_json,
                 state.active_target,
                 sources_json,
                 1 if state.unresolved_reference else 0,
+                state.last_academic_entity or state.active_course_code,
+                state.last_entity_type or state.active_entity_type,
+                state.last_intent,
+                state.last_scope,
+                req_fields_json,
+                state.last_completed_goal_id,
                 now_iso,
             ))
             conn.execute("""
@@ -373,6 +437,12 @@ class SQLiteSessionStore(SessionStore, PersonalStore):
                     active_target = NULL,
                     last_source_ids_json = '[]',
                     unresolved_reference = 0,
+                    last_academic_entity = NULL,
+                    last_entity_type = NULL,
+                    last_intent = NULL,
+                    last_scope = NULL,
+                    last_requested_fields_json = '[]',
+                    last_completed_goal_id = NULL,
                     updated_at = ?
                 WHERE conversation_id = ?;
             """, (now_iso, conversation_id))

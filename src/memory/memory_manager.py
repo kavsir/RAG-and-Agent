@@ -45,6 +45,7 @@ class MemoryManager:
         conversation_id: Optional[str] = None,
         analyzed_query: Optional[Any] = None,
         sources: Optional[List[Any]] = None,
+        **kwargs: Any,
     ) -> Optional[SessionState]:
         """Cập nhật hội thoại vào phiên tương ứng."""
         state = None
@@ -55,6 +56,7 @@ class MemoryManager:
                 ai_message=ai_message,
                 analyzed_query=analyzed_query,
                 sources=sources,
+                **kwargs,
             )
         else:
             # Fallback legacy chat history nếu không có conversation_id

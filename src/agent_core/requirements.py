@@ -5,7 +5,7 @@ NO DOMAIN ANSWER WITHOUT EVIDENCE REQUIREMENTS.
 Constructs distinct EvidenceRequirement instances for each entity-field pair.
 """
 from typing import List
-from src.agent_core.schemas import GoalSpec, EvidenceRequirement, EvidenceStatus
+from src.agent_core.schemas import GoalSpec, EvidenceRequirement, EvidenceStatus, GoalIntent, GoalScope
 from src.agent_core.environment_catalog import get_knowledge_environment_catalog
 
 
@@ -18,10 +18,17 @@ class RequirementBuilder:
     def build_requirements(self, goal_spec: GoalSpec) -> List[EvidenceRequirement]:
         requirements: List[EvidenceRequirement] = []
 
+        fields = list(goal_spec.requested_fields)
+        if not fields:
+            if goal_spec.intent == GoalIntent.COURSE_FULL_DETAILS or goal_spec.scope == GoalScope.ALL_AVAILABLE:
+                fields = ["credits", "lecturer", "prerequisites", "assessment", "clo", "hours", "course_plan", "department", "english_name"]
+            elif goal_spec.intent == GoalIntent.COURSE_OVERVIEW or goal_spec.scope == GoalScope.SUMMARY:
+                fields = ["credits", "lecturer", "prerequisites", "assessment", "clo", "hours", "course_plan"]
+
         # 1. Trường hợp có thực thể cụ thể (Course-scoped requirements)
         if goal_spec.entities:
             for entity in goal_spec.entities:
-                for field in goal_spec.requested_fields:
+                for field in fields:
                     doc_types = self.env_catalog.get_source_doc_types(field)
                     is_unavail = self.env_catalog.is_field_unavailable(field)
 
@@ -29,7 +36,7 @@ class RequirementBuilder:
                     req = EvidenceRequirement(
                         entity=entity,
                         field=field,
-                        accepted_document_types=doc_types or ["course_outline"],
+                        accepted_document_types=doc_types or ["course_detail"],
                         filters={"course_code": entity},
                         status=status,
                         attempt_count=0,
@@ -38,7 +45,7 @@ class RequirementBuilder:
 
         # 2. Trường hợp quy chế chung toàn trường hoặc không có thực thể cụ thể
         else:
-            for field in goal_spec.requested_fields:
+            for field in fields:
                 doc_types = self.env_catalog.get_source_doc_types(field)
                 is_unavail = self.env_catalog.is_field_unavailable(field)
 

@@ -38,7 +38,7 @@ from src.agent_core.entity_catalog import get_entity_catalog
 class AgentLoop:
     """Động cơ điều phối vòng lặp tác tử có giới hạn và an toàn."""
 
-    MAX_TOTAL_ITERATIONS = 8  # Giới hạn cứng số vòng lặp tối đa cho 1 mục tiêu
+    MAX_TOTAL_ITERATIONS = 15  # Giới hạn cứng số vòng lặp tối đa cho 1 mục tiêu (Round P2)
 
     def __init__(self):
         self.goal_analyzer = get_goal_analyzer()
@@ -90,6 +90,8 @@ class AgentLoop:
             requirements=requirements,
             missing_information=missing_info,
             status=AgentStatus.UNDERSTANDING,
+            intent=goal_spec.intent,
+            scope=goal_spec.scope,
         )
 
         # =====================================================================

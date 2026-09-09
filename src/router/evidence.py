@@ -21,8 +21,50 @@ def extract_evidence(text: str, lower_text: str, analyzed_query: Optional[Dict[s
     elif analyzed_query and analyzed_query.get("course_code"):
         evidence.course_code = analyzed_query["course_code"].upper()
         evidence.course_code_strength = "WEAK"
+    elif analyzed_query and analyzed_query.get("last_academic_entity"):
+        evidence.course_code = analyzed_query["last_academic_entity"].upper()
+        evidence.course_code_strength = "WEAK"
+    elif analyzed_query and analyzed_query.get("active_course_code"):
+        evidence.course_code = analyzed_query["active_course_code"].upper()
+        evidence.course_code_strength = "WEAK"
 
-    if analyzed_query and analyzed_query.get("course_name"):
+    # Kiểm tra tên môn học từ text qua CourseEntityResolver
+    if not evidence.course_code:
+        try:
+            from src.agent_core.course_resolver import get_course_resolver, ResolutionStatus
+            c_res = get_course_resolver().resolve(text, session_context=analyzed_query)
+            if c_res.status == ResolutionStatus.RESOLVED and c_res.course_code:
+                # Phân biệt câu hỏi kỹ thuật thực tế (TCP, UDP, đa hình, vi điều khiển...) vs câu hỏi học vụ
+                has_subtopic_tech = any(
+                    tk in lower_text for tk in [
+                        "tcp", "udp", "giao thức", "đa hình", "tính đa hình",
+                        "dijkstra", "quicksort", "bubble sort", "rest api",
+                        "microservice", "docker", "garbage collection"
+                    ]
+                )
+                has_academic_indicators = any(
+                    ac in lower_text for ac in [
+                        "môn", "học phần", "chi tiết", "tín chỉ", "đề cương",
+                        "giảng viên", "thi", "chuẩn đầu ra", "clo", "cho tôi biết về", "thông tin"
+                    ]
+                )
+                has_general_context = any(
+                    gc in lower_text for gc in ["trong thực tế", "thực tế", "vi điều khiển", "ứng dụng", "thường dùng"]
+                ) or (has_subtopic_tech and not has_academic_indicators)
+
+                if not (has_subtopic_tech and not has_academic_indicators):
+                    evidence.course_code = c_res.course_code
+                    evidence.course_name_signal = c_res.canonical_name
+
+                if has_general_context or c_res.stage == "stage3_session_context":
+                    evidence.course_code_strength = "WEAK"
+                else:
+                    evidence.course_code_strength = "STRONG"
+                    evidence.academic_scope = True
+        except Exception:
+            pass
+
+    if analyzed_query and analyzed_query.get("course_name") and not evidence.course_name_signal:
         evidence.course_name_signal = analyzed_query["course_name"]
 
     # 2. Bóc tách Tín hiệu Phạm vi Học vụ / Đại Nam (Academic Scope)
@@ -30,7 +72,7 @@ def extract_evidence(text: str, lower_text: str, analyzed_query: Optional[Dict[s
         "đại học đại nam", "đại nam", "khoa cntt", "ngành cntt", "k19", "k18", "k17", "k20",
         "quy chế đào tạo", "chương trình đào tạo", "khung chương trình",
         "chuẩn đầu ra clo", "đề cương chi tiết", "học phần", "môn học của trường",
-        "đồ án tốt nghiệp", "xét tốt nghiệp"
+        "đồ án tốt nghiệp", "xét tốt nghiệp", "chi tiết môn", "chi tiết học phần", "thông tin môn", "thông tin học phần"
     ]
     if any(sk in lower_text for sk in scope_keywords):
         evidence.academic_scope = True

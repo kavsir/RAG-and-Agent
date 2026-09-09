@@ -13,7 +13,26 @@ __all__ = [
     "FieldCardinality",
     "get_field_cardinality",
     "FIELD_CARDINALITY_POLICY",
+    "GoalIntent",
+    "GoalScope",
 ]
+
+
+class GoalIntent(str, Enum):
+    COURSE_OVERVIEW = "COURSE_OVERVIEW"
+    COURSE_FULL_DETAILS = "COURSE_FULL_DETAILS"
+    COURSE_FIELD_LOOKUP = "COURSE_FIELD_LOOKUP"
+    COURSE_COMPARISON = "COURSE_COMPARISON"
+    REGULATION_LOOKUP = "REGULATION_LOOKUP"
+    GENERAL_TOPIC_EXPLANATION = "GENERAL_TOPIC_EXPLANATION"
+    TOOL_ACTION = "TOOL_ACTION"
+    UNKNOWN = "UNKNOWN"
+
+
+class GoalScope(str, Enum):
+    SINGLE_FIELD = "SINGLE_FIELD"
+    SUMMARY = "SUMMARY"
+    ALL_AVAILABLE = "ALL_AVAILABLE"
 
 
 class GoalType(str, Enum):
@@ -184,6 +203,8 @@ class ProgressSnapshot(BaseModel):
 
 class GoalSpec(BaseModel):
     """Đặc tả mục tiêu thực sự của người dùng sau giai đoạn UNDERSTAND."""
+    intent: GoalIntent = GoalIntent.UNKNOWN
+    scope: GoalScope = GoalScope.SINGLE_FIELD
     objectives: List[GoalType] = Field(default_factory=list)
     entities: List[str] = Field(default_factory=list)
     requested_fields: List[str] = Field(default_factory=list)
@@ -192,6 +213,8 @@ class GoalSpec(BaseModel):
     unsupported_intents: List[str] = Field(default_factory=list)
     goal_clarity: str = "CLEAR"  # CLEAR | UNDERSPECIFIED | AMBIGUOUS
     missing_slot: Optional[str] = None  # "intent" | "entity" | "data" | "entity_conflict"
+    clarification_prompt: Optional[str] = None
+    clarification_options: List[str] = Field(default_factory=list)
 
 
 class AgentObservation(BaseModel):
@@ -220,6 +243,8 @@ class AgentGoalState(BaseModel):
     current_user_input: str
     user_id: Optional[str] = None
     conversation_id: Optional[str] = None
+    intent: GoalIntent = GoalIntent.UNKNOWN
+    scope: GoalScope = GoalScope.SINGLE_FIELD
     objectives: List[GoalType] = Field(default_factory=list)
     entities: List[str] = Field(default_factory=list)
     requirements: List[EvidenceRequirement] = Field(default_factory=list)

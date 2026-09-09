@@ -34,10 +34,11 @@ class ChatExecutionService:
         self,
         request: ChatRequest,
         event_sink: Optional[AgentEventEmitter] = None,
+        user_id: Optional[str] = None,
     ) -> ChatResponse:
         principal = resolve_principal()
-        user_id = principal.user_id
-        conv_id = request.conversation_id or str(uuid.uuid4())
+        user_id = user_id or principal.user_id
+        conv_id = request.conversation_id or getattr(request, "session_id", None) or str(uuid.uuid4())
         memory_mgr = get_memory_manager()
         agent_service = get_agent_core_service()
 
@@ -73,27 +74,108 @@ class ChatExecutionService:
                 user_response=request.message,
                 goal_id=active_goal.goal_id,
                 session_context=session_ctx,
+                personal_context=personal_ctx,
                 event_sink=event_sink,
             )
             r_dec = None
         else:
+            # 3.0. Fast Path: Xử lý tức thì các tương tác hội thoại thông thường (p95 < 100ms, 0 RAG, 0 LLM)
+            from src.api.fast_path import match_fast_path
+            fast_res = match_fast_path(request.message)
+            if fast_res.matched:
+                try:
+                    memory_mgr.update(
+                        user_message=request.message,
+                        ai_message=fast_res.answer,
+                        conversation_id=conv_id,
+                        sources=[],
+                    )
+                except Exception as e:
+                    logger.warning(f"Lỗi ghi nhận lịch sử fast path: {e}")
+
+                return ChatResponse(
+                    answer=fast_res.answer,
+                    category="FAST_PATH",
+                    sources=[],
+                    conversation_id=conv_id,
+                    goal_id=None,
+                    status="COMPLETED",
+                    metadata=ChatMetadata(
+                        cache_hit=True,
+                        category="FAST_PATH",
+                        tool_intent=None,
+                        cache_scope="CACHEABLE",
+                    ),
+                )
+
             from src.router import get_router_service
             if event_sink:
                 event_sink.emit_phase("OBSERVE", "Đang kiểm tra ngữ cảnh và dữ liệu...")
             r_dec = get_router_service().classify(query=request.message, analyzed_query=session_ctx)
 
             if r_dec.category == "GENERAL_LLM":
-                if event_sink:
-                    event_sink.emit_phase("PLAN", "Đang xác định cách xử lý phù hợp...")
-                    event_sink.emit_phase("PREPARE_ANSWER", "Đang chuẩn bị câu trả lời...")
-                from src.agent.nodes import general_answer_node
+                # 3.1 Kiểm tra từ viết tắt kỹ thuật mơ hồ: Yêu cầu làm rõ thay vì đoán mò (0 confident guessing)
+                from src.router.acronym_disambiguator import check_ambiguous_acronym
+                acronym_res = check_ambiguous_acronym(request.message)
+                if acronym_res.is_ambiguous:
+                    try:
+                        memory_mgr.update(
+                            user_message=request.message,
+                            ai_message=acronym_res.clarification_question,
+                            conversation_id=conv_id,
+                            sources=[],
+                        )
+                    except Exception as e:
+                        logger.warning(f"Lỗi ghi nhận lịch sử acronym disambiguation: {e}")
+
+                    return ChatResponse(
+                        answer=acronym_res.clarification_question,
+                        category="GENERAL_LLM",
+                        sources=[],
+                        conversation_id=conv_id,
+                        goal_id=None,
+                        status="NEEDS_USER_INPUT",
+                        clarification_question=acronym_res.clarification_question,
+                        clarification_options=acronym_res.clarification_options,
+                        metadata=ChatMetadata(
+                            cache_hit=False,
+                            category="GENERAL_LLM",
+                            tool_intent=None,
+                            cache_scope="NON_CACHEABLE",
+                            status="NEEDS_USER_INPUT",
+                        ),
+                    )
+
                 state_dict = {
                     "question": request.message,
                     "student_profile": personal_ctx,
                     "chat_history": memory_mgr.get_conversation_history(conv_id, k=5),
                 }
-                gen_res = general_answer_node(state_dict)
-                answer = gen_res.get("answer", "")
+                if event_sink:
+                    event_sink.emit_phase("PLAN", "Đang xác định cách xử lý phù hợp...")
+                    event_sink.emit_phase("PREPARE_ANSWER", "Đang chuẩn bị câu trả lời...")
+                    event_sink.emit(type="answer_start")
+                    from src.agent.nodes import stream_general_answer_node
+                    accumulated = []
+                    for delta in stream_general_answer_node(state_dict):
+                        accumulated.append(delta)
+                        event_sink.emit(type="answer_delta", data={"delta": delta})
+                    answer = "".join(accumulated).strip()
+                else:
+                    from src.agent.nodes import general_answer_node
+                    gen_res = general_answer_node(state_dict)
+                    answer = gen_res.get("answer", "")
+
+                try:
+                    memory_mgr.update(
+                        user_message=request.message,
+                        ai_message=answer,
+                        conversation_id=conv_id,
+                        sources=[],
+                    )
+                except Exception as e:
+                    logger.warning(f"Lỗi ghi nhận lịch sử GENERAL_LLM: {e}")
+
                 return ChatResponse(
                     answer=answer,
                     category="GENERAL_LLM",
@@ -219,7 +301,7 @@ class ChatExecutionService:
                         func=_reminder_job_callback,
                         args=[request.message, job_id],
                     )
-                    answer = f"✅ Đã lên lịch nhắc nhở thành công vào lúc {scheduled_dt.strftime('%H:%M ngày %d/%m/%Y')}."
+                    answer = f"✅ Đã lên lịch nhắc nhở thành công vào lúc {scheduled_dt.strftime('%H:%M ngày %d/%m/%Y')}.\n- Mã lịch nhắc: {job_id}"
                     goal_state.status = AgentStatus.COMPLETED
                     goal_state.final_answer = answer
                     if event_sink:
@@ -264,13 +346,32 @@ class ChatExecutionService:
             )
             cache_scope = cache_dec.scope
 
-        # 8. Cập nhật lịch sử hội thoại phiên
+        # 8. Cập nhật lịch sử hội thoại phiên và Discourse State
         try:
+            last_academic_entity = goal_state.entities[0] if goal_state.entities else None
+            last_intent_val = (
+                goal_state.intent.value if hasattr(goal_state.intent, "value") else (str(goal_state.intent) if goal_state.intent else None)
+            )
+            last_scope_val = (
+                goal_state.scope.value if hasattr(goal_state.scope, "value") else (str(goal_state.scope) if goal_state.scope else None)
+            )
+            last_req_fields = [
+                r.field for r in goal_state.requirements
+                if r.status in (EvidenceStatus.SATISFIED, EvidenceStatus.VERIFIED_VALUE, EvidenceStatus.VERIFIED_NONE)
+            ] or [r.field for r in goal_state.requirements]
+            last_goal_id = goal_state.goal_id if goal_state.status in (AgentStatus.COMPLETED, AgentStatus.PARTIAL) else None
+
             memory_mgr.update(
                 user_message=request.message,
                 ai_message=answer,
                 conversation_id=conv_id,
                 sources=sources_list,
+                last_academic_entity=last_academic_entity,
+                last_entity_type="course" if last_academic_entity else None,
+                last_intent=last_intent_val,
+                last_scope=last_scope_val,
+                last_requested_fields=last_req_fields,
+                last_completed_goal_id=last_goal_id,
             )
         except Exception as e:
             logger.warning(f"Lỗi ghi nhận lịch sử phiên: {e}")
@@ -293,6 +394,8 @@ class ChatExecutionService:
                 status=goal_state.status.value,
             ),
         )
+
+    handle_chat = process
 
 
 _chat_execution_service: Optional[ChatExecutionService] = None

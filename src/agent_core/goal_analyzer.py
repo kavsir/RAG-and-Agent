@@ -11,13 +11,13 @@ and explicitly identifies missing information:
 import re
 from typing import Dict, Any, List, Optional
 
-from src.agent_core.schemas import GoalSpec, GoalType
+from src.agent_core.schemas import GoalSpec, GoalType, GoalIntent, GoalScope
 from src.agent_core.entity_catalog import get_entity_catalog, EntityCatalog
 from src.agent_core.environment_catalog import get_knowledge_environment_catalog, KnowledgeEnvironmentCatalog
 
 
 class GoalAnalyzer:
-    """Bộ phân tích mục tiêu thực sự của người dùng."""
+    """Bộ phân tích mục tiêu thực sự của người dùng (Goal Understanding V2)."""
 
     def __init__(
         self,
@@ -36,6 +36,22 @@ class GoalAnalyzer:
         """Phân tích toàn diện câu hỏi và ngữ cảnh để xây dựng GoalSpec."""
         raw_query = (query or "").strip()
         lower_query = raw_query.lower()
+
+        # 0. Trích xuất Discourse State từ session_context
+        session_last_entity = None
+        session_last_intent = None
+        session_last_scope = None
+        session_last_fields: List[str] = []
+        if session_context:
+            session_last_entity = (
+                session_context.get("last_academic_entity")
+                or session_context.get("active_course_code")
+                or session_context.get("active_course")
+                or session_context.get("active_entity")
+            )
+            session_last_intent = session_context.get("last_intent")
+            session_last_scope = session_context.get("last_scope")
+            session_last_fields = session_context.get("last_requested_fields") or []
 
         # Tự động phân tích ngữ nghĩa phát ngôn nếu chưa được cung cấp
         if utterance_semantics is None:
@@ -59,6 +75,8 @@ class GoalAnalyzer:
                 requested_fields=self._extract_fields(lower_query),
                 goal_clarity="UNDERSPECIFIED",
                 missing_slot="unknown_entity",
+                intent=GoalIntent.UNKNOWN,
+                scope=GoalScope.SINGLE_FIELD,
             )
 
         # 2. Kiểm tra MÂU THUẪN THỰC THỂ (ENTITY CONFLICT: Mã A + Tên môn B)
@@ -70,25 +88,115 @@ class GoalAnalyzer:
                 requested_fields=self._extract_fields(lower_query),
                 goal_clarity="AMBIGUOUS",
                 missing_slot="entity_conflict",
+                intent=GoalIntent.UNKNOWN,
+                scope=GoalScope.SINGLE_FIELD,
             )
 
-        # 3. Trích xuất Thực thể đã biết trong câu
+        # 3. Đại từ / Chỉ định từ trong câu hỏi
+        pronoun_patterns = [
+            r"\bm[oô]n\s+n[aà]y\b",
+            r"\bh[oọ]c\s+ph[aầ]n\s+n[aà]y\b",
+            r"\bn[oó]\b",
+            r"\bm[oô]n\s+[đd][oó]\b",
+            r"\bh[oọ]c\s+ph[aầ]n\s+[đd][oó]\b",
+            r"\bm[oô]n\s+tr[eê]n\b",
+            r"\bh[oọ]c\s+ph[aầ]n\s+tr[eê]n\b",
+            r"\bm[oô]n\s+v[uừ]a\s+r[oồ]i\b",
+            r"\bm[oô]n\s+h[oọ]c\s+[đd][oó]\b",
+            r"\bm[oô]n\s+h[oọ]c\s+n[aà]y\b",
+            r"\bm[oô]n\s+[aấ]y\b",
+        ]
+        has_pronoun = any(re.search(p, lower_query) for p in pronoun_patterns)
+
+        # 4. Trích xuất Thực thể đã biết trong câu
         known_entities = self.entity_catalog.extract_known_entities(raw_query)
 
-        # 4. Phục hồi thực thể từ Session Context (nếu câu hỏi không có thực thể rõ ràng)
-        active_course_code = None
-        if session_context:
-            active_course_code = (
-                session_context.get("active_course_code")
-                or session_context.get("active_course")
-                or session_context.get("active_entity")
-            )
+        # 4.1 Nếu không có mã hoặc alias chuẩn, dùng CourseEntityResolver V2
+        if not known_entities and not has_pronoun:
+            from src.agent_core.course_resolver import get_course_resolver, ResolutionStatus
+            res = get_course_resolver().resolve(raw_query, session_context=session_context)
+            if res.status == ResolutionStatus.RESOLVED and res.course_code:
+                known_entities.append(res.course_code)
+            elif res.status == ResolutionStatus.NEEDS_USER_CONFIRMATION:
+                return GoalSpec(
+                    objectives=[GoalType.UNDEFINED],
+                    entities=[res.course_code] if res.course_code else [],
+                    requested_fields=self._extract_fields(lower_query),
+                    goal_clarity="AMBIGUOUS",
+                    missing_slot="entity_confirmation",
+                    intent=GoalIntent.UNKNOWN,
+                    scope=GoalScope.SINGLE_FIELD,
+                )
+            elif res.status == ResolutionStatus.UNKNOWN_CODE:
+                return GoalSpec(
+                    objectives=[GoalType.UNDEFINED],
+                    entities=[res.course_code] if res.course_code else [],
+                    requested_fields=self._extract_fields(lower_query),
+                    goal_clarity="UNDERSPECIFIED",
+                    missing_slot="unknown_entity",
+                    intent=GoalIntent.UNKNOWN,
+                    scope=GoalScope.SINGLE_FIELD,
+                )
 
-        if not known_entities and active_course_code and self.entity_catalog.is_known_code(active_course_code):
-            known_entities.append(active_course_code)
+        # 4.2 Phân giải đại từ (Referent Resolution)
+        if has_pronoun and not known_entities:
+            if session_last_entity and self.entity_catalog.is_known_code(session_last_entity):
+                known_entities.append(session_last_entity)
+            else:
+                # Có đại từ nhưng không có thực thể trong phiên -> MISSING_ENTITY
+                return GoalSpec(
+                    objectives=[GoalType.UNDEFINED],
+                    entities=[],
+                    requested_fields=self._extract_fields(lower_query),
+                    goal_clarity="UNDERSPECIFIED",
+                    missing_slot="entity",
+                    intent=GoalIntent.UNKNOWN,
+                    scope=GoalScope.SINGLE_FIELD,
+                )
+
+        # 4.3 Khử mơ hồ Khái niệm vs Môn học (Concept vs Course Title Disambiguation)
+        conceptual_triggers = [r"\blà gì\b", r"\bnhư thế nào\b", r"\bnguyên lý\b", r"\bkhái niệm\b", r"\bgiải thích\b"]
+        has_concept_cue = any(re.search(pat, lower_query) for pat in conceptual_triggers)
+        academic_cues = ["mã", "môn", "học phần", "tín chỉ", "tiên quyết", "giảng viên", "thi", "đề cương", "clo", "kỳ"]
+        has_academic_cue = any(cue in lower_query for cue in academic_cues)
+        has_explicit_code = bool(re.search(r"\b[A-Za-z]{2,4}\d{4}\b", raw_query))
+
+        if known_entities and len(known_entities) == 1 and has_concept_cue and not has_academic_cue and not has_explicit_code:
+            code = known_entities[0]
+            return GoalSpec(
+                objectives=[GoalType.UNDEFINED],
+                entities=[code],
+                requested_fields=[],
+                goal_clarity="AMBIGUOUS",
+                missing_slot="concept_course_ambiguity",
+                intent=GoalIntent.UNKNOWN,
+                scope=GoalScope.SINGLE_FIELD,
+            )
 
         # 5. Trích xuất các trường thông tin được yêu cầu (Requested Fields)
         requested_fields = self._extract_fields(lower_query)
+
+        # 5.1 Kế thừa thực thể cho câu hỏi tiếp nối trường (Follow-up Field Inheritance)
+        if not known_entities and requested_fields and session_last_entity:
+            if self.entity_catalog.is_known_code(session_last_entity):
+                known_entities.append(session_last_entity)
+
+        # 5.2 Chuyển đổi thực thể và kế thừa ý định (Entity Switch with Intent/Field Inheritance)
+        is_entity_switch = bool(
+            re.search(r"\b(còn|thế\s+còn|môn\s+khác)\b", lower_query)
+            or (len(known_entities) == 1 and len(requested_fields) == 0 and session_last_entity and known_entities[0] != session_last_entity)
+        )
+        if is_entity_switch and len(known_entities) == 1 and not requested_fields:
+            if session_last_fields:
+                requested_fields = list(session_last_fields)
+            elif session_last_intent == GoalIntent.COURSE_OVERVIEW.value or session_last_scope == GoalScope.SUMMARY.value:
+                has_overview_cue = True
+            elif session_last_intent == GoalIntent.COURSE_FULL_DETAILS.value or session_last_scope == GoalScope.ALL_AVAILABLE.value:
+                is_full_details = True
+
+        # 5.3 Fallback thực thể từ Session nếu chưa có
+        if not known_entities and session_last_entity and self.entity_catalog.is_known_code(session_last_entity):
+            known_entities.append(session_last_entity)
 
         # 6. Kiểm tra các ý định công cụ (Tool Intents)
         tool_objectives = self._extract_tool_intents(lower_query, utterance_semantics)
@@ -98,7 +206,55 @@ class GoalAnalyzer:
             re.search(r"\b(so\s+sánh|khác\s+nhau|giống\s+nhau|môn\s+nào\s+.*hơn)\b", lower_query)
         )
 
-        # 8. Xây dựng danh sách mục tiêu chính (Objectives)
+        # 8. Xác định Intent và Scope (Goal Intent & Scope Classification)
+        full_detail_cues = [
+            "tất cả", "toàn bộ", "tất cả thông tin", "chi tiết tổng thể",
+            "tổng thể", "chi tiết tất cả", "tất cả về", "mọi thông tin",
+            "full thông tin", "đầy đủ thông tin"
+        ]
+        is_full_details = any(cue in lower_query for cue in full_detail_cues)
+
+        overview_cues = [
+            "chi tiết", "cho tôi biết về", "giới thiệu", "thông tin môn",
+            "tổng quan", "môn này thế nào", "môn này có gì", "tìm hiểu về",
+            "thông tin học phần", "nội dung môn"
+        ]
+        has_overview_cue = any(cue in lower_query for cue in overview_cues)
+
+        intent = GoalIntent.UNKNOWN
+        scope = GoalScope.SINGLE_FIELD
+
+        if tool_objectives:
+            intent = GoalIntent.TOOL_ACTION
+            scope = GoalScope.SINGLE_FIELD
+        elif is_comparison:
+            intent = GoalIntent.COURSE_COMPARISON
+            scope = GoalScope.SUMMARY
+            if not requested_fields:
+                requested_fields = ["credits", "lecturer", "prerequisites", "assessment"]
+        elif any(f in ("graduation_requirements", "academic_warning", "training_rules", "regulation") for f in requested_fields):
+            intent = GoalIntent.REGULATION_LOOKUP
+            scope = GoalScope.SINGLE_FIELD
+        elif known_entities:
+            if is_full_details:
+                intent = GoalIntent.COURSE_FULL_DETAILS
+                scope = GoalScope.ALL_AVAILABLE
+                requested_fields = [
+                    "credits", "lecturer", "prerequisites", "assessment", "clo", "hours",
+                    "course_plan", "department", "english_name"
+                ]
+            elif not requested_fields or has_overview_cue:
+                # Broad Academic Intent: COURSE_OVERVIEW
+                intent = GoalIntent.COURSE_OVERVIEW
+                scope = GoalScope.SUMMARY
+                requested_fields = [
+                    "credits", "lecturer", "prerequisites", "assessment", "clo", "hours", "course_plan"
+                ]
+            else:
+                intent = GoalIntent.COURSE_FIELD_LOOKUP
+                scope = GoalScope.SINGLE_FIELD
+
+        # 9. Xây dựng danh sách mục tiêu chính (Objectives)
         objectives: List[GoalType] = []
         if is_comparison:
             objectives.append(GoalType.COMPARE_COURSES)
@@ -124,8 +280,8 @@ class GoalAnalyzer:
         # Bổ sung tool objectives
         objectives.extend(tool_objectives)
 
-        # 9. Đánh giá tính rõ ràng của mục tiêu (Goal Clarity & Missing Slots)
-        # TH 9.1: Dữ liệu KHÔNG TỒN TẠI trong tài liệu chính thức (MISSING_DATA)
+        # 10. Đánh giá tính rõ ràng của mục tiêu (Goal Clarity & Missing Slots)
+        # TH 10.1: Dữ liệu KHÔNG TỒN TẠI trong tài liệu chính thức (MISSING_DATA)
         unavail_in_query = [f for f in requested_fields if f in self.env_catalog.UNAVAILABLE_FIELDS]
         if unavail_in_query:
             return GoalSpec(
@@ -136,34 +292,11 @@ class GoalAnalyzer:
                 is_multi_intent=len(tool_objectives) > 0,
                 goal_clarity="UNDERSPECIFIED",
                 missing_slot="data",
+                intent=intent,
+                scope=scope,
             )
 
-        # TH 9.2: Kiểm tra ý định bị thiếu / câu hỏi chung chung không đủ thông tin (MISSING_INTENT)
-        is_general_vague = ("học kỳ này học môn gì" in lower_query) or ("đăng ký môn học" in lower_query)
-        has_vague_intent = any(
-            phrase in lower_query for phrase in [
-                "thì sao", "thế nào", "có gì", "nè", "học môn gì", "đăng ký môn học"
-            ]
-        )
-        is_missing_intent = (
-            is_general_vague
-            or (len(known_entities) >= 2 and len(requested_fields) == 0)
-            or (len(known_entities) > 0 and len(requested_fields) == 0)
-            or (len(known_entities) == 1 and has_vague_intent and len(requested_fields) == 0)
-        )
-
-        if is_missing_intent:
-            return GoalSpec(
-                objectives=[GoalType.UNDEFINED],
-                entities=known_entities,
-                requested_fields=[],
-                is_multi_entity=len(known_entities) >= 2,
-                is_multi_intent=False,
-                goal_clarity="UNDERSPECIFIED",
-                missing_slot="intent",
-            )
-
-        # TH 9.3: Thiếu thực thể hoàn toàn (không có trong câu và session)
+        # TH 10.2: Thiếu thực thể (MISSING_ENTITY)
         is_general_regulation = any(
             f in ("graduation_requirements", "academic_warning", "training_rules", "regulation")
             for f in requested_fields
@@ -175,22 +308,19 @@ class GoalAnalyzer:
                 requested_fields=requested_fields,
                 goal_clarity="UNDERSPECIFIED",
                 missing_slot="entity",
+                intent=GoalIntent.UNKNOWN,
+                scope=GoalScope.SINGLE_FIELD,
             )
-        # Ví dụ: "FIT4201 với FIT4104 thì sao?", "Môn FIT4113", "FIT4201?", "Học kỳ này học môn gì?"
-        has_vague_intent = any(
-            phrase in lower_query for phrase in [
-                "thì sao", "thế nào", "có gì", "nè", "hông ad", "học môn gì", "đăng ký môn học thì thế nào"
-            ]
-        )
-        is_missing_intent = (
-            (len(known_entities) > 0 and len(requested_fields) == 0)
-            or (len(known_entities) >= 2 and len(requested_fields) == 0)
-            or ("học kỳ này học môn gì" in lower_query)
-            or ("đăng ký môn học thì thế nào" in lower_query)
-            or (len(known_entities) == 1 and has_vague_intent and len(requested_fields) == 0)
-        )
 
-        if is_missing_intent:
+        # TH 10.3: Thiếu ý định thực sự (MISSING_INTENT)
+        # Chỉ khi có >=2 môn không có từ khóa so sánh và không có trường cụ thể
+        # Hoặc câu hỏi hoàn toàn vô định không có thực thể (e.g. "học kỳ này học môn gì")
+        is_truly_missing_intent = (
+            (len(known_entities) >= 2 and not is_comparison and len(self._extract_fields(lower_query)) == 0)
+            or ("học kỳ này học môn gì" in lower_query and not known_entities)
+            or ("đăng ký môn học thì thế nào" in lower_query and not known_entities)
+        )
+        if is_truly_missing_intent:
             return GoalSpec(
                 objectives=[GoalType.UNDEFINED],
                 entities=known_entities,
@@ -199,6 +329,8 @@ class GoalAnalyzer:
                 is_multi_intent=False,
                 goal_clarity="UNDERSPECIFIED",
                 missing_slot="intent",
+                intent=GoalIntent.UNKNOWN,
+                scope=GoalScope.SINGLE_FIELD,
             )
 
         # Nếu không có thiếu sót nào -> Mục tiêu RÕ RÀNG (CLEAR GOAL)
@@ -210,6 +342,8 @@ class GoalAnalyzer:
             is_multi_intent=len(tool_objectives) > 0,
             goal_clarity="CLEAR",
             missing_slot=None,
+            intent=intent,
+            scope=scope,
         )
 
     def _extract_fields(self, lower_text: str) -> List[str]:

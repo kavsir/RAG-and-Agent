@@ -110,6 +110,7 @@ async def chat_stream_generator(
     asyncio.create_task(worker_task)
 
     chat_response: Optional[ChatResponse] = None
+    already_streamed: bool = False
 
     try:
         while True:
@@ -146,6 +147,8 @@ async def chat_stream_generator(
                 # Do not re-emit redundant duplicate meta or understand from beginning
                 if event.type == "phase" and event.phase == AgentPhase.UNDERSTAND:
                     continue
+                if event.type == "answer_delta":
+                    already_streamed = True
                 yield event.to_sse()
 
     except asyncio.CancelledError:
@@ -169,6 +172,42 @@ async def chat_stream_generator(
             },
         ).to_sse()
 
+        if not already_streamed:
+            yield StreamEvent(
+                type="answer_start",
+                conversation_id=conv_id,
+                goal_id=chat_response.goal_id,
+                data={},
+            ).to_sse()
+
+            chunks = chunk_answer_text(chat_response.answer)
+            for chunk in chunks:
+                if await client_request.is_disconnected():
+                    return
+                yield StreamEvent(
+                    type="answer_delta",
+                    conversation_id=conv_id,
+                    goal_id=chat_response.goal_id,
+                    data={"delta": chunk},
+                ).to_sse()
+                if chunk_delay > 0:
+                    await asyncio.sleep(chunk_delay)
+
+        yield StreamEvent(
+            type="done",
+            conversation_id=conv_id,
+            goal_id=chat_response.goal_id,
+            data={
+                "status": "NEEDS_USER_INPUT",
+                "conversation_id": conv_id,
+                "goal_id": chat_response.goal_id,
+                "category": chat_response.category,
+            },
+        ).to_sse()
+        return
+
+    # Final verified answer streaming
+    if not already_streamed:
         yield StreamEvent(
             type="answer_start",
             conversation_id=conv_id,
@@ -188,40 +227,6 @@ async def chat_stream_generator(
             ).to_sse()
             if chunk_delay > 0:
                 await asyncio.sleep(chunk_delay)
-
-        yield StreamEvent(
-            type="done",
-            conversation_id=conv_id,
-            goal_id=chat_response.goal_id,
-            data={
-                "status": "NEEDS_USER_INPUT",
-                "conversation_id": conv_id,
-                "goal_id": chat_response.goal_id,
-                "category": chat_response.category,
-            },
-        ).to_sse()
-        return
-
-    # Final verified answer streaming
-    yield StreamEvent(
-        type="answer_start",
-        conversation_id=conv_id,
-        goal_id=chat_response.goal_id,
-        data={},
-    ).to_sse()
-
-    chunks = chunk_answer_text(chat_response.answer)
-    for chunk in chunks:
-        if await client_request.is_disconnected():
-            return
-        yield StreamEvent(
-            type="answer_delta",
-            conversation_id=conv_id,
-            goal_id=chat_response.goal_id,
-            data={"delta": chunk},
-        ).to_sse()
-        if chunk_delay > 0:
-            await asyncio.sleep(chunk_delay)
 
     # Emit sources only after answer verification and completion
     if chat_response.sources:

@@ -205,6 +205,114 @@ function appendUserMessage(text) {
   chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
+// Utility: HTML escaping
+function escapeHtml(str) {
+  if (!str) return "";
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+// Fallback basic Markdown formatter if CDN library marked is unavailable
+function escapeAndFormatFallback(text) {
+  if (!text) return "";
+  let out = escapeHtml(text);
+  out = out.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+  out = out.replace(/\*(.*?)\*/g, "<em>$1</em>");
+  out = out.replace(/`([^`]+)`/g, "<code>$1</code>");
+  out = out.replace(/\n/g, "<br>");
+  return out;
+}
+
+// Rich Markdown + KaTeX Math + DOMPurify Sanitizer (0 XSS)
+function renderRichMarkdown(text) {
+  if (!text) return "";
+
+  const mathPlaceholders = [];
+
+  // 1. Protect block math: \[ ... \] or $$ ... $$
+  let processed = text.replace(/(\\\[[\s\S]*?\\\]|\$\$[\s\S]*?\$\$)/g, (match) => {
+    const isDoubleDollar = match.startsWith("$$");
+    const rawFormula = isDoubleDollar ? match.slice(2, -2).trim() : match.slice(2, -2).trim();
+    const idx = mathPlaceholders.length;
+    mathPlaceholders.push({ formula: rawFormula, display: true });
+    return `@@MATH_BLOCK_${idx}@@`;
+  });
+
+  // 2. Protect inline math: \( ... \) or $ ... $ (excluding currency amounts)
+  processed = processed.replace(/(\\\([\s\S]*?\\\)|(?<!\$)\$(?!\$)([^\s\$](?:.*?[^\s\$])?)\$(?!\$))/g, (match) => {
+    let rawFormula;
+    if (match.startsWith("\\(")) {
+      rawFormula = match.slice(2, -2).trim();
+    } else {
+      rawFormula = match.slice(1, -1).trim();
+    }
+    const idx = mathPlaceholders.length;
+    mathPlaceholders.push({ formula: rawFormula, display: false });
+    return `@@MATH_INLINE_${idx}@@`;
+  });
+
+  // 3. Render Markdown with Marked (GFM + Tables enabled) or Fallback
+  let html = "";
+  if (typeof marked !== "undefined" && marked.parse) {
+    try {
+      html = marked.parse(processed, { gfm: true, breaks: true });
+    } catch (e) {
+      console.warn("Marked parsing error:", e);
+      html = escapeAndFormatFallback(processed);
+    }
+  } else {
+    html = escapeAndFormatFallback(processed);
+  }
+
+  // 4. Restore and render KaTeX math expressions
+  for (let i = 0; i < mathPlaceholders.length; i++) {
+    const { formula, display } = mathPlaceholders[i];
+    let renderedMath = "";
+    if (typeof katex !== "undefined" && katex.renderToString) {
+      try {
+        renderedMath = katex.renderToString(formula, {
+          displayMode: display,
+          throwOnError: false,
+        });
+      } catch (err) {
+        renderedMath = display
+          ? `<div class="katex-display"><code>${escapeHtml(formula)}</code></div>`
+          : `<span class="math-inline"><code>${escapeHtml(formula)}</code></span>`;
+      }
+    } else {
+      renderedMath = display
+        ? `<div class="katex-display"><code>${escapeHtml(formula)}</code></div>`
+        : `<span class="math-inline"><code>${escapeHtml(formula)}</code></span>`;
+    }
+
+    const blockP = `<p>@@MATH_BLOCK_${i}@@</p>`;
+    const rawBlock = `@@MATH_BLOCK_${i}@@`;
+    const inlineP = `@@MATH_INLINE_${i}@@`;
+
+    if (html.includes(blockP)) {
+      html = html.replace(blockP, renderedMath);
+    } else if (html.includes(rawBlock)) {
+      html = html.replace(rawBlock, renderedMath);
+    } else {
+      html = html.replace(inlineP, renderedMath);
+    }
+  }
+
+  // 5. DOMPurify Sanitization to prevent XSS (0 XSS requirement)
+  if (typeof DOMPurify !== "undefined" && DOMPurify.sanitize) {
+    html = DOMPurify.sanitize(html, {
+      USE_PROFILES: { html: true, svg: true, mathMl: true },
+      ADD_ATTR: ["target", "rel", "class", "style", "aria-hidden"],
+    });
+  }
+
+  return html;
+}
+
 // Create Assistant Streaming Message Container
 function createAssistantStreamingRow() {
   const welcomeCard = document.querySelector(".welcome-card");
@@ -220,9 +328,10 @@ function createAssistantStreamingRow() {
   const bubble = document.createElement("div");
   bubble.className = "bubble";
 
-  // Thinking card component
+  // Thinking card component (debounced: hidden initially)
   const thinkingCard = document.createElement("div");
   thinkingCard.className = "thinking-card";
+  thinkingCard.style.display = "none";
 
   const thinkingHeader = document.createElement("div");
   thinkingHeader.className = "thinking-header";
@@ -307,6 +416,16 @@ function createAssistantStreamingRow() {
     timerEl.textContent = `${elapsed}s`;
   }, 100);
 
+  // 300ms Debounce: If response takes >= 300ms, reveal the thinking card
+  let isThinkingVisible = false;
+  let responseStarted = false;
+  const debounceTimer = setTimeout(() => {
+    if (!responseStarted) {
+      isThinkingVisible = true;
+      thinkingCard.style.display = "block";
+    }
+  }, 300);
+
   return {
     row,
     bubble,
@@ -321,6 +440,12 @@ function createAssistantStreamingRow() {
     sourcesCard,
     clarificationActions,
     startTime,
+    debounceTimer,
+    getIsThinkingVisible: () => isThinkingVisible,
+    markResponseStarted: () => {
+      responseStarted = true;
+      clearTimeout(debounceTimer);
+    },
     stopTimer: () => {
       if (timerInterval) {
         clearInterval(timerInterval);
@@ -351,13 +476,15 @@ async function sendStreamingMessage(message) {
   // Active typing cursor
   let cursor = null;
   function ensureCursor() {
-    if (!cursor) {
+    if (!cursor && !ctx.answerContent.querySelector(".typing-cursor")) {
       cursor = document.createElement("span");
       cursor.className = "typing-cursor";
       ctx.answerContent.appendChild(cursor);
     }
   }
   function removeCursor() {
+    const cursors = ctx.answerContent.querySelectorAll(".typing-cursor");
+    cursors.forEach((c) => c.remove());
     if (cursor) {
       cursor.remove();
       cursor = null;
@@ -406,12 +533,25 @@ async function sendStreamingMessage(message) {
     autoScrollIfNeeded();
   }
 
+  let accumulatedAnswer = "";
+  let isExecutionCompleted = false;
+
   function completeThinkingCard() {
+    if (isExecutionCompleted) return;
+    isExecutionCompleted = true;
+    ctx.markResponseStarted();
     ctx.stopTimer();
+
     const finalElapsed = ((performance.now() - ctx.startTime) / 1000).toFixed(1);
     ctx.timerEl.textContent = `${finalElapsed}s`;
 
-    // Mark all items done
+    // Debounce rule: If response started in < 300ms, DO NOT flash thinking card at all
+    if (!ctx.getIsThinkingVisible()) {
+      ctx.thinkingCard.style.display = "none";
+      return;
+    }
+
+    // Otherwise, mark all items done and switch to collapsed header
     phaseElements.forEach((el, p) => {
       el.className = "timeline-item done";
       const icon = el.querySelector(".step-icon");
@@ -460,15 +600,19 @@ async function sendStreamingMessage(message) {
         break;
 
       case "answer_start":
+        ctx.markResponseStarted();
         completeThinkingCard();
-        ensureCursor();
         break;
 
       case "answer_delta":
-        ensureCursor();
+        ctx.markResponseStarted();
+        completeThinkingCard();
         if (eventData.data && eventData.data.delta) {
-          // Insert delta before cursor
-          cursor.insertAdjacentText("beforebegin", eventData.data.delta);
+          accumulatedAnswer += eventData.data.delta;
+          ctx.answerContent.innerHTML = renderRichMarkdown(accumulatedAnswer);
+          const cursorSpan = document.createElement("span");
+          cursorSpan.className = "typing-cursor";
+          ctx.answerContent.appendChild(cursorSpan);
           autoScrollIfNeeded();
         }
         break;
@@ -476,20 +620,45 @@ async function sendStreamingMessage(message) {
       case "sources":
         if (eventData.data && eventData.data.items && eventData.data.items.length > 0) {
           const sources = eventData.data.items;
-          ctx.sourcesCard.innerHTML = `
-            <div class="sources-header">
-              <span>📚 Nguồn tài liệu tham khảo:</span>
-            </div>
+          const count = sources.length;
+          ctx.sourcesCard.innerHTML = "";
+
+          const header = document.createElement("div");
+          header.className = "sources-header";
+          header.innerHTML = `
+            <span>📚 Nguồn (${count})</span>
+            <span class="sources-toggle-icon">▼</span>
           `;
+
+          const list = document.createElement("div");
+          list.className = "sources-list";
+          list.style.display = "none"; // Default collapsed
+
           sources.forEach((s) => {
             const item = document.createElement("div");
             item.className = "source-item";
-            let details = `• <strong>${s.source_file || s.chunk_id}</strong>`;
-            if (s.section) details += ` | ${s.section}`;
-            if (s.subsection) details += ` (${s.subsection})`;
+            let details = `• <strong>${escapeHtml(s.source_file || s.chunk_id || "Tài liệu")}</strong>`;
+            if (s.section) details += ` | ${escapeHtml(s.section)}`;
+            if (s.subsection) details += ` (${escapeHtml(s.subsection)})`;
+            if (s.course_code) details += ` [${escapeHtml(s.course_code)}]`;
             item.innerHTML = details;
-            ctx.sourcesCard.appendChild(item);
+            list.appendChild(item);
           });
+
+          header.addEventListener("click", () => {
+            const isCollapsed = list.style.display === "none";
+            if (isCollapsed) {
+              list.style.display = "flex";
+              header.querySelector(".sources-toggle-icon").textContent = "▲";
+            } else {
+              list.style.display = "none";
+              header.querySelector(".sources-toggle-icon").textContent = "▼";
+            }
+            autoScrollIfNeeded();
+          });
+
+          ctx.sourcesCard.appendChild(header);
+          ctx.sourcesCard.appendChild(list);
           ctx.sourcesCard.style.display = "block";
           autoScrollIfNeeded();
         }
@@ -520,16 +689,17 @@ async function sendStreamingMessage(message) {
 
       case "done":
         completeThinkingCard();
-        removeCursor();
+        if (accumulatedAnswer) {
+          ctx.answerContent.innerHTML = renderRichMarkdown(accumulatedAnswer);
+        }
         setStreamingState(false);
         autoScrollIfNeeded();
         break;
 
       case "error":
         completeThinkingCard();
-        removeCursor();
         const errMsg = (eventData.data && eventData.data.message) || "Đã xảy ra lỗi khi xử lý yêu cầu.";
-        ctx.answerContent.innerHTML += `<div style="color: #ef4444; margin-top: 6px;">⚠️ ${errMsg}</div>`;
+        ctx.answerContent.innerHTML += `<div style="color: #ef4444; margin-top: 6px;">⚠️ ${escapeHtml(errMsg)}</div>`;
         setStreamingState(false);
         autoScrollIfNeeded();
         break;
