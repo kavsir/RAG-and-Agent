@@ -58,8 +58,54 @@ class AcademicOperation(str, Enum):
     TOOL_EXECUTION = "TOOL_EXECUTION"
 
 
+class ResultScope(str, Enum):
+    """Phạm vi số lượng kết quả người dùng yêu cầu (Round A1.2)."""
+    SUMMARY = "SUMMARY"
+    PAGE = "PAGE"
+    TOP_K = "TOP_K"
+    ALL = "ALL"
+
+
+class AcademicCollectionResult(BaseModel):
+    """
+    Hợp đồng kết quả tập hợp tri thức học vụ (Round A1.2 Result Cardinality Contract).
+    Bảo đảm tính minh bạch về số lượng bản ghi và cấm cắt ngắn ngầm định (SILENT_RESULT_TRUNCATION = 0).
+    """
+    items: List[Dict[str, Any]] = Field(default_factory=list)
+    total_count: int = 0
+    returned_count: int = 0
+    is_complete: bool = True
+    truncation_reason: Optional[str] = None
+    result_scope: ResultScope = ResultScope.ALL
+    page: Optional[int] = None
+    limit: Optional[int] = None
+
+    def model_post_init(self, __context: Any) -> None:
+        if self.result_scope == ResultScope.ALL:
+            if self.total_count > 0 and self.returned_count != self.total_count:
+                raise ValueError(
+                    f"ALL_SCOPE_INCOMPLETE_RESULT: ResultScope.ALL requires returned_count ({self.returned_count}) == total_count ({self.total_count})"
+                )
+            self.is_complete = True
+            self.truncation_reason = None
+        elif self.returned_count < self.total_count:
+            self.is_complete = False
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "items": self.items,
+            "total_count": self.total_count,
+            "returned_count": self.returned_count,
+            "is_complete": self.is_complete,
+            "truncation_reason": self.truncation_reason,
+            "result_scope": self.result_scope.value,
+            "page": self.page,
+            "limit": self.limit,
+        }
+
+
 class AcademicQueryPlan(BaseModel):
-    """Kế hoạch truy vấn tri thức học vụ có kiểu (Round A1)."""
+    """Kế hoạch truy vấn tri thức học vụ có kiểu (Round A1 & A1.2)."""
     plan_id: str
     subject_type: EntityType
     operation: str
@@ -68,6 +114,9 @@ class AcademicQueryPlan(BaseModel):
     data_capability: str
     accepted_sources: List[str] = Field(default_factory=list)
     evidence_requirements: List[Any] = Field(default_factory=list)
+    result_scope: ResultScope = ResultScope.ALL
+    limit: Optional[int] = None
+    page: Optional[int] = None
 
 
 class GoalIntent(str, Enum):
@@ -137,6 +186,9 @@ class GoalFrame(BaseModel):
     resolution_sources: Dict[str, str] = Field(default_factory=dict)
     unsupported_reason: Optional[str] = None
     suggested_alternative: Optional[str] = None
+    result_scope: ResultScope = ResultScope.ALL
+    limit: Optional[int] = None
+    page: Optional[int] = None
 
 
 def validate_goal_frame(frame: GoalFrame) -> List[str]:
@@ -397,6 +449,9 @@ class GoalSpec(BaseModel):
     clarification_options: List[str] = Field(default_factory=list)
     unsupported_reason: Optional[str] = None
     suggested_alternative: Optional[str] = None
+    result_scope: ResultScope = ResultScope.ALL
+    limit: Optional[int] = None
+    page: Optional[int] = None
 
 
 class AgentObservation(BaseModel):
@@ -440,6 +495,9 @@ class AgentGoalState(BaseModel):
     requirements: List[EvidenceRequirement] = Field(default_factory=list)
     evidence: List[EvidenceItem] = Field(default_factory=list)
     missing_information: List[str] = Field(default_factory=list)
+    result_scope: ResultScope = ResultScope.ALL
+    limit: Optional[int] = None
+    page: Optional[int] = None
 
     # Quyết định hành động có cấu trúc (Structured Decision)
     planned_action: Optional[ActionPlan] = None

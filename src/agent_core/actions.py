@@ -154,7 +154,7 @@ class ActionExecutor:
         # Lấy hoặc dựng AcademicQueryPlan
         query_plan = state.query_plan
         if not query_plan:
-            from src.agent_core.schemas import AcademicQueryPlan, EntityType
+            from src.agent_core.schemas import AcademicQueryPlan, EntityType, ResultScope
             filters = target_req.filters if target_req else {}
             query_plan = AcademicQueryPlan(
                 plan_id=f"plan_{plan.action_id}",
@@ -163,6 +163,9 @@ class ActionExecutor:
                 filters=filters,
                 data_capability="STRUCTURED_CURRICULUM",
                 accepted_sources=["curriculum"],
+                result_scope=getattr(state, "result_scope", ResultScope.ALL) or ResultScope.ALL,
+                limit=getattr(state, "limit", None),
+                page=getattr(state, "page", None),
             )
 
         res = store.execute_query(query_plan)

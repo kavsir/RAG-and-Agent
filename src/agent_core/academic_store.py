@@ -19,6 +19,8 @@ from src.agent_core.schemas import (
     AcademicQueryPlan,
     EvidenceItem,
     EvidenceStatus,
+    AcademicCollectionResult,
+    ResultScope,
 )
 
 logger = logging.getLogger(__name__)
@@ -239,11 +241,12 @@ class StructuredAcademicStore:
         semester: Optional[int] = None,
         course_type: Optional[str] = None,
         track: Optional[str] = None,
-        limit: int = 200,
+        limit: Optional[int] = None,
     ) -> List[Dict[str, Any]]:
         """
         Lấy danh sách môn học của một CTĐT cụ thể.
         Đảm bảo CROSS_CURRICULUM_LEAKAGE = 0: chỉ lấy môn thuộc đúng curriculum_id đã resolve.
+        Không cắt ngắn ngầm định khi limit là None (SILENT_RESULT_TRUNCATION = 0).
         """
         curr = self.get_curriculum(cohort, major)
         if not curr:
@@ -267,11 +270,124 @@ class StructuredAcademicStore:
             query += " AND (specialization_track IS NULL OR LOWER(specialization_track) LIKE LOWER(?))"
             params.append(f"%{track}%")
 
-        query += " ORDER BY semester ASC, course_code ASC LIMIT ?"
-        params.append(limit)
+        query += " ORDER BY semester ASC, course_code ASC"
+        if limit is not None:
+            query += " LIMIT ?"
+            params.append(limit)
 
         rows = conn.execute(query, params).fetchall()
         return [dict(r) for r in rows]
+
+    def get_curriculum_collection(
+        self,
+        cohort: str,
+        major: str,
+        semester: Optional[int] = None,
+        course_type: Optional[str] = None,
+        track: Optional[str] = None,
+        result_scope: ResultScope = ResultScope.ALL,
+        limit: Optional[int] = None,
+        page: Optional[int] = None,
+    ) -> AcademicCollectionResult:
+        """
+        Lấy tập hợp môn học CTĐT đóng gói trong AcademicCollectionResult hợp đồng chuẩn (Round A1.2).
+        Đảm bảo không cắt ngắn ngầm định (SILENT_RESULT_TRUNCATION = 0).
+        Nếu result_scope == ALL: returned_count == total_count, is_complete=True, truncation_reason=None.
+        """
+        self._ensure_loaded()
+        curr = self.get_curriculum(cohort, major)
+        if not curr:
+            return AcademicCollectionResult(
+                items=[],
+                total_count=0,
+                returned_count=0,
+                is_complete=True,
+                result_scope=result_scope,
+                page=page,
+                limit=limit,
+            )
+
+        curriculum_id = curr["curriculum_id"]
+        conn = self._get_connection()
+
+        # 1. Đếm tổng số bản ghi thỏa mãn điều kiện lọc
+        count_query = "SELECT COUNT(*) FROM curriculum_courses WHERE curriculum_id = ?"
+        count_params: List[Any] = [curriculum_id]
+
+        if semester is not None:
+            count_query += " AND semester = ?"
+            count_params.append(semester)
+
+        if course_type:
+            count_query += " AND UPPER(course_type) = UPPER(?)"
+            count_params.append(course_type)
+
+        if track:
+            count_query += " AND (specialization_track IS NULL OR LOWER(specialization_track) LIKE LOWER(?))"
+            count_params.append(f"%{track}%")
+
+        total_count = conn.execute(count_query, count_params).fetchone()[0]
+
+        # 2. Xây dựng query lấy dữ liệu theo result_scope
+        query = "SELECT * FROM curriculum_courses WHERE curriculum_id = ?"
+        params: List[Any] = [curriculum_id]
+
+        if semester is not None:
+            query += " AND semester = ?"
+            params.append(semester)
+
+        if course_type:
+            query += " AND UPPER(course_type) = UPPER(?)"
+            params.append(course_type)
+
+        if track:
+            query += " AND (specialization_track IS NULL OR LOWER(specialization_track) LIKE LOWER(?))"
+            params.append(f"%{track}%")
+
+        query += " ORDER BY semester ASC, course_code ASC"
+
+        truncation_reason = None
+        if result_scope == ResultScope.ALL:
+            # ResultScope.ALL: TUYỆT ĐỐI KHÔNG dùng LIMIT/OFFSET
+            pass
+        elif result_scope == ResultScope.TOP_K:
+            actual_limit = limit or 10
+            query += " LIMIT ?"
+            params.append(actual_limit)
+            if actual_limit < total_count:
+                truncation_reason = f"Explicit TOP_{actual_limit} requested"
+        elif result_scope == ResultScope.PAGE:
+            p = page or 1
+            page_size = limit or 20
+            offset = (p - 1) * page_size
+            query += " LIMIT ? OFFSET ?"
+            params.extend([page_size, offset])
+            if page_size < total_count:
+                truncation_reason = f"Page {p} requested"
+        elif result_scope == ResultScope.SUMMARY:
+            actual_limit = limit or 10
+            query += " LIMIT ?"
+            params.append(actual_limit)
+            if actual_limit < total_count:
+                truncation_reason = "Summary scope requested"
+
+        rows = conn.execute(query, params).fetchall()
+        items = [dict(r) for r in rows]
+        returned_count = len(items)
+
+        # Invariant check
+        is_complete = (returned_count == total_count)
+
+        return AcademicCollectionResult(
+            items=items,
+            total_count=total_count,
+            returned_count=returned_count,
+            is_complete=is_complete,
+            truncation_reason=truncation_reason if not is_complete else None,
+            result_scope=result_scope,
+            page=page,
+            limit=limit,
+        )
 
     def find_course_placement(self, cohort: str, major: str, course_code: str) -> Optional[Dict[str, Any]]:
         """
@@ -353,13 +469,19 @@ class StructuredAcademicStore:
 
         elif op == AcademicOperation.GET_SEMESTER_COURSES.value or op == "GET_SEMESTER_COURSES":
             semester = filters.get("semester")
-            courses = self.list_curriculum_courses(cohort, major, semester=semester)
-            prov = courses[0] if courses else {}
+            scope = getattr(plan, "result_scope", ResultScope.ALL) or ResultScope.ALL
+            limit = getattr(plan, "limit", None)
+            page = getattr(plan, "page", None)
+            col_res = self.get_curriculum_collection(
+                cohort, major, semester=semester, result_scope=scope, limit=limit, page=page
+            )
+            prov = col_res.items[0] if col_res.items else {}
             return {
-                "status": "success" if courses else "empty",
+                "status": "success" if col_res.returned_count > 0 else "empty",
                 "operation": op,
-                "data": courses,
-                "record_count": len(courses),
+                "data": col_res.to_dict(),
+                "record_count": col_res.returned_count,
+                "collection_result": col_res.to_dict(),
                 "source_provenance": {
                     "source_file": prov.get("source_file"),
                     "source_section": prov.get("source_section"),
@@ -390,13 +512,19 @@ class StructuredAcademicStore:
 
         elif op == AcademicOperation.LIST_COURSES.value or op == "LIST_COURSES":
             semester = filters.get("semester")
-            courses = self.list_curriculum_courses(cohort, major, semester=semester)
-            prov = courses[0] if courses else {}
+            scope = getattr(plan, "result_scope", ResultScope.ALL) or ResultScope.ALL
+            limit = getattr(plan, "limit", None)
+            page = getattr(plan, "page", None)
+            col_res = self.get_curriculum_collection(
+                cohort, major, semester=semester, result_scope=scope, limit=limit, page=page
+            )
+            prov = col_res.items[0] if col_res.items else {}
             return {
-                "status": "success" if courses else "empty",
+                "status": "success" if col_res.returned_count > 0 else "empty",
                 "operation": op,
-                "data": courses,
-                "record_count": len(courses),
+                "data": col_res.to_dict(),
+                "record_count": col_res.returned_count,
+                "collection_result": col_res.to_dict(),
                 "source_provenance": {
                     "source_file": prov.get("source_file"),
                     "source_section": prov.get("source_section"),
@@ -408,13 +536,19 @@ class StructuredAcademicStore:
 
         else:
             # Truy vấn mặc định theo CTĐT
-            courses = self.list_curriculum_courses(cohort, major)
-            prov = courses[0] if courses else {}
+            scope = getattr(plan, "result_scope", ResultScope.ALL) or ResultScope.ALL
+            limit = getattr(plan, "limit", None)
+            page = getattr(plan, "page", None)
+            col_res = self.get_curriculum_collection(
+                cohort, major, result_scope=scope, limit=limit, page=page
+            )
+            prov = col_res.items[0] if col_res.items else {}
             return {
-                "status": "success" if courses else "empty",
+                "status": "success" if col_res.returned_count > 0 else "empty",
                 "operation": op,
-                "data": courses,
-                "record_count": len(courses),
+                "data": col_res.to_dict(),
+                "record_count": col_res.returned_count,
+                "collection_result": col_res.to_dict(),
                 "source_provenance": {
                     "source_file": prov.get("source_file"),
                     "source_section": prov.get("source_section"),

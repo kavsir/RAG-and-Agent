@@ -13,7 +13,7 @@ Normalize
 import re
 import json
 import logging
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List, Optional, Tuple
 
 from src.agent_core.schemas import (
     EntityType,
@@ -25,6 +25,7 @@ from src.agent_core.schemas import (
     ReferentType,
     ComparisonType,
     GoalFrame,
+    ResultScope,
     validate_goal_frame,
 )
 from src.memory.student_memory import StudentMemory
@@ -699,6 +700,8 @@ class SemanticGoalInterpreter:
         # =====================================================================
         # BƯỚC 8: CONSTRUCT & VALIDATE GOALFRAME
         # =====================================================================
+        res_scope, res_limit, res_page = self._resolve_result_scope(clean_query)
+
         frame = GoalFrame(
             intent=final_intent,
             entities=entities,
@@ -718,6 +721,9 @@ class SemanticGoalInterpreter:
             resolution_sources=resolution_sources,
             unsupported_reason=unsupported_reason,
             suggested_alternative=suggested_alternative,
+            result_scope=res_scope,
+            limit=res_limit,
+            page=res_page,
         )
 
         validation_errors = validate_goal_frame(frame)
@@ -726,6 +732,39 @@ class SemanticGoalInterpreter:
 
         self._log_trace(clean_query, frame, resolution_sources.get("intent", "unknown"))
         return frame
+
+    def _resolve_result_scope(self, query: str) -> Tuple[ResultScope, Optional[int], Optional[int]]:
+        """
+        Xác định ResultScope, limit, page từ câu hỏi người dùng (Round A1.2 Result Cardinality Contract).
+        Thứ bậc thẩm quyền:
+        1. TOP_K: người dùng yêu cầu rõ số lượng cụ thể ("10 môn đầu", "top 5", "5 môn đầu tiên")
+        2. PAGE: người dùng yêu cầu phân trang ("trang 2", "trang tiếp theo")
+        3. SUMMARY: người dùng yêu cầu tóm tắt ngắn gọn ("tóm tắt", "ngắn gọn", "sơ lược", "tổng quan ngắn")
+        4. ALL: người dùng yêu cầu toàn bộ ("tất cả", "toàn bộ", "hết", "đầy đủ", "full") hoặc mặc định cho mọi truy vấn danh sách.
+        """
+        q_lower = query.lower()
+
+        # 1. TOP_K check (ưu tiên số lượng cụ thể người dùng yêu cầu)
+        top_k_match = re.search(r"(?:top\s*(\d+)|(\d+)\s*(?:môn|học phần|môn học)\s*(?:đầu|đầu tiên)?)", q_lower)
+        if top_k_match:
+            val = top_k_match.group(1) or top_k_match.group(2)
+            if val and (("đầu" in q_lower) or ("top" in q_lower)):
+                return ResultScope.TOP_K, int(val), None
+
+        # 2. PAGE check
+        page_match = re.search(r"trang\s*(\d+)", q_lower)
+        if page_match:
+            p = int(page_match.group(1))
+            return ResultScope.PAGE, None, p
+        if "trang tiếp" in q_lower or "trang sau" in q_lower:
+            return ResultScope.PAGE, None, 2
+
+        # 3. SUMMARY check
+        if any(w in q_lower for w in ["tóm tắt", "ngắn gọn", "sơ lược", "tổng quan ngắn"]):
+            return ResultScope.SUMMARY, 10, None
+
+        # 4. Mặc định là ALL để bảo vệ USER GOAL AUTHORITY và cấm silent truncation
+        return ResultScope.ALL, None, None
 
     def _split_comparison_entities(self, query: str) -> List[str]:
         """Tách các vế thực thể trong câu hỏi so sánh (ví dụ: 'so cloud với nhúng', 'cloud với nhúng')."""

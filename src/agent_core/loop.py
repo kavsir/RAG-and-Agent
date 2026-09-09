@@ -97,6 +97,9 @@ class AgentLoop:
             intent=goal_spec.intent,
             scope=goal_spec.scope,
             goal_frame=goal_spec.goal_frame,
+            result_scope=getattr(goal_spec, "result_scope", None) or (goal_spec.query_plan.result_scope if goal_spec.query_plan else None),
+            limit=getattr(goal_spec, "limit", None) or (goal_spec.query_plan.limit if goal_spec.query_plan else None),
+            page=getattr(goal_spec, "page", None) or (goal_spec.query_plan.page if goal_spec.query_plan else None),
         )
 
         # =====================================================================

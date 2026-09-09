@@ -172,6 +172,9 @@ class GoalAnalyzer:
             clarification_options=clarification_options,
             unsupported_reason=frame.unsupported_reason,
             suggested_alternative=frame.suggested_alternative,
+            result_scope=getattr(frame, "result_scope", None) or (query_plan.result_scope if query_plan else None),
+            limit=getattr(frame, "limit", None) or (query_plan.limit if query_plan else None),
+            page=getattr(frame, "page", None) or (query_plan.page if query_plan else None),
         )
 
 

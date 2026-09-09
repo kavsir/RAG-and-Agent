@@ -250,17 +250,25 @@ def format_total_credits(data: Any) -> str:
 
 def format_semester_courses(semester: Any, courses: Any, cohort: str = "K19", major: str = "Khoa học máy tính") -> str:
     """Định dạng danh sách môn học theo học kỳ thành bảng Markdown sạch sẽ."""
-    if not isinstance(courses, list) or not courses:
+    items = []
+    if hasattr(courses, "items") and isinstance(courses.items, list):
+        items = courses.items
+    elif isinstance(courses, dict) and "items" in courses:
+        items = courses["items"]
+    elif isinstance(courses, list):
+        items = courses
+
+    if not items:
         return f"📚 Hiện chưa có dữ liệu danh sách môn học cho Học kỳ {semester} (Khóa {cohort} - Ngành {major})."
 
-    total_sem_credits = sum(c.get("credits", 0) for c in courses)
+    total_sem_credits = sum(c.get("credits", 0) for c in items)
     lines = [
         f"📚 **Kế hoạch học tập Học kỳ {semester} (Khóa {cohort} - Ngành {major}):**\n",
         f"*(Tổng số tín chỉ trong kỳ: **{total_sem_credits}** tín chỉ)*\n",
         "| Mã HP | Tên học phần | Số tín chỉ | Tính chất |",
         "| :---: | :--- | :---: | :--- |",
     ]
-    for c in courses:
+    for c in items:
         code = c.get("course_code", "")
         name = c.get("course_name", "")
         creds = c.get("credits", 0)
@@ -295,24 +303,60 @@ def format_course_placement(data: Any, cohort: str = "K19", major: str = "Khoa h
 
 
 def format_curriculum_overview(courses: Any, cohort: str = "K19", major: str = "Khoa học máy tính") -> str:
-    """Định dạng tổng quan danh sách môn học của CTĐT."""
-    if not isinstance(courses, list) or not courses:
+    """
+    Định dạng tổng quan danh sách môn học của CTĐT (Round A1.2 Result Cardinality Contract).
+    Hiển thị chính xác toàn bộ bản ghi theo hợp đồng dữ liệu.
+    TUYỆT ĐỐI KHÔNG tự ý cắt ngắn (PRESENTATION_CARDINALITY_OVERRIDE = 0, SILENT_RESULT_TRUNCATION = 0).
+    """
+    items = []
+    total_count = 0
+    returned_count = 0
+    is_complete = True
+    truncation_reason = None
+    result_scope = "ALL"
+
+    if hasattr(courses, "items") and isinstance(courses.items, list):
+        items = courses.items
+        total_count = getattr(courses, "total_count", len(items))
+        returned_count = getattr(courses, "returned_count", len(items))
+        is_complete = getattr(courses, "is_complete", True)
+        truncation_reason = getattr(courses, "truncation_reason", None)
+        result_scope = getattr(courses, "result_scope", "ALL")
+        if hasattr(result_scope, "value"):
+            result_scope = result_scope.value
+    elif isinstance(courses, dict) and "items" in courses:
+        items = courses.get("items", [])
+        total_count = courses.get("total_count", len(items))
+        returned_count = courses.get("returned_count", len(items))
+        is_complete = courses.get("is_complete", True)
+        truncation_reason = courses.get("truncation_reason")
+        result_scope = courses.get("result_scope", "ALL")
+    elif isinstance(courses, list):
+        items = courses
+        total_count = len(items)
+        returned_count = len(items)
+        is_complete = True
+        result_scope = "ALL"
+
+    if not items:
         return f"📋 Chưa có dữ liệu CTĐT cho Khóa {cohort} - Ngành {major}."
 
-    total_credits = sum(c.get("credits", 0) for c in courses if c.get("course_type") != "ELECTIVE")
+    total_credits = sum(c.get("credits", 0) for c in items if c.get("course_type") != "ELECTIVE")
     lines = [
         f"📋 **Tổng quan Chương trình Đào tạo Khóa {cohort} - Ngành {major}:**\n",
-        f"- **Tổng số học phần:** {len(courses)} môn\n"
+        f"- **Tổng số học phần:** {total_count} môn\n"
         f"- **Tổng số tín chỉ:** **{total_credits}** tín chỉ\n",
         "| Học kỳ | Mã HP | Tên môn học | Tín chỉ |",
         "| :---: | :---: | :--- | :---: |",
     ]
-    for c in courses[:25]:
+    for c in items:
         sem = f"Kỳ {c.get('semester', 0)}" if c.get('semester', 0) > 0 else "Đại cương"
         lines.append(f"| {sem} | `{c.get('course_code')}` | {c.get('course_name')} | {c.get('credits')} |")
 
-    if len(courses) > 25:
-        lines.append(f"\n*(Hiển thị 25/{len(courses)} học phần. Bạn có thể hỏi chi tiết từng kỳ, ví dụ: 'Kỳ 5 học những môn gì?')*")
+    # Chỉ hiển thị ghi chú nếu kết quả bị giới hạn có chủ đích từ người dùng (TOP_K, PAGE, SUMMARY)
+    if not is_complete and returned_count < total_count:
+        reason_note = f": {truncation_reason}" if truncation_reason else ""
+        lines.append(f"\n*(Đang hiển thị {returned_count}/{total_count} học phần theo phạm vi {result_scope}{reason_note}.)*")
 
     return "\n".join(lines)
 

@@ -23,6 +23,7 @@ from src.agent_core.schemas import (
     GoalIntent,
     EvidenceRequirement,
     EvidenceStatus,
+    ResultScope,
 )
 from src.agent_core.capability_registry import get_capability_registry
 
@@ -84,6 +85,13 @@ class GoalPlanConsistencyValidator:
                 errors.append(
                     f"WRONG_DATA_CAPABILITY_SELECTION: Subject type {plan.subject_type.value} routed to {plan.data_capability}."
                 )
+
+        # 5. USER_SCOPE_LOST_IN_PIPELINE:
+        # Nếu GoalFrame yêu cầu ALL, plan không được phép hạ cấp thành phạm vi khác
+        if getattr(goal_frame, "result_scope", None) == ResultScope.ALL and plan.result_scope != ResultScope.ALL:
+            errors.append(
+                f"USER_SCOPE_LOST_IN_PIPELINE: GoalFrame specified ResultScope.ALL but plan downgraded to {plan.result_scope.value}."
+            )
 
         return errors
 
@@ -259,6 +267,9 @@ class AcademicQueryPlanner:
             data_capability=capability,
             accepted_sources=accepted_sources,
             evidence_requirements=req_list,
+            result_scope=getattr(goal_frame, "result_scope", ResultScope.ALL) or ResultScope.ALL,
+            limit=getattr(goal_frame, "limit", None),
+            page=getattr(goal_frame, "page", None),
         )
 
         # 7. Kiểm tra tính nhất quán (Goal-Plan Consistency Check)
@@ -270,5 +281,8 @@ class AcademicQueryPlanner:
                 plan.filters.pop("course_code", None)
             if any("WRONG_DATA_CAPABILITY_SELECTION" in e for e in errs):
                 plan.data_capability = "STRUCTURED_CURRICULUM"
+            if any("USER_SCOPE_LOST_IN_PIPELINE" in e for e in errs):
+                plan.result_scope = ResultScope.ALL
+                plan.limit = None
 
         return plan
